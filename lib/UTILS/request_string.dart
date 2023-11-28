@@ -1,0 +1,43 @@
+class RequestString{
+  //Login string
+  static const String USER_EMAIL="useremail";
+  static const String USER_PASSWORD="userpassword";
+  static const String NEW_PASSWORD="newpassword";
+  static const String USER_NAME="username";
+  static const String USER_MOBILE="usermobile";
+  static const String USER_GENDER="usergender";
+  static const String USER_CV="userCV";
+  static const String USER_ID="userID";
+  static const String JOB_ID="jobID";
+  static const String TYPE="Type";
+  static const String PROFESSIONAL_DETAIL="professional_detail";
+  static const String PROFESSIONAL_DATA="Professional_Data";
+  static const String EXPERIINCE_TYPE="experince_type";
+  static const String TOTAL_EXP_YEAR="total_experince_year";
+  static const String TOTAL_EXPERINCE_MONTH="total_experince_month";
+  static const String JOB_LOCATION="job_location";
+  static const String EMPLOYMENT_DETAILS="Employment_details";
+  static const String CURRENT_DESIGNATION="current_Designation";
+  static const String CURRENT_COMP="current_Company";
+  static const String START_DATE="start_Date";
+  static const String CURRENT_ANNUAL_SALARY="current_Annual_Salary";
+  static const String NOTICE_PERIOD="notice_Period";
+  static const String JOB_PREFERENCES="job_Preferences";
+  static const String KEY_SKILLS="key_Skills";
+  static const String INDUSTRY="industry";
+  static const String DEPARTMENT="department";
+  static const String PREFERRED_LOCATION="preferred_Location";
+  static const String EDUCATION_DETAILS="educational_Details";
+  static const String QUALIFIICCATION="qualifications";
+  static const String SPECIIALIZATION="specialization/Major";
+  static const String UNIVERSITY="university/Institute";
+  static const String YEAR_OF_GRADUATIONS="year_of_Graduations";
+  static const String EDUCATTON_TYPE="education_Type";
+  static const String SAVEJOB="SaveJob";
+  static const String APPLIED_JOB="AppliedJob";
+  static const String JOBFOR_CONDIDATE="JobForCandidate";
+  static const String SIMILIER_JOB="SimilarJob";
+  static const String APPLY="apply";
+  static const String REMOVE="remove";
+  static const String SAVE="save";
+}
