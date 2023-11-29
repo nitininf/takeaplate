@@ -55,17 +55,17 @@ class DialogHelper {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const CustomText(
-                    text: logoutPop,
+                    text: "logoutPop",
                     sizeOfFont: 14,
-                    fontfamilly: poppinsSemiBold,
+                    fontfamilly: montSemiBold,
                     weight: FontWeight.w600,
                     color: jobwiishColor,
                   ),
                   const SizedBox(height: 10),
                   const CustomText(
-                    text: areYouSure,
+                    text: "areYouSure",
                     sizeOfFont: 10,
-                    fontfamilly: poppinsLight,
+                    fontfamilly: montLight,
                     weight: FontWeight.w400,
                     color: jobwiishColor,
                   ),
@@ -81,11 +81,11 @@ class DialogHelper {
                               onPressed: () {
                                 Navigator.of(context).pop();
                               },
-                              child: const Text(cancel,
+                              child: const Text("cancel",
                                   style: TextStyle(
                                       color: jobwiishColor,
                                       fontWeight: FontWeight.w400,
-                                      fontFamily: poppinsMedium,
+                                      fontFamily: montMedium,
                                       fontSize: 13)))),
                       const SizedBox(
                         width: 10,
@@ -93,18 +93,18 @@ class DialogHelper {
                       Expanded(
                           child: ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                  backgroundColor: secondaryColor,
+                                  backgroundColor: btnbgColor,
                                   maximumSize: Size.infinite,
                                   minimumSize: Size(double.maxFinite, 50)),
                               onPressed: () async{
                                 await Utility.clearAll();
                                 Navigator.pushReplacementNamed(context, '/Log_in');
                               },
-                              child: const Text(logout,
+                              child: const Text("logout",
                                   style: TextStyle(
-                                      color: primaryColor,
+                                      color: btntxtColor,
                                       fontWeight: FontWeight.w400,
-                                      fontFamily: poppinsMedium,
+                                      fontFamily: montMedium,
                                       fontSize: 13)))),
                     ],
                   ),

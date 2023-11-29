@@ -32,7 +32,7 @@ class _MyProgressBarState extends State<MyProgressBar> {
     return LinearProgressIndicator(
       value: _progress,
       backgroundColor: hintColor,
-      valueColor: AlwaysStoppedAnimation<Color>(secondaryColor),
+      valueColor: AlwaysStoppedAnimation<Color>(btnbgColor),
     );
   }
 }

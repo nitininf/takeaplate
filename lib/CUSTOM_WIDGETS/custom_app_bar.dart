@@ -25,7 +25,7 @@ class CustomAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: primaryColor,
+      color: btntxtColor,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,7 +48,7 @@ class CustomAppBar extends StatelessWidget {
                   child: CustomText(
                     text: heading!,
                     sizeOfFont: 20,
-                    fontfamilly: poppinsSemiBold,
+                    fontfamilly: montSemiBold,
                     weight: FontWeight.w600,
                     color: jobwiishColor,
                   ),

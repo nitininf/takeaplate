@@ -9,7 +9,6 @@ class CommonEditText extends StatelessWidget {
   final bool isPassword;
   final VoidCallback? onTap; // Corrected the callback type to VoidCallback
   FocusNode? focusNode;
-  final bool isCalender;
   CommonEditText({
     Key? key, // Added Key parameter
     this.controller,
@@ -17,7 +16,6 @@ class CommonEditText extends StatelessWidget {
     this.isPassword = false, // Provide a default value for isPassword
     this.onTap,
     this.focusNode,
-    this.isCalender =false
   });
 
   @override
@@ -42,16 +40,11 @@ class CommonEditText extends StatelessWidget {
           decoration: InputDecoration(
             counterText: '',
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
-            suffixIcon: isCalender ? const Icon(
-              Icons.calendar_month_rounded,
-              color: secondaryColor,
-              size: 20,
-            ) : isPassword
+            suffixIcon: isPassword
                 ? const Icon(
-              Icons.arrow_forward_ios_outlined,
+              Icons.arrow_downward_outlined,
               color: Colors.grey,
               size: 13,
-
             )
                 : const SizedBox(),
             contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),

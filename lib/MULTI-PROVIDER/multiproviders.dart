@@ -1,4 +1,11 @@
 import 'package:flutter/material.dart';
+import '../SCREENS/notification/NotifcattionTurnOnScreen.dart';
+import '../SCREENS/signup_flow/SignupScreen.dart';
+import '../SCREENS/login_flow/CreateOrLoginScreen.dart';
+import '../SCREENS/login_flow/LoginScreen.dart';
+import '../SCREENS/login_flow/PasswordSentMail.dart';
+import '../SCREENS/signup_flow/setyourpass.dart';
+import '../SCREENS/signup_flow/upload_photo.dart';
 import '../UTILS/app_color.dart';
 import '../UTILS/app_strings.dart';
 import '../main.dart';
@@ -18,12 +25,18 @@ MultiProvider getProviders() {
       initialRoute: '/',
       routes: {
         '/': (context) =>  AppRoot(),
-       // '/Log_in': (context) =>const LoginScreen(),
+        '/Create_Login': (context) => CreateOrLogInScreen(),
+        '/Login': (context) => LogInScreen(),
+        '/PassWordSentScreen': (context) => PassWordSentScreen(),
+        '/SignupScreen': (context) => SignUpScreen(),
+        '/UploadPhoto': (context) => UploadPhoto(),
+        '/SetYourPasswordScreen': (context) => SetYourPasswordScreen(),
+        '/NotificationTurnOnScreen': (context) => NotificationTurnOnScreen(),
       },
       theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: secondaryColor),
+          colorScheme: ColorScheme.fromSeed(seedColor: btnbgColor),
           useMaterial3: true,
-          fontFamily: "Poppins"),
+          fontFamily: "Mont"),
       // home: AppRoot(),
     ),
   );

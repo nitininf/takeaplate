@@ -3,19 +3,20 @@ import 'package:flutter/services.dart';
 import 'package:takeaplate/SCREENS/onboarding_screens.dart';
 import 'MULTI-PROVIDER/multiproviders.dart';
 import 'SCREENS/splash_screen.dart';
-import 'UTILS/request_string.dart';
-import 'UTILS/utils.dart';
+
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
-main() {
+main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
   //WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-  //FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
+
+
   runApp(const MyApp()); //MyUserList()
 
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -39,19 +40,18 @@ class AppRoot extends StatelessWidget {
 
   String status = "";
 
-  void checkLogin() {
+  void showImage(BuildContext context) {
     Future.delayed(
       Duration.zero,
           () async {
-        String? userId = await Utility.getStringValue(RequestString.USER_ID);
-        status = userId ?? "";
+
       },
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    checkLogin();
+    showImage(context);
     return FutureBuilder(
         future: Future.delayed(const Duration(seconds: 4)),
         builder: (context, snapshot) =>

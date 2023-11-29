@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import '../UTILS/app_color.dart';
 import '../UTILS/app_strings.dart';
@@ -25,35 +23,16 @@ class CommonPasswordField extends StatelessWidget {
          // obscureText: !loginViewModel!.isPasswordVisible,
           maxLines: 1,
           controller: controller,
-          style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 14,fontFamily: poppinsMedium,color: headingColor),
+          style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 14,fontFamily: montMedium,color: headingColor),
           decoration: InputDecoration(
-              border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
-              suffixIcon: (true)
-                  ?
-              GestureDetector(
-                onTap: (){
-                 // loginViewModel!.showHidePass(controller!.text);
-
-                },
-                child: const Icon(
-                  Icons.visibility,
-                  color: Colors.grey,
-                ),
-              ) : GestureDetector(
-                onTap: (){
-                //  loginViewModel!.showHidePass(controller!.text);
-
-                },
-                child: const Icon(
-                  Icons.visibility_off,
-                  color: Colors.grey,
-                ),
-              ),
+              filled: true,
+              fillColor: editbgColor,
+              border: OutlineInputBorder(borderRadius: BorderRadius.circular(20),borderSide: BorderSide.none),
               contentPadding:
               const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
               hintStyle:
-              const TextStyle(fontWeight: FontWeight.w500, fontSize: 14,fontFamily: poppinsMedium,color: hintColor),
-              hintText: password));
+              const TextStyle(fontWeight: FontWeight.w500, fontSize: 14,fontFamily: montMedium,color: hintColor),
+              hintText: "password"));
 
   }
 }

@@ -1,6 +1,10 @@
-const String poppinsBlack = "Poppins-Black.ttf";
-const String poppinsBold = "Poppins-Bold.ttf";
-const String poppinsLight = "Poppins-Light.ttf";
-const String poppinsMedium = "Poppins-Medium.ttf";
-const String poppinsRegular = "Poppins-Regular.ttf";
-const String poppinsSemiBold = "Poppins-SemiBold.ttf";
+const String montBlack = "Mont-Black.otf";
+const String montBold = "Mont-Bold.otf";
+const String montLight = "Mont-Light.otf";
+const String montMedium = "Mont-Medium.otf";
+const String montRegular = "Mont-Regular.otf";
+const String montSemiBold = "Mont-SemiBold.otf";
+const String montBook = "Mont-Book.otf";
+const String montExtraLight = "Mont-ExtraLight.otf";
+const String montHeavy = "Mont-Heavy.otf";
+const String montitalic = "Mont-Bookltalic.otf";

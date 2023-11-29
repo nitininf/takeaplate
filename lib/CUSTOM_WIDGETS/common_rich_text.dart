@@ -23,7 +23,7 @@ class CommonRichText extends StatelessWidget {
           text!,
           style: const TextStyle(
               fontSize: 14,
-              fontFamily: poppinsMedium,
+              fontFamily: montMedium,
               fontWeight: FontWeight.w500,
               color: accentColor),
         ),
@@ -31,9 +31,9 @@ class CommonRichText extends StatelessWidget {
           colorChangeText!,
           style: const TextStyle(
               fontSize: 14,
-              fontFamily: poppinsMedium,
+              fontFamily: montMedium,
               fontWeight: FontWeight.w500,
-              color: secondaryColor),
+              color: btnbgColor),
         )
       ],
     );

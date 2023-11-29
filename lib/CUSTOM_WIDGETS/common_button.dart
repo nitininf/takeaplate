@@ -19,15 +19,18 @@ class CommonButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
         style: ElevatedButton.styleFrom(
-            backgroundColor: secondaryColor,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(18.0), // Set your desired radius here
+            ),
+            backgroundColor: btnBgColor,
             maximumSize: Size.infinite,
-            minimumSize: Size(double.maxFinite, 40)),
+            minimumSize: const Size(double.maxFinite, 50)),
         onPressed: onClick,
         child: Text(btnText,
-            style: TextStyle(
-                color: primaryColor,
+            style: const TextStyle(
+                color: btntxtColor,
                 fontWeight: FontWeight.w600,
-                fontFamily: poppinsMedium,
+                fontFamily: montMedium,
                 fontSize: 18)
         )
     );

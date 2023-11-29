@@ -25,7 +25,7 @@ class CommonTextField extends StatelessWidget {
         obscureText: isPassword ?? false,
         maxLines: maxLine ?? 1,
         controller: controller,
-        style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 14,fontFamily: poppinsMedium,color: headingColor),
+        style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 14,fontFamily: montMedium,color: headingColor),
 
 
         decoration: InputDecoration(
@@ -39,7 +39,7 @@ class CommonTextField extends StatelessWidget {
             contentPadding:
             const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
             hintStyle:
-            const TextStyle(fontWeight: FontWeight.w500, fontSize: 14,fontFamily: poppinsMedium,color: hintColor),
+            const TextStyle(fontWeight: FontWeight.w500, fontSize: 14,fontFamily: montMedium,color: hintColor),
             hintText: hintText));
 
   }
