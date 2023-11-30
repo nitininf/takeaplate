@@ -13,78 +13,127 @@ class NotificationTurnOnScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
-      body:Stack(
-        children: [
-          Image.asset(
-            appBackground,
-            fit: BoxFit.cover,
-            height: double.infinity,
-            width: double.infinity,
-          ),
-          Column(
-            children: <Widget>[
-              SizedBox(
-                height: screenHeight * 0.06,
+      body: SingleChildScrollView(
+        child: Container(
+          height: screenHeight,
+          width: screenWidth,
+          child: Stack(
+            children: [
+              Image.asset(
+                appBackground,
+                fit: BoxFit.cover,
+                height: double.infinity,
+                width: double.infinity,
               ),
-              const Padding(
-                padding: EdgeInsets.only(right: 50.0),
-                child: Align(
-                  alignment: Alignment.topRight,
-                  child:CustomText(text: skip,color: Colors.white,)
-                ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      top: 70.0,
+                      bottom: 100,
+                      left: 80,
+                      right: 80,
+                    ),
+                    child: Center(
+                      child: Image.asset(
+                        mobile_bg,
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              Align(
-                alignment: Alignment.center,
-                child: Image.asset(
-                  appLogo,
-                  height: 80,
-                  width: 80,
-                ),
-              ),
-              //  SizedBox(height: screenHeight*0.05,),
               Column(
                 children: [
-                 getWidget(title: "NEW DEAL FRM YOUR FAVOURITE RESTAURENT!"),
-                  getWidget(title: "NEW STORE ADDED NEARBY",subtitle: "DON'T MISS OUT"),
-                  getWidget(title: "NEW MEAL PURCHASE CONFIIRMATION"),
-                ],
-              ),
-               Column(
-                children: [
-                 const CustomText(text:"NEVER MISS A DEAL AGAIN" ,fontfamilly: montBold,color: Colors.white,sizeOfFont: 21,
-                isAlign: false,
-              ),
-                  const CustomText(text:"PERSONALISE AND CHOOSE \n WHAT YOU WANT TO KNOW" ,fontfamilly: montBold,color: Colors.white,sizeOfFont: 16,
-                    isAlign: false,
+                  SizedBox(
+                    height: screenHeight * 0.06,
                   ),
-                  CommonButton(btnBgColor: Colors.white, btnText: turnonnotification, onClick: (){
-                 //   Navigator.pushNamed(context, '/SignupScreen');
-                  }),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      SizedBox(
+                        width: screenHeight * 0.08,
+                      ),
+                      Align(
+                        alignment: Alignment.center,
+                        child: Image.asset(
+                          appLogo,
+                          height: 80,
+                          width: 80,
+                        ),
+                      ),
+                      SizedBox(height: screenWidth * 0.05,),
+                      const CustomText(
+                        text: skip,
+                        color: hintColor,
+                        fontfamilly: montBold,
+                      ),
+                    ],
+                  )
                 ],
-              )
-
-
+              ),
+              Padding(
+                padding: const EdgeInsets.only(top: 40.0,right: 35,left: 35,bottom: 10),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Column(
+                      children: [
+                        SizedBox(height: screenHeight * 0.25,),
+                        getWidget(title: favRes),
+                        getWidget(title: nearby, subtitle: miss),
+                        getWidget(title: confirm),
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        const CustomText(
+                          text: dealAgain,
+                          fontfamilly: montBold,
+                          color: hintColor,
+                          sizeOfFont: 18,
+                          isAlign: false,
+                        ),
+                        const CustomText(
+                          text: choose,
+                          fontfamilly: montBook,
+                          color: btnbgColor,
+                          sizeOfFont: 16,
+                          isAlign: false,
+                        ),
+                        SizedBox(height: 20,),
+                        CommonButton(
+                          btnBgColor: btnbgColor,
+                          btnText: turnonnotification,
+                          onClick: () {
+                             Navigator.pushNamed(context, '/BaseHome');
+                          },
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
             ],
           ),
-
-        ],
-
+        ),
       ),
-
-
     );
-
-
   }
+
   Widget getWidget({String? title, String? subtitle=""}){
     return  Container(
       margin: const EdgeInsets.symmetric(horizontal: 13, vertical: 13),
-      padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 13),
+      padding: const EdgeInsets.symmetric(horizontal: 1, vertical: 8),
       decoration: BoxDecoration(
-        //color: Colors.white,
+            color: editbgColor,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(width: 1, color: Colors.white)),
+          border: Border.all(width: 1, color: editbgColor)),
       child: Row(
         children: [
           Expanded(child: Image.asset(appLogo,height: 30,width: 30,)),
@@ -92,15 +141,17 @@ class NotificationTurnOnScreen extends StatelessWidget {
               flex: 3,
               child: Column(
                 children: [
+                  SizedBox(height: 10,),
                   Align(
-                    child: CustomText(text:title! ,fontfamilly: montBold,color: Colors.white,sizeOfFont: 12,
+                    child: CustomText(text:title! ,fontfamilly: montBold,color: hintColor,sizeOfFont: 12,
                       isAlign: false,
                     ),
                     alignment: Alignment.topLeft,
                   ),
+                  SizedBox(height: 5,),
                   Align(
                     alignment: Alignment.topLeft,
-                    child: CustomText(text:subtitle! ,fontfamilly: montBold,color: Colors.white,sizeOfFont: 12,
+                    child: CustomText(text:subtitle! ,fontfamilly: montBold,color: hintColor,sizeOfFont: 12,
                       isAlign: false,
                     ),
                   ),

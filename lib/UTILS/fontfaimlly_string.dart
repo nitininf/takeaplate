@@ -7,4 +7,4 @@ const String montSemiBold = "Mont-SemiBold.otf";
 const String montBook = "Mont-Book.otf";
 const String montExtraLight = "Mont-ExtraLight.otf";
 const String montHeavy = "Mont-Heavy.otf";
-const String montitalic = "Mont-Bookltalic.otf";
+const String montitalic = "Mont-BookItalic.otf";

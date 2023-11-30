@@ -36,12 +36,12 @@ class UploadPhoto extends StatelessWidget {
                         height: 80,
                         width: 80,
                       ),
-                      SizedBox(height: screenHeight*0.01,),
+                      SizedBox(height: screenHeight*0.03,),
                       const Padding(
                         padding: EdgeInsets.only(left: 18,top: 25),
                         child: Align(
                             alignment: Alignment.topLeft,
-                            child: CustomText(text: profilePicture,color: Colors.white,fontfamilly: montBold,sizeOfFont: 14,)),
+                            child: CustomText(text: profilePicture,color: Colors.white,fontfamilly: montBold,sizeOfFont: 18,)),
                       ),
                       SizedBox(height: screenHeight*0.04,),
 
@@ -51,9 +51,14 @@ class UploadPhoto extends StatelessWidget {
                         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                         decoration: BoxDecoration(
-                          //color: Colors.white,
+                             color: editbgColor,
                             borderRadius: BorderRadius.circular(16),
-                            border: Border.all(width: 1, color: Colors.white)),
+                            border: Border.all(width: 0, color: editbgColor,
+
+
+                            )
+
+                        ),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [

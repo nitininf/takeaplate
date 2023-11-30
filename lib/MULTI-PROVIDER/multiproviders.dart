@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../SCREENS/home_screens/base_home.dart';
 import '../SCREENS/notification/NotifcattionTurnOnScreen.dart';
 import '../SCREENS/signup_flow/SignupScreen.dart';
 import '../SCREENS/login_flow/CreateOrLoginScreen.dart';
@@ -32,6 +33,7 @@ MultiProvider getProviders() {
         '/UploadPhoto': (context) => UploadPhoto(),
         '/SetYourPasswordScreen': (context) => SetYourPasswordScreen(),
         '/NotificationTurnOnScreen': (context) => NotificationTurnOnScreen(),
+        '/BaseHome': (context) => BaseHome(),
       },
       theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: btnbgColor),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:takeaplate/UTILS/fontfaimlly_string.dart';
 import '../UTILS/app_color.dart';
 import '../UTILS/validation.dart';
 
@@ -34,24 +35,29 @@ class CommonEditText extends StatelessWidget {
           controller: controller,
           style: const TextStyle(
             fontWeight: FontWeight.w500,
-            fontSize: 14,
-            color: Colors.black, // Make sure to define your colors properly
+            fontSize: 16,
+            fontFamily: montBook,
+            color: hintColor, // Make sure to define your colors properly
           ),
           decoration: InputDecoration(
             counterText: '',
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
+            filled: true,
+            fillColor: editbgColor,
+            border: OutlineInputBorder(borderRadius: BorderRadius.circular(20),borderSide: BorderSide.none),
+
             suffixIcon: isPassword
                 ? const Icon(
               Icons.arrow_downward_outlined,
-              color: Colors.grey,
-              size: 13,
+              color: btnbgColor,
+              size: 15,
             )
                 : const SizedBox(),
             contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
             hintStyle: const TextStyle(
               fontWeight: FontWeight.w500,
-              fontSize: 14,
-              color: Colors.grey, // Define your hint color properly
+              fontFamily: montBook,
+              fontSize: 16,
+              color: hintColor, // Define your hint color properly
             ),
             hintText: hintText,
           ),

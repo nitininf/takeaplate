@@ -23,7 +23,7 @@ class CommonPasswordField extends StatelessWidget {
          // obscureText: !loginViewModel!.isPasswordVisible,
           maxLines: 1,
           controller: controller,
-          style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 14,fontFamily: montMedium,color: headingColor),
+          style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 16,fontFamily: montBook,color: headingColor),
           decoration: InputDecoration(
               filled: true,
               fillColor: editbgColor,
@@ -31,7 +31,7 @@ class CommonPasswordField extends StatelessWidget {
               contentPadding:
               const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
               hintStyle:
-              const TextStyle(fontWeight: FontWeight.w500, fontSize: 14,fontFamily: montMedium,color: hintColor),
+              const TextStyle(fontWeight: FontWeight.w500, fontSize: 16,fontFamily: montBook,color: hintColor),
               hintText: "password"));
 
   }

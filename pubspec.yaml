@@ -35,16 +35,6 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-
-dev_dependencies:
-  flutter_test:
-    sdk: flutter
-
-  # The "flutter_lints" package below contains a set of recommended lints to
-  # encourage good coding practices. The lint set provided by the package is
-  # activated in the `analysis_options.yaml` file located at the root of your
-  # package. See that file for information about deactivating specific lint
-  # rules and activating additional ones.
   flutter_lints: ^2.0.0
   permission_handler:
   intl:
@@ -62,6 +52,16 @@ dev_dependencies:
   date_time_picker:
   page_indicator: ^0.4.1
 
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  # The "flutter_lints" package below contains a set of recommended lints to
+  # encourage good coding practices. The lint set provided by the package is
+  # activated in the `analysis_options.yaml` file located at the root of your
+  # package. See that file for information about deactivating specific lint
+  # rules and activating additional ones.
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
@@ -74,6 +74,7 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
+
   assets:
     - images/
     - fonts/
@@ -89,20 +90,30 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-fonts:
+  fonts:
     - family: Mont
       fonts:
         - asset: fonts/Mont-Regular.otf
         - asset: fonts/Mont-Bold.otf
-        - asset: fonts/Mont-Light.otf
-        - asset: fonts/Mont-SemiBold.otf
-        - asset: fonts/Mont-Black.otf
-        - asset: fonts/Mont-Medium.otf
-        - asset: fonts/Mont-Heavy.otf
+        - asset: fonts/Mont-BookItalic.otf
         - asset: fonts/Mont-Book.otf
+        - asset: fonts/Mont-Black.otf
+        - asset: fonts/Mont-SemiBold.otf
         - asset: fonts/Mont-Thin.otf
-        - asset: fonts/Mont-ExtraLight.otf
-        - asset: fonts/Mont-Bookltalic.otf
+        - asset: fonts/Mont-Light.otf
+        - asset: fonts/Mont-Heavy.otf
+
+
+  #     style: italic
+  #   - family: Trajan Pro
+  #     fonts:
+  #       - asset: fonts/TrajanPro.ttf
+  #       - asset: fonts/TrajanPro_Bold.ttf
+  #         weight: 700
+  #
+  # For details regarding fonts from package dependencies,
+  # see https://flutter.dev/custom-fonts/#from-packages
+
 
 
   # For details regarding fonts from package dependencies,

@@ -36,11 +36,11 @@ class SetYourPasswordScreen extends StatelessWidget {
                         height: 80,
                         width: 80,
                       ),
-                      SizedBox(height: screenHeight*0.03,),
+                      SizedBox(height: screenHeight*0.04,),
                       const Align(
                           alignment: Alignment.topLeft,
                           child: CustomText(text: setyourpassword,color: Colors.white,fontfamilly: montBold,sizeOfFont: 14,)),
-                      SizedBox(height: screenHeight*0.02,),
+                      SizedBox(height: screenHeight*0.05,),
                       CommonEditText(hintText: password,),
                       const SizedBox(height: 20,),
                       CommonEditText(hintText: conpassword,),

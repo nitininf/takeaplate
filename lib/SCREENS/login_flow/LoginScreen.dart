@@ -27,51 +27,53 @@ class LogInScreen extends StatelessWidget {
             ),
 
             // Centered Widgets
-            Column(
-              children: [
-                Column(
-                  children: [
-                    SizedBox(height: screenHeight*0.100,),
-                    Image.asset(
-                      appLogo, // Replace with your first small image path
-                      height: 100,
-                      width: 100,
-                    ),
-                    const SizedBox(height: 40,),
-                    Image.asset(
-                      textImage, // Replace with your second small image path,
-                      width: screenWidth*0.5,
-                    ),
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 40,right: 40,top: 20),
-                  child: Column(
+            SingleChildScrollView(
+              child: Column(
+                children: [
+                  Column(
                     children: [
-                      CommonEmailField(hintText: email,),
-                      const SizedBox(height: 20,),
-                      const CommonPasswordField(),
-                      const SizedBox(height: 30,),
-                      CommonButton(btnBgColor: btnbgColor, btnText: login, onClick: (){
-                        Navigator.pushNamed(context, '/PassWordSentScreen');
-                      }),
-                      const SizedBox(height: 20,),
-                      const CustomText(text: forgotpss,color: hintColor,),
-                       SizedBox(height: screenHeight*0.100,),
-                      // Horizontal line using Divider
-                      const Divider(
-                        color: Colors.white,
-                        thickness: 1,
+                      SizedBox(height: screenHeight*0.100,),
+                      Image.asset(
+                        appLogo, // Replace with your first small image path
+                        height: 100,
+                        width: 100,
                       ),
-                      const SizedBox(height: 20,),
-                      const CustomText(text: notMmberyet,color: hintColor,),
-                      const SizedBox(height: 10,),
-                      const CustomText(text: createyouraccount,color: btnbgColor,sizeOfFont: 18,fontfamilly: montBold,),
-
+                      const SizedBox(height: 40,),
+                      Image.asset(
+                        textImage, // Replace with your second small image path,
+                        width: screenWidth*0.5,
+                      ),
                     ],
                   ),
-                )
-              ],
+                  Padding(
+                    padding: const EdgeInsets.only(left: 40,right: 40,top: 20),
+                    child: Column(
+                      children: [
+                        CommonEmailField(hintText: email,),
+                        const SizedBox(height: 20,),
+                        const CommonPasswordField(),
+                        const SizedBox(height: 30,),
+                        CommonButton(btnBgColor: btnbgColor, btnText: login, onClick: (){
+                          Navigator.pushNamed(context, '/PassWordSentScreen');
+                        }),
+                        const SizedBox(height: 20,),
+                        const CustomText(text: forgotpss,color: hintColor,fontfamilly: montBold,),
+                         SizedBox(height: screenHeight*0.100,),
+                        // Horizontal line using Divider
+                        const Divider(
+                          color: hintColor,
+                          thickness: 1,
+                        ),
+                        const SizedBox(height: 20,),
+                        const CustomText(text: notMmberyet,color: hintColor,fontfamilly: montBold,),
+                        const SizedBox(height: 10,),
+                        const CustomText(text: createyouraccount,color: btnbgColor,sizeOfFont: 18,fontfamilly: montBold,),
+              
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
           ],
         ),

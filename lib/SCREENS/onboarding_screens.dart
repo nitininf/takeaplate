@@ -69,7 +69,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen>
                 margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 decoration: BoxDecoration(
-                    color: editbgColor,
+                    color: onboardingbgColor,
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(width: 1, color: Colors.white)),
                 child: Column(children: [
@@ -191,7 +191,7 @@ class SliderWidget extends StatelessWidget {
         Text(
           title,
           style: TextStyle(
-            fontFamily: montitalic,
+            fontFamily: montBold,
             fontSize: 18,
             color: headingColor,
           ),
@@ -205,7 +205,7 @@ class SliderWidget extends StatelessWidget {
            description!,
             textAlign: TextAlign.center,
             style:
-                TextStyle(color: Colors.white, height: 1.4, fontSize: 15),
+                TextStyle(color: Colors.white, height: 1.4, fontSize: 15,fontFamily: montBook),
           ),
         ),
       ],

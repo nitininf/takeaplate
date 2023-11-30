@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:takeaplate/UTILS/fontfaimlly_string.dart';
 
 import '../UTILS/app_color.dart';
 
@@ -15,30 +16,25 @@ class CustomSearchField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return
-      Container(
-      height: 50,
-      alignment: Alignment.center,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(30),
-        color: searchcolor.withOpacity(0.4),
-         ),
-
-       child: Padding(
-         padding: const EdgeInsets.all(8.0),
-         child: TextFormField(
-             keyboardType: TextInputType.text,
-             textAlign: TextAlign.center,
-             style: const TextStyle(
-                 fontWeight: FontWeight.w400, fontSize: 13),
-            decoration: InputDecoration(
-            border: InputBorder.none,
-                 prefixIcon: const Icon(Icons.search,color: hintColor,),
-                 contentPadding:  const EdgeInsets.symmetric(horizontal: 30,vertical: 0),
-                 hintStyle:  TextStyle(
-                   color: hintColor.withOpacity(0.4),
-                    fontSize: 13, fontWeight: FontWeight.w400),
-                hintText: hintText)),
-       )
-    );
+      TextFormField(
+          keyboardType: TextInputType.text,
+          textAlign: TextAlign.start,
+          style: const TextStyle(
+              fontWeight: FontWeight.w400, fontSize: 14,
+              fontFamily: montBold),
+          decoration: InputDecoration(
+              filled: true,
+              fillColor: editbgColor,
+              border: OutlineInputBorder(borderRadius: BorderRadius.circular(20),borderSide: BorderSide.none),
+              suffixIcon:const Padding(
+                padding:  EdgeInsets.only(right: 20.0,top: 10,bottom: 10),
+                child:  Icon(Icons.search,color: hintColor),
+              ),
+              contentPadding:  const EdgeInsets.symmetric(horizontal: 30,vertical: 10),
+              hintStyle:  const TextStyle(
+                  color: hintColor,
+                  fontFamily: montBold,
+                  fontSize: 14, fontWeight: FontWeight.w400),
+              hintText: hintText));
   }
 }

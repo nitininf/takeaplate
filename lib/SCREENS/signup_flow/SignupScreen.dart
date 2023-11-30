@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/common_button.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/common_edit_text.dart';
+import 'package:takeaplate/CUSTOM_WIDGETS/common_email_field.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/custom_text_style.dart';
 import 'package:takeaplate/UTILS/app_color.dart';
 import 'package:takeaplate/UTILS/app_images.dart';
@@ -36,14 +37,14 @@ class SignUpScreen extends StatelessWidget {
                         height: 80,
                         width: 80,
                       ),
-                      SizedBox(height: screenHeight*0.01,),
+                      SizedBox(height: screenHeight*0.04,),
                       const Align(
                         alignment: Alignment.topLeft,
-                          child: CustomText(text: createaccount,color: Colors.white,fontfamilly: montBold,sizeOfFont: 14,)),
+                          child: CustomText(text: createyouraccount,color: hintColor,fontfamilly: montBold,sizeOfFont: 17,)),
                       SizedBox(height: screenHeight*0.04,),
                       CommonEditText(hintText: fullName,),
                       const SizedBox(height: 20,),
-                      CommonEditText(hintText: email,),
+                      CommonEmailField(hintText: email,),
                       const SizedBox(height: 20,),
                       CommonEditText(hintText: phoneNumber,),
                       const SizedBox(height: 30,),

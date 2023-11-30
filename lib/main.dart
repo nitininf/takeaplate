@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:takeaplate/SCREENS/home_screens/base_home.dart';
 import 'package:takeaplate/SCREENS/onboarding_screens.dart';
 import 'MULTI-PROVIDER/multiproviders.dart';
 import 'SCREENS/splash_screen.dart';
@@ -53,11 +54,11 @@ class AppRoot extends StatelessWidget {
   Widget build(BuildContext context) {
     showImage(context);
     return FutureBuilder(
-        future: Future.delayed(const Duration(seconds: 4)),
+        future: Future.delayed(const Duration(seconds: 2)),
         builder: (context, snapshot) =>
         snapshot.connectionState != ConnectionState.done
             ? SplashScreen() //OnBoardingScreen()
-            : OnBoardingScreen() //Screen1(),
+            : BaseHome() //Screen1(),
     );
   }
 }
