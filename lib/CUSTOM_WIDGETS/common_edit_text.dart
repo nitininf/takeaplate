@@ -8,15 +8,19 @@ class CommonEditText extends StatelessWidget {
   final TextEditingController? controller;
   final String hintText;
   final bool isPassword;
+  final bool isbgColor;
   final VoidCallback? onTap; // Corrected the callback type to VoidCallback
   FocusNode? focusNode;
+  final String? fontfamilly;
   CommonEditText({
     Key? key, // Added Key parameter
     this.controller,
     required this.hintText,
     this.isPassword = false, // Provide a default value for isPassword
+    this.isbgColor = false, // Provide a default value for isPassword
     this.onTap,
     this.focusNode,
+    this.fontfamilly,
   });
 
   @override
@@ -33,17 +37,18 @@ class CommonEditText extends StatelessWidget {
           validator: FormValidator.validateEmpty,
           maxLength: 15,
           controller: controller,
-          style: const TextStyle(
-            fontWeight: FontWeight.w500,
+          style:  TextStyle(
+            fontWeight: FontWeight.w300,
             fontSize: 16,
-            fontFamily: montBook,
-            color: hintColor, // Make sure to define your colors properly
+            fontFamily: fontfamilly ?? montitalic,
+            color: isbgColor ? btntxtColor : hintColor, // Make sure to define your colors properly
           ),
           decoration: InputDecoration(
             counterText: '',
             filled: true,
-            fillColor: editbgColor,
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(20),borderSide: BorderSide.none),
+            fillColor: isbgColor ? hintColor : editbgColor,
+            border: !isbgColor ? OutlineInputBorder(borderRadius: BorderRadius.circular(20),borderSide: BorderSide.none)
+            : OutlineInputBorder(borderRadius: BorderRadius.circular(20),borderSide: BorderSide(color: blackColor)),
 
             suffixIcon: isPassword
                 ? const Icon(
@@ -53,11 +58,11 @@ class CommonEditText extends StatelessWidget {
             )
                 : const SizedBox(),
             contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-            hintStyle: const TextStyle(
-              fontWeight: FontWeight.w500,
-              fontFamily: montBook,
+            hintStyle:  TextStyle(
+              fontWeight: FontWeight.w300,
+              fontFamily: fontfamilly ?? montitalic,
               fontSize: 16,
-              color: hintColor, // Define your hint color properly
+              color: isbgColor ? btntxtColor : hintColor, // Define your hint color properly
             ),
             hintText: hintText,
           ),

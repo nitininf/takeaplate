@@ -40,13 +40,13 @@ class SignUpScreen extends StatelessWidget {
                       SizedBox(height: screenHeight*0.04,),
                       const Align(
                         alignment: Alignment.topLeft,
-                          child: CustomText(text: createyouraccount,color: hintColor,fontfamilly: montBold,sizeOfFont: 17,)),
+                          child: CustomText(text: createyouraccount,color: hintColor,fontfamilly: montitalic,sizeOfFont: 17,)),
                       SizedBox(height: screenHeight*0.04,),
                       CommonEditText(hintText: fullName,),
                       const SizedBox(height: 20,),
                       CommonEmailField(hintText: email,),
                       const SizedBox(height: 20,),
-                      CommonEditText(hintText: phoneNumber,),
+                      CommonEditText(hintText: phoneNumber,fontfamilly: montitalic,),
                       const SizedBox(height: 30,),
                       Row(
                         children: [

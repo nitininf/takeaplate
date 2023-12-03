@@ -25,6 +25,8 @@ class CommonTextField extends StatelessWidget {
         obscureText: isPassword ?? false,
         maxLines: maxLine ?? 1,
         controller: controller,
+        readOnly: true,
+
         style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 14,fontFamily: montMedium,color: headingColor),
 
 
@@ -32,8 +34,8 @@ class CommonTextField extends StatelessWidget {
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(16)),
             suffixIcon: (isPassword ?? false)
                 ? const Icon(
-              Icons.remove_red_eye,
-              color: Colors.grey,
+              Icons.arrow_forward,
+              color: btnbgColor,
             )
                 : const SizedBox(),
             contentPadding:

@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:takeaplate/SCREENS/home_screens/search_screen.dart';
 import 'package:takeaplate/UTILS/app_color.dart';
 import 'package:takeaplate/UTILS/app_images.dart';
 
@@ -14,7 +15,7 @@ class BaseHome extends StatefulWidget {
 class _BaseHomeScreen extends State<BaseHome> {
   int _selectedIndex = 0;
   static final List<Widget> _widgetOptions = <Widget>[
-     HomeScreen(),
+    SearchScreen(),
     HomeScreen(),
     HomeScreen(),
     HomeScreen(),
@@ -41,7 +42,6 @@ class _BaseHomeScreen extends State<BaseHome> {
           ),
         ),
         bottomNavigationBar: BottomNavigationBar(
-
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(
               icon: Image.asset(
@@ -59,7 +59,7 @@ class _BaseHomeScreen extends State<BaseHome> {
                 width: 30,
                 color: _selectedIndex == 1 ? btnbgColor : blackColor,
               ),
-              label:'',
+              label: '',
             ),
             BottomNavigationBarItem(
               icon: Image.asset(
@@ -79,7 +79,6 @@ class _BaseHomeScreen extends State<BaseHome> {
               ),
               label: '',
             ),
-
             BottomNavigationBarItem(
               icon: Image.asset(
                 profile_icon,

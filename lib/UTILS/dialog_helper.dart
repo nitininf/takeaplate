@@ -2,15 +2,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:takeaplate/UTILS/utils.dart';
+import '../CUSTOM_WIDGETS/common_button.dart';
+import '../CUSTOM_WIDGETS/common_edit_text.dart';
 import '../CUSTOM_WIDGETS/custom_text_style.dart';
 import '../MULTI-PROVIDER/common_counter.dart';
 import '../main.dart';
 import 'app_color.dart';
+import 'app_images.dart';
 import 'app_strings.dart';
 import 'fontfaimlly_string.dart';
 
 class DialogHelper {
 
+  static double  screenHeight = MediaQuery.of(navigatorKey.currentContext!).size.height;
+  static double screenWidth = MediaQuery.of(navigatorKey.currentContext!).size.width;
 
 
   static Future<void> selectDate(BuildContext context, CommonCounter commonCounter, {TextEditingController? controller}) async {
@@ -41,76 +46,73 @@ class DialogHelper {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16.0),
           ),
-          child: Container(
-            decoration: BoxDecoration(
-              border: Border.all(width: 0.7, color: Colors.grey),
-              borderRadius: BorderRadius.circular(16),
-              color: Colors.white,
-            ),
-            padding: const EdgeInsets.all(16.0),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const CustomText(
-                    text: "logoutPop",
-                    sizeOfFont: 14,
-                    fontfamilly: montSemiBold,
-                    weight: FontWeight.w600,
-                    color: jobwiishColor,
-                  ),
-                  const SizedBox(height: 10),
-                  const CustomText(
-                    text: "areYouSure",
-                    sizeOfFont: 10,
-                    fontfamilly: montLight,
-                    weight: FontWeight.w400,
-                    color: jobwiishColor,
-                  ),
-                  const SizedBox(height: 30),
-                  Row(
-                    children: [
-                      Expanded(
-                          child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: hintColor.withOpacity(0.2),
-                                  maximumSize: Size.infinite,
-                                  minimumSize: Size(double.maxFinite, 50)),
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                              child: const Text("cancel",
-                                  style: TextStyle(
-                                      color: jobwiishColor,
-                                      fontWeight: FontWeight.w400,
-                                      fontFamily: montMedium,
-                                      fontSize: 13)))),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Expanded(
-                          child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  backgroundColor: btnbgColor,
-                                  maximumSize: Size.infinite,
-                                  minimumSize: Size(double.maxFinite, 50)),
-                              onPressed: () async{
-                                await Utility.clearAll();
-                                Navigator.pushReplacementNamed(context, '/Log_in');
-                              },
-                              child: const Text("logout",
-                                  style: TextStyle(
-                                      color: btntxtColor,
-                                      fontWeight: FontWeight.w400,
-                                      fontFamily: montMedium,
-                                      fontSize: 13)))),
-                    ],
-                  ),
-                ],
+          child:  Column(
+            children: <Widget>[
+              SizedBox(
+                height: screenHeight * 0.16,
               ),
-            ),
+              Padding(
+                padding: const EdgeInsets.only(left: 30.0,right: 30.0,top: 30.0,bottom: 10),
+                child: Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  decoration: BoxDecoration(
+                      color: onboardingbgColor,
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(width: 1, color: hintColor)),
+                  child: Column(children: [
+                    SizedBox(
+                      height: screenHeight * 0.03,
+                    ),
+                    Image.asset(appLogo,
+                      height: 100,
+                      width: 100,),
+                    const SizedBox(height: 20,),
+                    const Align(
+                      alignment: Alignment.center,
+                      child: CustomText(text:sentPss ,
+                        sizeOfFont: 17,
+                        color: hintColor,
+                        fontfamilly: montBook,
+                        isAlign: true,),
+                    ),
+                    const SizedBox(height: 20,),
+
+                    const CustomText(text: checkInbox,
+                      sizeOfFont: 17,
+                      color: btnbgColor,
+                      fontfamilly: montBook,
+                      isAlign: true,),
+                    SizedBox(
+                      height: screenHeight * 0.05,
+                    ),
+
+                    Padding(
+                      padding: const EdgeInsets.only(left: 15.0,right: 15,top: 6,bottom: 20),
+                      child: CommonButton(btnBgColor:hintColor, btnText: done, onClick: (){
+                        Navigator.pushNamed(context, '/SignupScreen');
+                      }),
+                    ),
+                    SizedBox(height: 10,)
+                  ]),
+                ),
+              ),
+              const CustomText(text: forgotpss,color: hintColor,fontfamilly: montBook,),
+              SizedBox(height: screenHeight*0.07,),
+              // Horizontal line using Divider
+              const Padding(
+                padding:  EdgeInsets.only(left: 50.0,right: 50),
+                child:  Divider(
+                  color: Colors.white,
+                  thickness: 0,
+                ),
+              ),
+              const SizedBox(height: 20,),
+              const CustomText(text: notMmberyet,color: hintColor,fontfamilly: montBook,),
+              const SizedBox(height: 10,),
+              const CustomText(text: createyouraccount,color: btnbgColor,sizeOfFont: 20,fontfamilly: montBold,),
+
+            ],
           ),
         );
       },
@@ -204,12 +206,15 @@ class DialogHelper {
     String title = 'Permission',
     String? description =
         'You have permanently denied all permissions. Please give permission in app settings.',
-  }) async {
-    return showDialog<void>(
+  })
+  async {
+    return
+      showDialog<void>(
       context: context!,
       barrierDismissible: false, // Prevent dismissing by tapping outside
       builder: (BuildContext context) {
-        return Dialog(
+        return
+          Dialog(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
@@ -243,4 +248,146 @@ class DialogHelper {
   static void hideLoading(BuildContext context) {
     Navigator.of(context).pop();
   }
+
+  static Future<void> commonDialoge(BuildContext context) async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16.0),
+          ),
+          child:
+          Column(
+            children: <Widget>[
+              SizedBox(
+                height: screenHeight * 0.16,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 30.0,right: 30.0,top: 30.0,bottom: 10),
+                child: Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  decoration: BoxDecoration(
+                      color: onboardingbgColor,
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(width: 1, color: hintColor)),
+                  child: Column(children: [
+                    SizedBox(
+                      height: screenHeight * 0.03,
+                    ),
+                    Image.asset(appLogo,
+                      height: 100,
+                      width: 100,),
+                    const SizedBox(height: 20,),
+                    const Align(
+                      alignment: Alignment.center,
+                      child: CustomText(text:sentPss ,
+                        sizeOfFont: 17,
+                        color: hintColor,
+                        fontfamilly: montBook,
+                        isAlign: true,),
+                    ),
+                    const SizedBox(height: 20,),
+
+                    const CustomText(text: checkInbox,
+                      sizeOfFont: 17,
+                      color: btnbgColor,
+                      fontfamilly: montBook,
+                      isAlign: true,),
+                    SizedBox(
+                      height: screenHeight * 0.05,
+                    ),
+
+                    Padding(
+                      padding: const EdgeInsets.only(left: 15.0,right: 15,top: 6,bottom: 20),
+                      child: CommonButton(btnBgColor:hintColor, btnText: done, onClick: (){
+                        Navigator.pushNamed(context, '/SignupScreen');
+                      }),
+                    ),
+                    SizedBox(height: 10,)
+                  ]),
+                ),
+              ),
+              const CustomText(text: forgotpss,color: hintColor,fontfamilly: montBook,),
+              SizedBox(height: screenHeight*0.07,),
+              // Horizontal line using Divider
+              const Padding(
+                padding:  EdgeInsets.only(left: 50.0,right: 50),
+                child:  Divider(
+                  color: Colors.white,
+                  thickness: 0,
+                ),
+              ),
+              const SizedBox(height: 20,),
+              const CustomText(text: notMmberyet,color: hintColor,fontfamilly: montBook,),
+              const SizedBox(height: 10,),
+              const CustomText(text: createyouraccount,color: btnbgColor,sizeOfFont: 20,fontfamilly: montBold,),
+
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  static Future<void> addCardDialoge(BuildContext context) async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16.0),
+          ),
+          child: paymentDetails()
+        );
+      },
+    );
+  }
+
+  static Widget paymentDetails() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(width: 0, color: Colors.grey),
+          ),
+          child:
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CustomText(text: paymentdetails,color: btntxtColor,weight: FontWeight.w900,fontfamilly: montBold,sizeOfFont: 20,),
+              SizedBox(height: 25,),
+              CommonEditText(hintText: cardName,isbgColor: true,),
+              const SizedBox(height: 20,),
+              CommonEditText(hintText: cardNum,isbgColor: true,),
+              const SizedBox(height: 20,),
+              Row(
+                children: [
+                  Expanded(child: CommonEditText(hintText: expiry,isbgColor: true,)),
+                  SizedBox(width: 10,),
+                  Expanded(child: CommonEditText(hintText: cvv,isbgColor: true,)),
+                ],
+              ),
+              Align(
+                alignment: Alignment.center,
+                child: Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 20),
+                    padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                    decoration: BoxDecoration(
+                      color: onboardingBtn,
+                      borderRadius: BorderRadius.circular(30),
+                      border: Border.all(width: 1, color: Colors.white),
+                    ),
+                    child: CustomText(text: "SAVE", color: btntxtColor, fontfamilly: montBook,weight: FontWeight.w900,)),
+              ),
+            ],
+          )
+      ),
+    );
+  }
+
 }

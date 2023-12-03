@@ -58,7 +58,7 @@ class AppRoot extends StatelessWidget {
         builder: (context, snapshot) =>
         snapshot.connectionState != ConnectionState.done
             ? SplashScreen() //OnBoardingScreen()
-            : BaseHome() //Screen1(),
+            : OnBoardingScreen()//Screen1(),
     );
   }
 }

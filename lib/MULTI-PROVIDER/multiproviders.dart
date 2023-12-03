@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import '../SCREENS/home_screens/base_home.dart';
+import '../SCREENS/home_screens/my_orders.dart';
+import '../SCREENS/home_screens/orderandpay.dart';
+import '../SCREENS/home_screens/paymentdetails.dart';
+import '../SCREENS/home_screens/restrurent.dart';
 import '../SCREENS/notification/NotifcattionTurnOnScreen.dart';
 import '../SCREENS/signup_flow/SignupScreen.dart';
 import '../SCREENS/login_flow/CreateOrLoginScreen.dart';
@@ -34,6 +38,10 @@ MultiProvider getProviders() {
         '/SetYourPasswordScreen': (context) => SetYourPasswordScreen(),
         '/NotificationTurnOnScreen': (context) => NotificationTurnOnScreen(),
         '/BaseHome': (context) => BaseHome(),
+        '/OrderAndPayScreen': (context) => OrderAndPayScreen(),
+        '/PaymentDetailsScreen': (context) => PaymentDetailsScreen(),
+        '/RestrurentScreen': (context) => RestrurentScreen(),
+        '/MyOrdersSccreen': (context) => MyOrdersSccreen(),
       },
       theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: btnbgColor),

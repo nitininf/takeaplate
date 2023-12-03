@@ -9,12 +9,14 @@ class CommonEmailField extends StatelessWidget {
         this.controller,
         required this.hintText,
         this.isPassword,
-        this.maxLine,});
+        this.maxLine,
+      this.isbgColor=false});
 
   final TextEditingController? controller;
   final int? maxLine;
   final bool? isPassword;
   final String hintText;
+  final bool isbgColor;
 
 
   @override
@@ -25,14 +27,17 @@ class CommonEmailField extends StatelessWidget {
         obscureText: isPassword ?? false,
         maxLines: maxLine ?? 1,
         controller: controller,
-        style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 14,fontFamily: montBook,color: headingColor
+        style:  TextStyle(fontWeight: FontWeight.w500, fontSize: 14,fontFamily: montBook,color:isbgColor ? btntxtColor:  headingColor
         ),
 
 
         decoration: InputDecoration(
             filled: true,
-            fillColor: editbgColor,
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(20),borderSide: BorderSide.none),
+            fillColor: isbgColor ? hintColor : editbgColor,
+
+            border: !isbgColor ? OutlineInputBorder(borderRadius: BorderRadius.circular(20),borderSide: BorderSide.none)
+                : OutlineInputBorder(borderRadius: BorderRadius.circular(20),borderSide: BorderSide(color: blackColor)),
+
             suffixIcon: (isPassword ?? false)
                 ? const Icon(
               Icons.remove_red_eye,
@@ -42,7 +47,7 @@ class CommonEmailField extends StatelessWidget {
             contentPadding:
             const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
             hintStyle:
-            const TextStyle(fontWeight: FontWeight.w500, fontSize: 16,fontFamily: montBook,color: hintColor),
+             TextStyle(fontWeight: FontWeight.w300, fontSize: 16,fontFamily: montitalic,color: isbgColor ? btntxtColor : hintColor),
             hintText: hintText));
 
   }

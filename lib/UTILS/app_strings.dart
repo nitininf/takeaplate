@@ -13,7 +13,7 @@ const String fullName = "Full Name";
 const String phoneNumber = "Phone Number";
 const String next = "NEXT";
 const String dob = "DOB";
-const String gender = "GNDER";
+const String gender = "GENDER";
 const String profilePicture = "PROFILE PICTURE";
 const String uploadphoto = "Upload Photo";
 const String setyourpassword = "SET YOUR PASSWORD";
@@ -36,6 +36,15 @@ const String closet = "CLOSEST TO YOU";
 const String lastminute = "LAST MINUTE DEALS";
 const String viewall = "view all";
 const String myfav = "MY FAVOURITES";
+const String orderandpay = "ORDER & PAY";
+const String total = "Total";
+const String cardName = "Name on card";
+const String cardNum = "Card Number";
+const String expiry = "Expiry";
+const String cvv = "CVV";
+const String paymentdetails = "Payment Details";
+const String name = "Name";
+const String submit = "SUBMIT";
 
 
 

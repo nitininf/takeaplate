@@ -30,7 +30,7 @@ class CustomText extends StatelessWidget {
       maxLines: maxLin ?? 100,
       overflow: TextOverflow.ellipsis,
       style: TextStyle(
-          fontWeight: weight ?? FontWeight.w500,
+          fontWeight: weight ?? FontWeight.w700,
           fontSize: sizeOfFont ?? 14,
           fontFamily: fontfamilly,
           color: color ?? Colors.black87),

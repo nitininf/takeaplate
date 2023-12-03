@@ -11,6 +11,7 @@ const onboardingBtn = Color(0xffD0E2F6);
 const editbgColor = Color(0xff193B69);
 const onboardingbgColor = Color(0xff0E1F3B);
 const blackColor = Color(0xff000000);
+const grayColor = Color(0x47000000);
 
 
 

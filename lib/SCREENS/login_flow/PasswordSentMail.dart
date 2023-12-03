@@ -50,6 +50,7 @@ class PassWordSentScreen extends StatelessWidget {
                           child: CustomText(text:sentPss ,
                             sizeOfFont: 17,
                             color: hintColor,
+                          fontfamilly: montBook,
                           isAlign: true,),
                         ),
                         const SizedBox(height: 20,),
@@ -57,6 +58,7 @@ class PassWordSentScreen extends StatelessWidget {
                         const CustomText(text: checkInbox,
                           sizeOfFont: 17,
                           color: btnbgColor,
+                          fontfamilly: montBook,
                           isAlign: true,),
                         SizedBox(
                           height: screenHeight * 0.05,
@@ -72,7 +74,7 @@ class PassWordSentScreen extends StatelessWidget {
                       ]),
                     ),
                   ),
-                  const CustomText(text: forgotpss,color: hintColor,),
+                  const CustomText(text: forgotpss,color: hintColor,fontfamilly: montBook,),
                   SizedBox(height: screenHeight*0.07,),
                   // Horizontal line using Divider
                   const Padding(
@@ -83,7 +85,7 @@ class PassWordSentScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 20,),
-                  const CustomText(text: notMmberyet,color: hintColor,),
+                  const CustomText(text: notMmberyet,color: hintColor,fontfamilly: montBook,),
                   const SizedBox(height: 10,),
                   const CustomText(text: createyouraccount,color: btnbgColor,sizeOfFont: 20,fontfamilly: montBold,),
 
