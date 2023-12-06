@@ -8,10 +8,12 @@ class CommonPasswordField extends StatelessWidget {
   const CommonPasswordField(
       {super.key,
         this.controller,
+        this.isPassword=false
        // this.loginViewModel
         });
 
   final TextEditingController? controller;
+  final bool? isPassword;
   //final LoginViewModel? loginViewModel;
 
   @override
@@ -28,6 +30,12 @@ class CommonPasswordField extends StatelessWidget {
               filled: true,
               fillColor: editbgColor,
               border: OutlineInputBorder(borderRadius: BorderRadius.circular(20),borderSide: BorderSide.none),
+              suffixIcon: (isPassword ?? false)
+                  ? const Icon(
+                Icons.remove_red_eye,
+                color: Colors.grey,
+              )
+                  : const SizedBox(),
               contentPadding:
               const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
               hintStyle:

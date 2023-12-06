@@ -3,9 +3,9 @@ import 'package:takeaplate/CUSTOM_WIDGETS/custom_text_style.dart';
 import 'package:takeaplate/UTILS/app_images.dart';
 import 'package:takeaplate/UTILS/app_strings.dart';
 import 'package:takeaplate/UTILS/fontfaimlly_string.dart';
-import '../CUSTOM_WIDGETS/common_button.dart';
-import '../CUSTOM_WIDGETS/custom_text_field.dart';
-import '../UTILS/app_color.dart';
+import '../../CUSTOM_WIDGETS/common_button.dart';
+import '../../CUSTOM_WIDGETS/custom_text_field.dart';
+import '../../UTILS/app_color.dart';
 import 'package:page_indicator/page_indicator.dart';
 
 class OnBoardingScreen extends StatefulWidget {

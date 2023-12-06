@@ -24,6 +24,7 @@ const String soy_free = "images/soy_free.png";
 const String location_freee = "images/location_free.png";
 const String radionicon = "images/radionicon.png";
 const String radiofficon = "images/radiooff_icon.png";
+const String profile = "images/profile.png";
 
 
 

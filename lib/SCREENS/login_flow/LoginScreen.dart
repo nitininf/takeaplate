@@ -51,13 +51,17 @@ class LogInScreen extends StatelessWidget {
                       children: [
                         CommonEmailField(hintText: email,),
                         const SizedBox(height: 20,),
-                        const CommonPasswordField(),
+                        const CommonPasswordField(isPassword: true,),
                         const SizedBox(height: 30,),
                         CommonButton(btnBgColor: btnbgColor, btnText: login, onClick: (){
-                          Navigator.pushNamed(context, '/PassWordSentScreen');
+
                         }),
                         const SizedBox(height: 20,),
-                        const CustomText(text: forgotpss,color: hintColor,fontfamilly: montBold,),
+                        GestureDetector(child: const CustomText(text: forgotpss,color: hintColor,fontfamilly: montBold,),
+
+                        onTap: (){
+                           Navigator.pushNamed(context, '/PassWordSentScreen');
+                        },),
                          SizedBox(height: screenHeight*0.100,),
                         // Horizontal line using Divider
                         const Divider(
@@ -67,7 +71,12 @@ class LogInScreen extends StatelessWidget {
                         const SizedBox(height: 20,),
                         const CustomText(text: notMmberyet,color: hintColor,fontfamilly: montBold,),
                         const SizedBox(height: 10,),
-                        const CustomText(text: createyouraccount,color: btnbgColor,sizeOfFont: 18,fontfamilly: montBold,),
+                        GestureDetector(child: const CustomText(text: createyouraccount,color: btnbgColor,sizeOfFont: 18,fontfamilly: montBold,)
+                        ,
+                          onTap: (){
+                          Navigator.pushNamed(context, '/SignupScreen');
+                          },
+                        ),
               
                       ],
                     ),

@@ -38,10 +38,10 @@ class CommonEditText extends StatelessWidget {
           maxLength: 15,
           controller: controller,
           style:  TextStyle(
-            fontWeight: FontWeight.w300,
+            fontWeight: FontWeight.w400,
             fontSize: 16,
             fontFamily: fontfamilly ?? montitalic,
-            color: isbgColor ? btntxtColor : hintColor, // Make sure to define your colors properly
+            color: isbgColor ? editbgColor : hintColor, // Make sure to define your colors properly
           ),
           decoration: InputDecoration(
             counterText: '',
@@ -59,10 +59,10 @@ class CommonEditText extends StatelessWidget {
                 : const SizedBox(),
             contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
             hintStyle:  TextStyle(
-              fontWeight: FontWeight.w300,
+              fontWeight: FontWeight.w400,
               fontFamily: fontfamilly ?? montitalic,
               fontSize: 16,
-              color: isbgColor ? btntxtColor : hintColor, // Define your hint color properly
+              color: isbgColor ? editbgColor : hintColor, // Define your hint color properly
             ),
             hintText: hintText,
           ),

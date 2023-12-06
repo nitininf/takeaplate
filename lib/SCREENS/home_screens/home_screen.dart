@@ -16,13 +16,13 @@ class HomeScreen extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         body: Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.only(top: 5.0,right:20,left: 20 ,bottom: 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               CustomAppBar(),
-              const SizedBox(height: 10),
-              CustomSearchField(hintText: "Search....."),
+              const SizedBox(height: 20),
+              CustomSearchField(hintText: "Search"),
               Expanded(
                 child: SingleChildScrollView(
                   scrollDirection: Axis.vertical,
@@ -149,13 +149,11 @@ class HomeScreen extends StatelessWidget {
             children: [
               Image.asset(food_image, height: 80, width: 80, fit: BoxFit.cover),
               Positioned(
-                right: -15,
+                right: 0,
                 child: Image.asset(
                   save_icon,
                   height: 25,
                   width: 25,
-                  color: btnbgColor,
-
                 ),
               ),
             ],
@@ -208,7 +206,7 @@ class HomeScreen extends StatelessWidget {
 
               ),
               SizedBox(height: 5,),
-              CustomText(text: "\$"+"9.99", color: Colors.blue,sizeOfFont: 24, fontfamilly: montBold,weight: FontWeight.w900,),
+              CustomText(text: "\$"+"9.99", color: dolorColor,sizeOfFont: 24, fontfamilly: montBold,weight: FontWeight.w900,),
 
             ],
           ),
@@ -218,13 +216,10 @@ class HomeScreen extends StatelessWidget {
             children: [
               Image.asset(food_image, height: 130, width: 130, fit: BoxFit.cover),
               Positioned(
-                right: -15,
                 child: Image.asset(
                   save_icon,
                   height: 25,
                   width: 25,
-                  color: btnbgColor,
-
                 ),
               ),
             ],

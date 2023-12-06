@@ -67,7 +67,7 @@ class PassWordSentScreen extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.only(left: 15.0,right: 15,top: 6,bottom: 20),
                             child: CommonButton(btnBgColor:hintColor, btnText: done, onClick: (){
-                              Navigator.pushNamed(context, '/SignupScreen');
+                              Navigator.pop(context);
                             }),
                           ),
                         SizedBox(height: 10,)

@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:takeaplate/CUSTOM_WIDGETS/custom_app_bar.dart';
+import 'package:takeaplate/UTILS/app_strings.dart';
 
-import '../../CUSTOM_WIDGETS/custom_app_bar.dart';
 import '../../CUSTOM_WIDGETS/custom_search_field.dart';
 import '../../CUSTOM_WIDGETS/custom_text_style.dart';
 import '../../UTILS/app_color.dart';
@@ -9,33 +10,33 @@ import '../../UTILS/app_images.dart';
 import '../../UTILS/fontfaimlly_string.dart';
 import '../../main.dart';
 
-class RestrurentScreen extends StatelessWidget{
+class ClosestScreen extends StatelessWidget{
   final List<String> items = ['Healthy', 'Sushi', 'Desserts', 'Sugar', 'Sweets'];
 
   @override
   Widget build(BuildContext context) {
-   return  SafeArea(
-       child: Scaffold(
-       body: Padding(
-           padding: const EdgeInsets.only(top: 5.0,right:20,left: 20 ,bottom: 10),
-       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-         children: [
-           const CustomAppBar(),
-           const SizedBox(height: 20),
-           const CustomSearchField(hintText:"Search"),
-           const Padding(
-             padding: EdgeInsets.only(left: 13.0,top: 20),
-             child: CustomText(text: "Restrurents", color: btnbgColor, fontfamilly: montBold, weight: FontWeight.bold, sizeOfFont: 20),
-           ),
-           buildHorizontalList(items),
-           buildVeerticalCards()
-         ],
-       ),
-       ),
-   )
+    return  SafeArea(
+        child: Scaffold(
+          body: Padding(padding: const EdgeInsets.all(20.0),
 
-   );
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const CustomAppBar(),
+                const SizedBox(height: 20),
+                const CustomSearchField(hintText:"Search....."),
+                const Padding(
+                  padding: EdgeInsets.only(left: 13.0,top: 20),
+                  child: CustomText(text: closet, color: btnbgColor, fontfamilly: montBold, weight: FontWeight.bold, sizeOfFont: 18),
+                ),
+                buildHorizontalList(items),
+                buildVeerticalCards()
+              ],
+            ),
+          ),
+        )
+
+    );
   }
   Widget buildHorizontalList(List<String> items) {
     return SingleChildScrollView(
@@ -56,7 +57,14 @@ class RestrurentScreen extends StatelessWidget{
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(width: 1, color: Colors.white),
               ),
-              child: CustomText(text: items[index], color: hintColor,weight: FontWeight.w400, fontfamilly: montBook),
+              child: GestureDetector(
+                  child: CustomText(text: items[index], color: hintColor,weight: FontWeight.w400, fontfamilly: montBook)
+              ,
+                onTap: (){
+                    Navigator.pushNamed(navigatorKey.currentContext!, '/FavouriteScreen');
+                }
+                ,
+              ),
             ),
           ),
         ),
@@ -115,12 +123,12 @@ class RestrurentScreen extends StatelessWidget{
             children: [
               Image.asset(food_image, height: 85, width: 85, fit: BoxFit.cover),
               Positioned(
-
+                right: -15,
                 child: Image.asset(
                   save_icon,
                   height: 25,
                   width: 25,
-
+                  color: btnbgColor,
 
                 ),
               ),
@@ -130,4 +138,5 @@ class RestrurentScreen extends StatelessWidget{
       ),
     );
   }
+
 }

@@ -7,6 +7,7 @@ const String conpassword = " Confirm Password";
 const String login = "LOG IN";
 const String forgotpss = "Forgot password?";
 const String createyouraccount = "CREATE YOUR ACCOUNT";
+const String createAnaccount = "CREATE AN ACCOUNT";
 const String notMmberyet = "Not a Member yet?";
 const String done = "DONE";
 const String fullName = "Full Name";

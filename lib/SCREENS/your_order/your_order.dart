@@ -5,8 +5,9 @@ import 'package:takeaplate/UTILS/app_color.dart';
 import 'package:takeaplate/UTILS/app_images.dart';
 import 'package:takeaplate/UTILS/app_strings.dart';
 import 'package:takeaplate/UTILS/fontfaimlly_string.dart';
-import '../../CUSTOM_WIDGETS/custom_app_bar.dart';
-import '../../CUSTOM_WIDGETS/custom_search_field.dart';
+import 'package:takeaplate/main.dart';
+import '../../../CUSTOM_WIDGETS/custom_app_bar.dart';
+import '../../../CUSTOM_WIDGETS/custom_search_field.dart';
 class YourOrderScreen extends StatelessWidget {
   final List<String> items = ['Healthy', 'Sushi', 'Desserts', 'Sugar', 'Sweets'];
 
@@ -21,20 +22,13 @@ class YourOrderScreen extends StatelessWidget {
             children: [
               CustomAppBar(),
               const SizedBox(height: 10),
-              CustomSearchField(hintText: "Search....."),
               Expanded(
                 child: SingleChildScrollView(
                   scrollDirection: Axis.vertical,
                   child: Column(
                     children: [
-                      const SizedBox(height: 30,),
-                      buildSection(lastminute, ""),
+                      buildSection("YOUR ORDER", ""),
                       getCards(),
-                      const SizedBox(height: 10,),
-                      CommonButton(btnBgColor: btnbgColor, btnText: orderandpay, onClick: (){
-
-                        Navigator.pushNamed(context, '/PaymentDetailsScreen');
-                      })
                     ],
                   ),
                 ),
@@ -76,8 +70,8 @@ class YourOrderScreen extends StatelessWidget {
               height: 280,
               width: 280,
               child: Image.asset(food_image, height: 275,width: 275, fit: BoxFit.fill)),
-          SizedBox(height: 20,),
-          Row(
+          const SizedBox(height: 20,),
+          const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               CustomText(text: "Surprise Pack", sizeOfFont: 18, color: btntxtColor, fontfamilly: montBold,weight: FontWeight.w900,),
@@ -96,7 +90,7 @@ class YourOrderScreen extends StatelessWidget {
             ],
           ),
 
-          SizedBox(height: 10,),
+          const SizedBox(height: 10,),
           const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -114,7 +108,9 @@ class YourOrderScreen extends StatelessWidget {
           ),
           SizedBox(height: 10,),
 
-          CommonButton(btnBgColor: onboardingBtn, btnText: "PICK UP AT 11 AM", onClick: (){}),
+          CommonButton(btnBgColor: onboardingBtn, btnText: "PICK UP AT 11 AM", onClick: (){
+            Navigator.pushNamed(navigatorKey.currentContext!, '/ClosestScreen');
+          }),
           CustomText(text: "Order N. #2134445`", color: btntxtColor, sizeOfFont:16,weight : FontWeight.w300,fontfamilly: montBold),
           const CustomText(text: "23 Dreamland Av.., Australia", weight : FontWeight.w300, color: btntxtColor, fontfamilly: montBold),
           SizedBox(height: 10,),

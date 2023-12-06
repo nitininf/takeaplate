@@ -1,16 +1,28 @@
 import 'package:flutter/material.dart';
+import '../SCREENS/closet_screen/closest_screen.dart';
+import '../SCREENS/contact_us/contact_us.dart';
+import '../SCREENS/edit_profile/edit_profile.dart';
+import '../SCREENS/faq_screen/faq_screen.dart';
+import '../SCREENS/favourite_screen/favourite_screen.dart';
 import '../SCREENS/home_screens/base_home.dart';
 import '../SCREENS/home_screens/my_orders.dart';
 import '../SCREENS/home_screens/orderandpay.dart';
 import '../SCREENS/home_screens/paymentdetails.dart';
 import '../SCREENS/home_screens/restrurent.dart';
 import '../SCREENS/notification/NotifcattionTurnOnScreen.dart';
+import '../SCREENS/notification/notification_center.dart';
+import '../SCREENS/notification/your_notifcation.dart';
+import '../SCREENS/order_summery/order_summery.dart';
+import '../SCREENS/privacy_policy/privacypolicy_screen.dart';
+import '../SCREENS/setting_screen/settings_screen.dart';
 import '../SCREENS/signup_flow/SignupScreen.dart';
 import '../SCREENS/login_flow/CreateOrLoginScreen.dart';
 import '../SCREENS/login_flow/LoginScreen.dart';
 import '../SCREENS/login_flow/PasswordSentMail.dart';
 import '../SCREENS/signup_flow/setyourpass.dart';
 import '../SCREENS/signup_flow/upload_photo.dart';
+import '../SCREENS/termsconditions/termscondtions_screen.dart';
+import '../SCREENS/your_order/your_order.dart';
 import '../UTILS/app_color.dart';
 import '../UTILS/app_strings.dart';
 import '../main.dart';
@@ -42,6 +54,18 @@ MultiProvider getProviders() {
         '/PaymentDetailsScreen': (context) => PaymentDetailsScreen(),
         '/RestrurentScreen': (context) => RestrurentScreen(),
         '/MyOrdersSccreen': (context) => MyOrdersSccreen(),
+        '/FaqScreenScreen': (context) => FaqScreenScreen(),
+        '/EditProfileScreen': (context) => EditProfileScreen(),
+        '/ContactUs': (context) => ContactUs(),
+        '/ClosestScreen': (context) => ClosestScreen(),
+        '/NotificationCenterScreen': (context) => NotificationCenterScreen(),
+        '/YourNotificationScreen': (context) => YourNotificationScreen(),
+        '/PrivacyPolicyScreen': (context) => PrivacyPolicyScreen(),
+        '/TermsAndConditionScreen': (context) => TermsAndConditionScreen(),
+        '/SettingScreen': (context) => SettingScreen(),
+        '/YourOrderScreen': (context) => YourOrderScreen(),
+        '/FavouriteScreen': (context) => FavouriteScreen(),
+        '/OrderSummeryScreen': (context) => OrderSummeryScreen(),
       },
       theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: btnbgColor),

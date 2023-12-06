@@ -41,78 +41,82 @@ class DialogHelper {
   static Future<void> showLogout(BuildContext context) async {
     showDialog(
       context: context,
+       useSafeArea: false,
+      useRootNavigator: false,
+        barrierDismissible:false,
       builder: (BuildContext context) {
-        return Dialog(
-          shape: RoundedRectangleBorder(
+        return Dialog.fullscreen(
+        /*  shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16.0),
-          ),
-          child:  Column(
-            children: <Widget>[
-              SizedBox(
-                height: screenHeight * 0.16,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 30.0,right: 30.0,top: 30.0,bottom: 10),
-                child: Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                  decoration: BoxDecoration(
-                      color: onboardingbgColor,
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(width: 1, color: hintColor)),
-                  child: Column(children: [
-                    SizedBox(
-                      height: screenHeight * 0.03,
-                    ),
-                    Image.asset(appLogo,
-                      height: 100,
-                      width: 100,),
-                    const SizedBox(height: 20,),
-                    const Align(
-                      alignment: Alignment.center,
-                      child: CustomText(text:sentPss ,
-                        sizeOfFont: 17,
-                        color: hintColor,
-                        fontfamilly: montBook,
-                        isAlign: true,),
-                    ),
-                    const SizedBox(height: 20,),
+          ),*/
+          backgroundColor: Colors.transparent,
+          child:
+          Stack(
+            children: [
 
-                    const CustomText(text: checkInbox,
-                      sizeOfFont: 17,
-                      color: btnbgColor,
-                      fontfamilly: montBook,
-                      isAlign: true,),
-                    SizedBox(
-                      height: screenHeight * 0.05,
-                    ),
+              Image.asset(
+                passwordsent_bg,
+                fit: BoxFit.cover,
+                height: double.infinity,
+                width: double.infinity,
+              ),
+              Column(
+                children: <Widget>[
+                  SizedBox(
+                    height: screenHeight * 0.16,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 0.0,right: 0.0,top: 30.0,bottom: 10),
+                    child:
+                    Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                      decoration: BoxDecoration(
+                          color: onboardingbgColor,
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(width: 1, color: hintColor)),
+                      child: Column(children: [
+                        SizedBox(
+                          height: screenHeight * 0.03,
+                        ),
+                        Image.asset(appLogo,
+                          height: 100,
+                          width: 100,),
+                        const SizedBox(height: 20,),
+                        const Align(
+                          alignment: Alignment.center,
+                          child: CustomText(text:sentPss ,
+                            sizeOfFont: 17,
+                            color: hintColor,
+                            fontfamilly: montBook,
+                            isAlign: true,),
+                        ),
+                        const SizedBox(height: 20,),
 
-                    Padding(
-                      padding: const EdgeInsets.only(left: 15.0,right: 15,top: 6,bottom: 20),
-                      child: CommonButton(btnBgColor:hintColor, btnText: done, onClick: (){
-                        Navigator.pushNamed(context, '/SignupScreen');
-                      }),
+                        const CustomText(text: checkInbox,
+                          sizeOfFont: 17,
+                          color: btnbgColor,
+                          fontfamilly: montBook,
+                          isAlign: true,),
+                        SizedBox(
+                          height: screenHeight * 0.05,
+                        ),
+
+                        Padding(
+                          padding: const EdgeInsets.only(left: 15.0,right: 15,top: 6,bottom: 20),
+                          child: CommonButton(btnBgColor:hintColor, btnText: done, onClick: (){
+                            Navigator.pop(context);
+                          }),
+                        ),
+                        SizedBox(height: 10,)
+                      ]),
                     ),
-                    SizedBox(height: 10,)
-                  ]),
-                ),
+                  ),
+                ],
               ),
-              const CustomText(text: forgotpss,color: hintColor,fontfamilly: montBook,),
-              SizedBox(height: screenHeight*0.07,),
-              // Horizontal line using Divider
-              const Padding(
-                padding:  EdgeInsets.only(left: 50.0,right: 50),
-                child:  Divider(
-                  color: Colors.white,
-                  thickness: 0,
-                ),
-              ),
-              const SizedBox(height: 20,),
-              const CustomText(text: notMmberyet,color: hintColor,fontfamilly: montBook,),
-              const SizedBox(height: 10,),
-              const CustomText(text: createyouraccount,color: btnbgColor,sizeOfFont: 20,fontfamilly: montBold,),
 
             ],
+
           ),
         );
       },

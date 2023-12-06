@@ -31,7 +31,7 @@ class CommonButton extends StatelessWidget {
                 color: btntxtColor,
                 fontWeight: FontWeight.w800,
                 fontFamily: montMedium,
-                fontSize: 18)
+                fontSize: 16)
         )
     );
   }

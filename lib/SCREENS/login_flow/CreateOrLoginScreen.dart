@@ -47,7 +47,9 @@ class CreateOrLogInScreen extends StatelessWidget {
                      }),
 
                      SizedBox(height: 20,),
-                     CommonButton(btnBgColor: btnbgColor, btnText: createyouraccount, onClick: (){}),
+                     CommonButton(btnBgColor: btnbgColor, btnText: createAnaccount, onClick: (){
+                       Navigator.pushNamed(context, '/SignupScreen');
+                     }),
                    ],
                  ),
                )
