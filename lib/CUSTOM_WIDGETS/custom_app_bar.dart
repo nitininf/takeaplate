@@ -36,17 +36,20 @@ class CustomAppBar extends StatelessWidget {
     alignment: Alignment.center,
     child:  Image.asset(
     appLogo,
-    height: 75,
-    width: 75,
+    height: 60,
+    width: 60,
     ),
     ),
     ),
     Center(
-    child:  Image.asset(
-    menu_icon,
-    height: 20,
-    width: 20,
-    fit: BoxFit.cover,
+    child:  GestureDetector(
+      onTap: onTap,
+      child: Image.asset(
+      menu_icon,
+      height: 20,
+      width: 20,
+      fit: BoxFit.cover,
+      ),
     )
     )
     ],

@@ -20,7 +20,6 @@ class YourCardScreen extends StatelessWidget{
        child: Column(
          crossAxisAlignment: CrossAxisAlignment.start,
          children: [
-           const CustomAppBar(),
             getView(screenHeight)
          ],
        ),

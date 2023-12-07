@@ -14,6 +14,7 @@ import '../SCREENS/notification/notification_center.dart';
 import '../SCREENS/notification/your_notifcation.dart';
 import '../SCREENS/order_summery/order_summery.dart';
 import '../SCREENS/privacy_policy/privacypolicy_screen.dart';
+import '../SCREENS/reestrurent_profile/restrorent_profile.dart';
 import '../SCREENS/setting_screen/settings_screen.dart';
 import '../SCREENS/signup_flow/SignupScreen.dart';
 import '../SCREENS/login_flow/CreateOrLoginScreen.dart';
@@ -26,6 +27,7 @@ import '../SCREENS/your_order/your_order.dart';
 import '../UTILS/app_color.dart';
 import '../UTILS/app_strings.dart';
 import '../main.dart';
+import '../payment_method/paymentmethod_screen.dart';
 import 'common_counter.dart';
 import 'package:provider/provider.dart';
 MultiProvider getProviders() {
@@ -66,6 +68,8 @@ MultiProvider getProviders() {
         '/YourOrderScreen': (context) => YourOrderScreen(),
         '/FavouriteScreen': (context) => FavouriteScreen(),
         '/OrderSummeryScreen': (context) => OrderSummeryScreen(),
+        '/PaymentMethodScreen': (context) => PaymentMethodScreen(),
+        '/RestrorentProfileScreen': (context) => RestrorentProfileScreen(),
       },
       theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: btnbgColor),

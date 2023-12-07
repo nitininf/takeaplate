@@ -18,7 +18,10 @@ const editprofileColor = Color(0xff9bb2d5);
 const editprofilbgColor = Color(0xffe3ecf6);
 const readyColor = Color(0xff567dbb);
 const mastercardColor = Color(0xffa7bbd9);
+const dailogColor = Color(0xff496082);
 const readybgColor = Color(0xffd3e2f4);
+const newcardbgColor = Color(0xff22314a);
+const  imgbgColor = Color(0xffa0baa9);
 const grayColor = Color(0x7B3D3F41);
 
 

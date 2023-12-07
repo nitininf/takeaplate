@@ -20,7 +20,6 @@ class HomeScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              CustomAppBar(),
               const SizedBox(height: 20),
               CustomSearchField(hintText: "Search"),
               Expanded(

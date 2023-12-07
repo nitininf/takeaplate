@@ -18,7 +18,6 @@ class ProfileScreen extends StatelessWidget{
         padding: const EdgeInsets.only(top: 5.0,right:20,left: 20 ,bottom: 10),
         child: Column(
           children: [
-           const CustomAppBar(),
             const SizedBox(height: 20,),
             getView()
 
@@ -185,7 +184,7 @@ class ProfileScreen extends StatelessWidget{
       ),
       child:  Row(
         children: [
-          Image.asset(food_image,fit: BoxFit.cover,height: 40,width: 70,),
+          Image.asset(master_card,fit: BoxFit.contain,height: 40,width: 70,),
           SizedBox(width: 10,),
           Expanded(child: CustomText(text: "MasterCard",color: btntxtColor,sizeOfFont: 14,weight: FontWeight.w700,)),
           CustomText(text: "-2211",color: btntxtColor,sizeOfFont: 14,weight: FontWeight.w600,),

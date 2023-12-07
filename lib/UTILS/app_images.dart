@@ -25,6 +25,10 @@ const String location_freee = "images/location_free.png";
 const String radionicon = "images/radionicon.png";
 const String radiofficon = "images/radiooff_icon.png";
 const String profile = "images/profile.png";
+const String master_card = "images/master_card.png";
+const String profile_img = "images/profile_img.png";
+const String restrorent_food = "images/restrorent_food.png";
+const String restrorent_img = "images/restrorent_img.png";
 
 
 

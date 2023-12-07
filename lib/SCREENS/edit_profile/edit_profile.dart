@@ -46,7 +46,7 @@ class EditProfileScreen extends StatelessWidget{
               const SizedBox(height: 10,),
               Align(
                   alignment: Alignment.center,
-                  child: Image.asset(food_image,height: 270,fit: BoxFit.fitWidth,)),
+                  child: Image.asset(profile_img,height: 270,fit: BoxFit.fitWidth,)),
               const SizedBox(height: 15,),
               CommonEditText(hintText: fullName,isbgColor: true,),
               const SizedBox(height: 15,),
@@ -64,7 +64,7 @@ class EditProfileScreen extends StatelessWidget{
               SizedBox(height: 30,),
               CommonButton(btnBgColor: btnbgColor, btnText: next, onClick: (){
                 //Navigator.pushNamed(navigatorKey.currentContext!, '/UploadPhoto');
-                DialogHelper.showLogout(navigatorKey.currentContext!);
+                DialogHelper.showCommonPopup(navigatorKey.currentContext!);
               }),
             ],
           ),

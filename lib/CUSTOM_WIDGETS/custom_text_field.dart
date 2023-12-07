@@ -9,13 +9,14 @@ class CommonTextField extends StatelessWidget {
       this.controller,
       required this.hintText,
       this.isPassword=true,
-      this.maxLine,});
+      this.maxLine,
+      this.onTap});
 
   final TextEditingController? controller;
   final int? maxLine;
   final bool? isPassword;
   final String hintText;
-
+  final VoidCallback? onTap;
   @override
   Widget build(BuildContext context) {
     // Define your custom BorderSide
@@ -28,7 +29,7 @@ class CommonTextField extends StatelessWidget {
         maxLines: maxLine ?? 1,
         controller: controller,
         readOnly: true,
-
+        onTap: onTap,
         style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 14,fontFamily: montMedium,color: btntxtColor),
 
 

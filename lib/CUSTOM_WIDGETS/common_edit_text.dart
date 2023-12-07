@@ -9,6 +9,7 @@ class CommonEditText extends StatelessWidget {
   final String hintText;
   final bool isPassword;
   final bool isbgColor;
+  final bool isnewCard;
   final VoidCallback? onTap; // Corrected the callback type to VoidCallback
   FocusNode? focusNode;
   final String? fontfamilly;
@@ -18,6 +19,7 @@ class CommonEditText extends StatelessWidget {
     required this.hintText,
     this.isPassword = false, // Provide a default value for isPassword
     this.isbgColor = false, // Provide a default value for isPassword
+    this.isnewCard = false, // Provide a default value for isPassword
     this.onTap,
     this.focusNode,
     this.fontfamilly,
@@ -46,7 +48,7 @@ class CommonEditText extends StatelessWidget {
           decoration: InputDecoration(
             counterText: '',
             filled: true,
-            fillColor: isbgColor ? hintColor : editbgColor,
+            fillColor: isbgColor ? hintColor  : isnewCard ? newcardbgColor  : editbgColor,
             border: !isbgColor ? OutlineInputBorder(borderRadius: BorderRadius.circular(20),borderSide: BorderSide.none)
             : OutlineInputBorder(borderRadius: BorderRadius.circular(20),borderSide: BorderSide(color: blackColor)),
 
@@ -62,7 +64,7 @@ class CommonEditText extends StatelessWidget {
               fontWeight: FontWeight.w400,
               fontFamily: fontfamilly ?? montitalic,
               fontSize: 16,
-              color: isbgColor ? editbgColor : hintColor, // Define your hint color properly
+              color: isbgColor ? editbgColor : readybgColor, // Define your hint color properly
             ),
             hintText: hintText,
           ),

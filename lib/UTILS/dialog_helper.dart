@@ -38,7 +38,7 @@ class DialogHelper {
     }
   }
 //show forget pass
-  static Future<void> showLogout(BuildContext context) async {
+  static Future<void> showCommonPopup(BuildContext context,{String? title,String? subtitle}) async {
     showDialog(
       context: context,
        useSafeArea: false,
@@ -54,9 +54,8 @@ class DialogHelper {
           Stack(
             children: [
 
-              Image.asset(
-                passwordsent_bg,
-                fit: BoxFit.cover,
+            Container(
+               color: dailogColor.withOpacity(0.8),
                 height: double.infinity,
                 width: double.infinity,
               ),
@@ -69,7 +68,7 @@ class DialogHelper {
                     padding: const EdgeInsets.only(left: 0.0,right: 0.0,top: 30.0,bottom: 10),
                     child:
                     Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+                      margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 40),
                       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                       decoration: BoxDecoration(
                           color: onboardingbgColor,
@@ -83,9 +82,9 @@ class DialogHelper {
                           height: 100,
                           width: 100,),
                         const SizedBox(height: 20,),
-                        const Align(
+                         Align(
                           alignment: Alignment.center,
-                          child: CustomText(text:sentPss ,
+                          child: CustomText(text:title! ,
                             sizeOfFont: 17,
                             color: hintColor,
                             fontfamilly: montBook,
@@ -93,11 +92,14 @@ class DialogHelper {
                         ),
                         const SizedBox(height: 20,),
 
-                        const CustomText(text: checkInbox,
-                          sizeOfFont: 17,
-                          color: btnbgColor,
-                          fontfamilly: montBook,
-                          isAlign: true,),
+                         Align(
+                           alignment: Alignment.center,
+                           child: CustomText(text: subtitle!,
+                            sizeOfFont: 17,
+                            color: btnbgColor,
+                            fontfamilly: montBook,
+                            isAlign: true,),
+                         ),
                         SizedBox(
                           height: screenHeight * 0.05,
                         ),
@@ -253,145 +255,91 @@ class DialogHelper {
     Navigator.of(context).pop();
   }
 
-  static Future<void> commonDialoge(BuildContext context) async {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16.0),
-          ),
-          child:
-          Column(
-            children: <Widget>[
-              SizedBox(
-                height: screenHeight * 0.16,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 30.0,right: 30.0,top: 30.0,bottom: 10),
-                child: Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                  decoration: BoxDecoration(
-                      color: onboardingbgColor,
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(width: 1, color: hintColor)),
-                  child: Column(children: [
-                    SizedBox(
-                      height: screenHeight * 0.03,
-                    ),
-                    Image.asset(appLogo,
-                      height: 100,
-                      width: 100,),
-                    const SizedBox(height: 20,),
-                    const Align(
-                      alignment: Alignment.center,
-                      child: CustomText(text:sentPss ,
-                        sizeOfFont: 17,
-                        color: hintColor,
-                        fontfamilly: montBook,
-                        isAlign: true,),
-                    ),
-                    const SizedBox(height: 20,),
-
-                    const CustomText(text: checkInbox,
-                      sizeOfFont: 17,
-                      color: btnbgColor,
-                      fontfamilly: montBook,
-                      isAlign: true,),
-                    SizedBox(
-                      height: screenHeight * 0.05,
-                    ),
-
-                    Padding(
-                      padding: const EdgeInsets.only(left: 15.0,right: 15,top: 6,bottom: 20),
-                      child: CommonButton(btnBgColor:hintColor, btnText: done, onClick: (){
-                        Navigator.pushNamed(context, '/SignupScreen');
-                      }),
-                    ),
-                    SizedBox(height: 10,)
-                  ]),
-                ),
-              ),
-              const CustomText(text: forgotpss,color: hintColor,fontfamilly: montBook,),
-              SizedBox(height: screenHeight*0.07,),
-              // Horizontal line using Divider
-              const Padding(
-                padding:  EdgeInsets.only(left: 50.0,right: 50),
-                child:  Divider(
-                  color: Colors.white,
-                  thickness: 0,
-                ),
-              ),
-              const SizedBox(height: 20,),
-              const CustomText(text: notMmberyet,color: hintColor,fontfamilly: montBook,),
-              const SizedBox(height: 10,),
-              const CustomText(text: createyouraccount,color: btnbgColor,sizeOfFont: 20,fontfamilly: montBold,),
-
-            ],
-          ),
-        );
-      },
-    );
-  }
-
   static Future<void> addCardDialoge(BuildContext context) async {
     showDialog(
       context: context,
+      useSafeArea: false,
+      useRootNavigator: false,
+      barrierDismissible:false,
       builder: (BuildContext context) {
-        return Dialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16.0),
-          ),
-          child: paymentDetails()
+        return Dialog.fullscreen(
+            backgroundColor: Colors.transparent,
+          child: Stack(
+              children: [
+                Container(
+                  color: dailogColor.withOpacity(0.7),
+                  height: double.infinity,
+                  width: double.infinity,
+                ),
+                 paymentDetails()
+              ],
+             )
         );
       },
     );
   }
 
   static Widget paymentDetails() {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Container(
-          margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 20),
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(width: 0, color: Colors.grey),
+    return SingleChildScrollView(
+      child: Column(
+        children: <Widget>[
+          SizedBox(
+            height: screenHeight * 0.16,
           ),
-          child:
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CustomText(text: paymentdetails,color: btntxtColor,weight: FontWeight.w900,fontfamilly: montBold,sizeOfFont: 20,),
-              SizedBox(height: 25,),
-              CommonEditText(hintText: cardName,isbgColor: true,),
-              const SizedBox(height: 20,),
-              CommonEditText(hintText: cardNum,isbgColor: true,),
-              const SizedBox(height: 20,),
-              Row(
-                children: [
-                  Expanded(child: CommonEditText(hintText: expiry,isbgColor: true,)),
-                  SizedBox(width: 10,),
-                  Expanded(child: CommonEditText(hintText: cvv,isbgColor: true,)),
-                ],
-              ),
-              Align(
-                alignment: Alignment.center,
-                child: Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 20),
-                    padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-                    decoration: BoxDecoration(
-                      color: onboardingBtn,
-                      borderRadius: BorderRadius.circular(30),
-                      border: Border.all(width: 1, color: Colors.white),
-                    ),
-                    child: CustomText(text: "SAVE", color: btntxtColor, fontfamilly: montBook,weight: FontWeight.w900,)),
-              ),
-            ],
-          )
+          Padding(
+            padding: const EdgeInsets.only(left: 0.0,right: 0.0,top: 30.0,bottom: 10),
+            child:
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 40),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              decoration: BoxDecoration(
+                  color: onboardingbgColor,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(width: 1, color: hintColor)),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                SizedBox(
+                  height: screenHeight * 0.03,
+                ),
+      
+                const CustomText(text: "ADD NEW CARD",color: btnbgColor,weight: FontWeight.w700,fontfamilly: montBold,sizeOfFont: 18,),
+                const SizedBox(height: 25,),
+                CommonEditText(hintText: cardName,isnewCard: true,),
+                const SizedBox(height: 20,),
+                CommonEditText(hintText: cardNum,isnewCard: true,),
+                const SizedBox(height: 20,),
+                Row(
+                  children: [
+                    Expanded(child: CommonEditText(hintText: expiry,isnewCard: true,)),
+                    const SizedBox(width: 10,),
+                    Expanded(child: CommonEditText(hintText: cvv,isnewCard: true,)),
+                  ],
+                ),
+                Align(
+                  alignment: Alignment.center,
+                  child: Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 20),
+                      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                      decoration: BoxDecoration(
+                        color: btnbgColor,
+                        borderRadius: BorderRadius.circular(30),
+                        border: Border.all(width: 1, color: btnbgColor),
+                      ),
+                      child: GestureDetector(
+                        onTap: (){
+                          Navigator.pop(navigatorKey.currentContext!);
+                        },
+                          child: const CustomText(text: "SAVE", color: btntxtColor, fontfamilly: montBook,weight: FontWeight.w900,))),
+                ),
+      
+              ]),
+            ),
+          ),
+        ],
       ),
     );
+
   }
 
 }

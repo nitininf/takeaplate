@@ -4,9 +4,11 @@ import 'package:takeaplate/CUSTOM_WIDGETS/common_button.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/custom_app_bar.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/custom_text_style.dart';
 import 'package:takeaplate/UTILS/app_color.dart';
+import 'package:takeaplate/main.dart';
 
 import '../../../UTILS/app_images.dart';
 import '../../../UTILS/fontfaimlly_string.dart';
+import '../../UTILS/dialog_helper.dart';
 
 class OrderSummeryScreen extends StatelessWidget{
   @override
@@ -105,7 +107,10 @@ class OrderSummeryScreen extends StatelessWidget{
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(width: 1, color: Colors.white),
                   ),
-                  child: const CustomText(text: "ADD NEW",sizeOfFont: 10,weight: FontWeight.w800,color: editprofileColor,),
+                  child: GestureDetector(child: const CustomText(text: "ADD NEW",sizeOfFont: 10,weight: FontWeight.w800,color: editprofileColor,),
+                  onTap: (){
+                    DialogHelper.addCardDialoge(navigatorKey.currentContext!);
+                  },),
                 )
               ],
             ),
@@ -127,7 +132,9 @@ class OrderSummeryScreen extends StatelessWidget{
             ),
             Padding(
               padding: const EdgeInsets.only(top: 30.0,right: 33,left: 33,bottom: 20),
-              child: CommonButton(btnBgColor: btnbgColor, btnText: "ORDER & PAY", onClick: (){}),
+              child: CommonButton(btnBgColor: btnbgColor, btnText: "ORDER & PAY", onClick: (){
+                DialogHelper.showCommonPopup(navigatorKey.currentContext!,title: "YOUR PAYMENT WAS SUCCESSULL",subtitle: "YOU WILL GET A NOTIFICATION WHEN THE ORDER IS CONFIIRMED");
+              }),
             ),
 
           ],),
@@ -146,7 +153,7 @@ class OrderSummeryScreen extends StatelessWidget{
       ),
       child:  Row(
         children: [
-          Image.asset(food_image,fit: BoxFit.cover,height: 40,width: 70,),
+          Image.asset(master_card,fit: BoxFit.contain,height: 40,width: 70,),
           SizedBox(width: 10,),
           Expanded(child: CustomText(text: "MasterCard",color: btntxtColor,sizeOfFont: 14,weight: FontWeight.w700,)),
           CustomText(text: "-2211",color: btntxtColor,sizeOfFont: 14,weight: FontWeight.w600,),

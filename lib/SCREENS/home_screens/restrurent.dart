@@ -21,7 +21,6 @@ class RestrurentScreen extends StatelessWidget{
        child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
          children: [
-           const CustomAppBar(),
            const SizedBox(height: 20),
            const CustomSearchField(hintText:"Search"),
            const Padding(
