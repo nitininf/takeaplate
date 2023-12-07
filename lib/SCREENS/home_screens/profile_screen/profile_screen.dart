@@ -8,6 +8,7 @@ import '../../../CUSTOM_WIDGETS/custom_text_style.dart';
 import '../../../UTILS/app_color.dart';
 import '../../../UTILS/app_images.dart';
 import '../../../UTILS/fontfaimlly_string.dart';
+import '../../../main.dart';
 
 class ProfileScreen extends StatelessWidget{
   @override
@@ -34,7 +35,22 @@ class ProfileScreen extends StatelessWidget{
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           CustomText(text: title, color: btnbgColor, fontfamilly: montBold, weight: FontWeight.w900, sizeOfFont: 16),
-          CustomText(text: viewAllText, color: Colors.black, fontfamilly: montLight, weight: FontWeight.w300),
+          GestureDetector(child: CustomText(text: viewAllText, color: Colors.black, fontfamilly: montLight, weight: FontWeight.w300),
+          onTap: (){
+            if(title=="CURRENT ORDERS") {
+              Navigator.pushNamed(
+                  navigatorKey.currentContext!, '/MyOrdersSccreen');
+            }
+            else if(title=="MY FAVOURITES"){
+              Navigator.pushNamed(
+                  navigatorKey.currentContext!, '/FavouriteScreen');
+            }
+            else{
+              Navigator.pushNamed(
+                  navigatorKey.currentContext!, '/PaymentMethodScreen');
+            }
+          },
+          ),
         ],
       ),
     );
@@ -42,68 +58,73 @@ class ProfileScreen extends StatelessWidget{
 
   Widget getCards() {
     return
-      Container(
-        margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(width: 0, color: Colors.grey),
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-             Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const CustomText(text: "Surprise Pack", color: btntxtColor, fontfamilly: montitalic,sizeOfFont: 18,),
-
-                const CustomText(text: "Salad & Co", color: btntxtColor, fontfamilly: montBold,weight: FontWeight.w400,sizeOfFont: 13,),
-
-                const CustomText(text: "Tomorrow-7:35-8:40 Am", color: onboardingbgColor,sizeOfFont: 10, fontfamilly: montBold,weight: FontWeight.w200,),
-                SizedBox(height: 5,),
-                Row(
-                  children: [
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 3),
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                      decoration: BoxDecoration(
-                        color: readybgColor,
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(width: 1, color: Colors.white),
-                      ),
-                      child: const CustomText(text: "READY FOR PCKUP",sizeOfFont: 10,weight: FontWeight.w700,color: readyColor,),
-                    ),
-                    SizedBox(width: 10,),
-                    CustomText(text: "84 Km", color: btntxtColor,sizeOfFont: 10, fontfamilly: montBold,weight: FontWeight.w400,),
-                  ],
-
-                ),
-                SizedBox(height: 0,),
-                CustomText(text: "\$"+"9.99", color: dolorColor,sizeOfFont: 24, fontfamilly: montBold,weight: FontWeight.w900,),
-
-              ],
-            ),
-            const SizedBox(width: 18,),
-            Expanded(
-              child: Stack(
-                alignment: Alignment.topRight,
+      GestureDetector(
+        onTap: (){
+          Navigator.pushNamed(navigatorKey.currentContext!, '/YourOrderScreen');
+        },
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(width: 0, color: Colors.grey),
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+               Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Image.asset(food_image, height: 130, width: 130, fit: BoxFit.cover),
-                  Positioned(
-                    child: Image.asset(
-                      save_icon,
-                      height: 25,
-                      width: 25,
+                  const CustomText(text: "Surprise Pack", color: btntxtColor, fontfamilly: montitalic,sizeOfFont: 18,),
 
-                    ),
+                  const CustomText(text: "Salad & Co", color: btntxtColor, fontfamilly: montBold,weight: FontWeight.w400,sizeOfFont: 13,),
+
+                  const CustomText(text: "Tomorrow-7:35-8:40 Am", color: onboardingbgColor,sizeOfFont: 10, fontfamilly: montBold,weight: FontWeight.w200,),
+                  SizedBox(height: 5,),
+                  Row(
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 3),
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                        decoration: BoxDecoration(
+                          color: readybgColor,
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(width: 1, color: Colors.white),
+                        ),
+                        child: const CustomText(text: "READY FOR PCKUP",sizeOfFont: 10,weight: FontWeight.w700,color: readyColor,),
+                      ),
+                      SizedBox(width: 10,),
+                      CustomText(text: "84 Km", color: btntxtColor,sizeOfFont: 10, fontfamilly: montBold,weight: FontWeight.w400,),
+                    ],
 
                   ),
-
+                  SizedBox(height: 0,),
+                  CustomText(text: "\$"+"9.99", color: dolorColor,sizeOfFont: 24, fontfamilly: montBold,weight: FontWeight.w900,),
 
                 ],
               ),
-            ),
-          ],
+              const SizedBox(width: 18,),
+              Expanded(
+                child: Stack(
+                  alignment: Alignment.topRight,
+                  children: [
+                    Image.asset(food_image, height: 130, width: 130, fit: BoxFit.cover),
+                    Positioned(
+                      child: Image.asset(
+                        save_icon,
+                        height: 25,
+                        width: 25,
+
+                      ),
+
+                    ),
+
+
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       );
   }
@@ -132,7 +153,10 @@ class ProfileScreen extends StatelessWidget{
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(width: 1, color: Colors.white),
                       ),
-                      child: const CustomText(text: "EDIT PROFILE",sizeOfFont: 10,weight: FontWeight.w700,color: editprofileColor,),
+                      child: GestureDetector(onTap:(){
+                        Navigator.pushNamed(
+                            navigatorKey.currentContext!, '/EditProfileScreen');
+                      },child: const CustomText(text: "EDIT PROFILE",sizeOfFont: 10,weight: FontWeight.w700,color: editprofileColor,)),
                     )
                   ],
                 ),

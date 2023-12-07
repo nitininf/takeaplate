@@ -27,8 +27,8 @@ class CommonButton extends StatelessWidget {
             minimumSize: const Size(double.maxFinite, 55)),
         onPressed: onClick,
         child: Text(btnText,
-            style: const TextStyle(
-                color: btntxtColor,
+            style:  TextStyle(
+                color: btnTextColor ?? btntxtColor,
                 fontWeight: FontWeight.w800,
                 fontFamily: montMedium,
                 fontSize: 16)

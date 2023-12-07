@@ -45,7 +45,7 @@ class RestrurentScreen extends StatelessWidget{
           items.length,
               (index) => GestureDetector(
             onTap: (){
-              Navigator.pushNamed(navigatorKey.currentContext!, '/MyOrdersSccreen');
+             // Navigator.pushNamed(navigatorKey.currentContext!, '/MyOrdersSccreen');
             },
             child: Container(
               margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
@@ -68,7 +68,10 @@ class RestrurentScreen extends StatelessWidget{
         scrollDirection: Axis.vertical,
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          children: List.generate(items.length, (index) => getFavCards()),
+          children: List.generate(items.length, (index) => GestureDetector(onTap:(){
+            Navigator.pushNamed(navigatorKey.currentContext!, '/RestrorentProfileScreen');
+          },
+              child: getFavCards())),
         ),
       ),
     );

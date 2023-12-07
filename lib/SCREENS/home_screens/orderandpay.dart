@@ -31,10 +31,12 @@ class OrderAndPayScreen extends StatelessWidget {
                       buildSection(lastminute, ""),
                      getCards(),
                      const SizedBox(height: 10,),
-                      CommonButton(btnBgColor: btnbgColor, btnText: orderandpay, onClick: (){
-
-                        Navigator.pushNamed(context, '/PaymentDetailsScreen');
-                      })
+                      Padding(
+                        padding: EdgeInsets.only(left: 30,right: 30),
+                        child: CommonButton(btnBgColor: btnbgColor, btnText: orderandpay, onClick: (){
+                          Navigator.pushNamed(context, '/PaymentDetailsScreen');
+                        }),
+                      )
                     ],
                   ),
                 ),

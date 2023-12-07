@@ -70,7 +70,6 @@ class HomeScreen extends StatelessWidget {
           items.length,
               (index) => GestureDetector(
                 onTap: (){
-                  Navigator.pushNamed(navigatorKey.currentContext!, '/OrderAndPayScreen');
                 },
                 child: Container(
                             margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 20),
@@ -95,7 +94,18 @@ class HomeScreen extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           CustomText(text: title, color: btnbgColor, fontfamilly: montBold, weight: FontWeight.w900, sizeOfFont: 16),
-          CustomText(text: viewAllText, color: Colors.black, fontfamilly: montLight, weight: FontWeight.w300),
+          GestureDetector(
+            onTap: (){
+              if(title==closet) {
+                Navigator.pushNamed(
+                    navigatorKey.currentContext!, '/ClosestScreen');
+              }
+              else if(title==myfav){
+                Navigator.pushNamed(navigatorKey.currentContext!, '/FavouriteScreen');
+              }
+            },
+
+              child: CustomText(text: viewAllText, color: Colors.black, fontfamilly: montLight, weight: FontWeight.w300)),
         ],
       ),
     );
@@ -145,10 +155,11 @@ class HomeScreen extends StatelessWidget {
           const SizedBox(width: 18,),
           Stack(
             alignment: Alignment.topRight,
+            clipBehavior: Clip.none,
             children: [
               Image.asset(food_image, height: 80, width: 80, fit: BoxFit.cover),
               Positioned(
-                right: 0,
+                right: -10,
                 child: Image.asset(
                   save_icon,
                   height: 25,
@@ -212,9 +223,11 @@ class HomeScreen extends StatelessWidget {
           const SizedBox(width: 18,),
           Stack(
             alignment: Alignment.topRight,
+            clipBehavior: Clip.none,
             children: [
               Image.asset(food_image, height: 130, width: 130, fit: BoxFit.cover),
               Positioned(
+                right: -10,
                 child: Image.asset(
                   save_icon,
                   height: 25,

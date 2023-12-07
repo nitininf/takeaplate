@@ -1,14 +1,14 @@
 import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
-import '../UTILS/app_images.dart';
-import '../UTILS/app_strings.dart';
 import '../UTILS/request_string.dart';
 import '../UTILS/utils.dart';
 
 class CommonCounter extends ChangeNotifier {
   int count = 1;
   DateTime dateTtime=DateTime.now();
+   String btnName="SAVE";
+  bool isSaved=true;
   // Private constructor to prevent external instantiation
   CommonCounter._();
 
@@ -23,14 +23,20 @@ class CommonCounter extends ChangeNotifier {
     return _instance!;
   }
 
+
   getUserId() async {
     String? userId = await Utility.getStringValue(RequestString.USER_ID);
     print("UserId: $userId");
     return userId;
   }
 
-  void updateCount() {
-    count++;
+  void updateView(String btName) {
+     btnName=btName;
+     if(btnName=="SAVE"){
+       isSaved=false;
+     }else{
+       isSaved=true;
+     }
     notifyListeners();
   }
 

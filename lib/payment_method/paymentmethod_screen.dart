@@ -1,13 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/common_button.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/custom_app_bar.dart';
+import 'package:takeaplate/MULTI-PROVIDER/common_counter.dart';
+import 'package:takeaplate/UTILS/dialog_helper.dart';
+import 'package:takeaplate/main.dart';
 
 import '../CUSTOM_WIDGETS/custom_text_style.dart';
 import '../UTILS/app_color.dart';
 import '../UTILS/app_images.dart';
 
 class PaymentMethodScreen extends StatelessWidget {
+
+  var counterProvider=Provider.of<CommonCounter>(navigatorKey.currentContext!, listen: false);
   @override
   Widget build(BuildContext context) {
     return  SafeArea(child: Scaffold(
@@ -20,7 +26,8 @@ class PaymentMethodScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(20.0),
               child: CommonButton(btnText: "ADD NEW",btnBgColor: btnbgColor,btnTextColor: btntxtColor,onClick: (){
-                Navigator.pushNamed(context, '/RestrorentProfileScreen');
+               // Navigator.pushNamed(context, '/RestrorentProfileScreen');
+                DialogHelper.addCardDialoge(context);
               },),
             ),
 
@@ -34,13 +41,13 @@ class PaymentMethodScreen extends StatelessWidget {
 
   Widget getView(){
     return Column(children: [
-      SizedBox(height: 10,),
-      CustomAppBar(),
-      SizedBox(height: 10,),
+      const SizedBox(height: 10,),
+      const CustomAppBar(),
+      const SizedBox(height: 10,),
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          CustomText(text: "PAYMENT METHOD",color: editbgColor,sizeOfFont: 18,weight: FontWeight.w800,),
+          const CustomText(text: "PAYMENT METHOD",color: editbgColor,sizeOfFont: 18,weight: FontWeight.w800,),
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 3),
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -49,11 +56,19 @@ class PaymentMethodScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(20),
               border: Border.all(width: 1, color: Colors.white),
             ),
-            child: const CustomText(text: "SAVE",sizeOfFont: 10,weight: FontWeight.w800,color: editprofileColor,),
+            child: GestureDetector(
+                onTap: (){
+                  if(counterProvider.isSaved){
+                counterProvider.updateView("SAVE");
+                  }else{
+                    counterProvider.updateView("EDIT");
+                  }
+                },
+                child:  CustomText(text: counterProvider.btnName,sizeOfFont: 10,weight: FontWeight.w800,color: editprofileColor,)),
           )
         ],
       ),
-      SizedBox(height: 10,),
+      const  SizedBox(height: 10,),
       Container(
           decoration: BoxDecoration(
             color: hintColor,

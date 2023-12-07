@@ -24,7 +24,7 @@ class ClosestScreen extends StatelessWidget{
               children: [
                 const CustomAppBar(),
                 const SizedBox(height: 20),
-                const CustomSearchField(hintText:"Search....."),
+                const CustomSearchField(hintText:"Search"),
                 const Padding(
                   padding: EdgeInsets.only(left: 13.0,top: 20),
                   child: CustomText(text: closet, color: btnbgColor, fontfamilly: montBold, weight: FontWeight.bold, sizeOfFont: 18),
@@ -45,9 +45,10 @@ class ClosestScreen extends StatelessWidget{
         mainAxisSize: MainAxisSize.min,
         children: List.generate(
           items.length,
-              (index) => GestureDetector(
+              (index) =>
+                  GestureDetector(
             onTap: (){
-              Navigator.pushNamed(navigatorKey.currentContext!, '/MyOrdersSccreen');
+              //Navigator.pushNamed(navigatorKey.currentContext!, '/MyOrdersSccreen');
             },
             child: Container(
               margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
@@ -57,14 +58,7 @@ class ClosestScreen extends StatelessWidget{
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(width: 1, color: Colors.white),
               ),
-              child: GestureDetector(
-                  child: CustomText(text: items[index], color: hintColor,weight: FontWeight.w400, fontfamilly: montBook)
-              ,
-                onTap: (){
-                    Navigator.pushNamed(navigatorKey.currentContext!, '/FavouriteScreen');
-                }
-                ,
-              ),
+              child: CustomText(text: items[index], color: hintColor,weight: FontWeight.w400, fontfamilly: montBook)
             ),
           ),
         ),
@@ -83,60 +77,65 @@ class ClosestScreen extends StatelessWidget{
     );
   }
   Widget getFavCards() {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(width: 0, color: Colors.grey),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CustomText(text: "Salad & Co", color: btntxtColor, fontfamilly: montitalic,sizeOfFont: 18,),
+    return
+      GestureDetector(
+        onTap: (){
+          Navigator.pushNamed(navigatorKey.currentContext!, '/RestrorentProfileScreen');
+        },
+        child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(width: 0, color: Colors.grey),
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            const Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CustomText(text: "Salad & Co", color: btntxtColor, fontfamilly: montitalic,sizeOfFont: 18,),
 
-              CustomText(text: "Health Foods", color: btntxtColor, fontfamilly: montBold,weight: FontWeight.w400,sizeOfFont: 13,),
+                CustomText(text: "Health Foods", color: btntxtColor, fontfamilly: montBold,weight: FontWeight.w400,sizeOfFont: 13,),
+                CustomText(text: "3 offers available", color: editbgColor,sizeOfFont: 10, fontfamilly: montBold,weight: FontWeight.w400,),
+                SizedBox(height: 5,),
+                Row(
+                  children: [
+                    Icon(Icons.star,size: 20,color: btnbgColor,),
+                    Icon(Icons.star,size: 20,color: btnbgColor,),
+                    Icon(Icons.star,size: 20,color: btnbgColor,),
+                    Icon(Icons.star,size: 20,color: btnbgColor,),
+                    Icon(Icons.star,size: 20,color: btnbgColor,),
+                    SizedBox(width: 10,),
 
-              CustomText(text: "23 Dreamland Av.., Australia", color: onboardingbgColor,sizeOfFont: 10, fontfamilly: montBold,weight: FontWeight.w200,),
-              SizedBox(height: 5,),
-              Row(
-                children: [
-                  Icon(Icons.star,size: 20,color: btnbgColor,),
-                  Icon(Icons.star,size: 20,color: btnbgColor,),
-                  Icon(Icons.star,size: 20,color: btnbgColor,),
-                  Icon(Icons.star,size: 20,color: btnbgColor,),
-                  Icon(Icons.star,size: 20,color: btnbgColor,),
-                  SizedBox(width: 10,),
-                  CustomText(text: "3 offers available", color: editbgColor,sizeOfFont: 10, fontfamilly: montBold,weight: FontWeight.w400,),
-                ],
-
-              ),
-
-            ],
-          ),
-          const SizedBox(width: 8,),
-          Stack(
-            alignment: Alignment.topRight,
-            children: [
-              Image.asset(food_image, height: 85, width: 85, fit: BoxFit.cover),
-              Positioned(
-                right: -15,
-                child: Image.asset(
-                  save_icon,
-                  height: 25,
-                  width: 25,
-                  color: btnbgColor,
+                  ],
 
                 ),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
+
+              ],
+            ),
+            const SizedBox(width: 8,),
+            Stack(
+              alignment: Alignment.topRight,
+              clipBehavior: Clip.none,
+              children: [
+                Image.asset(food_image, height: 85, width: 85, fit: BoxFit.cover),
+                Positioned(
+                  right: -10,
+                  child: Image.asset(
+                    save_icon,
+                    height: 25,
+                    width: 25,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+            ),
+      );
   }
 
 }

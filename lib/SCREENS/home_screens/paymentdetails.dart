@@ -37,7 +37,7 @@ class PaymentDetailsScreen extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(left: 30.0,right: 30,bottom: 20),
                         child: CommonButton(btnBgColor: btnbgColor, btnText: orderandpay, onClick: (){
-                          Navigator.pushNamed(context, '/RestrurentScreen');
+                          //Navigator.pushNamed(context, '/RestrurentScreen');
                         }),
                       )
                     ],
@@ -67,7 +67,7 @@ class PaymentDetailsScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             CustomText(text: title, color: btntxtColor, fontfamilly: montBold, weight: FontWeight.w900, sizeOfFont: 18),
-            CustomText(text: viewAllText, color: editbgColor,sizeOfFont: 18, fontfamilly: montLight, weight: FontWeight.w900),
+            CustomText(text: viewAllText, color: dolorColor,sizeOfFont: 18, fontfamilly: montLight, weight: FontWeight.w900),
           ],
         ),
       ),
@@ -153,7 +153,7 @@ class PaymentDetailsScreen extends StatelessWidget {
 
               ),
               SizedBox(height: 5,),
-              CustomText(text: "\$"+"9.99", color: Colors.blue,sizeOfFont: 24, fontfamilly: montBold,weight: FontWeight.w900,),
+              CustomText(text: "\$"+"9.99", color: dolorColor,sizeOfFont: 24, fontfamilly: montBold,weight: FontWeight.w900,),
 
             ],
           ),

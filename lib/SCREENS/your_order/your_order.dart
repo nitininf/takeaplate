@@ -4,6 +4,7 @@ import 'package:takeaplate/CUSTOM_WIDGETS/custom_text_style.dart';
 import 'package:takeaplate/UTILS/app_color.dart';
 import 'package:takeaplate/UTILS/app_images.dart';
 import 'package:takeaplate/UTILS/app_strings.dart';
+import 'package:takeaplate/UTILS/dialog_helper.dart';
 import 'package:takeaplate/UTILS/fontfaimlly_string.dart';
 import 'package:takeaplate/main.dart';
 import '../../../CUSTOM_WIDGETS/custom_app_bar.dart';
@@ -109,7 +110,8 @@ class YourOrderScreen extends StatelessWidget {
           SizedBox(height: 10,),
 
           CommonButton(btnBgColor: onboardingBtn, btnText: "PICK UP AT 11 AM", onClick: (){
-            Navigator.pushNamed(navigatorKey.currentContext!, '/ClosestScreen');
+            DialogHelper.showCommonPopup(navigatorKey.currentContext!,title: "RATE YOUR EXPERIENCE");
+           // Navigator.pushNamed(navigatorKey.currentContext!, '/ClosestScreen');
           }),
           CustomText(text: "Order N. #2134445`", color: btntxtColor, sizeOfFont:16,weight : FontWeight.w300,fontfamilly: montBold),
           const CustomText(text: "23 Dreamland Av.., Australia", weight : FontWeight.w300, color: btntxtColor, fontfamilly: montBold),

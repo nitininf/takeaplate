@@ -63,8 +63,7 @@ class EditProfileScreen extends StatelessWidget{
               ),
               SizedBox(height: 30,),
               CommonButton(btnBgColor: btnbgColor, btnText: next, onClick: (){
-                //Navigator.pushNamed(navigatorKey.currentContext!, '/UploadPhoto');
-                DialogHelper.showCommonPopup(navigatorKey.currentContext!);
+                Navigator.pop(navigatorKey.currentContext!);
               }),
             ],
           ),

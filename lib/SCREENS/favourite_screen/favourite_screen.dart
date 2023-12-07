@@ -24,7 +24,7 @@ class FavouriteScreen extends StatelessWidget{
               children: [
                 const CustomAppBar(),
                 const SizedBox(height: 20),
-                const CustomSearchField(hintText:"Search....."),
+                const CustomSearchField(hintText:"Search"),
                 const Padding(
                   padding: EdgeInsets.only(left: 13.0,top: 20),
                   child: CustomText(text: "YOUR FAVOOURITES", color: btnbgColor, fontfamilly: montBold, weight: FontWeight.bold, sizeOfFont: 18),
@@ -47,7 +47,7 @@ class FavouriteScreen extends StatelessWidget{
           items.length,
               (index) => GestureDetector(
             onTap: (){
-              Navigator.pushNamed(navigatorKey.currentContext!, '/EditProfileScreen');
+            //  Navigator.pushNamed(navigatorKey.currentContext!, '/EditProfileScreen');
             },
             child: Container(
               margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
@@ -70,7 +70,11 @@ class FavouriteScreen extends StatelessWidget{
         scrollDirection: Axis.vertical,
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          children: List.generate(items.length, (index) => getFavCards()),
+          children: List.generate(items.length, (index) => GestureDetector(
+              onTap: (){
+                Navigator.pushNamed(navigatorKey.currentContext!, '/OrderAndPayScreen');
+              },
+              child: getFavCards())),
         ),
       ),
     );
@@ -113,15 +117,16 @@ class FavouriteScreen extends StatelessWidget{
           const SizedBox(width: 8,),
           Stack(
             alignment: Alignment.topRight,
+            clipBehavior: Clip.none,
             children: [
               Image.asset(food_image, height: 85, width: 85, fit: BoxFit.cover),
               Positioned(
-                right: -15,
+                right: -10,
                 child: Image.asset(
                   save_icon,
                   height: 25,
                   width: 25,
-                  color: btnbgColor,
+
 
                 ),
               ),
