@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-
-import '../UTILS/app_color.dart';
 import '../UTILS/app_images.dart';
 
 class CustomAppBar extends StatelessWidget {
@@ -9,11 +7,13 @@ class CustomAppBar extends StatelessWidget {
       this.logoColor,
       this.textColor,
       this.isMenu,
-      this.onTap});
+      this.onTap,
+      this.onTap_one});
   final bool? isMenu;
   final Color? logoColor;
   final Color? textColor;
   final VoidCallback? onTap;
+  final VoidCallback? onTap_one;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,9 @@ class CustomAppBar extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
         GestureDetector(
-        onTap:onTap ,
+        onTap:onTap_one ?? (){
+          Navigator.pop(context);
+        },
         child: Image.asset(
         back_arrow,
         height: 20,

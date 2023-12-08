@@ -23,7 +23,7 @@ class PaymentDetailsScreen extends StatelessWidget {
             children: [
               CustomAppBar(),
               const SizedBox(height: 10),
-              CustomSearchField(hintText: "Search....."),
+              const CustomSearchField(hintText: "Search"),
               Expanded(
                 child: SingleChildScrollView(
                   scrollDirection: Axis.vertical,

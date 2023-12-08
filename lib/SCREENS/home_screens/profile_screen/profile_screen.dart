@@ -107,9 +107,11 @@ class ProfileScreen extends StatelessWidget{
               Expanded(
                 child: Stack(
                   alignment: Alignment.topRight,
+                  clipBehavior: Clip.none,
                   children: [
                     Image.asset(food_image, height: 130, width: 130, fit: BoxFit.cover),
                     Positioned(
+                      right: -10,
                       child: Image.asset(
                         save_icon,
                         height: 25,
@@ -209,9 +211,9 @@ class ProfileScreen extends StatelessWidget{
       child:  Row(
         children: [
           Image.asset(master_card,fit: BoxFit.contain,height: 40,width: 70,),
-          SizedBox(width: 10,),
-          Expanded(child: CustomText(text: "MasterCard",color: btntxtColor,sizeOfFont: 14,weight: FontWeight.w700,)),
-          CustomText(text: "-2211",color: btntxtColor,sizeOfFont: 14,weight: FontWeight.w600,),
+          const SizedBox(width: 10,),
+          const Expanded(child: CustomText(text: "MasterCard",color: btntxtColor,sizeOfFont: 14,weight: FontWeight.w700,)),
+          const CustomText(text: "-2211",color: btntxtColor,sizeOfFont: 14,weight: FontWeight.w600,),
         ],
       ),
     );
@@ -257,9 +259,11 @@ class ProfileScreen extends StatelessWidget{
           const SizedBox(width: 18,),
           Stack(
             alignment: Alignment.topRight,
+            clipBehavior: Clip.none,
             children: [
               Image.asset(food_image, height: 130, width: 130, fit: BoxFit.cover),
               Positioned(
+                right: -10,
                 child: Image.asset(
                   save_icon,
                   height: 25,

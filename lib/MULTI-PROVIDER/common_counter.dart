@@ -9,6 +9,8 @@ class CommonCounter extends ChangeNotifier {
   DateTime dateTtime=DateTime.now();
    String btnName="SAVE";
   bool isSaved=true;
+  String textName="VIEW MORE";
+  bool isViewMore=true;
   // Private constructor to prevent external instantiation
   CommonCounter._();
 
@@ -40,4 +42,13 @@ class CommonCounter extends ChangeNotifier {
     notifyListeners();
   }
 
+  void viewMoreLess(String txtname) {
+    textName=txtname;
+    if(textName=="VIEW MORE"){
+      isViewMore=false;
+    }else{
+      isViewMore=true;
+    }
+    notifyListeners();
+  }
 }

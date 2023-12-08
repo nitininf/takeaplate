@@ -38,7 +38,7 @@ class DialogHelper {
     }
   }
 //show forget pass
-  static Future<void> showCommonPopup(BuildContext context,{String? title,String? subtitle}) async {
+  static Future<void> showCommonPopup(BuildContext context,{String? title,String? subtitle,bool? isDelete}) async {
     showDialog(
       context: context,
        useSafeArea: false,
@@ -112,7 +112,8 @@ class DialogHelper {
                         ),
                         SizedBox(height: 10,)
                       ])
-                      :  Column(children: [
+                      :  !isDelete! ?
+                      Column(children: [
                         SizedBox(
                           height: screenHeight * 0.03,
                         ),
@@ -150,6 +151,46 @@ class DialogHelper {
                             Navigator.pop(context);
                             showCommonPopup(context,title: "YOUR RATING HAS BEEN SUBMITTED",subtitle: "THANK YOU FOR GIVING YOUR FEEDBACK");
                           }),
+                        ),
+                        SizedBox(height: 10,)
+                      ]):
+                      Column(children: [
+                        SizedBox(
+                          height: screenHeight * 0.03,
+                        ),
+                        Image.asset(appLogo,
+                          height: 100,
+                          width: 100,),
+                        const SizedBox(height: 20,),
+                        Align(
+                          alignment: Alignment.center,
+                          child: CustomText(text:title ?? "" ,
+                            sizeOfFont: 17,
+                            color: hintColor,
+                            fontfamilly: montBook,
+                            isAlign: true,),
+                        ),
+                        SizedBox(
+                          height: screenHeight * 0.05,
+                        ),
+
+                        Padding(
+                          padding: const EdgeInsets.only(left: 15.0,right: 15,top: 6,bottom: 20),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: CommonButton(btnBgColor:onboardingBtn, btnText: "YES", onClick: (){
+                                  Navigator.pop(context);
+                                }),
+                              ),
+                              SizedBox(width: 10,),
+                              Expanded(
+                                child: CommonButton(btnBgColor:onboardingBtn, btnText: "NO", onClick: (){
+                                  Navigator.pop(context);
+                                }),
+                              ),  
+                            ],
+                          ),
                         ),
                         SizedBox(height: 10,)
                       ]),

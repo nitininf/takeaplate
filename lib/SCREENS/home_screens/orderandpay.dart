@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/common_button.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/custom_text_style.dart';
+import 'package:takeaplate/MULTI-PROVIDER/common_counter.dart';
 import 'package:takeaplate/UTILS/app_color.dart';
 import 'package:takeaplate/UTILS/app_images.dart';
 import 'package:takeaplate/UTILS/app_strings.dart';
 import 'package:takeaplate/UTILS/fontfaimlly_string.dart';
+import 'package:takeaplate/main.dart';
 import '../../CUSTOM_WIDGETS/custom_app_bar.dart';
 import '../../CUSTOM_WIDGETS/custom_search_field.dart';
 class OrderAndPayScreen extends StatelessWidget {
@@ -21,7 +24,7 @@ class OrderAndPayScreen extends StatelessWidget {
             children: [
               CustomAppBar(),
               const SizedBox(height: 10),
-              CustomSearchField(hintText: "Search....."),
+              CustomSearchField(hintText: "Search"),
               Expanded(
                 child: SingleChildScrollView(
                   scrollDirection: Axis.vertical,
@@ -29,7 +32,7 @@ class OrderAndPayScreen extends StatelessWidget {
                     children: [
                       const SizedBox(height: 30,),
                       buildSection(lastminute, ""),
-                     getCards(),
+                     getCards(context),
                      const SizedBox(height: 10,),
                       Padding(
                         padding: EdgeInsets.only(left: 30,right: 30),
@@ -63,7 +66,7 @@ class OrderAndPayScreen extends StatelessWidget {
     );
   }
 
-  Widget getCards() {
+  Widget getCards(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
@@ -131,30 +134,23 @@ class OrderAndPayScreen extends StatelessWidget {
           SizedBox(height: 10,),
           const CustomText(text: "23 Dreamland Av.., Australia", weight : FontWeight.w300, color: btntxtColor, fontfamilly: montBold),
           SizedBox(height: 10,),
-          const Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              CustomText(text: "Description...", weight : FontWeight.w300, color: Colors.grey, fontfamilly: montBold),
-              CustomText(text: "\$ 9.99", color: editbgColor, sizeOfFont:20,fontfamilly: montBold),
-            ],
-          ),
-          SizedBox(height: 10,),
 
-          GestureDetector(
-              onTap: (){
-                viewMore();
-              },
-              child: viewLess(),
+          SizedBox(height: 10,),
+          Consumer<CommonCounter>(builder: ((context,commonProvider,child){
+            return viewMore(commonProvider);
+          }
+          )
+
           )
         ],
       ),
     );
   }
-  Widget viewLess(){
-    return CustomText(text: "VIEW MORE", weight : FontWeight.w300, color: btnbgColor, fontfamilly: montitalic);
-  }
-  Widget viewMore(){
-    return Column(
+
+
+  Widget viewMore(CommonCounter commonCounter){
+    return
+      commonCounter.isViewMore ? Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
      CustomText(text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation \n\n-Lorem ipsum dolor \n -sit amet, consectetur \n -adipiscing elit, sed do \n -eusmod tempor \n -incididunt ut",fontfamilly: montBook,sizeOfFont: 12,weight: FontWeight.w200,),
@@ -169,9 +165,25 @@ class OrderAndPayScreen extends StatelessWidget {
         SizedBox(height: 20,),
         GestureDetector(
           onTap: (){
-
+          commonCounter.viewMoreLess("VIEW MORE");
           },
-            child: CustomText(text: "VIEW LESS", weight : FontWeight.w300, color: btnbgColor, fontfamilly: montitalic)),
+            child: CustomText(text: commonCounter.textName, weight : FontWeight.w300, color: btnbgColor, fontfamilly: montitalic)),
+      ],
+    ) :   Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              CustomText(text: "Description...", weight : FontWeight.w300, color: Colors.grey, fontfamilly: montBold),
+              CustomText(text: "\$ 9.99", color: editbgColor, sizeOfFont:20,fontfamilly: montBold),
+            ],
+          ),
+        GestureDetector(
+          onTap: (){
+            commonCounter.viewMoreLess("VIEW LESS");
+          },
+            child: CustomText(text: commonCounter.textName, weight : FontWeight.w300, color: btnbgColor, fontfamilly: montitalic))
       ],
     );
   }
