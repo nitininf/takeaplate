@@ -16,10 +16,10 @@ class YourNotificationScreen extends StatelessWidget{
          crossAxisAlignment: CrossAxisAlignment.start,
          children: [
            CustomAppBar(),
-           SizedBox(height: 10,),
+           SizedBox(height: 30,),
            GestureDetector(child: CustomText(text: "YOUR NOTIFICATIONS",weight: FontWeight.w900,sizeOfFont: 20,color: editbgColor,),
            onTap: (){
-             Navigator.pushNamed(context, '/FaqScreenScreen');
+           //  Navigator.pushNamed(context, '/FaqScreenScreen');
            },),
            SizedBox(height: 10,),
            getView(color: faqSelectedColor),

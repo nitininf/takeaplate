@@ -17,7 +17,7 @@ class NotificationCenterScreen extends StatelessWidget{
          crossAxisAlignment: CrossAxisAlignment.start,
          children: [
            CustomAppBar(),
-           SizedBox(height: 20,),
+           SizedBox(height: 30,),
            GestureDetector(child: CustomText(text: "NOTIFICATION CENTRE",weight: FontWeight.w900,color: editbgColor,sizeOfFont: 20,),
            onTap: (){
              Navigator.pushNamed(context, '/YourNotificationScreen');

@@ -2,13 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/custom_app_bar.dart';
-import 'package:takeaplate/SCREENS/contact_us/contact_us.dart';
 import 'package:takeaplate/SCREENS/home_screens/profile_screen/profile_screen.dart';
 import 'package:takeaplate/SCREENS/home_screens/restrurent.dart';
 import 'package:takeaplate/SCREENS/home_screens/search_screen.dart';
 import 'package:takeaplate/SCREENS/home_screens/your_cart/yourcart_screen.dart';
-import 'package:takeaplate/SCREENS/notification/your_notifcation.dart';
-import 'package:takeaplate/SCREENS/setting_screen/settings_screen.dart';
 import 'package:takeaplate/UTILS/app_color.dart';
 import 'package:takeaplate/UTILS/app_images.dart';
 
@@ -21,7 +18,7 @@ class BaseHome extends StatefulWidget {
 }
 
 class _BaseHomeScreen extends State<BaseHome> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 2;
   static final List<Widget> _widgetOptions = <Widget>[
     SearchScreen(),
     YourCardScreen(),
@@ -34,9 +31,6 @@ class _BaseHomeScreen extends State<BaseHome> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
-      if(_selectedIndex==4){
-        _widgetOptions[4]=  ProfileScreen();
-      }
     });
   }
 
@@ -47,7 +41,8 @@ class _BaseHomeScreen extends State<BaseHome> {
     double screenWidth = MediaQuery.of(context).size.width;
     return WillPopScope(
       onWillPop: () async {
-        //SystemNavigator.pop();
+        if(_selectedIndex==2)
+        SystemNavigator.pop();
         return true;
       },
       child: Scaffold(
@@ -87,6 +82,16 @@ class _BaseHomeScreen extends State<BaseHome> {
                   onTap: () {
                     _scaffoldKey.currentState!.openEndDrawer();
                   },
+                  onTap_one: (){
+                 if(_selectedIndex==2) {
+                   SystemNavigator.pop();
+                 }
+                    setState(() {
+                      _selectedIndex=2;
+
+
+                    });
+                  },
                 ),
               ),
               Expanded(
@@ -98,6 +103,7 @@ class _BaseHomeScreen extends State<BaseHome> {
             ],
           ),
         ),
+
         bottomNavigationBar: SafeArea(
           child: Container(
             padding: const EdgeInsets.only(left: 8, right: 8, top: 10),

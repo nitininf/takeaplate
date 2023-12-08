@@ -46,7 +46,7 @@ class CustomAppBar extends StatelessWidget {
     Center(
     child:  GestureDetector(
       onTap: onTap,
-      child: Image.asset(
+      child: onTap_one ==null ? Text("") : Image.asset(
       menu_icon,
       height: 20,
       width: 20,

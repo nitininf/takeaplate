@@ -18,7 +18,7 @@ class FaqScreenScreen extends StatelessWidget{
             SizedBox(height: 10,),
             GestureDetector(child: CustomText(text: "FAQ'S",color: editbgColor,sizeOfFont: 20,weight: FontWeight.w900,),
             onTap: (){
-              Navigator.pushNamed(context, '/SettingScreen');
+            //  Navigator.pushNamed(context, '/SettingScreen');
             },),
             SizedBox(height: 10,),
             buildVeerticalCards()

@@ -114,10 +114,11 @@ class RestrurentScreen extends StatelessWidget{
           const SizedBox(width: 8,),
           Stack(
             alignment: Alignment.topRight,
+            clipBehavior: Clip.none,
             children: [
               Image.asset(food_image, height: 85, width: 85, fit: BoxFit.cover),
               Positioned(
-
+                right: -10,
                 child: Image.asset(
                   save_icon,
                   height: 25,

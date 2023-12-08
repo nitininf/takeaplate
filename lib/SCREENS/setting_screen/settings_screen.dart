@@ -26,7 +26,7 @@ class SettingScreen extends StatelessWidget{
              child: Column(
                children: [
                  CommonButton(btnBgColor: btnbgColor, btnText:"LOG OUT", onClick: (){
-                   Navigator.pushNamed(context, '/ContactUs');
+                   //Navigator.pushNamed(context, '/ContactUs');
                  }),
                  SizedBox(height: 10,),
                  CustomText(text: "DELETE ACCOUNT",sizeOfFont: 15,weight: FontWeight.w400,color: grayColor,),
