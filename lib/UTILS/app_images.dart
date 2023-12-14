@@ -29,6 +29,7 @@ const String master_card = "images/master_card.png";
 const String profile_img = "images/profile_img.png";
 const String restrorent_food = "images/restrorent_food.png";
 const String restrorent_img = "images/restrorent_img.png";
+const String delete_icon = "images/delete_icon.png";
 
 
 

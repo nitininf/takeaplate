@@ -8,6 +8,7 @@ import 'package:takeaplate/SCREENS/home_screens/search_screen.dart';
 import 'package:takeaplate/SCREENS/home_screens/your_cart/yourcart_screen.dart';
 import 'package:takeaplate/UTILS/app_color.dart';
 import 'package:takeaplate/UTILS/app_images.dart';
+import 'package:takeaplate/UTILS/fontfaimlly_string.dart';
 
 import '../../CUSTOM_WIDGETS/custom_text_style.dart';
 import 'home_screen.dart';
@@ -77,7 +78,7 @@ class _BaseHomeScreen extends State<BaseHome> {
           child: Column(
             children: [
               Padding(
-                padding: EdgeInsets.only(left: 20.0, right: 20),
+                padding: EdgeInsets.only(left: 28.0, right: 30,top: 10),
                 child: CustomAppBar(
                   onTap: () {
                     _scaffoldKey.currentState!.openEndDrawer();
@@ -260,7 +261,7 @@ class RightDrawerMenuWidget extends StatelessWidget {
                         padding: const EdgeInsets.only(right: 15.0),
                         child: CustomText(
                           text: listOfItems[index1],
-                          weight: FontWeight.w800,
+                         fontfamilly: montHeavy,
                           sizeOfFont: 22,
                           color: hintColor,
                         ),

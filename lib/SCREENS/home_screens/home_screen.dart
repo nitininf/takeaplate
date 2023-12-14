@@ -16,7 +16,7 @@ class HomeScreen extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         body: Padding(
-          padding: const EdgeInsets.only(top: 5.0,right:20,left: 20 ,bottom: 10),
+          padding: const EdgeInsets.only(top: 9.0,right:20,left: 20 ,bottom: 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -27,11 +27,12 @@ class HomeScreen extends StatelessWidget {
                   scrollDirection: Axis.vertical,
                   child: Column(
                     children: [
+
                       buildHorizontalList(items),
                       buildSection(closet, viewall),
                       buildHorizontalCards(),
                         const Padding(
-                         padding: EdgeInsets.only(top: 10.0,left: 15,right: 15,bottom: 15),
+                         padding: EdgeInsets.only(top: 10.0,left: 20,right: 20,bottom: 15),
                          child: Divider(
                           color: Colors.grey,
                           thickness: 0,
@@ -72,14 +73,14 @@ class HomeScreen extends StatelessWidget {
                 onTap: (){
                 },
                 child: Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 20),
+                            margin: const EdgeInsets.symmetric(horizontal: 3, vertical: 36),
                             padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 10),
                             decoration: BoxDecoration(
                 color: editbgColor,
                 borderRadius: BorderRadius.circular(30),
                 border: Border.all(width: 1, color: Colors.white),
                             ),
-                            child: CustomText(text: items[index], color: hintColor, fontfamilly: montBook,weight: FontWeight.w400,),
+                            child: CustomText(text: items[index], color: hintColor, fontfamilly: montBook,sizeOfFont: 19,),
                           ),
               ),
         ),
@@ -89,11 +90,11 @@ class HomeScreen extends StatelessWidget {
 
   Widget buildSection(String title, String viewAllText) {
     return Padding(
-      padding: const EdgeInsets.only(left: 8.0,right: 8.0,top: 8.0),
+      padding: const EdgeInsets.only(left: 20.0,right: 13.0,top: 8.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          CustomText(text: title, color: btnbgColor, fontfamilly: montBold, weight: FontWeight.w900, sizeOfFont: 16),
+          CustomText(text: title, color: btnbgColor, fontfamilly: montHeavy,  sizeOfFont: 20),
           GestureDetector(
             onTap: (){
               if(title==closet) {
@@ -105,7 +106,7 @@ class HomeScreen extends StatelessWidget {
               }
             },
 
-              child: CustomText(text: viewAllText, color: Colors.black, fontfamilly: montLight, weight: FontWeight.w300)),
+              child: CustomText(text: viewAllText, color: viewallColor, fontfamilly: montRegular,sizeOfFont: 12,)),
         ],
       ),
     );
@@ -135,12 +136,12 @@ class HomeScreen extends StatelessWidget {
            const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CustomText(text: "Salad & Co.", color: btntxtColor, fontfamilly: montitalic,sizeOfFont: 18,),
+              CustomText(text: "Salad & Co.", color: btntxtColor, fontfamilly: montBold,sizeOfFont: 24,),
 
-              CustomText(text: "Health Foods", color: btntxtColor, fontfamilly: montBold,weight: FontWeight.w400,sizeOfFont: 13,),
+              CustomText(text: "Health Foods", color: btntxtColor, fontfamilly: montRegular,sizeOfFont: 14,),
 
-              CustomText(text: "3 offers available", color: onboardingbgColor,sizeOfFont: 10, fontfamilly: montBold,weight: FontWeight.w300,),
-  SizedBox(height: 5,),
+              CustomText(text: "3 offers available", color: offerColor,sizeOfFont: 9, fontfamilly: montBook,),
+  SizedBox(height: 1,),
               Row(
                 children: [
                   Icon(Icons.star,size: 20,color: btnbgColor,),
@@ -159,11 +160,11 @@ class HomeScreen extends StatelessWidget {
             children: [
               Image.asset(food_image, height: 80, width: 80, fit: BoxFit.cover),
               Positioned(
-                right: -10,
+                right: -4,
                 child: Image.asset(
                   save_icon,
-                  height: 25,
-                  width: 25,
+                  height: 15,
+                  width: 18,
                 ),
               ),
             ],
@@ -197,26 +198,26 @@ class HomeScreen extends StatelessWidget {
           const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CustomText(text: "Surprise Pack", color: btntxtColor, fontfamilly: montitalic,sizeOfFont: 18,),
+              CustomText(text: "Surprise Pack", color: btntxtColor, fontfamilly: montBold,sizeOfFont: 21,),
 
-              CustomText(text: "Salad & Co", color: btntxtColor, fontfamilly: montBold,weight: FontWeight.w400,sizeOfFont: 13,),
+              CustomText(text: "Salad & Co", color: btntxtColor, fontfamilly: montRegular,sizeOfFont: 16,),
 
-              CustomText(text: "Tomorrow-7:35-8:40 Am", color: onboardingbgColor,sizeOfFont: 10, fontfamilly: montBold,weight: FontWeight.w200,),
+              CustomText(text: "Tomorrow-7:35-8:40 Am", color: graysColor,sizeOfFont: 11, fontfamilly: montRegular),
               SizedBox(height: 5,),
               Row(
                 children: [
-                  Icon(Icons.star_border,size: 20,color: Colors.grey,),
-                  Icon(Icons.star_border,size: 20,color: Colors.grey,),
-                  Icon(Icons.star_border,size: 20,color: Colors.grey,),
-                  Icon(Icons.star_border,size: 20,color: Colors.grey,),
-                  Icon(Icons.star_border,size: 20,color: Colors.grey,),
+                  Icon(Icons.star_border,size: 20,color:graysColor,),
+                  Icon(Icons.star_border,size: 20,color: graysColor),
+                  Icon(Icons.star_border,size: 20,color: graysColor,),
+                  Icon(Icons.star_border,size: 20,color: graysColor,),
+                  Icon(Icons.star_border,size: 20,color: graysColor,),
                   SizedBox(width: 10,),
-                  CustomText(text: "84 Km", color: btntxtColor,sizeOfFont: 10, fontfamilly: montBold,weight: FontWeight.w400,),
+                  CustomText(text: "84 Km", color: graysColor,sizeOfFont: 15, fontfamilly: montSemiBold),
                    ],
 
               ),
               SizedBox(height: 5,),
-              CustomText(text: "\$"+"9.99", color: dolorColor,sizeOfFont: 24, fontfamilly: montBold,weight: FontWeight.w900,),
+              CustomText(text: "\$"+"9.99", color: dolorColor,sizeOfFont: 27, fontfamilly: montHeavy,),
 
             ],
           ),
@@ -227,11 +228,11 @@ class HomeScreen extends StatelessWidget {
             children: [
               Image.asset(food_image, height: 130, width: 130, fit: BoxFit.cover),
               Positioned(
-                right: -10,
+                right: -4,
                 child: Image.asset(
                   save_icon,
-                  height: 25,
-                  width: 25,
+                  height: 15,
+                  width: 18,
                 ),
               ),
             ],

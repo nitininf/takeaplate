@@ -9,6 +9,7 @@ import '../../CUSTOM_WIDGETS/common_edit_text.dart';
 import '../../CUSTOM_WIDGETS/common_email_field.dart';
 import '../../CUSTOM_WIDGETS/custom_app_bar.dart';
 import '../../CUSTOM_WIDGETS/custom_search_field.dart';
+import '../../UTILS/validation.dart';
 class PaymentDetailsScreen extends StatelessWidget {
 
 
@@ -17,12 +18,15 @@ class PaymentDetailsScreen extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         body: Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.all(25.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              CustomAppBar(),
-              const SizedBox(height: 10),
+              const Padding(
+                padding:  EdgeInsets.only(left: 4.0,right: 8),
+                child: CustomAppBar(),
+              ),
+              const SizedBox(height: 23),
               const CustomSearchField(hintText: "Search"),
               Expanded(
                 child: SingleChildScrollView(
@@ -66,8 +70,8 @@ class PaymentDetailsScreen extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            CustomText(text: title, color: btntxtColor, fontfamilly: montBold, weight: FontWeight.w900, sizeOfFont: 18),
-            CustomText(text: viewAllText, color: dolorColor,sizeOfFont: 18, fontfamilly: montLight, weight: FontWeight.w900),
+            CustomText(text: title, color: viewallColor, fontfamilly: montBold,  sizeOfFont: 21),
+            CustomText(text: viewAllText, color: dolorColor,sizeOfFont: 26, fontfamilly: montHeavy, ),
           ],
         ),
       ),
@@ -89,17 +93,103 @@ class PaymentDetailsScreen extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-          CustomText(text: paymentdetails,color: btntxtColor,weight: FontWeight.w900,fontfamilly: montBold,sizeOfFont: 20,),
+          CustomText(text: paymentdetails,color: viewallColor,fontfamilly: montBold,sizeOfFont: 19,),
             SizedBox(height: 25,),
-            CommonEditText(hintText: cardName,isbgColor: true,),
-            const SizedBox(height: 20,),
-            CommonEditText(hintText: cardNum,isbgColor: true,),
+           // CommonEditText(hintText: cardName,isbgColor: true,),
+            Container(
+                height: 49,
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30),
+                  border: Border.all(
+                    color: grayColor,
+                    width: 1.0, // Adjust the width as needed
+                  ),
+                ),
+                child: TextFormField(
+                    validator: FormValidator.validateEmail,
+                    keyboardType: TextInputType.text,
+                    //   controller: controller,
+                    style:  const TextStyle( fontSize: 16,fontFamily: montBook,color:cardTextColor
+                    ),
+                    decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        hintStyle: TextStyle(fontSize: 16,fontFamily: montBook,color: cardTextColor),
+                        hintText: cardName)
+                )
+            ),
+            const SizedBox(height: 10,),
+           // CommonEditText(hintText: cardNum,isbgColor: true,),
+            Container(
+                height: 49,
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30),
+                  border: Border.all(
+                    color: grayColor,
+                    width: 1.0, // Adjust the width as needed
+                  ),
+                ),
+                child: TextFormField(
+                    validator: FormValidator.validateEmail,
+                    keyboardType: TextInputType.text,
+                    //   controller: controller,
+                    style:  const TextStyle( fontSize: 16,fontFamily: montBook,color:cardTextColor
+                    ),
+                    decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        hintStyle: TextStyle(fontSize: 16,fontFamily: montBook,color: cardTextColor),
+                        hintText: cardNum)
+                )
+            ),
             const SizedBox(height: 20,),
             Row(
               children: [
-                Expanded(child: CommonEditText(hintText: expiry,isbgColor: true,)),
+                Expanded(child: Container(
+                    height: 49,
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      border: Border.all(
+                        color: grayColor,
+                        width: 1.0, // Adjust the width as needed
+                      ),
+                    ),
+                    child: TextFormField(
+                        validator: FormValidator.validateEmail,
+                        keyboardType: TextInputType.text,
+                        //   controller: controller,
+                        style:  const TextStyle( fontSize: 16,fontFamily: montBook,color:cardTextColor
+                        ),
+                        decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            hintStyle: TextStyle(fontSize: 16,fontFamily: montBook,color: cardTextColor),
+                            hintText: expiry)
+                    )
+                ),),// CommonEditText(hintText: expiry,isbgColor: true,)),
                 SizedBox(width: 10,),
-                Expanded(child: CommonEditText(hintText: cvv,isbgColor: true,)),
+                Expanded(child:Container(
+                    height: 49,
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      border: Border.all(
+                        color: grayColor,
+                        width: 1.0, // Adjust the width as needed
+                      ),
+                    ),
+                    child: TextFormField(
+                        validator: FormValidator.validateEmail,
+                        keyboardType: TextInputType.text,
+                        //   controller: controller,
+                        style:  const TextStyle( fontSize: 16,fontFamily: montBook,color:cardTextColor
+                        ),
+                        decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            hintStyle: TextStyle(fontSize: 16,fontFamily: montBook,color: cardTextColor),
+                            hintText: cvv)
+                    )
+                ),),// CommonEditText(hintText: cvv,isbgColor: true,)),
               ],
             ),
             Align(
@@ -112,7 +202,7 @@ class PaymentDetailsScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(30),
                   border: Border.all(width: 1, color: Colors.white),
                 ),
-                child: CustomText(text: "SAVE", color: btntxtColor, fontfamilly: montBook,weight: FontWeight.w900,)),
+                child: CustomText(text: "SAVE", color: btntxtColor, fontfamilly: montHeavy,sizeOfFont: 18,)),
             ),
           ],
         )
@@ -131,48 +221,51 @@ class PaymentDetailsScreen extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CustomText(text: "Surprise Pack", color: btntxtColor, fontfamilly: montitalic,sizeOfFont: 18,),
+          const Expanded(
+            child:  Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CustomText(text: "Surprise Pack", color: btntxtColor,maxLin: 1,  fontfamilly: montBold,sizeOfFont: 21,),
 
-              CustomText(text: "Salad & Co", color: btntxtColor, fontfamilly: montBold,weight: FontWeight.w400,sizeOfFont: 13,),
+                CustomText(text: "Salad & Co", color: btntxtColor,maxLin: 1,  fontfamilly: montRegular,sizeOfFont: 16,),
 
-              CustomText(text: "Tomorrow-7:35-8:40 Am", color: onboardingbgColor,sizeOfFont: 10, fontfamilly: montBold,weight: FontWeight.w200,),
-              SizedBox(height: 5,),
-              Row(
-                children: [
-                  Icon(Icons.star_border,size: 20,color: Colors.grey,),
-                  Icon(Icons.star_border,size: 20,color: Colors.grey,),
-                  Icon(Icons.star_border,size: 20,color: Colors.grey,),
-                  Icon(Icons.star_border,size: 20,color: Colors.grey,),
-                  Icon(Icons.star_border,size: 20,color: Colors.grey,),
-                  SizedBox(width: 10,),
-                  CustomText(text: "84 Km", color: btntxtColor,sizeOfFont: 10, fontfamilly: montBold,weight: FontWeight.w400,),
-                ],
-
-              ),
-              SizedBox(height: 5,),
-              CustomText(text: "\$"+"9.99", color: dolorColor,sizeOfFont: 24, fontfamilly: montBold,weight: FontWeight.w900,),
-
-            ],
-          ),
-          const SizedBox(width: 18,),
-          Stack(
-            alignment: Alignment.topRight,
-            children: [
-              Image.asset(food_image, height: 130, width: 130, fit: BoxFit.cover),
-              Positioned(
-                right: -15,
-                child: Image.asset(
-                  save_icon,
-                  height: 25,
-                  width: 25,
-                  color: btnbgColor,
+                CustomText(text: "Tomorrow-7:35-8:40",maxLin: 1,  color: graysColor,sizeOfFont: 11, fontfamilly: montRegular),
+                SizedBox(height: 5,),
+                Row(
+                  children: [
+                    Icon(Icons.star,size: 20,color: btnbgColor,),
+                    Icon(Icons.star,size: 20,color: btnbgColor,),
+                    Icon(Icons.star,size: 20,color: btnbgColor,),
+                    Icon(Icons.star,size: 20,color: btnbgColor,),
+                    Icon(Icons.star,size: 20,color: btnbgColor,),
+                    SizedBox(width: 10,),
+                    Expanded(child: CustomText(text: "84 Km",maxLin: 1, color: graysColor,sizeOfFont: 15, fontfamilly: montSemiBold)),
+                  ],
 
                 ),
-              ),
-            ],
+                SizedBox(height: 5,),
+                CustomText(text: "\$"+"9.99", color: dolorColor,sizeOfFont: 27, fontfamilly: montHeavy,),
+
+              ],
+            ),
+          ),
+          const SizedBox(width: 18,),
+          Expanded(
+            child: Stack(
+              alignment: Alignment.topRight,
+              clipBehavior: Clip.none,
+              children: [
+                Image.asset(food_image, height: 138, width: 125, fit: BoxFit.contain),
+                Positioned(
+                  right: -4,
+                  child: Image.asset(
+                    save_icon,
+                    height: 15,
+                    width: 18,
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),

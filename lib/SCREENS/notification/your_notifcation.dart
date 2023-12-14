@@ -11,24 +11,30 @@ class YourNotificationScreen extends StatelessWidget{
    return SafeArea(child: Scaffold(
 
      body: Padding(
-       padding: const EdgeInsets.all(20.0),
+       padding: const EdgeInsets.only(top: 20.0,bottom: 20,right: 29,left: 29),
        child: Column(
          crossAxisAlignment: CrossAxisAlignment.start,
          children: [
            CustomAppBar(),
-           SizedBox(height: 30,),
-           GestureDetector(child: CustomText(text: "YOUR NOTIFICATIONS",weight: FontWeight.w900,sizeOfFont: 20,color: editbgColor,),
-           onTap: (){
-           //  Navigator.pushNamed(context, '/FaqScreenScreen');
-           },),
-           SizedBox(height: 10,),
-           getView(color: faqSelectedColor),
-           SizedBox(height: 10,),
-           getView(),
-           SizedBox(height: 10,),
-           getView(),
-           SizedBox(height: 10,),
-           getView()
+           Padding(
+             padding: const EdgeInsets.only(left: 8.0,right: 8),
+             child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+             children: [
+               SizedBox(height: 30,),
+               GestureDetector(child: CustomText(text: "YOUR NOTIFICATIONS",fontfamilly: montHeavy,sizeOfFont: 20,color: editbgColor,),
+                 onTap: (){
+                   //  Navigator.pushNamed(context, '/FaqScreenScreen');
+                 },),
+               SizedBox(height: 10,),
+               getView(color: faqSelectedColor),
+              // SizedBox(height: 10,),
+               getView(),
+              // SizedBox(height: 10,),
+               getView(),
+               //SizedBox(height: 10,),
+               getView()
+             ],),
+           )
          ],
        ),
      ),
@@ -49,11 +55,11 @@ class YourNotificationScreen extends StatelessWidget{
         children: [
           Expanded(
             flex: 1,
-              child: CustomText(text: "New meal purchase has been confirmation",weight: FontWeight.w500,color: editbgColor,sizeOfFont: 15,fontfamilly: montBook,)
+              child: CustomText(text: "New meal purchase has been confirmation",color: editbgColor,sizeOfFont: 14,fontfamilly: montSemiBold,)
           ),
           Expanded(
             flex: 0,
-              child: CustomText(text: "11:00 AM \n 23/09/23023",weight: FontWeight.w600,color: btnbgColor,sizeOfFont: 12,isAlign: true,)),
+              child: CustomText(text: "11:00 AM \n 23/09/23023",color: btnbgColor,sizeOfFont: 11,fontfamilly:montSemiBold,isAlign: true,)),
         ],
       ),
     );

@@ -16,7 +16,7 @@ class YourCardScreen extends StatelessWidget{
     double screenWidth = MediaQuery.of(context).size.width;
    return  SafeArea(child: Scaffold(
      body: Padding(
-       padding: const EdgeInsets.only(right: 20.0,left: 20,bottom: 0),
+       padding: const EdgeInsets.only(right: 35.0,left: 35,bottom: 0),
        child: Column(
          crossAxisAlignment: CrossAxisAlignment.start,
          children: [
@@ -37,9 +37,11 @@ class YourCardScreen extends StatelessWidget{
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-          SizedBox(height: 15,),
-          const CustomText(text: "YOUR CART",color: editbgColor,sizeOfFont: 18,weight: FontWeight.w800,),
-          SizedBox(height: 15,),
+          SizedBox(height: 18,),
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0),
+            child: const CustomText(text: "YOUR CART",color: editbgColor,sizeOfFont: 20,fontfamilly: montHeavy,),
+          ),
           Container(
             margin: const EdgeInsets.symmetric(horizontal: 10,vertical: 10),
             decoration: BoxDecoration(
@@ -64,8 +66,8 @@ class YourCardScreen extends StatelessWidget{
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        CustomText(text: "Total",color: btntxtColor,sizeOfFont: 14,weight: FontWeight.w800,),
-                        CustomText(text: "\$39.99",color: dolorColor,sizeOfFont: 18,weight: FontWeight.w800,),
+                        CustomText(text: "Total",color: btntxtColor,sizeOfFont: 21,fontfamilly: montBold,),
+                        CustomText(text: "\$39.99",color: dolorColor,sizeOfFont: 28,fontfamilly: montHeavy,),
 
 
                       ],
@@ -77,14 +79,14 @@ class YourCardScreen extends StatelessWidget{
             ),
           ) ,
           Padding(
-            padding: const EdgeInsets.only(top: 30.0,right: 40,left: 40),
-            child: CommonButton(btnBgColor: btnbgColor, btnText: "GO TO CHECKOUT", onClick: (){
+            padding: const EdgeInsets.only(top: 30.0,right: 30,left: 30),
+            child: CommonButton(btnBgColor: btnbgColor, sizeOfFont:18,btnText: "GO TO CHECKOUT", onClick: (){
               Navigator.pushNamed(navigatorKey.currentContext!, '/OrderSummeryScreen');
             }),
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 10.0,left: 40,right: 40,bottom: 20),
-            child: CommonButton(btnBgColor: editprofilbgColor, btnTextColor: editprofileColor,btnText: "ADD MORE ITEMS", onClick: (){}),
+            padding: const EdgeInsets.only(top: 10.0,left: 30,right: 30,bottom: 20),
+            child: CommonButton(btnBgColor: editprofilbgColor, sizeOfFont:18,btnTextColor: editprofileColor,btnText: "ADD MORE ITEMS", onClick: (){}),
           ),
         ],),
       ),
@@ -110,9 +112,9 @@ class YourCardScreen extends StatelessWidget{
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    CustomText(text: "Surprise Pack", color: btntxtColor, fontfamilly: montitalic,sizeOfFont: 12,),
+                    CustomText(text: "Surprise Pack", maxLin:1,color: btntxtColor, fontfamilly: montBold,sizeOfFont: 15,),
 
-                    CustomText(text: "Salad & Co", color: btntxtColor, fontfamilly: montBold,weight: FontWeight.w400,sizeOfFont: 10,),
+                    CustomText(text: "Salad & Co", maxLin:1,color: btntxtColor, fontfamilly: montRegular,sizeOfFont: 11,),
 
                   ],
                 ),
@@ -127,10 +129,10 @@ class YourCardScreen extends StatelessWidget{
                       color: btnbgColor,
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(width: 1, color: Colors.white)),
-                  child:const Row(
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Icon(Icons.delete,color: hintColor,size: 12,),
+                     Image.asset(delete_icon,height: 9,width: 9,),
                       SizedBox(width: 8,),
                       CustomText(text: "1",sizeOfFont: 12,color: hintColor,),
                       SizedBox(width: 8,),
@@ -139,9 +141,11 @@ class YourCardScreen extends StatelessWidget{
                   ) ,
                 ),
               ),
-              CustomText(text: "\$9.99",sizeOfFont: 12,color: dolorColor,weight: FontWeight.w800,)
+
+              CustomText(text: "\$9.99",sizeOfFont: 15,color: dolorColor,fontfamilly: montHeavy,)
             ],
           ),
+          SizedBox(height: 5,),
           Divider(color: grayColor,thickness: 0,)
         ],
       ),

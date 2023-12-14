@@ -16,7 +16,10 @@ class FaqScreenScreen extends StatelessWidget{
           children: [
             CustomAppBar(),
             SizedBox(height: 10,),
-            GestureDetector(child: CustomText(text: "FAQ'S",color: editbgColor,sizeOfFont: 20,weight: FontWeight.w900,),
+            GestureDetector(child: Padding(
+              padding: const EdgeInsets.only(left: 8.0),
+              child: CustomText(text: "FAQ'S",color: editbgColor,sizeOfFont: 20,fontfamilly: montHeavy,),
+            ),
             onTap: (){
             //  Navigator.pushNamed(context, '/SettingScreen');
             },),
@@ -40,26 +43,29 @@ class FaqScreenScreen extends StatelessWidget{
     );
   }
   Widget getView({Color? colorbg,}){
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
-      decoration: BoxDecoration(
-        color: colorbg !=null ? faqSelectedColor : hintColor,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(width: 0, color: Colors.grey),
+    return Padding(
+      padding: const EdgeInsets.only(left: 8.0,right: 8),
+      child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+        decoration: BoxDecoration(
+          color: colorbg !=null ? faqSelectedColor : hintColor,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(width: 0, color: Colors.grey),
 
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 15.0,),
-            child: CustomText(text: "How do  I know when the best deals are available? ",color: colorbg,sizeOfFont: 18,fontfamilly: montBold,weight: FontWeight.w600,),
-          ),
-          getSubTitle(colorbg: colorbg)
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 15.0,),
+              child: CustomText(text: "How do  I know when the best deals are available? ",color: colorbg==null ? editbgColor :colorbg,sizeOfFont: 17,fontfamilly: colorbg==null ? montRegular : montBold,),
+            ),
+            getSubTitle(colorbg: colorbg)
 
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -67,7 +73,7 @@ class FaqScreenScreen extends StatelessWidget{
   Widget getSubTitle({Color? colorbg,}){
     return colorbg != null ?  Padding(
       padding: const EdgeInsets.only(bottom: 15.0,top: 10),
-      child: CustomText(text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation Lorem ipsum dolor sit amet, consectetur",color: btntxtColor,sizeOfFont: 13,fontfamilly: montBold,weight: FontWeight.w400,),
+      child: CustomText(text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation Lorem ipsum dolor sit amet, consectetur",color: btntxtColor,sizeOfFont: 14,fontfamilly: montRegular,weight: FontWeight.w400,),
     ) : Text("");
   }
 }

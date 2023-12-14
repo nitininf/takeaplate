@@ -4,6 +4,7 @@ import 'package:takeaplate/CUSTOM_WIDGETS/common_pass_felds.dart';
 import 'package:takeaplate/UTILS/app_color.dart';
 import 'package:takeaplate/UTILS/app_images.dart';
 import 'package:takeaplate/UTILS/app_strings.dart';
+import 'package:takeaplate/UTILS/dialog_helper.dart';
 import 'package:takeaplate/UTILS/fontfaimlly_string.dart';
 
 import '../../CUSTOM_WIDGETS/common_email_field.dart';
@@ -37,6 +38,7 @@ class LogInScreen extends StatelessWidget {
                         appLogo, // Replace with your first small image path
                         height: 100,
                         width: 100,
+                        fit: BoxFit.contain,
                       ),
                       const SizedBox(height: 40,),
                       Image.asset(
@@ -46,7 +48,7 @@ class LogInScreen extends StatelessWidget {
                     ],
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 40,right: 40,top: 20),
+                    padding: const EdgeInsets.only(left: 40,right: 40,top: 20,bottom: 20),
                     child: Column(
                       children: [
                         CommonEmailField(hintText: email,),
@@ -60,7 +62,7 @@ class LogInScreen extends StatelessWidget {
                         GestureDetector(child: const CustomText(text: forgotpss,color: hintColor,fontfamilly: montBold,),
 
                         onTap: (){
-                           Navigator.pushNamed(context, '/PassWordSentScreen');
+                          DialogHelper.showCommonPopup(context,title: sentPss,subtitle: checkInbox);
                         },),
                          SizedBox(height: screenHeight*0.100,),
                         // Horizontal line using Divider
@@ -77,7 +79,7 @@ class LogInScreen extends StatelessWidget {
                           Navigator.pushNamed(context, '/SignupScreen');
                           },
                         ),
-              
+
                       ],
                     ),
                   )

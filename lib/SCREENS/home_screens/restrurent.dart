@@ -24,8 +24,8 @@ class RestrurentScreen extends StatelessWidget{
            const SizedBox(height: 20),
            const CustomSearchField(hintText:"Search"),
            const Padding(
-             padding: EdgeInsets.only(left: 13.0,top: 20),
-             child: CustomText(text: "Restrurents", color: btnbgColor, fontfamilly: montBold, weight: FontWeight.bold, sizeOfFont: 20),
+             padding: EdgeInsets.only(left: 13.0,top: 30),
+             child: CustomText(text: "Restrurents", color: btnbgColor, fontfamilly: montHeavy, sizeOfFont: 20),
            ),
            buildHorizontalList(items),
            buildVeerticalCards()
@@ -45,17 +45,16 @@ class RestrurentScreen extends StatelessWidget{
           items.length,
               (index) => GestureDetector(
             onTap: (){
-             // Navigator.pushNamed(navigatorKey.currentContext!, '/MyOrdersSccreen');
             },
             child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              margin: const EdgeInsets.symmetric(horizontal: 3, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 10),
               decoration: BoxDecoration(
                 color: editbgColor,
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(30),
                 border: Border.all(width: 1, color: Colors.white),
               ),
-              child: CustomText(text: items[index], color: hintColor,weight: FontWeight.w400, fontfamilly: montBook),
+              child: CustomText(text: items[index], color: hintColor, fontfamilly: montBook,sizeOfFont: 19,),
             ),
           ),
         ),
@@ -87,47 +86,52 @@ class RestrurentScreen extends StatelessWidget{
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CustomText(text: "Salad & Co", color: btntxtColor, fontfamilly: montitalic,sizeOfFont: 18,),
-
-              CustomText(text: "Health Foods", color: btntxtColor, fontfamilly: montBold,weight: FontWeight.w400,sizeOfFont: 13,),
-
-              CustomText(text: "23 Dreamland Av.., Australia", color: onboardingbgColor,sizeOfFont: 10, fontfamilly: montBold,weight: FontWeight.w200,),
-              SizedBox(height: 5,),
-              Row(
-                children: [
-                  Icon(Icons.star,size: 20,color: btnbgColor,),
-                  Icon(Icons.star,size: 20,color: btnbgColor,),
-                  Icon(Icons.star,size: 20,color: btnbgColor,),
-                  Icon(Icons.star,size: 20,color: btnbgColor,),
-                  Icon(Icons.star,size: 20,color: btnbgColor,),
-                  SizedBox(width: 10,),
-                  CustomText(text: "3 offers available", color: editbgColor,sizeOfFont: 10, fontfamilly: montBold,weight: FontWeight.w400,),
-                ],
-
-              ),
-
-            ],
+          const  Expanded(
+            child:  Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CustomText(text: "Salad & Co", color: btntxtColor, fontfamilly: montBold,sizeOfFont: 27,maxLin: 1,),
+            
+                CustomText(text: "Health Foods", color: graysColor, fontfamilly: montRegular,sizeOfFont: 16,maxLin: 1,),
+            
+                CustomText(text: "23 Dreamland Av.., Australia", color: graysColor,sizeOfFont: 12, fontfamilly: montLight,maxLin: 1,),
+                SizedBox(height: 5,),
+                Row(
+                  children: [
+                    Icon(Icons.star,size: 20,color: btnbgColor,),
+                    Icon(Icons.star,size: 20,color: btnbgColor,),
+                    Icon(Icons.star,size: 20,color: btnbgColor,),
+                    Icon(Icons.star,size: 20,color: btnbgColor,),
+                    Icon(Icons.star,size: 20,color: btnbgColor,),
+                    SizedBox(width: 10,),
+                    CustomText(text: "3 offers available", color: offerColor,sizeOfFont: 10, fontfamilly: montRegular,maxLin: 1,),
+                  ],
+            
+                ),
+            
+              ],
+            ),
           ),
           const SizedBox(width: 8,),
-          Stack(
-            alignment: Alignment.topRight,
-            clipBehavior: Clip.none,
-            children: [
-              Image.asset(food_image, height: 85, width: 85, fit: BoxFit.cover),
-              Positioned(
-                right: -10,
-                child: Image.asset(
-                  save_icon,
-                  height: 25,
-                  width: 25,
-
-
+          Expanded(
+            flex: 0,
+            child: Stack(
+              alignment: Alignment.topRight,
+              clipBehavior: Clip.none,
+              children: [
+                Image.asset(food_image, height: 85, width: 85, fit: BoxFit.cover),
+                Positioned(
+                  right: -4,
+                  child: Image.asset(
+                    save_icon,
+                    height: 15,
+                    width: 18,
+            
+            
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),

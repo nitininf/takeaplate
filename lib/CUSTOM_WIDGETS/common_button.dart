@@ -8,12 +8,14 @@ class CommonButton extends StatelessWidget {
       required this.btnBgColor,
          this.btnTextColor,
       required this.btnText,
-      required this.onClick});
+      required this.onClick,
+      this.sizeOfFont});
 
   final Color btnBgColor;
   final Color? btnTextColor;
   final String btnText;
   final VoidCallback onClick;
+  final double? sizeOfFont;
 
   @override
   Widget build(BuildContext context) {
@@ -23,15 +25,16 @@ class CommonButton extends StatelessWidget {
               borderRadius: BorderRadius.circular(18.0), // Set your desired radius here
             ),
             backgroundColor: btnBgColor,
-            maximumSize: Size.infinite,
+             maximumSize: Size.infinite,
             minimumSize: const Size(double.maxFinite, 55)),
         onPressed: onClick,
         child: Text(btnText,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
             style:  TextStyle(
                 color: btnTextColor ?? btntxtColor,
-                fontWeight: FontWeight.w800,
-                fontFamily: montMedium,
-                fontSize: 16)
+                fontFamily: montHeavy,
+                fontSize: sizeOfFont ?? 20)
         )
     );
   }

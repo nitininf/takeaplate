@@ -13,66 +13,89 @@ class SignUpScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
-    return SafeArea(
-      child: Scaffold(
-
-        body: Stack(
-          fit: StackFit.expand,
-          children: [
-            Image.asset(
-              appBackground,
-              fit: BoxFit.cover,
-            ),
-
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 40.0,right: 40),
-                  child: Column(
-                    children: [
-                       SizedBox(height: screenHeight*0.04,),
-                      Image.asset(
-                        appLogo, // Replace with your first small image path
-                        height: 80,
-                        width: 80,
-                      ),
-                      SizedBox(height: screenHeight*0.04,),
-                      const Align(
-                        alignment: Alignment.topLeft,
-                          child: CustomText(text: createyouraccount,color: hintColor,fontfamilly: montitalic,sizeOfFont: 17,)),
-                      SizedBox(height: screenHeight*0.04,),
-                      CommonEditText(hintText: fullName,),
-                      const SizedBox(height: 20,),
-                      CommonEmailField(hintText: email,),
-                      const SizedBox(height: 20,),
-                      CommonEditText(hintText: phoneNumber,fontfamilly: montitalic,),
-                      const SizedBox(height: 30,),
-                      Row(
+    return Scaffold(
+      extendBody: true,
+      resizeToAvoidBottomInset: false,
+      body:  Container(
+        height: screenHeight,
+        width: screenWidth,
+        decoration: const BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage(appBackground), fit: BoxFit.cover)),
+        child: SafeArea(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: ListView(
+                  keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(left: 40.0, right: 40),
+                      child: Column(
                         children: [
-                          Expanded(child: CommonEditText(hintText: dob,)),
-                          SizedBox(width: 10,),
-                          Expanded(child: CommonEditText(hintText: gender,isPassword: true,)),
+                          SizedBox(height: screenHeight * 0.04),
+                          Image.asset(
+                            appLogo,
+                            height: 80,
+                            width: 80,
+                          ),
+                          SizedBox(height: screenHeight * 0.04),
+                          const Align(
+                            alignment: Alignment.topLeft,
+                            child: CustomText(
+                              text: createyouraccount,
+                              color: hintColor,
+                              fontfamilly: montHeavy,
+                              sizeOfFont: 20,
+                            ),
+                          ),
+                          SizedBox(height: screenHeight * 0.04),
+                          CommonEditText(hintText: fullName),
+                          const SizedBox(height: 20),
+                          CommonEmailField(hintText: email),
+                          const SizedBox(height: 20),
+                          CommonEditText(hintText: phoneNumber, fontfamilly: montBook),
+                          const SizedBox(height: 30),
+                          Row(
+                            children: [
+                              Expanded(child: CommonEditText(hintText: dob)),
+                              SizedBox(width: 10),
+                              Expanded(child: CommonEditText(hintText: gender, isPassword: true)),
+                            ],
+                          ),
+
                         ],
                       ),
-                    ],
-                  ),
-                ),
-
-
-                Padding(
-                  padding: const EdgeInsets.all(40.0),
-                  child: CommonButton(btnBgColor: btnbgColor, btnText: next, onClick: (){
-                    Navigator.pushNamed(context, '/UploadPhoto');
-                  }),
-                )
-
-              ],
-            ),
+                    ),
                   ],
                 ),
-
+              ),
+              Padding(
+                padding:EdgeInsets.only(left: 40,right: 40,bottom: 20) ,
+                child: CommonButton(
+                  btnBgColor: btnbgColor,
+                  btnText: next,
+                  onClick: () {
+                    Navigator.pushNamed(context, '/UploadPhoto');
+                  },
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
+ /*   bottomNavigationBar:  Padding(
+      padding:EdgeInsets.only(left: 40,right: 40,bottom: 20) ,
+      child: CommonButton(
+        btnBgColor: btnbgColor,
+        btnText: next,
+        onClick: () {
+          Navigator.pushNamed(context, '/UploadPhoto');
+        },
+      ),
+    ),*/
+
     );
   }
 }

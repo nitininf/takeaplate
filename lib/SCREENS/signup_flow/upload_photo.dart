@@ -41,14 +41,14 @@ class UploadPhoto extends StatelessWidget {
                         padding: EdgeInsets.only(left: 18,top: 25),
                         child: Align(
                             alignment: Alignment.topLeft,
-                            child: CustomText(text: profilePicture,color: Colors.white,fontfamilly: montBold,sizeOfFont: 18,)),
+                            child: CustomText(text: profilePicture,color: Colors.white,fontfamilly: montHeavy,sizeOfFont: 20,)),
                       ),
                       SizedBox(height: screenHeight*0.04,),
 
                       Container(
                         height: screenHeight*0.350,
                         width: screenWidth*0.760,
-                        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                        margin: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
                         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                         decoration: BoxDecoration(
                              color: editbgColor,
@@ -68,8 +68,8 @@ class UploadPhoto extends StatelessWidget {
                             SizedBox(height: 16,),
                             const CustomText(text: uploadphoto,
                             color: Colors.white,
-                            fontfamilly: montLight,
-                            sizeOfFont: 16,)
+                            fontfamilly: montBook,
+                            sizeOfFont: 20,)
                           ],
                         ),
                       )
@@ -79,7 +79,7 @@ class UploadPhoto extends StatelessWidget {
 
 
                 Padding(
-                  padding: const EdgeInsets.all(40.0),
+                  padding: const EdgeInsets.all(58.0),
                   child: CommonButton(btnBgColor: btnbgColor, btnText: next, onClick: (){
                     Navigator.pushNamed(context, '/SetYourPasswordScreen');
                   }),

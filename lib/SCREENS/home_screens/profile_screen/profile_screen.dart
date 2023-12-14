@@ -11,12 +11,14 @@ import '../../../UTILS/fontfaimlly_string.dart';
 import '../../../main.dart';
 
 class ProfileScreen extends StatelessWidget{
+  double screenHeight = MediaQuery.of(navigatorKey.currentContext!).size.height;
+  double screenWidth = MediaQuery.of(navigatorKey.currentContext!).size.width;
   @override
   Widget build(BuildContext context) {
 
     return  SafeArea(child: Scaffold(
       body: Padding(
-        padding: const EdgeInsets.only(top: 5.0,right:20,left: 20 ,bottom: 10),
+        padding: const EdgeInsets.only(top: 5.0,right:26,left: 36 ,bottom: 10),
         child: Column(
           children: [
             const SizedBox(height: 20,),
@@ -30,12 +32,13 @@ class ProfileScreen extends StatelessWidget{
 
   Widget buildSection(String title, String viewAllText) {
     return Padding(
-      padding: const EdgeInsets.only(left: 8.0,right: 8.0,top: 8.0),
+      padding: const EdgeInsets.only(left: 8.0,right: 15.0,top: 8.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          CustomText(text: title, color: btnbgColor, fontfamilly: montBold, weight: FontWeight.w900, sizeOfFont: 16),
-          GestureDetector(child: CustomText(text: viewAllText, color: Colors.black, fontfamilly: montLight, weight: FontWeight.w300),
+          CustomText(text: title, color: btnbgColor, fontfamilly: montHeavy, sizeOfFont: 20),
+          GestureDetector(child: CustomText(text: viewAllText, color: viewallColor, fontfamilly: montRegular,sizeOfFont: 12, ),
+
           onTap: (){
             if(title=="CURRENT ORDERS") {
               Navigator.pushNamed(
@@ -72,50 +75,56 @@ class ProfileScreen extends StatelessWidget{
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-               Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const CustomText(text: "Surprise Pack", color: btntxtColor, fontfamilly: montitalic,sizeOfFont: 18,),
-
-                  const CustomText(text: "Salad & Co", color: btntxtColor, fontfamilly: montBold,weight: FontWeight.w400,sizeOfFont: 13,),
-
-                  const CustomText(text: "Tomorrow-7:35-8:40 Am", color: onboardingbgColor,sizeOfFont: 10, fontfamilly: montBold,weight: FontWeight.w200,),
-                  SizedBox(height: 5,),
-                  Row(
-                    children: [
-                      Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 3),
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                        decoration: BoxDecoration(
-                          color: readybgColor,
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(width: 1, color: Colors.white),
+               Expanded(
+                 flex: 2,
+                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const CustomText(text: "Surprise Pack",maxLin: 1, color: btntxtColor, fontfamilly: montBold,sizeOfFont: 21,),
+                 
+                    const CustomText(text: "Salad & Co", maxLin:1,color: viewallColor, fontfamilly: montRegular,sizeOfFont: 16,),
+                 
+                    const CustomText(text: "Tomorrow-7:35-8:40 Am",maxLin: 1, color: graysColor,sizeOfFont: 11, fontfamilly: montRegular),
+                    SizedBox(height: 5,),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 3),
+                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                            decoration: BoxDecoration(
+                              color: readybgColor,
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(width: 1, color: Colors.white),
+                            ),
+                            child: const CustomText(text: "READY FOR PCKUP",maxLin:1,sizeOfFont: 10,fontfamilly:montHeavy,color: readyColor,),
+                          ),
                         ),
-                        child: const CustomText(text: "READY FOR PCKUP",sizeOfFont: 10,weight: FontWeight.w700,color: readyColor,),
-                      ),
-                      SizedBox(width: 10,),
-                      CustomText(text: "84 Km", color: btntxtColor,sizeOfFont: 10, fontfamilly: montBold,weight: FontWeight.w400,),
-                    ],
+                        SizedBox(width: 10,),
+                        CustomText(text: "84 Km", color: graysColor,sizeOfFont: 15, fontfamilly: montSemiBold,),
+                      ],
 
-                  ),
-                  SizedBox(height: 0,),
-                  CustomText(text: "\$"+"9.99", color: dolorColor,sizeOfFont: 24, fontfamilly: montBold,weight: FontWeight.w900,),
-
-                ],
-              ),
+                    ),
+                    SizedBox(height: 0,),
+                    CustomText(text: "\$"+"9.99", color: dolorColor,sizeOfFont: 26, fontfamilly: montHeavy,),
+                 
+                  ],
+                               ),
+               ),
               const SizedBox(width: 18,),
               Expanded(
+                flex: 0,
                 child: Stack(
                   alignment: Alignment.topRight,
                   clipBehavior: Clip.none,
                   children: [
-                    Image.asset(food_image, height: 130, width: 130, fit: BoxFit.cover),
+                    Image.asset(food_image, height: 130, width: 127, fit: BoxFit.cover),
                     Positioned(
-                      right: -10,
+                      right: -4,
                       child: Image.asset(
                         save_icon,
-                        height: 25,
-                        width: 25,
+                        height: 15,
+                        width: 18,
 
                       ),
 
@@ -139,14 +148,14 @@ class ProfileScreen extends StatelessWidget{
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Image.asset(profile,height: 100,width: 100,),
+                Image.asset(profile,height: 94,width: 95,),
                 SizedBox(width: 20,),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const CustomText(text: "Jack Brown",color: editbgColor,sizeOfFont: 18,weight: FontWeight.w800,),
-                    const CustomText(text: "Gold Coast, Australia",sizeOfFont: 12,weight: FontWeight.w600,color: btntxtColor,),
+                    const CustomText(text: "Jack Brown",color: viewallColor,sizeOfFont: 25,fontfamilly: montBold,),
+                    const CustomText(text: "Gold Coast, Australia",sizeOfFont: 15,fontfamilly:montRegular,color: viewallColor,),
                     Container(
                       margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 3),
                       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -158,27 +167,27 @@ class ProfileScreen extends StatelessWidget{
                       child: GestureDetector(onTap:(){
                         Navigator.pushNamed(
                             navigatorKey.currentContext!, '/EditProfileScreen');
-                      },child: const CustomText(text: "EDIT PROFILE",sizeOfFont: 10,weight: FontWeight.w700,color: editprofileColor,)),
+                      },child: const CustomText(text: "EDIT PROFILE",sizeOfFont: 10,fontfamilly:montBold,color: editprofileColor,)),
                     )
                   ],
                 ),
                // profileSection()
               ],
             ),
-            const SizedBox(height: 20,),
+            const SizedBox(height: 30,),
             buildSection("CURRENT ORDERS", viewall),
             const SizedBox(height: 5,),
             getCards(),
             getCards(),
             const Padding(
-              padding: EdgeInsets.all(18.0),
+              padding: EdgeInsets.only(left: 25.0,right: 25,top: 15,bottom: 15),
               child: Divider(height: 0,color: grayColor,thickness: 0,),
             ),
             buildSection("MY FAVOURITES", viewall),
             const SizedBox(height: 5,),
             buildHorizontalFavCards(),
             const Padding(
-              padding: EdgeInsets.all(18.0),
+              padding: EdgeInsets.only(left: 25.0,right: 25,top: 15,bottom: 15),
               child: Divider(height: 0,color: grayColor,thickness: 0,),
             ),
             buildSection("PAYMENT METHOD", viewall),
@@ -212,8 +221,8 @@ class ProfileScreen extends StatelessWidget{
         children: [
           Image.asset(master_card,fit: BoxFit.contain,height: 40,width: 70,),
           const SizedBox(width: 10,),
-          const Expanded(child: CustomText(text: "MasterCard",color: btntxtColor,sizeOfFont: 14,weight: FontWeight.w700,)),
-          const CustomText(text: "-2211",color: btntxtColor,sizeOfFont: 14,weight: FontWeight.w600,),
+          const Expanded(child: CustomText(text: "MasterCard",color: btntxtColor,sizeOfFont: 15,fontfamilly: montBold,)),
+          const CustomText(text: "-2211",color: btntxtColor,sizeOfFont: 14,fontfamilly: montRegular,),
         ],
       ),
     );
@@ -221,6 +230,7 @@ class ProfileScreen extends StatelessWidget{
   Widget getFavCards() {
     return
       Container(
+       // width: screenWidth*0.8,
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
       decoration: BoxDecoration(
@@ -229,15 +239,16 @@ class ProfileScreen extends StatelessWidget{
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CustomText(text: "Surprise Pack", color: btntxtColor, fontfamilly: montitalic,sizeOfFont: 18,),
+              CustomText(text: "Surprise Pack",maxLin: 1, color: btntxtColor, fontfamilly: montBold,sizeOfFont: 21,),
 
-              CustomText(text: "Salad & Co", color: btntxtColor, fontfamilly: montBold,weight: FontWeight.w400,sizeOfFont: 13,),
+              CustomText(text: "Salad & Co", maxLin:1,color: viewallColor, fontfamilly: montRegular,sizeOfFont: 16,),
 
-              CustomText(text: "Tomorrow-7:35-8:40 Am", color: onboardingbgColor,sizeOfFont: 10, fontfamilly: montBold,weight: FontWeight.w200,),
+              CustomText(text: "Tomorrow-7:35-8:40 Am", maxLin:1,color: graysColor,sizeOfFont: 11, fontfamilly: montRegular),
               SizedBox(height: 5,),
               Row(
                 children: [
@@ -247,7 +258,7 @@ class ProfileScreen extends StatelessWidget{
                   Icon(Icons.star_border,size: 20,color: Colors.grey,),
                   Icon(Icons.star_border,size: 20,color: Colors.grey,),
                   SizedBox(width: 10,),
-                  CustomText(text: "84 Km", color: btntxtColor,sizeOfFont: 10, fontfamilly: montBold,weight: FontWeight.w400,),
+                  CustomText(text: "84 Km", color: graysColor,sizeOfFont: 15, fontfamilly: montSemiBold,),
                 ],
 
               ),
@@ -261,13 +272,14 @@ class ProfileScreen extends StatelessWidget{
             alignment: Alignment.topRight,
             clipBehavior: Clip.none,
             children: [
-              Image.asset(food_image, height: 130, width: 130, fit: BoxFit.cover),
+              Image.asset(food_image, height: 130, width: 120, fit: BoxFit.contain),
               Positioned(
-                right: -10,
+                right: 0,
+                top: 3,
                 child: Image.asset(
                   save_icon,
-                  height: 25,
-                  width: 25,
+                  height: 15,
+                  width: 18,
                 ),
               ),
             ],

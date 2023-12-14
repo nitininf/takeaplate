@@ -17,11 +17,12 @@ class OrderSummeryScreen extends StatelessWidget{
     double screenWidth = MediaQuery.of(context).size.width;
     return  SafeArea(child: Scaffold(
         body: Padding(
-          padding: const EdgeInsets.only(right: 20.0,left: 20,bottom: 0),
+          padding: const EdgeInsets.only(right: 25.0,left: 25,bottom: 0,top: 15),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const CustomAppBar(),
+              SizedBox(height: 10,),
               getView(screenHeight)
             ],
           ),
@@ -43,7 +44,7 @@ class OrderSummeryScreen extends StatelessWidget{
              Row(
                mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                CustomText(text: "ORDER SUMMARY",color: editbgColor,sizeOfFont: 18,weight: FontWeight.w800,),
+                CustomText(text: "ORDER SUMMARY",color: editbgColor,sizeOfFont: 20,fontfamilly: montHeavy,),
                 Container(
                   margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 3),
                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -81,8 +82,8 @@ class OrderSummeryScreen extends StatelessWidget{
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          CustomText(text: "Total",color: btntxtColor,sizeOfFont: 14,weight: FontWeight.w800,),
-                          CustomText(text: "\$39.99",color: dolorColor,sizeOfFont: 18,weight: FontWeight.w800,),
+                          CustomText(text: "Total",color: viewallColor,sizeOfFont: 21,fontfamilly: montBold,),
+                          CustomText(text: "\$39.99",color: dolorColor,sizeOfFont: 21,fontfamilly: montBold,),
 
 
                         ],
@@ -98,7 +99,7 @@ class OrderSummeryScreen extends StatelessWidget{
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                CustomText(text: "PAYMENT METHOD",color: editbgColor,sizeOfFont: 18,weight: FontWeight.w800,),
+                CustomText(text: "PAYMENT METHOD",color: editbgColor,sizeOfFont: 21,fontfamilly: montBold,),
                 Container(
                   margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 3),
                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -155,8 +156,8 @@ class OrderSummeryScreen extends StatelessWidget{
         children: [
           Image.asset(master_card,fit: BoxFit.contain,height: 40,width: 70,),
           SizedBox(width: 10,),
-          Expanded(child: CustomText(text: "MasterCard",color: btntxtColor,sizeOfFont: 14,weight: FontWeight.w700,)),
-          CustomText(text: "-2211",color: btntxtColor,sizeOfFont: 14,weight: FontWeight.w600,),
+          Expanded(child: CustomText(text: "MasterCard",color: viewallColor,sizeOfFont: 14,fontfamilly: montBold,)),
+          CustomText(text: "-2211",color: viewallColor,sizeOfFont: 14,fontfamilly: montRegular,),
         ],
       ),
     );
@@ -179,9 +180,9 @@ class OrderSummeryScreen extends StatelessWidget{
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    CustomText(text: "Surprise Pack", color: btntxtColor, fontfamilly: montitalic,sizeOfFont: 12,),
+                    CustomText(text: "Surprise Pack", maxLin:1,color: btntxtColor, fontfamilly: montBold,sizeOfFont: 15,),
 
-                    CustomText(text: "Salad & Co", color: btntxtColor, fontfamilly: montBold,weight: FontWeight.w400,sizeOfFont: 10,),
+                    CustomText(text: "Salad & Co", maxLin:1,color: btntxtColor, fontfamilly: montRegular,sizeOfFont: 11,),
 
                   ],
                 ),
@@ -196,10 +197,10 @@ class OrderSummeryScreen extends StatelessWidget{
                       color: btnbgColor,
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(width: 1, color: Colors.white)),
-                  child:const Row(
+                  child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Icon(Icons.delete,color: hintColor,size: 12,),
+                      Image.asset(delete_icon,height: 9,width: 9,),
                       SizedBox(width: 8,),
                       CustomText(text: "1",sizeOfFont: 12,color: hintColor,),
                       SizedBox(width: 8,),
@@ -208,9 +209,11 @@ class OrderSummeryScreen extends StatelessWidget{
                   ) ,
                 ),
               ),
-              CustomText(text: "\$9.99",sizeOfFont: 12,color: dolorColor,weight: FontWeight.w800,)
+
+              CustomText(text: "\$9.99",sizeOfFont: 15,color: dolorColor,fontfamilly: montHeavy,)
             ],
           ),
+          SizedBox(height: 5,),
           Divider(color: grayColor,thickness: 0,)
         ],
       ),

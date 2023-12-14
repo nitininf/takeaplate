@@ -27,7 +27,7 @@ class CommonCounter extends ChangeNotifier {
 
 
   getUserId() async {
-    String? userId = await Utility.getStringValue(RequestString.USER_ID);
+    String? userId = "";//await Utility.getStringValue(RequestString.USER_ID);
     print("UserId: $userId");
     return userId;
   }

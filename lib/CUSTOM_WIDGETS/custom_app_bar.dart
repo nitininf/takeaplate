@@ -29,8 +29,8 @@ class CustomAppBar extends StatelessWidget {
         },
         child: Image.asset(
         back_arrow,
-        height: 20,
-        width: 20,
+        height: 27,
+        width: 17,
     ),
     ),
     Expanded(
@@ -38,7 +38,7 @@ class CustomAppBar extends StatelessWidget {
     alignment: Alignment.center,
     child:  Image.asset(
     appLogo,
-    height: 60,
+    height: 56,
     width: 60,
     ),
     ),
@@ -46,12 +46,12 @@ class CustomAppBar extends StatelessWidget {
     Center(
     child:  GestureDetector(
       onTap: onTap,
-      child: onTap_one ==null ? Text("") : Image.asset(
+      child:  Image.asset(
       menu_icon,
-      height: 20,
-      width: 20,
-      fit: BoxFit.cover,
-      ),
+      height: 23,
+      width: 34,
+      fit: BoxFit.contain,
+      ),//onTap_one ==null ? Text("") :
     )
     )
     ],

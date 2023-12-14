@@ -12,7 +12,7 @@ class RestrorentProfileScreen extends StatelessWidget{
   Widget build(BuildContext context) {
    return SafeArea(child: Scaffold(
      body: Padding(
-       padding: const EdgeInsets.all(20.0),
+       padding: const EdgeInsets.only(top: 20.0,bottom: 20,left:25,right: 25),
        child: Column(
          children: [
            CustomAppBar(),
@@ -27,6 +27,7 @@ class RestrorentProfileScreen extends StatelessWidget{
       child: SingleChildScrollView(
         child: Column(
           children: [
+            SizedBox(height: 10,),
             getCards(),
             buildSection("TODAY'S DEAL", ""),
             buildVeerticalCards()
@@ -41,62 +42,53 @@ class RestrorentProfileScreen extends StatelessWidget{
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          CustomText(text: title, color: btnbgColor, fontfamilly: montBold, weight: FontWeight.w900, sizeOfFont: 18),
+          CustomText(text: title, color: editbgColor, fontfamilly: montHeavy,sizeOfFont: 20),
           CustomText(text: viewAllText, color: Colors.black, fontfamilly: montLight, weight: FontWeight.w900),
         ],
       ),
     );
   }
   Widget getCards() {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        border: null,
-      ),
-      child:  Column(
+    return
+      Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-           Stack(
-             fit: StackFit.passthrough,
-             clipBehavior: Clip.none,
-             children: [
-               Container(
-                   height: 150,
-                   width: double.infinity,
-                   child: Image.asset(restrorent_food, fit: BoxFit.fill)),
-               Positioned(
-                  bottom: -90,
-                  right: 10,
-                  child: Container(
-                   width: 120,
-                   height: 120,
-                   decoration: BoxDecoration(
-                     color: imgbgColor,
-                     borderRadius: BorderRadius.circular(20),
-                     border: Border.all(width: 0, color: Colors.grey),
-
-                   ),
-                   child:  Center(
-                     child: Image.asset(restrorent_img, fit: BoxFit.fill)
-                   ),
-                 ),
-               ),
-
-             ],
-           ),
-          const SizedBox(height: 20,),
-          const Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          Stack(
+            clipBehavior: Clip.none,
             children: [
-              CustomText(text: "Salad & Co.", sizeOfFont: 18, color: btntxtColor, fontfamilly: montBold,weight: FontWeight.w900,),
-              CustomText(text: "Health Foods", color: btntxtColor, sizeOfFont:16,weight : FontWeight.w300,fontfamilly: montBold),
-              CustomText(text: "23 Dreamland Av.., Australia", weight : FontWeight.w300, sizeOfFont :10,color: btntxtColor, fontfamilly: montBold),
+              Image.asset(restrorent_food, fit: BoxFit.contain,
+                height: 200,),
+              Positioned(
+                bottom: -60,
+                right: 10,
+                child: Container(
+                  width: 120,
+                  height: 120,
+                  decoration: BoxDecoration(
+                    color: imgbgColor,
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(width: 0, color: Colors.grey),
+
+                  ),
+                  child:  Center(
+                      child: Image.asset(restrorent_img, fit: BoxFit.fill)
+                  ),
+                ),
+              ),
 
             ],
           ),
-          const SizedBox(height: 10,),
+          const SizedBox(height: 5,),
+          const Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CustomText(text: "Salad & Co.", sizeOfFont: 20, color: viewallColor, fontfamilly: montBold,),
+              CustomText(text: "Health Foods", color: viewallColor, sizeOfFont:16,fontfamilly: montRegular),
+              CustomText(text: "23 Dreamland Av.., Australia", weight : FontWeight.w300, sizeOfFont :11,color: viewallColor, fontfamilly: montLight),
+
+            ],
+          ),
+          const SizedBox(height: 5,),
           const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -112,37 +104,36 @@ class RestrorentProfileScreen extends StatelessWidget{
             ],
           ),
           SizedBox(height: 10,),
-          const CustomText(text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.", weight : FontWeight.w300, sizeOfFont :10,color: btntxtColor, fontfamilly: montBold),
+          const CustomText(text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",  sizeOfFont :10,color: onboardingbgColor, fontfamilly: montBook),
           SizedBox(height: 10,),
 
-       Row(
-         children: [
-           Container(
-             margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 3),
-             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-             decoration: BoxDecoration(
-               color: btnbgColor.withOpacity(0.3),
-               borderRadius: BorderRadius.circular(20),
-               border: Border.all(width: 1, color: Colors.white),
-             ),
-             child: const CustomText(text: "Deals",sizeOfFont: 10,weight: FontWeight.w700,color: hintColor,),
-           ),
-           SizedBox(width: 8,),
-           Container(
-             margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 3),
-             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-             decoration: BoxDecoration(
-               color: btnbgColor,
-               borderRadius: BorderRadius.circular(20),
-               border: Border.all(width: 1, color: Colors.white),
-             ),
-             child: const CustomText(text: "Deals you loved",sizeOfFont: 10,weight: FontWeight.w700,color: hintColor,),
-           )
-         ],
-       )
+          Row(
+            children: [
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 3),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                decoration: BoxDecoration(
+                  color: btnbgColor.withOpacity(0.3),
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(width: 1, color: Colors.white),
+                ),
+                child: const CustomText(text: "Deals",sizeOfFont: 10,weight: FontWeight.w700,color: hintColor,),
+              ),
+              SizedBox(width: 8,),
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 3),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                decoration: BoxDecoration(
+                  color: btnbgColor,
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(width: 1, color: Colors.white),
+                ),
+                child: const CustomText(text: "Deals you loved",sizeOfFont: 10,weight: FontWeight.w700,color: hintColor,),
+              )
+            ],
+          )
         ],
-      ),
-    );
+      );
   }
 
   Widget buildVeerticalCards() {
@@ -152,64 +143,63 @@ class RestrorentProfileScreen extends StatelessWidget{
     );
   }
   Widget getFavCards() {
-    return GestureDetector(
-      onTap: (){
-        Navigator.pushNamed(navigatorKey.currentContext!, '/OrderAndPayScreen');
-      },
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(width: 0, color: Colors.grey),
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Column(
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(width: 0, color: Colors.grey),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const   Expanded(
+            child:  Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CustomText(text: "Surprise Pack", color: btntxtColor, fontfamilly: montitalic,sizeOfFont: 18,),
+                CustomText(text: "Surprise Pack", maxLin: 1,color: btntxtColor, fontfamilly: montBold,sizeOfFont: 21,),
 
-                CustomText(text: "Salad & Co", color: btntxtColor, fontfamilly: montBold,weight: FontWeight.w400,sizeOfFont: 13,),
+                CustomText(text: "Salad & Co", maxLin: 1,color: btntxtColor, fontfamilly: montRegular,sizeOfFont: 16,),
 
-                CustomText(text: "Tomorrow-7:35-8:40 Am", color: onboardingbgColor,sizeOfFont: 10, fontfamilly: montBold,weight: FontWeight.w200,),
+                CustomText(text: "Tomorrow-7:35-8:40 Am", maxLin: 1,color: graysColor,sizeOfFont: 11, fontfamilly: montRegular),
                 SizedBox(height: 5,),
                 Row(
                   children: [
-                    Icon(Icons.star_border,size: 20,color: Colors.grey,),
-                    Icon(Icons.star_border,size: 20,color: Colors.grey,),
-                    Icon(Icons.star_border,size: 20,color: Colors.grey,),
-                    Icon(Icons.star_border,size: 20,color: Colors.grey,),
-                    Icon(Icons.star_border,size: 20,color: Colors.grey,),
+                    Icon(Icons.star_border,size: 20,color:graysColor,),
+                    Icon(Icons.star_border,size: 20,color: graysColor),
+                    Icon(Icons.star_border,size: 20,color: graysColor,),
+                    Icon(Icons.star_border,size: 20,color: graysColor,),
+                    Icon(Icons.star_border,size: 20,color: graysColor,),
                     SizedBox(width: 10,),
-                    CustomText(text: "84 Km", color: btntxtColor,sizeOfFont: 10, fontfamilly: montBold,weight: FontWeight.w400,),
+                    Expanded(child: CustomText(text: "84 Km",maxLin: 1, color: graysColor,sizeOfFont: 15, fontfamilly: montSemiBold)),
                   ],
 
                 ),
                 SizedBox(height: 5,),
-                CustomText(text: "\$"+"9.99", color: dolorColor,sizeOfFont: 24, fontfamilly: montBold,weight: FontWeight.w900,),
+                CustomText(text: "\$"+"9.99", color: dolorColor,sizeOfFont: 27, fontfamilly: montHeavy,),
 
               ],
             ),
-            const SizedBox(width: 18,),
-            Stack(
-              clipBehavior: Clip.none,
+          ),
+          const SizedBox(width: 18,),
+          Expanded(
+            child: Stack(
               alignment: Alignment.topRight,
+              clipBehavior: Clip.none,
               children: [
                 Image.asset(food_image, height: 130, width: 130, fit: BoxFit.cover),
                 Positioned(
-                  right: -10,
+                  right: -4,
                   child: Image.asset(
                     save_icon,
-                    height: 25,
-                    width: 25,
+                    height: 15,
+                    width: 18,
                   ),
                 ),
               ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

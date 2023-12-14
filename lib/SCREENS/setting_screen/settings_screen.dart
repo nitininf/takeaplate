@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/common_button.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/common_edit_text.dart';
 import 'package:takeaplate/UTILS/app_color.dart';
+import 'package:takeaplate/UTILS/fontfaimlly_string.dart';
 import 'package:takeaplate/main.dart';
 
 import '../../CUSTOM_WIDGETS/custom_app_bar.dart';
@@ -14,7 +15,7 @@ class SettingScreen extends StatelessWidget{
   Widget build(BuildContext context) {
    return SafeArea(child: Scaffold(
      body: Padding(
-       padding: const EdgeInsets.all(20.0),
+       padding: const EdgeInsets.only(top: 20.0,bottom: 20,left: 29,right: 29),
        child: Column(
          crossAxisAlignment: CrossAxisAlignment.start,
          mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -22,7 +23,7 @@ class SettingScreen extends StatelessWidget{
            CustomAppBar(),
            Expanded(child: getView()),
            Padding(
-             padding: const EdgeInsets.only(left: 40.0,right: 40.0),
+             padding: const EdgeInsets.only(left: 30.0,right: 30.0),
              child: Column(
                children: [
                  CommonButton(btnBgColor: btnbgColor, btnText:"LOG OUT", onClick: (){
@@ -46,8 +47,11 @@ class SettingScreen extends StatelessWidget{
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const SizedBox(height: 20,),
-          const CustomText(text: "SETTINGS",sizeOfFont: 20,weight: FontWeight.w900,color: editbgColor,),
-          const SizedBox(height: 20,),
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0),
+            child: const CustomText(text: "SETTINGS",sizeOfFont: 20,fontfamilly: montHeavy,color: editbgColor,),
+          ),
+          const SizedBox(height: 12,),
            CommonTextField(hintText: "Notification Center",onTap: (){
              Navigator.pushNamed(navigatorKey.currentContext!, '/NotificationCenterScreen');
            },),

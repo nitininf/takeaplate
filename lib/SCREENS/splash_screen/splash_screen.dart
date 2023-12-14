@@ -25,13 +25,16 @@ class SplashScreen extends StatelessWidget {
                   // First Small Image
                   Image.asset(
                     appLogo, // Replace with your first small image path
-                    height: 200,
-                    width: screenWidth*0.5,
+                    height: 207,
+                    width: 219,
+                    fit: BoxFit.cover,
                   ),
+                  SizedBox(height: 50,),
                   Image.asset(
                     textImage, // Replace with your second small image path
-                    height: 140,
-                    width: screenWidth*0.5,
+                    height: 80,
+                    width: 283,
+                    fit: BoxFit.cover,
                   ),
                 ],
               ),

@@ -28,26 +28,28 @@ class CreateOrLogInScreen extends StatelessWidget {
                  children: [
                    Image.asset(
                      appLogo, // Replace with your first small image path
-                     height: 100,
-                     width: 100,
+                     height: 138,
+                     width: 130,
+                     fit: BoxFit.contain,
                    ),
                    SizedBox(height: 40,),
                    Image.asset(
                      textImage, // Replace with your second small image path,
-                     width: screenWidth*0.5,
+                     width: 270,
+                     height: 80,
+                     fit: BoxFit.contain,
                    ),
                  ],
                ),
                Padding(
-                 padding: const EdgeInsets.all(50),
+                 padding: const EdgeInsets.all(40),
                  child: Column(
                    children: [
-                     CommonButton(btnBgColor: btnbgColor, btnText: login, onClick: (){
+                     CommonButton(btnBgColor: btnbgColor, btnText: login,sizeOfFont: 18, onClick: (){
                        Navigator.pushNamed(context, '/Login');
                      }),
-
                      SizedBox(height: 20,),
-                     CommonButton(btnBgColor: btnbgColor, btnText: createAnaccount, onClick: (){
+                     CommonButton(btnBgColor: btnbgColor, sizeOfFont:17,btnText: createAnaccount, onClick: (){
                        Navigator.pushNamed(context, '/SignupScreen');
                      }),
                    ],

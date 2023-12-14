@@ -27,11 +27,12 @@ class CommonEditText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final FocusNode emailFocusNode = FocusNode();
     return // Use the provided onTap callback
 
         TextFormField(
           onTap: onTap,
-          keyboardType: isPassword ? null : TextInputType.numberWithOptions(decimal: true),
+          keyboardType: isPassword ? TextInputType.name : TextInputType.datetime,
           inputFormatters:!isPassword? <TextInputFormatter>[
             FilteringTextInputFormatter.allow(RegExp(r'^[+-]?[\d]+\.?[\d]*$')),
           ]: null,
@@ -40,17 +41,16 @@ class CommonEditText extends StatelessWidget {
           maxLength: 15,
           controller: controller,
           style:  TextStyle(
-            fontWeight: FontWeight.w400,
-            fontSize: 16,
-            fontFamily: fontfamilly ?? montitalic,
-            color: isbgColor ? editbgColor : hintColor, // Make sure to define your colors properly
+            fontSize: isnewCard ? 16 : 20,
+            fontFamily: fontfamilly ?? montBook,
+            color: isbgColor ? editbgColor :isnewCard ? onboardingBtn : readybgColor, // Make sure to define your colors properly
           ),
           decoration: InputDecoration(
             counterText: '',
             filled: true,
             fillColor: isbgColor ? hintColor  : isnewCard ? newcardbgColor  : editbgColor,
             border: !isbgColor ? OutlineInputBorder(borderRadius: BorderRadius.circular(20),borderSide: BorderSide.none)
-            : OutlineInputBorder(borderRadius: BorderRadius.circular(20),borderSide: BorderSide(color: blackColor)),
+            : OutlineInputBorder(borderRadius: BorderRadius.circular(20),borderSide: BorderSide(color: graysColor,style:BorderStyle.none )),
 
             suffixIcon: isPassword
                 ? const Icon(
@@ -59,12 +59,11 @@ class CommonEditText extends StatelessWidget {
               size: 15,
             )
                 : const SizedBox(),
-            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+            contentPadding: isbgColor ?const EdgeInsets.symmetric(horizontal: 20, vertical: 16)  : isnewCard ?const EdgeInsets.symmetric(horizontal: 20, vertical: 10):const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
             hintStyle:  TextStyle(
-              fontWeight: FontWeight.w400,
-              fontFamily: fontfamilly ?? montitalic,
-              fontSize: 16,
-              color: isbgColor ? editbgColor : readybgColor, // Define your hint color properly
+              fontFamily: fontfamilly ?? montBook,
+              fontSize: isnewCard ? 16 : 20,
+              color: isbgColor ? editbgColor :isnewCard ? onboardingBtn : readybgColor, // Define your hint color properly
             ),
             hintText: hintText,
           ),

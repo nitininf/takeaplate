@@ -17,7 +17,7 @@ class ClosestScreen extends StatelessWidget{
   Widget build(BuildContext context) {
     return  SafeArea(
         child: Scaffold(
-          body: Padding(padding: const EdgeInsets.all(20.0),
+          body: Padding(padding: const EdgeInsets.only(top: 20.0,bottom: 20,left: 25,right: 25),
 
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -27,7 +27,7 @@ class ClosestScreen extends StatelessWidget{
                 const CustomSearchField(hintText:"Search"),
                 const Padding(
                   padding: EdgeInsets.only(left: 13.0,top: 20),
-                  child: CustomText(text: closet, color: btnbgColor, fontfamilly: montBold, weight: FontWeight.bold, sizeOfFont: 18),
+                  child: CustomText(text: closet, color: btnbgColor, fontfamilly: montHeavy, sizeOfFont: 20),
                 ),
                 buildHorizontalList(items),
                 buildVeerticalCards()
@@ -45,20 +45,18 @@ class ClosestScreen extends StatelessWidget{
         mainAxisSize: MainAxisSize.min,
         children: List.generate(
           items.length,
-              (index) =>
-                  GestureDetector(
+              (index) => GestureDetector(
             onTap: (){
-              //Navigator.pushNamed(navigatorKey.currentContext!, '/MyOrdersSccreen');
             },
             child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              margin: const EdgeInsets.symmetric(horizontal: 3, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 10),
               decoration: BoxDecoration(
                 color: editbgColor,
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(30),
                 border: Border.all(width: 1, color: Colors.white),
               ),
-              child: CustomText(text: items[index], color: hintColor,weight: FontWeight.w400, fontfamilly: montBook)
+              child: CustomText(text: items[index], color: hintColor, fontfamilly: montBook,sizeOfFont: 19,),
             ),
           ),
         ),
@@ -77,12 +75,11 @@ class ClosestScreen extends StatelessWidget{
     );
   }
   Widget getFavCards() {
-    return
-      GestureDetector(
-        onTap: (){
-          Navigator.pushNamed(navigatorKey.currentContext!, '/RestrorentProfileScreen');
-        },
-        child: Container(
+    return GestureDetector(
+      onTap: (){
+        Navigator.pushNamed(navigatorKey.currentContext!, '/RestrorentProfileScreen');
+      },
+      child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
         decoration: BoxDecoration(
@@ -91,51 +88,53 @@ class ClosestScreen extends StatelessWidget{
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CustomText(text: "Salad & Co", color: btntxtColor, fontfamilly: montitalic,sizeOfFont: 18,),
+            const  Expanded(
+              flex: 2,
+              child:  Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CustomText(text: "Salad & Co.",maxLin: 1, color: btntxtColor, fontfamilly: montBold,sizeOfFont: 24,),
 
-                CustomText(text: "Health Foods", color: btntxtColor, fontfamilly: montBold,weight: FontWeight.w400,sizeOfFont: 13,),
-                CustomText(text: "3 offers available", color: editbgColor,sizeOfFont: 10, fontfamilly: montBold,weight: FontWeight.w400,),
-                SizedBox(height: 5,),
-                Row(
-                  children: [
-                    Icon(Icons.star,size: 20,color: btnbgColor,),
-                    Icon(Icons.star,size: 20,color: btnbgColor,),
-                    Icon(Icons.star,size: 20,color: btnbgColor,),
-                    Icon(Icons.star,size: 20,color: btnbgColor,),
-                    Icon(Icons.star,size: 20,color: btnbgColor,),
-                    SizedBox(width: 10,),
+                  CustomText(text: "Health Foods", maxLin: 1,color: btntxtColor, fontfamilly: montRegular,sizeOfFont: 14,),
 
-                  ],
-
-                ),
-
-              ],
-            ),
-            const SizedBox(width: 8,),
-            Stack(
-              alignment: Alignment.topRight,
-              clipBehavior: Clip.none,
-              children: [
-                Image.asset(food_image, height: 85, width: 85, fit: BoxFit.cover),
-                Positioned(
-                  right: -10,
-                  child: Image.asset(
-                    save_icon,
-                    height: 25,
-                    width: 25,
+                  CustomText(text: "3 offers available", maxLin: 1,color: offerColor,sizeOfFont: 9, fontfamilly: montBook,),
+                  SizedBox(height: 1,),
+                  Row(
+                    children: [
+                      Icon(Icons.star,size: 20,color: btnbgColor,),
+                      Icon(Icons.star,size: 20,color: btnbgColor,),
+                      Icon(Icons.star,size: 20,color: btnbgColor,),
+                      Icon(Icons.star,size: 20,color: btnbgColor,),
+                      Icon(Icons.star,size: 20,color: btnbgColor,),
+                    ],
                   ),
-                ),
-              ],
+                ],
+              ),
+            ),
+            const SizedBox(width: 18,),
+            Expanded(
+              child: Stack(
+                alignment: Alignment.topRight,
+                clipBehavior: Clip.none,
+                children: [
+                  Image.asset(food_image, height: 80, width: 80, fit: BoxFit.cover),
+                  Positioned(
+                    right: -4,
+                    child: Image.asset(
+                      save_icon,
+                      height: 15,
+                      width: 18,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
-            ),
-      );
+      ),
+    );
   }
+
 
 }

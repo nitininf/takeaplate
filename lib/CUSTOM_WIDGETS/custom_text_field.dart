@@ -20,7 +20,7 @@ class CommonTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Define your custom BorderSide
-    BorderSide customBorderSide = BorderSide(color: Colors.grey, width: 2.0); // Adjust the width as needed
+    BorderSide customBorderSide = BorderSide(color:editbgColor, width: 0.0); // Adjust the width as needed
 
     return
       TextFormField(
@@ -47,7 +47,7 @@ class CommonTextField extends StatelessWidget {
             contentPadding:
             const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
             hintStyle:
-            const TextStyle(fontWeight: FontWeight.w500, fontSize: 14,fontFamily: montMedium,color: btntxtColor),
+            const TextStyle( fontSize: 17,fontFamily: montRegular,color: editbgColor),
             hintText: hintText));
 
   }

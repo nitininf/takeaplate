@@ -48,17 +48,17 @@ class PassWordSentScreen extends StatelessWidget {
                         const Align(
                           alignment: Alignment.center,
                           child: CustomText(text:sentPss ,
-                            sizeOfFont: 17,
+                            sizeOfFont: 20,
                             color: hintColor,
-                          fontfamilly: montBook,
+                          fontfamilly: montHeavy,
                           isAlign: true,),
                         ),
                         const SizedBox(height: 20,),
 
                         const CustomText(text: checkInbox,
-                          sizeOfFont: 17,
+                          sizeOfFont: 20,
                           color: btnbgColor,
-                          fontfamilly: montBook,
+                          fontfamilly: montRegular,
                           isAlign: true,),
                         SizedBox(
                           height: screenHeight * 0.05,

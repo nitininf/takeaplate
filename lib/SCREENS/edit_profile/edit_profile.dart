@@ -19,7 +19,7 @@ class EditProfileScreen extends StatelessWidget{
 
     return  SafeArea(child: Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.only(top:20.0,bottom: 20,left: 25,right: 25),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -37,22 +37,22 @@ class EditProfileScreen extends StatelessWidget{
     return Expanded(
       child: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.only(left: 30.0,right: 30.0),
+          padding: const EdgeInsets.only(left: 20.0,right: 20.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 10,),
-              const CustomText(text: "Edit Profile",sizeOfFont: 20,weight: FontWeight.w900,color: btnbgColor,),
+              const CustomText(text: "Edit Profile",sizeOfFont: 20,fontfamilly: montHeavy,color: btnbgColor,),
               const SizedBox(height: 10,),
               Align(
                   alignment: Alignment.center,
-                  child: Image.asset(profile_img,height: 270,fit: BoxFit.fitWidth,)),
+                  child: Image.asset(profile_img,height: 300,fit: BoxFit.contain,)),
               const SizedBox(height: 15,),
               CommonEditText(hintText: fullName,isbgColor: true,),
               const SizedBox(height: 15,),
               CommonEmailField(hintText: email,isbgColor: true,),
               const SizedBox(height: 15,),
-              CommonEditText(hintText: phoneNumber,fontfamilly: montitalic,isbgColor: true,),
+              CommonEditText(hintText: phoneNumber,fontfamilly: montBook,isbgColor: true,),
               const SizedBox(height: 15,),
               Row(
                 children: [
@@ -62,7 +62,7 @@ class EditProfileScreen extends StatelessWidget{
                 ],
               ),
               SizedBox(height: 30,),
-              CommonButton(btnBgColor: btnbgColor, btnText: next, onClick: (){
+              CommonButton(btnBgColor: btnbgColor, btnText: "SAVE", onClick: (){
                 Navigator.pop(navigatorKey.currentContext!);
               }),
             ],

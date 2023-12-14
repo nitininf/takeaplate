@@ -13,19 +13,19 @@ class SearchScreen extends StatelessWidget{
  return  SafeArea(child: Scaffold(
 
    body: Padding(
-     padding: EdgeInsets.all(20.0),
+     padding: EdgeInsets.only(top: 20.0,bottom: 20,left: 28,right: 28),
      child: Column(
        crossAxisAlignment: CrossAxisAlignment.start,
        children: [
          const Padding(
-           padding: EdgeInsets.only(top: 5.0,right:20,left: 20 ,bottom: 10),
-           child: CustomText(text: "SEARCH", color: btnbgColor, fontfamilly: montBold, weight: FontWeight.w900, sizeOfFont: 17),
+           padding: EdgeInsets.only(top: 5.0,right:20,left: 4 ,bottom: 10),
+           child: CustomText(text: "SEARCH", color: btnbgColor, fontfamilly: montHeavy,  sizeOfFont: 20),
          ),
-         const SizedBox(height: 10),
+
          const CustomSearchField(hintText:"Search"),
          const Padding(
-           padding: EdgeInsets.only(left: 10.0,top: 30),
-           child: CustomText(text: "RECENT SEARCHS", color: btnbgColor, fontfamilly: montBold, weight: FontWeight.w900, sizeOfFont: 17),
+           padding: EdgeInsets.only(left: 4.0,top: 30),
+           child: CustomText(text: "RECENT SEARCHS", color: btnbgColor, fontfamilly: montHeavy,  sizeOfFont: 20),
          ),
          getView("Surprise Pack","15/02/2023"),
          getView("Surprise Pack","15/02/2023"),
@@ -39,29 +39,29 @@ class SearchScreen extends StatelessWidget{
   }
   Widget getView(String title, String viewAllText){
 
-      return Padding(
-        padding: const EdgeInsets.only(left: 8.0,right: 8.0,top: 8.0),
-        child: Column(
-          children: [
-            SizedBox(height: 10,),
-            Row(
+      return Column(
+        children: [
+          SizedBox(height: 10,),
+          Padding(
+            padding: const EdgeInsets.only(left: 8.0,right: 7.0,top: 2),
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                CustomText(text: title, color: btntxtColor, fontfamilly: montBold, weight: FontWeight.w500, sizeOfFont: 13),
-                CustomText(text: viewAllText, color: Colors.black, fontfamilly: montLight, weight: FontWeight.w300,sizeOfFont: 11,),
+                CustomText(text: title, color: btntxtColor, fontfamilly: montBold, sizeOfFont: 15),
+                CustomText(text: viewAllText, color: graysColor, fontfamilly: montRegular, sizeOfFont: 11,),
               ],
             ),
-             const Padding(
-              padding: EdgeInsets.only(top:20.0),
-              child: Divider(
-                height: 0,
-                color: grayColor,
-                thickness: 0,
+          ),
+          const Padding(
+            padding: EdgeInsets.only(top:12.0),
+            child: Divider(
+              height: 0,
+              color: grayColor,
+              thickness: 0,
 
-              ),
-            )
-          ],
-        ),
+            ),
+          )
+        ],
       );
 
   }

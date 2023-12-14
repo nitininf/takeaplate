@@ -27,7 +27,7 @@ class CommonEmailField extends StatelessWidget {
         obscureText: isPassword ?? false,
         maxLines: maxLine ?? 1,
         controller: controller,
-        style:  TextStyle(fontWeight: FontWeight.w500, fontSize: 14,fontFamily: montBook,color:isbgColor ? btntxtColor:  headingColor
+        style:  TextStyle(fontSize: 20,fontFamily: montBook,color:isbgColor ? btntxtColor:  headingColor
         ),
 
 
@@ -36,7 +36,7 @@ class CommonEmailField extends StatelessWidget {
             fillColor: isbgColor ? hintColor : editbgColor,
 
             border: !isbgColor ? OutlineInputBorder(borderRadius: BorderRadius.circular(20),borderSide: BorderSide.none)
-                : OutlineInputBorder(borderRadius: BorderRadius.circular(20),borderSide: BorderSide(color: grayColor,width: 0)),
+                : OutlineInputBorder(borderRadius: BorderRadius.circular(20),borderSide: BorderSide(color: graysColor,width: 0)),
 
             suffixIcon: (isPassword ?? false)
                 ? const Icon(
@@ -45,9 +45,9 @@ class CommonEmailField extends StatelessWidget {
             )
                 : const SizedBox(),
             contentPadding:
-            const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+            isbgColor? const EdgeInsets.symmetric(horizontal: 20, vertical: 16):const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
             hintStyle:
-             TextStyle(fontWeight: FontWeight.w400, fontSize: 16,fontFamily: montitalic,color: isbgColor ? btntxtColor : hintColor),
+             TextStyle(fontSize: 20,fontFamily: montBook,color: isbgColor ? btntxtColor : readybgColor),
             hintText: hintText));
 
   }

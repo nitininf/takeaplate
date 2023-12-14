@@ -86,18 +86,18 @@ class DialogHelper {
                          Align(
                           alignment: Alignment.center,
                           child: CustomText(text:title ?? "" ,
-                            sizeOfFont: 17,
+                            sizeOfFont: 19,
                             color: hintColor,
-                            fontfamilly: montBook,
+                            fontfamilly: montHeavy,
                             isAlign: true,),
                         ),
                         const SizedBox(height: 20,),
                         Align(
                            alignment: Alignment.center,
                            child: CustomText(text: subtitle ?? "",
-                            sizeOfFont: 17,
+                            sizeOfFont: 19,
                             color: btnbgColor,
-                            fontfamilly: montBook,
+                            fontfamilly: montRegular,
                             isAlign: true,),
                          ),
                         SizedBox(
@@ -385,7 +385,7 @@ class DialogHelper {
                   height: screenHeight * 0.03,
                 ),
       
-                const CustomText(text: "ADD NEW CARD",color: btnbgColor,weight: FontWeight.w700,fontfamilly: montBold,sizeOfFont: 18,),
+                const CustomText(text: "ADD NEW CARD",color: btnbgColor,fontfamilly: montBold,sizeOfFont: 20,),
                 const SizedBox(height: 25,),
                 CommonEditText(hintText: cardName,isnewCard: true,),
                 const SizedBox(height: 20,),
@@ -412,7 +412,7 @@ class DialogHelper {
                         onTap: (){
                           Navigator.pop(navigatorKey.currentContext!);
                         },
-                          child: const CustomText(text: "SAVE", color: btntxtColor, fontfamilly: montBook,weight: FontWeight.w900,))),
+                          child: const CustomText(text: "SAVE", color: btntxtColor, fontfamilly: montHeavy,sizeOfFont: 20,))),
                 ),
       
               ]),

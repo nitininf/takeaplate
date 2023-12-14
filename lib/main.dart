@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:takeaplate/SCREENS/home_screens/base_home.dart';
 import 'package:takeaplate/SCREENS/onboarding_screen/onboarding_screens.dart';
 import 'MULTI-PROVIDER/multiproviders.dart';
 import 'SCREENS/splash_screen/splash_screen.dart';
@@ -21,7 +19,7 @@ main() async {
 
   runApp(const MyApp()); //MyUserList()
 // whenever your initialization is completed, remove the splash screen:
-  FlutterNativeSplash.remove();
+ // FlutterNativeSplash.remove();
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.light,

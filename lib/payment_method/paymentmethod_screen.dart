@@ -6,6 +6,7 @@ import 'package:takeaplate/CUSTOM_WIDGETS/common_button.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/custom_app_bar.dart';
 import 'package:takeaplate/MULTI-PROVIDER/common_counter.dart';
 import 'package:takeaplate/UTILS/dialog_helper.dart';
+import 'package:takeaplate/UTILS/fontfaimlly_string.dart';
 import 'package:takeaplate/main.dart';
 
 import '../CUSTOM_WIDGETS/custom_text_style.dart';
@@ -19,7 +20,7 @@ class PaymentMethodScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return  SafeArea(child: Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.only(left: 25.0,right: 25,top: 10,bottom: 20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -43,14 +44,15 @@ class PaymentMethodScreen extends StatelessWidget {
   Widget getView(){
     return   Consumer<CommonCounter>(builder: (context,commonProvider,child)
     {
-      return  Column(children: [
+      return
+        Column(children: [
         const SizedBox(height: 10,),
         const CustomAppBar(),
-        const SizedBox(height: 10,),
+        const SizedBox(height: 30,),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const CustomText(text: "PAYMENT METHOD",color: editbgColor,sizeOfFont: 18,weight: FontWeight.w800,),
+            const CustomText(text: "PAYMENT METHOD",color: editbgColor,sizeOfFont: 20,fontfamilly: montHeavy,),
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 3),
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -67,7 +69,7 @@ class PaymentMethodScreen extends StatelessWidget {
                       commonProvider.updateView("EDIT");
                     }
                   },
-                  child:  CustomText(text: commonProvider.btnName,sizeOfFont: 10,weight: FontWeight.w800,color: editprofileColor,)),
+                  child:  CustomText(text: commonProvider.btnName,sizeOfFont: 10,fontfamilly:montBold,color: editprofileColor,)),
             )
           ],
         ),
@@ -104,8 +106,8 @@ class PaymentMethodScreen extends StatelessWidget {
         children: [
           Image.asset(master_card,fit: BoxFit.contain,height: 30,width: 60,),
           const SizedBox(width: 10,),
-          const Expanded(child: CustomText(text: "MasterCard",color: btntxtColor,sizeOfFont: 14,weight: FontWeight.w700,)),
-          const CustomText(text: "-2211",color: btntxtColor,sizeOfFont: 14,weight: FontWeight.w600,),
+          const Expanded(child: CustomText(text: "MasterCard",color: viewallColor,sizeOfFont: 15,fontfamilly: montBold,)),
+          const CustomText(text: "-2211",color: viewallColor,sizeOfFont: 15,fontfamilly: montRegular,),
           getUpdatedView(commonCounter!)
         ],
       ),

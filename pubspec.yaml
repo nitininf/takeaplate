@@ -36,19 +36,12 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   flutter_lints: ^2.0.0
-  permission_handler:
   intl:
   dio:
   internet_connection_checker: ^1.0.0+1
-  shared_preferences: ^2.0.15
   path: any
-  connectivity: ^3.0.6
   http: ^0.13.4
   provider: ^6.0.5
-  flutter_native_splash: ^2.3.6
-  file_picker: ^6.1.1
-  image_picker: ^0.8.4
-  path_provider: ^2.0.14
   date_time_picker:
   page_indicator: ^0.4.1
 
@@ -95,19 +88,29 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: Mont
+    - family: Mont-Heavy
       fonts:
-        - asset: fonts/Mont-Regular.otf
-        - asset: fonts/Mont-Bold.otf
-        - asset: fonts/Mont-BookItalic.otf
-        - asset: fonts/Mont-Book.otf
-        - asset: fonts/Mont-Black.otf
-        - asset: fonts/Mont-SemiBold.otf
-        - asset: fonts/Mont-Thin.otf
-        - asset: fonts/Mont-Light.otf
         - asset: fonts/Mont-Heavy.otf
 
+    - family: Mont-Regular
+      fonts:
+        - asset: fonts/Mont-Regular.otf
 
+    - family: Mont-Book
+      fonts:
+        - asset: fonts/Mont-Book.otf
+
+    - family: Mont-Bold
+      fonts:
+        - asset: fonts/Mont-Bold.otf
+
+    - family: Mont-SemiBold
+      fonts:
+        - asset: fonts/Mont-SemiBold.otf
+
+    - family: Mont-Light
+      fonts:
+        - asset: fonts/Mont-Light.otf
   #     style: italic
   #   - family: Trajan Pro
   #     fonts:

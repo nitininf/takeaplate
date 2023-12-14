@@ -11,19 +11,18 @@ import 'package:takeaplate/main.dart';
 import '../../CUSTOM_WIDGETS/custom_app_bar.dart';
 import '../../CUSTOM_WIDGETS/custom_search_field.dart';
 class OrderAndPayScreen extends StatelessWidget {
-  final List<String> items = ['Healthy', 'Sushi', 'Desserts', 'Sugar', 'Sweets'];
-
+  var counterProvider=Provider.of<CommonCounter>(navigatorKey.currentContext!, listen: false);
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         body: Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.all(25.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               CustomAppBar(),
-              const SizedBox(height: 10),
+              const SizedBox(height: 23),
               CustomSearchField(hintText: "Search"),
               Expanded(
                 child: SingleChildScrollView(
@@ -55,29 +54,31 @@ class OrderAndPayScreen extends StatelessWidget {
 
   Widget buildSection(String title, String viewAllText) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.only(bottom: 8.0,left: 5),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          CustomText(text: title, color: btnbgColor, fontfamilly: montBold, weight: FontWeight.w900, sizeOfFont: 18),
-          CustomText(text: viewAllText, color: Colors.black, fontfamilly: montLight, weight: FontWeight.w900),
+          CustomText(text: title, color: btnbgColor, fontfamilly: montHeavy, sizeOfFont: 20),
+          CustomText(text: viewAllText, color: Colors.black, fontfamilly: montHeavy, weight: FontWeight.w900),
         ],
       ),
     );
   }
 
   Widget getCards(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(width: 0, color: Colors.grey),
-      ),
-      child:  Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
+    return
+      Consumer<CommonCounter>(builder: ((context,commonProvider,child){
+        return Container(
+          margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(width: 0, color: Colors.grey),
+          ),
+          child:  Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+              Container(
               height: 280,
               width: 280,
               child: Image.asset(food_image, height: 275,width: 275, fit: BoxFit.fill)),
@@ -85,21 +86,21 @@ class OrderAndPayScreen extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              CustomText(text: "Surprise Pack", sizeOfFont: 18, color: btntxtColor, fontfamilly: montBold,weight: FontWeight.w900,),
-               Row(
-                 children: [
-                   Container(
-                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                     decoration: BoxDecoration(
-                       color: editbgColor,
-                       borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0),topRight: Radius.circular(30.0),bottomLeft: Radius.circular(30.0)),
-                       border: Border.all(width: 1, color: Colors.white),
-                     ),
-                     child: CustomText(text: "Report", color: hintColor, fontfamilly: montBook,weight: FontWeight.w200,),
-                   ),
-                   CustomText(text: "...",sizeOfFont: 18, color: btnbgColor, fontfamilly: montBold),
-                 ],
-               )
+              CustomText(text: "Surprise Pack", sizeOfFont: 20, color: viewallColor, fontfamilly: montBold),
+              Row(
+                children: [
+                  !commonProvider.isViewMore ? Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      decoration: BoxDecoration(
+                        color: editbgColor,
+                        borderRadius: BorderRadius.only(topLeft: Radius.circular(30.0),topRight: Radius.circular(30.0),bottomLeft: Radius.circular(30.0)),
+                        border: Border.all(width: 1, color: Colors.white),
+                      ),
+                      child: CustomText(text: "Report", color: hintColor, fontfamilly: montLight,sizeOfFont: 11,)
+                  ) :Text(""),
+                  CustomText(text: "...",sizeOfFont: 18, color: btnbgColor, fontfamilly: montBold),
+                ],
+              )
 
             ],
           ),
@@ -107,10 +108,10 @@ class OrderAndPayScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
             children: [
-              CustomText(text: "Health Foods", color: btntxtColor, sizeOfFont:16,weight : FontWeight.w300,fontfamilly: montBold),
+              CustomText(text: "Health Foods", color: viewallColor, sizeOfFont:16,fontfamilly: montLight),
               Padding(
                 padding: EdgeInsets.only(top: 10.0),
-                child: CustomText(text: "Pick up Time:11:00 am", sizeOfFont: 10,color: btntxtColor, weight : FontWeight.w300, fontfamilly: montBold),
+                child: CustomText(text: "Pick up Time:11:00 am", sizeOfFont: 11,color: viewallColor,  fontfamilly: montLight),
               ),
             ],
           ),
@@ -119,32 +120,32 @@ class OrderAndPayScreen extends StatelessWidget {
           const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-            Row(
-              children: [
-                Icon(Icons.star,size: 20,color: btnbgColor,),
-                Icon(Icons.star,size: 20,color: btnbgColor,),
-                Icon(Icons.star,size: 20,color: btnbgColor,),
-                Icon(Icons.star,size: 20,color: btnbgColor,),
-                Icon(Icons.star,size: 20,color: btnbgColor,),
-              ],
-            ),
-              CustomText(text: "84 Km", color: btntxtColor, weight : FontWeight.w300, fontfamilly: montBold),
+              Row(
+                children: [
+                  Icon(Icons.star,size: 20,color: btnbgColor,),
+                  Icon(Icons.star,size: 20,color: btnbgColor,),
+                  Icon(Icons.star,size: 20,color: btnbgColor,),
+                  Icon(Icons.star,size: 20,color: btnbgColor,),
+                  Icon(Icons.star,size: 20,color: btnbgColor,),
+                ],
+              ),
+              CustomText(text: "84 Km", color: viewallColor,  fontfamilly: montLight,sizeOfFont: 11,),
             ],
           ),
           SizedBox(height: 10,),
-          const CustomText(text: "23 Dreamland Av.., Australia", weight : FontWeight.w300, color: btntxtColor, fontfamilly: montBold),
+          const CustomText(text: "23 Dreamland Av.., Australia",  color: viewallColor, fontfamilly: montLight,sizeOfFont: 12,),
           SizedBox(height: 10,),
 
           SizedBox(height: 10,),
-          Consumer<CommonCounter>(builder: ((context,commonProvider,child){
-            return viewMore(commonProvider);
-          }
-          )
+          viewMore(commonProvider)
 
-          )
-        ],
-      ),
-    );
+          ],
+        ),);
+      }
+      )
+
+      );
+
   }
 
 
@@ -153,7 +154,7 @@ class OrderAndPayScreen extends StatelessWidget {
       commonCounter.isViewMore ? Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-     CustomText(text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation \n\n-Lorem ipsum dolor \n -sit amet, consectetur \n -adipiscing elit, sed do \n -eusmod tempor \n -incididunt ut",fontfamilly: montBook,sizeOfFont: 12,weight: FontWeight.w200,),
+     CustomText(text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation \n\n-Lorem ipsum dolor \n -sit amet, consectetur \n -adipiscing elit, sed do \n -eusmod tempor \n -incididunt ut",fontfamilly: montRegular,sizeOfFont: 12,color: viewallColor,),
         SizedBox(height: 10,),
         Row(
           children: [
@@ -167,7 +168,7 @@ class OrderAndPayScreen extends StatelessWidget {
           onTap: (){
           commonCounter.viewMoreLess("VIEW MORE");
           },
-            child: CustomText(text: commonCounter.textName, weight : FontWeight.w300, color: btnbgColor, fontfamilly: montitalic)),
+            child: CustomText(text: commonCounter.textName, color: btnbgColor, fontfamilly: montLight,sizeOfFont: 14,)),
       ],
     ) :   Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -175,15 +176,15 @@ class OrderAndPayScreen extends StatelessWidget {
         const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              CustomText(text: "Description...", weight : FontWeight.w300, color: Colors.grey, fontfamilly: montBold),
-              CustomText(text: "\$ 9.99", color: editbgColor, sizeOfFont:20,fontfamilly: montBold),
+              CustomText(text: "Description...",  color: viewallColor, fontfamilly: montLight,sizeOfFont: 12,),
+              CustomText(text: "\$ 9.99", color: editbgColor, sizeOfFont:27,fontfamilly: montHeavy),
             ],
           ),
         GestureDetector(
           onTap: (){
             commonCounter.viewMoreLess("VIEW LESS");
           },
-            child: CustomText(text: commonCounter.textName, weight : FontWeight.w300, color: btnbgColor, fontfamilly: montitalic))
+            child: CustomText(text: commonCounter.textName,  color: btnbgColor, fontfamilly: montLight,sizeOfFont: 14,))
       ],
     );
   }

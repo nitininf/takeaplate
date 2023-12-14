@@ -42,7 +42,7 @@ class Network {
       required String endPoint,
       Map<String, dynamic>? queryParameters}) async {
     Response? response;
-    String? token = await Utility.getStringValue(NetworkStrings.TOKEN_KEY);
+   // String? token = await // // Utility.getStringValue(NetworkStrings.TOKEN_KEY);
     if (await InternetConnectionChecker().hasConnection) {
       try {
         _dio?.options.connectTimeout =  Duration(milliseconds: connectTimeOut);
@@ -52,7 +52,7 @@ class Network {
             options: Options(
               headers: {
                 'Accept': NetworkStrings.ACCEPT,
-                'Authorization': token == null ? "" : "Bearer $token",
+               // 'Authorization': token == null ? "" : "Bearer $token",
               },
               sendTimeout: Duration(milliseconds: receivingTimeOut),
               receiveTimeout: Duration(milliseconds: receivingTimeOut),
@@ -61,7 +61,7 @@ class Network {
       } on DioException catch (e) {
         log("Error :${e.response.toString()}");
         if (e.response?.statusCode == 403) {
-          Utility.clearAll();
+          // // Utility.clearAll();
           //getx.Get.offAll(const SignInScreen());
         }
         DialogHelper.showErrorDialog(navigatorKey.currentContext!,
@@ -87,7 +87,7 @@ class Network {
      DialogHelper.showLoading(navigatorKey.currentContext!);
     }
     Response? response;
-    String? token = await Utility.getStringValue(NetworkStrings.TOKEN_KEY);
+  // // String? token = await // // Utility.getStringValue(NetworkStrings.TOKEN_KEY);
 
     if (await InternetConnectionChecker().hasConnection) {
       try {
@@ -98,7 +98,7 @@ class Network {
             options: Options(
                 headers: {
                   'Accept': NetworkStrings.ACCEPT,
-                  'Authorization': token == null ? "" : "Bearer $token",
+                //  'Authorization': token == null ? "" : "Bearer $token",
                 },
                 sendTimeout:  Duration(milliseconds: receivingTimeOut),
                 receiveTimeout: Duration(milliseconds: receivingTimeOut)));
@@ -107,7 +107,7 @@ class Network {
         DialogHelper.hideLoading( navigatorKey.currentContext!);
         print("$endPoint Dio: ${e.message}" );
         if (e.response?.statusCode == 403) {
-          Utility.clearAll();
+          // // Utility.clearAll();
           //getx.Get.offAll(const SignInScreen());
         }
         DialogHelper.showErrorDialog(navigatorKey.currentContext!,
@@ -132,7 +132,7 @@ class Network {
      DialogHelper.showLoading(navigatorKey.currentContext!);
     }
     Response? response;
-    String? token = await Utility.getStringValue(NetworkStrings.TOKEN_KEY);
+    //String? token = await // // Utility.getStringValue(NetworkStrings.TOKEN_KEY);
 
     if (await InternetConnectionChecker().hasConnection) {
       try {
@@ -144,7 +144,7 @@ class Network {
             options: Options(
                 headers: {
                   'Accept': NetworkStrings.ACCEPT,
-                  'Authorization': token == null ? "" : "Bearer $token",
+                 // 'Authorization': token == null ? "" : "Bearer $token",
                 },
                 sendTimeout: Duration(milliseconds: receivingTimeOut),
                 receiveTimeout: Duration(milliseconds: receivingTimeOut)));
@@ -153,7 +153,7 @@ class Network {
         DialogHelper.hideLoading(navigatorKey.currentContext!);
         print("$endPoint Dio: ${e.message}" );
         if (e.response?.statusCode == 403) {
-          Utility.clearAll();
+          // // Utility.clearAll();
         //  getx.Get.offAll(const SignInScreen());
         }
         DialogHelper.showErrorDialog( navigatorKey.currentContext!,
@@ -172,7 +172,7 @@ class Network {
   Future<Response?> putRequest(
       {required String endPoint, Map<String, dynamic>? queryParameters}) async {
     Response? response;
-    String? token = await Utility.getStringValue(NetworkStrings.TOKEN_KEY);
+   // String? token = await // // Utility.getStringValue(NetworkStrings.TOKEN_KEY);
 
     if (await InternetConnectionChecker().hasConnection) {
       try {
@@ -184,7 +184,7 @@ class Network {
             options: Options(
                 headers: {
                   'Accept': NetworkStrings.ACCEPT,
-                  'Authorization': token == null ? "" : "Bearer $token",
+               //   'Authorization': token == null ? "" : "Bearer $token",
                 },
                 sendTimeout: Duration(milliseconds: receivingTimeOut),
                 receiveTimeout: Duration(milliseconds: receivingTimeOut)));
@@ -192,7 +192,7 @@ class Network {
       } on DioException catch (e) {
         print("$endPoint Dio: ${e.message}" );
         if (e.response?.statusCode == 403) {
-          Utility.clearAll();
+          // // Utility.clearAll();
         //  getx.Get.offAll(const SignInScreen());
         }
         DialogHelper.showErrorDialog(navigatorKey.currentContext!,
@@ -216,7 +216,7 @@ class Network {
     });
     DialogHelper.showLoading(navigatorKey.currentContext!);
     Response? response;
-    String? token = await Utility.getStringValue(NetworkStrings.TOKEN_KEY);
+   // String? token = await // // Utility.getStringValue(NetworkStrings.TOKEN_KEY);
 
     if (await InternetConnectionChecker().hasConnection) {
       try {
@@ -228,7 +228,7 @@ class Network {
             options: Options(
               headers: {
                 'Accept': NetworkStrings.ACCEPT,
-                'Authorization': token == null ? "" : "Bearer $token",
+               // 'Authorization': token == null ? "" : "Bearer $token",
               },
               sendTimeout: Duration(milliseconds: receivingTimeOut),
               receiveTimeout: Duration(milliseconds: receivingTimeOut),
@@ -237,7 +237,7 @@ class Network {
       } on DioException catch (e) {
         DialogHelper.hideLoading(navigatorKey.currentContext!);
         if (e.response?.statusCode == 403) {
-          Utility.clearAll();
+          // // Utility.clearAll();
       //    getx.Get.offAll(const SignInScreen());
         }
         DialogHelper.showErrorDialog(navigatorKey.currentContext!,
@@ -263,7 +263,7 @@ class Network {
 
       DialogHelper.showLoading(navigatorKey.currentContext!);
       Response? response;
-      String? token = await Utility.getStringValue(NetworkStrings.TOKEN_KEY);
+     // String? token = await // // Utility.getStringValue(NetworkStrings.TOKEN_KEY);
 
       if (await InternetConnectionChecker().hasConnection) {
         try {
@@ -275,7 +275,7 @@ class Network {
               options: Options(
                 headers: {
                   'Accept': NetworkStrings.ACCEPT,
-                  'Authorization': token == null ? "" : "Bearer $token",
+                 // 'Authorization': token == null ? "" : "Bearer $token",
                 },
                 sendTimeout: Duration(milliseconds: receivingTimeOut),
                 receiveTimeout: Duration(milliseconds: receivingTimeOut),
@@ -285,7 +285,7 @@ class Network {
         } on DioException catch (e) {
           DialogHelper.hideLoading(navigatorKey.currentContext!);
           if (e.response?.statusCode == 403) {
-            Utility.clearAll();
+            // // Utility.clearAll();
             //getx.Get.offAll(const SignInScreen());
           }
           DialogHelper.showErrorDialog(navigatorKey.currentContext!,

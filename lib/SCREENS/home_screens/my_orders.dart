@@ -21,6 +21,7 @@ class MyOrdersSccreen extends StatelessWidget{
             child:  ListView(
               children: [
                 const CustomAppBar(),
+                SizedBox(height: 10,),
                 GestureDetector(child: buildSection("CURRENT ORDERS", viewall),
                   onTap: (){
 
@@ -28,10 +29,11 @@ class MyOrdersSccreen extends StatelessWidget{
                   },
 
                 ),
-                getFavCards(),
-                getFavCards(),
+                SizedBox(height: 5,),
+                getCards(),
+                getCards(),
                 const Padding(
-                  padding: EdgeInsets.all(20.0),
+                  padding: EdgeInsets.only(left: 25.0,right: 25,top:25),
                   child: Divider(height: 0, color: grayColor),
                 ),
                 buildSection("PREVIOUS ORDERS", viewall),
@@ -54,8 +56,8 @@ class MyOrdersSccreen extends StatelessWidget{
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          CustomText(text: title, color: btnbgColor, fontfamilly: montBold, weight: FontWeight.w900, sizeOfFont: 16),
-          CustomText(text: viewAllText, color: Colors.black, fontfamilly: montLight, weight: FontWeight.w300),
+          CustomText(text: title, color: btnbgColor, fontfamilly: montHeavy,  sizeOfFont: 20),
+          CustomText(text: viewAllText, color: viewallColor, fontfamilly: montRegular,sizeOfFont: 12,),
         ],
       ),
     );
@@ -71,70 +73,125 @@ class MyOrdersSccreen extends StatelessWidget{
       ),
     );
   }
-  Widget getFavCards() {
-    return
-      GestureDetector(
-         onTap: (){
-           Navigator.pushNamed(navigatorKey.currentContext!, '/OrderAndPayScreen');
-         },
-        child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(width: 0, color: Colors.grey),
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            const Column(
+  Widget getCards() {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(width: 0, color: Colors.grey),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Expanded(
+            flex: 2,
+            child:  Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CustomText(text: "Surprise Pack", color: btntxtColor, fontfamilly: montitalic,sizeOfFont: 18,),
+                CustomText(text: "Surprise Pack",maxLin: 1, color: btntxtColor, fontfamilly: montBold,sizeOfFont: 21,),
 
-                CustomText(text: "Salad & Co.", color: btntxtColor, fontfamilly: montBold,weight: FontWeight.w400,sizeOfFont: 13,),
+                CustomText(text: "Salad & Co",maxLin: 1, color: btntxtColor, fontfamilly: montRegular,sizeOfFont: 16,),
 
-                CustomText(text: "Tomorrow-7:45-8.40 AM", color: onboardingbgColor,sizeOfFont: 10, fontfamilly: montBold,weight: FontWeight.w200,),
+                CustomText(text: "Tomorrow-7:35-8:40 Am",maxLin: 1, color: graysColor,sizeOfFont: 11, fontfamilly: montRegular),
                 SizedBox(height: 5,),
                 Row(
                   children: [
-                    Icon(Icons.star_border_outlined,size: 20,color: grayColor,),
-                    Icon(Icons.star_border_outlined,size: 20,color: grayColor,),
-                    Icon(Icons.star_border_outlined,size: 20,color: grayColor,),
-                    Icon(Icons.star_border_outlined,size: 20,color: grayColor,),
-                    Icon(Icons.star_border_outlined,size: 20,color: grayColor,),
+                    Icon(Icons.star_border,size: 20,color:graysColor,),
+                    Icon(Icons.star_border,size: 20,color: graysColor),
+                    Icon(Icons.star_border,size: 20,color: graysColor,),
+                    Icon(Icons.star_border,size: 20,color: graysColor,),
+                    Icon(Icons.star_border,size: 20,color: graysColor,),
                     SizedBox(width: 10,),
-                    CustomText(text: "84 Km", color: editbgColor,sizeOfFont: 10, fontfamilly: montBold,weight: FontWeight.w400,),
+                    Expanded(child: CustomText(text: "84 Km",maxLin: 1, color: graysColor,sizeOfFont: 15, fontfamilly: montSemiBold)),
                   ],
 
                 ),
-                CustomText(text: "\$ 9.99", color: editbgColor,sizeOfFont: 18, fontfamilly: montBold,weight: FontWeight.w900,),
-
+                SizedBox(height: 5,),
+                CustomText(text: "\$"+"9.99",maxLin: 1, color: dolorColor,sizeOfFont: 27, fontfamilly: montHeavy,),
 
               ],
             ),
-            const SizedBox(width: 8,),
-            Stack(
+          ),
+          const SizedBox(width: 18,),
+          Expanded(
+            flex: 0,
+            child: Stack(
               alignment: Alignment.topRight,
               clipBehavior: Clip.none,
               children: [
-                Image.asset(food_image, height: 120, width: 120, fit: BoxFit.cover),
+                Image.asset(food_image, height: 130, width: 130, fit: BoxFit.cover),
                 Positioned(
-                  right: -10,
+                  right: -4,
                   child: Image.asset(
                     save_icon,
-                    height: 25,
-                    width: 25,
-
-
+                    height: 15,
+                    width: 18,
                   ),
                 ),
               ],
             ),
-          ],
-        ),
-            ),
-      );
+          ),
+        ],
+      ),
+    );
   }
+  Widget getFavCards() {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(width: 0, color: Colors.grey),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CustomText(text: "Surprise Pack", color: btntxtColor, fontfamilly: montBold,sizeOfFont: 21,),
+
+              CustomText(text: "Salad & Co", color: btntxtColor, fontfamilly: montRegular,sizeOfFont: 16,),
+
+              CustomText(text: "Tomorrow-7:35-8:40 Am", color: graysColor,sizeOfFont: 11, fontfamilly: montRegular),
+              SizedBox(height: 5,),
+              Row(
+                children: [
+                  Icon(Icons.star_border,size: 20,color:graysColor,),
+                  Icon(Icons.star_border,size: 20,color: graysColor),
+                  Icon(Icons.star_border,size: 20,color: graysColor,),
+                  Icon(Icons.star_border,size: 20,color: graysColor,),
+                  Icon(Icons.star_border,size: 20,color: graysColor,),
+                  SizedBox(width: 10,),
+                  CustomText(text: "84 Km", color: graysColor,sizeOfFont: 15, fontfamilly: montSemiBold),
+                ],
+
+              ),
+              SizedBox(height: 5,),
+              CustomText(text: "\$"+"9.99", color: dolorColor,sizeOfFont: 27, fontfamilly: montHeavy,),
+
+            ],
+          ),
+          const SizedBox(width: 18,),
+          Stack(
+            alignment: Alignment.topRight,
+            clipBehavior: Clip.none,
+            children: [
+              Image.asset(food_image, height: 130, width: 130, fit: BoxFit.cover),
+              Positioned(
+                right: -4,
+                child: Image.asset(
+                  save_icon,
+                  height: 15,
+                  width: 18,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
 }

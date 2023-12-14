@@ -12,22 +12,30 @@ class NotificationCenterScreen extends StatelessWidget{
   Widget build(BuildContext context) {
    return SafeArea(child: Scaffold(
      body: Padding(
-       padding: const EdgeInsets.all(20.0),
+       padding: const EdgeInsets.only(top: 20.0,bottom: 20,left: 29,right: 20),
        child: Column(
          crossAxisAlignment: CrossAxisAlignment.start,
          children: [
            CustomAppBar(),
-           SizedBox(height: 30,),
-           GestureDetector(child: CustomText(text: "NOTIFICATION CENTRE",weight: FontWeight.w900,color: editbgColor,sizeOfFont: 20,),
-           onTap: (){
-             Navigator.pushNamed(context, '/YourNotificationScreen');
-           },),
-           getView("New Deal From Favourite Restaurant"),
-           getView("New Restaurant added nearby",isRadio: true),
-           getView("New meal purchase confirmation"),
-          getView("Broadcast notifications"),
-           getView("New Restaurant added nearby",isRadio: true),
+           SizedBox(height: 24,),
+           Padding(
+             padding: const EdgeInsets.only(left: 8.0,right: 8),
+             child: Column(
+               crossAxisAlignment: CrossAxisAlignment.start,
+               children: [
+               GestureDetector(child: CustomText(text: "NOTIFICATION CENTRE",fontfamilly:montHeavy,color: editbgColor,sizeOfFont: 20,),
+                 onTap: (){
+                   Navigator.pushNamed(context, '/YourNotificationScreen');
+                 },),
+               SizedBox(height: 10,),
+               getView("New Deal From Favourite Restaurant"),
+               getView("New Restaurant added nearby",isRadio: true),
+               getView("New meal purchase confirmation"),
+               getView("Broadcast notifications"),
+               getView("New Restaurant added nearby",isRadio: true),
 
+             ],),
+           )
          ],
        ),
      ),
@@ -37,11 +45,11 @@ class NotificationCenterScreen extends StatelessWidget{
   Widget getView(String title,{bool? isRadio=false}){
     return Column(
       children: [
-        SizedBox(height: 10,),
+        SizedBox(height: 8,),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Expanded(child: CustomText(text: title,weight: FontWeight.w400,color: editbgColor,fontfamilly: montBook,sizeOfFont: 16,)),
+            Expanded(child: CustomText(text: title,fontfamilly:montRegular,color: editbgColor,sizeOfFont: 17,)),
             getSelectedRadio(isRadio!)
           ],
         ),

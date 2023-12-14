@@ -1,4 +1,4 @@
-package com.example.takeaplate
+package com.takeaplate
 
 import io.flutter.embedding.android.FlutterActivity
 

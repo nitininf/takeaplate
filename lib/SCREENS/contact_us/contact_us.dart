@@ -18,7 +18,7 @@ class ContactUs extends StatelessWidget{
    return SafeArea(child:
    Scaffold(
      body: Padding(
-       padding: const EdgeInsets.all(20.0),
+       padding: const EdgeInsets.only(top: 20.0,bottom: 20,right: 29,left: 29),
        child:  Column(
          crossAxisAlignment: CrossAxisAlignment.start,
          children: [
@@ -45,11 +45,55 @@ class ContactUs extends StatelessWidget{
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 20,),
-            const CustomText(text: "CONTACT US",sizeOfFont: 20,weight: FontWeight.w800,),
+            const CustomText(text: "CONTACT US",sizeOfFont: 20,fontfamilly: montHeavy,color: editbgColor,),
             const SizedBox(height: 20,),
-            CommonEditText(hintText: name,isbgColor: true,),
+           // CommonEditText(hintText: name,isbgColor: true,),
+            Container(
+                 height: 49,
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30),
+                  border: Border.all(
+                    color: grayColor,
+                    width: 1.0, // Adjust the width as needed
+                  ),
+                ),
+                child: TextFormField(
+                    validator: FormValidator.validateEmail,
+                    keyboardType: TextInputType.text,
+                    //   controller: controller,
+                    style:  const TextStyle( fontSize: 20,fontFamily: montBook,color:editbgColor
+                    ),
+                    decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        hintStyle: TextStyle(fontSize: 20,fontFamily: montBook,color: editbgColor),
+                        hintText: "Name")
+                )
+            ),
             const SizedBox(height: 20,),
-            CommonEmailField(hintText: email,isbgColor: true,),
+            Container(
+                height: 49,
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30),
+                  border: Border.all(
+                    color: grayColor,
+                    width: 1.0, // Adjust the width as needed
+                  ),
+                ),
+                child: TextFormField(
+                    validator: FormValidator.validateEmail,
+                    keyboardType: TextInputType.text,
+                    //   controller: controller,
+                    style:  const TextStyle( fontSize: 20,fontFamily: montBook,color:editbgColor
+                    ),
+                    decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        hintStyle: TextStyle(fontSize: 20,fontFamily: montBook,color: editbgColor),
+                        hintText: "Email")
+                )
+            ),
+           // CommonEmailField(hintText: email,isbgColor: true,),
             const SizedBox(height:  20,),
             Container(
                 margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
@@ -70,14 +114,14 @@ class ContactUs extends StatelessWidget{
                     ),
                     decoration: const InputDecoration(
                         border: InputBorder.none,
-                        hintStyle: TextStyle(fontWeight: FontWeight.w300, fontSize: 16,fontFamily: montitalic,color: btntxtColor),
+                        hintStyle: TextStyle( fontSize: 20,fontFamily: montBook,color: editbgColor),
                         hintText: "Comments")
                 )
             ),
       
             const SizedBox(height: 30,),
             Padding(
-              padding: const EdgeInsets.only(top: 8.0,left: 30,right: 30),
+              padding: const EdgeInsets.only(top: 8.0,left: 27,right: 27),
               child: CommonButton(btnBgColor: btnbgColor, btnText: submit, onClick: (){
                 Navigator.pushNamed(navigatorKey.currentContext!, '/YourOrderScreen');
               }),
