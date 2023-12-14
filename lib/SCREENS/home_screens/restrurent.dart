@@ -104,7 +104,7 @@ class RestrurentScreen extends StatelessWidget{
                     Icon(Icons.star,size: 20,color: btnbgColor,),
                     Icon(Icons.star,size: 20,color: btnbgColor,),
                     SizedBox(width: 10,),
-                    CustomText(text: "3 offers available", color: offerColor,sizeOfFont: 10, fontfamilly: montRegular,maxLin: 1,),
+                    Expanded(child: CustomText(text: "3 offers available", color: offerColor,sizeOfFont: 10, fontfamilly: montRegular,maxLin: 1,)),
                   ],
             
                 ),
@@ -119,7 +119,7 @@ class RestrurentScreen extends StatelessWidget{
               alignment: Alignment.topRight,
               clipBehavior: Clip.none,
               children: [
-                Image.asset(food_image, height: 85, width: 85, fit: BoxFit.cover),
+                Image.asset(food_image, height: 90, width: 85, fit: BoxFit.contain),
                 Positioned(
                   right: -4,
                   child: Image.asset(
