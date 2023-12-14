@@ -67,89 +67,95 @@ class _OnBoardingScreenState extends State<OnBoardingScreen>
               SizedBox(height: screenHeight*0.05,),
             ],),
 
-              Expanded(
-                child: Container(
-                  margin: const EdgeInsets.only(left: 40,right: 40, bottom: 40),
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                  decoration: BoxDecoration(
-                      color: onboardingbgColor,
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(width: 1, color: Colors.white)),
-                  child: Column(children: [
-
-                    Flexible(
-                      child: PageIndicatorContainer(
-                        align: IndicatorAlign.bottom,
-                        length: 3,
-                        indicatorSpace: 3.0,
-                        padding: const EdgeInsets.only(left: 10,right: 10),
-                        indicatorColor: btnbgColor.withOpacity(0.5),
-                        indicatorSelectorColor: btnbgColor,
-                        shape: IndicatorShape.circle(size: 10),
-                        child:  PageView.builder(
-                            controller: _pageController,
-                            itemCount: 3,
-                            onPageChanged: (value) {
-                              setState(() {
-                                index = value;
-                              });
-                            },
-                            itemBuilder: (context, position) {
-                              return index == 0
-                                  ? const SliderWidget(
-                                title: dinesmart,
-                                description:enjoyExclusive ,
-                                headingColor: btnbgColor,
-                                image: onboarding_one,
-                              )
-                                  : index == 1
-                                  ? SliderWidget(
-                                title: ecoeats,
-                                description: helpResttrutent,
-                                headingColor: index == 1
-                                    ? btnbgColor
-                                    : btnbgColor,
-                                image: onboarding_two,
-                              )
-                                  : const SliderWidget(
-                                title: flavoredResttrutent,
-                                description: delight,
-                                headingColor: btnbgColor,
-                                image: onboarding_three,
-                              );
-                            }),
-                      ),
-                    ),
-                    SizedBox(height: 15,),
-                    SizedBox(
-                      width: screenWidth,
-                      height: 55,
-                      child:
-                      Padding(
-                        padding: const EdgeInsets.only(right: 20.0,left: 20),
-                        child: CommonButton(
-                          btnBgColor: index == 1 ? onboardingBtn : onboardingBtn,
-                          btnTextColor: btntxtColor,
-                          btnText: next,
-                          onClick: () {
-                            if (index < 2) {
-                              _pageController.animateToPage(
-                                (_pageController.page ?? 0).toInt() + 1,
-                                duration: const Duration(milliseconds: 300),
-                                curve: Curves.linear,
-                              );
-                            } else {
-                                Navigator.pushNamed(context, '/Create_Login');
-                                }
+            Container(
+                margin: const EdgeInsets.only(left: 40,right: 40, bottom: 0),
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                decoration: BoxDecoration(
+                    color: onboardingbgColor,
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(width: 1, color: Colors.white)),
+                child: Column(children: [
+                  SizedBox(
+                    height: screenHeight * 0.38,
+                    child: PageIndicatorContainer(
+                      align: IndicatorAlign.bottom,
+                      length: 0,
+                      indicatorSpace: 3.0,
+                      padding: const EdgeInsets.only(left: 10,right: 10),
+                      indicatorColor: Colors.transparent,//btnbgColor.withOpacity(0.5),
+                      indicatorSelectorColor: Colors.transparent,//btnbgColor,
+                      shape: IndicatorShape.circle(size: 10),
+                      child:  PageView.builder(
+                          controller: _pageController,
+                          itemCount: 3,
+                          onPageChanged: (value) {
+                            setState(() {
+                              index = value;
+                            });
                           },
-                        ),
+                          itemBuilder: (context, position) {
+                            return index == 0
+                                ? const SliderWidget(
+                              title: dinesmart,
+                              description:enjoyExclusive ,
+                              headingColor: btnbgColor,
+                              image: onboarding_one,
+                            )
+                                : index == 1
+                                ? SliderWidget(
+                              title: ecoeats,
+                              description: helpResttrutent,
+                              headingColor: index == 1
+                                  ? btnbgColor
+                                  : btnbgColor,
+                              image: onboarding_two,
+                            )
+                                : const SliderWidget(
+                              title: flavoredResttrutent,
+                              description: delight,
+                              headingColor: btnbgColor,
+                              image: onboarding_three,
+                            );
+                          }),
+                    ),
+                  ),
+
+                  // Dots
+                  SizedBox(height: screenHeight*0.020,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: List.generate(
+                      3, // Number of pages
+                          (index) => buildDot(index),
+                    ),
+                  ),
+                  SizedBox(height: screenHeight*0.020,),
+                  SizedBox(
+                    width: screenWidth,
+                    height: 55,
+                    child:
+                    Padding(
+                      padding: const EdgeInsets.only(right: 20.0,left: 20),
+                      child: CommonButton(
+                        btnBgColor: index == 1 ? onboardingBtn : onboardingBtn,
+                        btnTextColor: btntxtColor,
+                        btnText: next,
+                        onClick: () {
+                          if (index < 2) {
+                            _pageController.animateToPage(
+                              (_pageController.page ?? 0).toInt() + 1,
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.linear,
+                            );
+                          } else {
+                              Navigator.pushNamed(context, '/Create_Login');
+                              }
+                        },
                       ),
                     ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                  ]),
-                ),
+                  ),
+                  SizedBox(height: 10,)
+                ]),
               ),
 
 
@@ -158,7 +164,19 @@ class _OnBoardingScreenState extends State<OnBoardingScreen>
       ]),
     );
   }
+  Widget buildDot(int index_one) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 3),
+      width: 10,
+      height: 10,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: index_one == index ? btnbgColor : btnbgColor.withOpacity(0.5),
+      ),
+    );
+  }
 }
+
 
 class SliderWidget extends StatelessWidget {
   const SliderWidget(
@@ -181,6 +199,7 @@ class SliderWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          SizedBox(height: 4,),
           Align(
             alignment: Alignment.center,
             child: Image.asset(image,
@@ -195,7 +214,7 @@ class SliderWidget extends StatelessWidget {
             title,
             style: TextStyle(
               fontFamily: montHeavy,
-              fontSize: 21,
+              fontSize: 20,
               color: headingColor,
             ),
             textAlign: TextAlign.center,
@@ -203,20 +222,20 @@ class SliderWidget extends StatelessWidget {
           const SizedBox(
             height: 7,
           ),
-          SingleChildScrollView(
-            child: Align(
-              alignment: Alignment.center,
-              child: Text(
-                   description,
-                textAlign: TextAlign.center,
-                style:
-                TextStyle(color: Colors.white, height: 1.4, fontSize: 19,fontFamily: montRegular),
-              ),
+          Align(
+            alignment: Alignment.center,
+            child: Text(
+                 description,
+              textAlign: TextAlign.center,
+              style:
+              TextStyle(color: Colors.white, height: 1.4, fontSize: 18,fontFamily: montRegular),
             ),
           ),
-      
+
         ],
       ),
     );
   }
+
+
 }
