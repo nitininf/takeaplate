@@ -35,8 +35,10 @@ class CommonEmailField extends StatelessWidget {
             filled: true,
             fillColor: isbgColor ? hintColor : editbgColor,
 
-            border: !isbgColor ? OutlineInputBorder(borderRadius: BorderRadius.circular(20),borderSide: BorderSide.none)
-                : OutlineInputBorder(borderRadius: BorderRadius.circular(20),borderSide: BorderSide(color: graysColor,width: 0)),
+            enabledBorder: !isbgColor ? OutlineInputBorder(borderRadius: BorderRadius.circular(20),borderSide: BorderSide.none)
+                : OutlineInputBorder(borderRadius: BorderRadius.circular(20),borderSide: BorderSide(color: editbgColor,width: 1)),
+            focusedBorder: !isbgColor ? OutlineInputBorder(borderRadius: BorderRadius.circular(20),borderSide: BorderSide.none)
+                : OutlineInputBorder(borderRadius: BorderRadius.circular(20),borderSide: BorderSide(color: editbgColor,width: 1)),
 
             suffixIcon: (isPassword ?? false)
                 ? const Icon(

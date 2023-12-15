@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:takeaplate/UTILS/app_images.dart';
 import 'package:takeaplate/UTILS/fontfaimlly_string.dart';
 import '../UTILS/app_color.dart';
 import '../UTILS/validation.dart';
@@ -36,7 +37,7 @@ class CommonEditText extends StatelessWidget {
           inputFormatters:!isPassword? <TextInputFormatter>[
             FilteringTextInputFormatter.allow(RegExp(r'^[+-]?[\d]+\.?[\d]*$')),
           ]: null,
-          focusNode: focusNode,
+         // focusNode: focusNode,
           validator: FormValidator.validateEmpty,
           maxLength: 15,
           controller: controller,
@@ -49,15 +50,14 @@ class CommonEditText extends StatelessWidget {
             counterText: '',
             filled: true,
             fillColor: isbgColor ? hintColor  : isnewCard ? newcardbgColor  : editbgColor,
-            border: !isbgColor ? OutlineInputBorder(borderRadius: BorderRadius.circular(20),borderSide: BorderSide.none)
-            : OutlineInputBorder(borderRadius: BorderRadius.circular(20),borderSide: BorderSide(color: graysColor,style:BorderStyle.none )),
+            focusedBorder: !isbgColor ? OutlineInputBorder(borderRadius: BorderRadius.circular(20),borderSide: BorderSide.none)
+            : OutlineInputBorder(borderRadius: BorderRadius.circular(20),borderSide: BorderSide(color:editbgColor,style:BorderStyle.solid )),
+
+            enabledBorder: !isbgColor ? OutlineInputBorder(borderRadius: BorderRadius.circular(20),borderSide: BorderSide.none)
+                : OutlineInputBorder(borderRadius: BorderRadius.circular(20),borderSide: BorderSide(color:editbgColor,style:BorderStyle.solid )),
 
             suffixIcon: isPassword
-                ? const Icon(
-              Icons.arrow_downward_outlined,
-              color: btnbgColor,
-              size: 15,
-            )
+                ?  IconButton(onPressed:(){}, icon: Image.asset(down_arrow,height: 16,width: 12,))
                 : const SizedBox(),
             contentPadding: isbgColor ?const EdgeInsets.symmetric(horizontal: 20, vertical: 16)  : isnewCard ?const EdgeInsets.symmetric(horizontal: 20, vertical: 10):const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
             hintStyle:  TextStyle(

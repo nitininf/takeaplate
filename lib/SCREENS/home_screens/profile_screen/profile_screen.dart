@@ -1,9 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:takeaplate/CUSTOM_WIDGETS/common_button.dart';
-import 'package:takeaplate/CUSTOM_WIDGETS/custom_app_bar.dart';
 import 'package:takeaplate/UTILS/app_strings.dart';
-
 import '../../../CUSTOM_WIDGETS/custom_text_style.dart';
 import '../../../UTILS/app_color.dart';
 import '../../../UTILS/app_images.dart';

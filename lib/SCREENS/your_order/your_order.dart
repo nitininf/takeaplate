@@ -90,7 +90,7 @@ class YourOrderScreen extends StatelessWidget {
             ],
           ),
 
-          const SizedBox(height: 10,),
+          const SizedBox(height: 3,),
           const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -109,13 +109,13 @@ class YourOrderScreen extends StatelessWidget {
           SizedBox(height: 10,),
 
           CommonButton(btnBgColor: onboardingBtn, btnTextColor:pickuptColor,btnText: "PICK UP AT 11 AM", onClick: (){
-            DialogHelper.showCommonPopup(navigatorKey.currentContext!,title: "RATE YOUR EXPERIENCE");
+          //  DialogHelper.showCommonPopup(navigatorKey.currentContext!,title: "RATE YOUR EXPERIENCE");
            // Navigator.pushNamed(navigatorKey.currentContext!, '/ClosestScreen');
           }),
 
           SizedBox(height: 10,),
           CustomText(text: "Order N. #2134445`", color: viewallColor, sizeOfFont:16,fontfamilly: montLight),
-          const CustomText(text: "23 Dreamland Av.., Australia", sizeOfFont: 14, color: offerColor, fontfamilly: montBold),
+          const CustomText(text: "23 Dreamland Av.., Australia", sizeOfFont: 14, color: viewallColor, fontfamilly: montBold),
           SizedBox(height: 10,),
           const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

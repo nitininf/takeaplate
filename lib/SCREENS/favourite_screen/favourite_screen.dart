@@ -24,7 +24,7 @@ class FavouriteScreen extends StatelessWidget{
                 const CustomAppBar(),
                 const Padding(
                   padding: EdgeInsets.only(left: 8.0,top: 26),
-                  child: CustomText(text: "YOUR FAVOOURITES", color: btnbgColor, fontfamilly: montHeavy, sizeOfFont: 20),
+                  child: CustomText(text: "YOUR FAVOURITES", color: btnbgColor, fontfamilly: montHeavy, sizeOfFont: 20),
                 ),
                 buildHorizontalList(items),
                 buildVeerticalCards()

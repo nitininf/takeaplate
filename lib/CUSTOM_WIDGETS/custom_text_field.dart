@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:takeaplate/UTILS/app_images.dart';
 import '../UTILS/app_color.dart';
 import '../UTILS/fontfaimlly_string.dart';
 import '../UTILS/validation.dart';
@@ -30,19 +31,17 @@ class CommonTextField extends StatelessWidget {
         controller: controller,
         readOnly: true,
         onTap: onTap,
-        style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 14,fontFamily: montMedium,color: btntxtColor),
+        style: const TextStyle( fontSize: 14,fontFamily: montMedium,color: btntxtColor),
 
 
         decoration: InputDecoration(
             filled: true,
             fillColor:   hintColor ,
-            border: OutlineInputBorder(borderRadius: BorderRadius.circular(18),borderSide: customBorderSide),
+            enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(18),borderSide: BorderSide(color:editbgColor,style:BorderStyle.solid )),
+            focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(18),borderSide: BorderSide(color:editbgColor,style:BorderStyle.solid )),
+
             suffixIcon: (isPassword ?? false)
-                ? const Icon(
-              Icons.arrow_forward,
-              color: btnbgColor,
-              size: 20,
-            )
+                ? IconButton(onPressed:(){}, icon: Image.asset(arrow_back,height: 16,width: 12,))
                 : const SizedBox(),
             contentPadding:
             const EdgeInsets.symmetric(horizontal: 16, vertical: 16),

@@ -60,7 +60,7 @@ class SettingScreen extends StatelessWidget{
              Navigator.pushNamed(navigatorKey.currentContext!, '/EditProfileScreen');
            },) ,
           const  SizedBox(height: 15,),
-         CommonTextField(hintText: "Frequently asked Questions",onTap: (){
+         CommonTextField(hintText: "Frequently Asked Questions",onTap: (){
            Navigator.pushNamed(navigatorKey.currentContext!, '/FaqScreenScreen');
          },),
 

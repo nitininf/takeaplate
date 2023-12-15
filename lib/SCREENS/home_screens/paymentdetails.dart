@@ -36,7 +36,7 @@ class PaymentDetailsScreen extends StatelessWidget {
                       SizedBox(height: 20,),
                       getFavCards(),
                       buildSection(total, "\$9.90"),
-                      const SizedBox(height: 20,),
+
                       paymentDetails(),
                       Padding(
                         padding: const EdgeInsets.only(left: 30.0,right: 30,bottom: 20),
@@ -83,7 +83,7 @@ class PaymentDetailsScreen extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 20),
+        margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),

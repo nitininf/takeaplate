@@ -25,7 +25,7 @@ class RestrurentScreen extends StatelessWidget{
            const CustomSearchField(hintText:"Search"),
            const Padding(
              padding: EdgeInsets.only(left: 13.0,top: 30),
-             child: CustomText(text: "Restrurents", color: btnbgColor, fontfamilly: montHeavy, sizeOfFont: 20),
+             child: CustomText(text: "RESTAURANTS", color: btnbgColor, fontfamilly: montHeavy, sizeOfFont: 20),
            ),
            buildHorizontalList(items),
            buildVeerticalCards()

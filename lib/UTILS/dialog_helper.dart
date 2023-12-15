@@ -53,9 +53,8 @@ class DialogHelper {
           child:
           Stack(
             children: [
-
-            Container(
-               color: dailogColor.withOpacity(0.8),
+              Container(
+               color: title==sentPss ? Colors.black.withOpacity(0.1) :dailogColor.withOpacity(0.75),
                 height: double.infinity,
                 width: double.infinity,
               ),
@@ -167,7 +166,7 @@ class DialogHelper {
                           child: CustomText(text:title ?? "" ,
                             sizeOfFont: 17,
                             color: hintColor,
-                            fontfamilly: montBook,
+                            fontfamilly: montBold,
                             isAlign: true,),
                         ),
                         SizedBox(
@@ -198,7 +197,7 @@ class DialogHelper {
                   ),
                 ],
               ),
-
+            
             ],
 
           ),
@@ -349,7 +348,7 @@ class DialogHelper {
           child: Stack(
               children: [
                 Container(
-                  color: dailogColor.withOpacity(0.7),
+                 color: dailogColor.withOpacity(0.75),
                   height: double.infinity,
                   width: double.infinity,
                 ),

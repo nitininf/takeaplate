@@ -63,8 +63,9 @@ class UploadPhoto extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Image.asset(appLogo,
-                            height: 50,
-                            width: 50,),
+                            height: 42,
+                            width: 40,
+                            fit: BoxFit.contain,),
                             SizedBox(height: 16,),
                             const CustomText(text: uploadphoto,
                             color: Colors.white,
@@ -79,7 +80,7 @@ class UploadPhoto extends StatelessWidget {
 
 
                 Padding(
-                  padding: const EdgeInsets.all(58.0),
+                  padding: const EdgeInsets.all(59.0),
                   child: CommonButton(btnBgColor: btnbgColor, btnText: next, onClick: (){
                     Navigator.pushNamed(context, '/SetYourPasswordScreen');
                   }),

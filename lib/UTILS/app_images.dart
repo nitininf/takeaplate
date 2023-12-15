@@ -30,6 +30,10 @@ const String profile_img = "images/profile_img.png";
 const String restrorent_food = "images/restrorent_food.png";
 const String restrorent_img = "images/restrorent_img.png";
 const String delete_icon = "images/delete_icon.png";
+const String backgroud_img = "images/backgroud_img.png";
+const String notification_center = "images/notification_center.jpg";
+const String down_arrow = "images/down_arrow.png";
+const String arrow_back = "images/arrow_back.png";
 
 
 

@@ -15,15 +15,16 @@ class CustomSearchField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final FocusNode _focusNode = FocusNode();
+   // final FocusNode _focusNode = FocusNode();
     return
       TextFormField(
           keyboardType: TextInputType.text,
          controller: controller,
           textAlign: TextAlign.start,
-          focusNode: _focusNode,
+       //   focusNode: _focusNode,
           style: const TextStyle(
               fontSize: 18,
+              color: hintColor,
               fontFamily: montBook),
           decoration: InputDecoration(
               filled: true,

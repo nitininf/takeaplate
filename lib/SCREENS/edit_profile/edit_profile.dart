@@ -42,7 +42,7 @@ class EditProfileScreen extends StatelessWidget{
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 10,),
-              const CustomText(text: "Edit Profile",sizeOfFont: 20,fontfamilly: montHeavy,color: btnbgColor,),
+              const CustomText(text: "EDIT PROFILE",sizeOfFont: 20,fontfamilly: montHeavy,color: btnbgColor,),
               const SizedBox(height: 10,),
               Align(
                   alignment: Alignment.center,

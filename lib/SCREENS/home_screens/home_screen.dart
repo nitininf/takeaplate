@@ -18,7 +18,7 @@ class HomeScreen extends StatelessWidget {
         body: Padding(
           padding: const EdgeInsets.only(top: 9.0,right:20,left: 20 ,bottom: 10),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+           // crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               const SizedBox(height: 20),
               CustomSearchField(hintText: "Search"),

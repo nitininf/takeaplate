@@ -29,7 +29,7 @@ class RestrorentProfileScreen extends StatelessWidget{
           children: [
             SizedBox(height: 10,),
             getCards(),
-            buildSection("TODAY'S DEAL", ""),
+            buildSection("TODAY'S DEALS", ""),
             buildVeerticalCards()
           ],
         ),

@@ -98,7 +98,10 @@ class OrderAndPayScreen extends StatelessWidget {
                       ),
                       child: CustomText(text: "Report", color: hintColor, fontfamilly: montLight,sizeOfFont: 11,)
                   ) :Text(""),
-                  CustomText(text: "...",sizeOfFont: 18, color: btnbgColor, fontfamilly: montBold),
+                  const  Padding(
+                    padding:  EdgeInsets.only(left: 2.0,top: 5),
+                    child: CustomText(text: "...",sizeOfFont: 20, color: btnbgColor, fontfamilly: montBold),
+                  ),
                 ],
               )
 
@@ -116,7 +119,7 @@ class OrderAndPayScreen extends StatelessWidget {
             ],
           ),
 
-          SizedBox(height: 10,),
+          SizedBox(height: 3,),
           const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -129,13 +132,18 @@ class OrderAndPayScreen extends StatelessWidget {
                   Icon(Icons.star,size: 20,color: btnbgColor,),
                 ],
               ),
-              CustomText(text: "84 Km", color: viewallColor,  fontfamilly: montLight,sizeOfFont: 11,),
+              CustomText(text: "84 Km", color: editbgColor,  fontfamilly: montLight,sizeOfFont: 17,),
             ],
           ),
           SizedBox(height: 10,),
           const CustomText(text: "23 Dreamland Av.., Australia",  color: viewallColor, fontfamilly: montLight,sizeOfFont: 12,),
-          SizedBox(height: 10,),
-
+                const  Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    CustomText(text: "Description...",  color: viewallColor, fontfamilly: montLight,sizeOfFont: 12,),
+                    CustomText(text: "\$9.99", color: offerColor, sizeOfFont:27,fontfamilly: montHeavy),
+                  ],
+                ),
           SizedBox(height: 10,),
           viewMore(commonProvider)
 
@@ -154,7 +162,7 @@ class OrderAndPayScreen extends StatelessWidget {
       commonCounter.isViewMore ? Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-     CustomText(text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation \n\n-Lorem ipsum dolor \n -sit amet, consectetur \n -adipiscing elit, sed do \n -eusmod tempor \n -incididunt ut",fontfamilly: montRegular,sizeOfFont: 12,color: viewallColor,),
+     CustomText(text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation \n\n-Lorem ipsum dolor \n -sit amet, consectetur \n -adipiscing elit, sed do \n -eusmod tempor \n -incididunt ut",fontfamilly: montRegular,sizeOfFont: 12,color: cardTextColor,),
         SizedBox(height: 10,),
         Row(
           children: [
@@ -173,13 +181,13 @@ class OrderAndPayScreen extends StatelessWidget {
     ) :   Column(
         crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Row(
+      /*  const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               CustomText(text: "Description...",  color: viewallColor, fontfamilly: montLight,sizeOfFont: 12,),
-              CustomText(text: "\$ 9.99", color: editbgColor, sizeOfFont:27,fontfamilly: montHeavy),
+              CustomText(text: "\$9.99", color: offerColor, sizeOfFont:27,fontfamilly: montHeavy),
             ],
-          ),
+          ),*/
         GestureDetector(
           onTap: (){
             commonCounter.viewMoreLess("VIEW LESS");
