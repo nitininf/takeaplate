@@ -15,27 +15,27 @@ class ClosestScreen extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    return  SafeArea(
-        child: Scaffold(
-          body: Padding(padding: const EdgeInsets.only(top: 20.0,bottom: 20,left: 25,right: 25),
+    return  Scaffold(
+      backgroundColor: bgColor,
+      body: SafeArea(
+        child: Padding(padding: const EdgeInsets.only(top: 0.0,bottom: 20,left: 25,right: 25),
 
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const CustomAppBar(),
-                const SizedBox(height: 20),
-                const CustomSearchField(hintText:"Search"),
-                const Padding(
-                  padding: EdgeInsets.only(left: 13.0,top: 20),
-                  child: CustomText(text: closet, color: btnbgColor, fontfamilly: montHeavy, sizeOfFont: 20),
-                ),
-                buildHorizontalList(items),
-                buildVeerticalCards()
-              ],
-            ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const CustomAppBar(),
+              const SizedBox(height: 20),
+              const CustomSearchField(hintText:"Search"),
+              const Padding(
+                padding: EdgeInsets.only(left: 13.0,top: 20),
+                child: CustomText(text: closet, color: btnbgColor, fontfamilly: montHeavy, sizeOfFont: 20),
+              ),
+              buildHorizontalList(items),
+              buildVeerticalCards()
+            ],
           ),
-        )
-
+        ),
+      ),
     );
   }
   Widget buildHorizontalList(List<String> items) {

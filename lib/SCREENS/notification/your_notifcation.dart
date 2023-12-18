@@ -8,14 +8,14 @@ import 'package:takeaplate/UTILS/fontfaimlly_string.dart';
 class YourNotificationScreen extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
-   return SafeArea(child: Scaffold(
-
+   return Scaffold(
+    backgroundColor: bgColor,
      body: Padding(
-       padding: const EdgeInsets.only(top: 20.0,bottom: 20,right: 29,left: 29),
+       padding: const EdgeInsets.only(top: 0.0,bottom: 20,right: 29,left: 29),
        child: Column(
          crossAxisAlignment: CrossAxisAlignment.start,
          children: [
-           CustomAppBar(),
+          // CustomAppBar(),
            Padding(
              padding: const EdgeInsets.only(left: 8.0,right: 8),
              child: Column(crossAxisAlignment: CrossAxisAlignment.start,
@@ -38,7 +38,7 @@ class YourNotificationScreen extends StatelessWidget{
          ],
        ),
      ),
-   ));
+   );
   }
 
   Widget getView({Color? color}){

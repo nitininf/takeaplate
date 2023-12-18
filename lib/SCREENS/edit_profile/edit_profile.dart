@@ -17,20 +17,23 @@ class EditProfileScreen extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
 
-    return  SafeArea(child: Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.only(top:20.0,bottom: 20,left: 25,right: 25),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            const CustomAppBar(),
-            getView()
+    return  Scaffold(
+      backgroundColor: bgColor,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.only(top:0.0,bottom: 20,left: 25,right: 25),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              const CustomAppBar(),
+              getView()
 
-          ],
+            ],
+          ),
         ),
       ),
-    ));
+    );
   }
 
   Widget getView(){

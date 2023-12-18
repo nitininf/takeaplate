@@ -15,6 +15,7 @@ class MyOrdersSccreen extends StatelessWidget{
     return
       SafeArea(
         child: Scaffold(
+          backgroundColor: bgColor,
           body:
           Padding(
             padding: const EdgeInsets.all(20.0),

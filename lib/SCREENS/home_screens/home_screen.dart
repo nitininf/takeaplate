@@ -15,6 +15,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: bgColor,
         body: Padding(
           padding: const EdgeInsets.only(top: 9.0,right:20,left: 20 ,bottom: 10),
           child: Column(

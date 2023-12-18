@@ -7,11 +7,13 @@ class CustomSearchField extends StatelessWidget {
   const CustomSearchField({
     super.key,
     this.controller,
+    this.focusnde,
     required this.hintText,
   });
 
   final TextEditingController? controller;
   final String? hintText;
+  final FocusNode? focusnde;
 
   @override
   Widget build(BuildContext context) {
@@ -21,15 +23,24 @@ class CustomSearchField extends StatelessWidget {
           keyboardType: TextInputType.text,
          controller: controller,
           textAlign: TextAlign.start,
-       //   focusNode: _focusNode,
+           focusNode: focusnde,
           style: const TextStyle(
               fontSize: 18,
               color: hintColor,
               fontFamily: montBook),
+
           decoration: InputDecoration(
               filled: true,
               fillColor: editbgColor,
               border: OutlineInputBorder(borderRadius: BorderRadius.circular(20),borderSide: BorderSide.none),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(20),
+                borderSide: BorderSide.none,
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(20),
+                borderSide: BorderSide.none,
+              ),
               suffixIcon:const Padding(
                 padding:  EdgeInsets.only(right: 20.0,top: 10,bottom: 10),
                 child:  Icon(Icons.search,color: hintColor,size: 25,),

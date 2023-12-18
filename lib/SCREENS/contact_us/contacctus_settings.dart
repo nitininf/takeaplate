@@ -12,24 +12,26 @@ import '../../UTILS/app_strings.dart';
 import '../../UTILS/fontfaimlly_string.dart';
 import '../../UTILS/validation.dart';
 
-class ContactUs extends StatelessWidget{
+class ContactUsSetting extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
-   return Scaffold(
-       backgroundColor: bgColor,
-     body: Padding(
-       padding: const EdgeInsets.only(top: 0.0,bottom: 20,right: 29,left: 29),
-       child:  Column(
-         crossAxisAlignment: CrossAxisAlignment.start,
-         children: [
-          // const CustomAppBar(),
-           getView()
-
-        ]
+    return Scaffold(
+      backgroundColor: bgColor,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.only(top: 0.0,bottom: 20,right: 29,left: 29),
+          child:  Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                 const CustomAppBar(),
+                getView()
+        
+              ]
           ),
-     ),
+        ),
+      ),
 
-   );
+    );
 
 
 
@@ -46,9 +48,9 @@ class ContactUs extends StatelessWidget{
             const SizedBox(height: 20,),
             const CustomText(text: "CONTACT US",sizeOfFont: 20,fontfamilly: montHeavy,color: editbgColor,),
             const SizedBox(height: 20,),
-           // CommonEditText(hintText: name,isbgColor: true,),
+            // CommonEditText(hintText: name,isbgColor: true,),
             Container(
-                 height: 49,
+                height: 49,
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30),
@@ -92,7 +94,7 @@ class ContactUs extends StatelessWidget{
                         hintText: "Email")
                 )
             ),
-           // CommonEmailField(hintText: email,isbgColor: true,),
+            // CommonEmailField(hintText: email,isbgColor: true,),
             const SizedBox(height:  20,),
             Container(
                 margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
@@ -109,15 +111,15 @@ class ContactUs extends StatelessWidget{
                     keyboardType: TextInputType.text,
                     maxLines: 15,
                     //   controller: controller,
-                    style:  const TextStyle(fontWeight: FontWeight.w500, fontSize: 20,fontFamily: montBook,color:btntxtColor
+                    style:  const TextStyle(fontWeight: FontWeight.w500, fontSize: 14,fontFamily: montBook,color:btntxtColor
                     ),
-                    decoration:  InputDecoration(
+                    decoration: const InputDecoration(
                         border: InputBorder.none,
                         hintStyle: TextStyle( fontSize: 20,fontFamily: montBook,color: editbgColor),
                         hintText: "Comments")
                 )
             ),
-      
+
             const SizedBox(height: 30,),
             Padding(
               padding: const EdgeInsets.only(top: 8.0,left: 27,right: 27),

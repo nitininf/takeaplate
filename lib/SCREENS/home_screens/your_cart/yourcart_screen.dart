@@ -15,6 +15,7 @@ class YourCardScreen extends StatelessWidget{
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
    return  SafeArea(child: Scaffold(
+   backgroundColor: bgColor,
      body: Padding(
        padding: const EdgeInsets.only(right: 35.0,left: 35,bottom: 0),
        child: Column(
@@ -56,7 +57,7 @@ class YourCardScreen extends StatelessWidget{
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 12),
                   decoration: BoxDecoration(
-                      color: editprofilbgColor,
+                      color: onboardingBtn.withOpacity(0.20),
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(width: 0, color: grayColor)
       
@@ -86,7 +87,7 @@ class YourCardScreen extends StatelessWidget{
           ),
           Padding(
             padding: const EdgeInsets.only(top: 10.0,left: 30,right: 30,bottom: 20),
-            child: CommonButton(btnBgColor: editprofilbgColor, sizeOfFont:18,btnTextColor: editprofileColor,btnText: "ADD MORE ITEMS", onClick: (){}),
+            child: CommonButton(btnBgColor: onboardingBtn.withOpacity(1), sizeOfFont:18,btnTextColor: offerColor.withOpacity(0.5),btnText: "ADD MORE ITEMS", onClick: (){}),
           ),
         ],),
       ),

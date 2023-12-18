@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/custom_app_bar.dart';
 import 'package:takeaplate/main.dart';
 import '../../CUSTOM_WIDGETS/custom_text_style.dart';
+import '../../MULTI-PROVIDER/common_counter.dart';
 import '../../UTILS/app_color.dart';
 import '../../UTILS/app_images.dart';
 import '../../UTILS/fontfaimlly_string.dart';
@@ -10,30 +12,37 @@ import '../../UTILS/fontfaimlly_string.dart';
 class RestrorentProfileScreen extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
-   return SafeArea(child: Scaffold(
-     body: Padding(
-       padding: const EdgeInsets.only(top: 20.0,bottom: 20,left:25,right: 25),
-       child: Column(
-         children: [
-           CustomAppBar(),
-           getView()
-         ],
+   return Scaffold(
+     backgroundColor: bgColor,
+     body: SafeArea(
+       child: Padding(
+         padding: const EdgeInsets.only(top: 0.0,bottom: 20,left:25,right: 25),
+         child: Column(
+           children: [
+             CustomAppBar(),
+             getView()
+           ],
+         ),
        ),
      ),
-   ));
+   );
   }
   Widget getView(){
     return Expanded(
       child: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(height: 10,),
-            getCards(),
-            buildSection("TODAY'S DEALS", ""),
-            buildVeerticalCards()
-          ],
+        child:  Consumer<CommonCounter>(builder: (context,commonProvider,child){
+     return Column(
+        children: [
+          SizedBox(height: 10,),
+          getCards(commonProvider),
+          !commonProvider.isDeal ? buildSection("TODAY'S DEALS", ""):buildSection("YOUR FAVOURITES", "") ,
+          buildVeerticalCards()
+        ],
+      );
+
+        }
         ),
-      ),
+    )
     );
   }
   Widget buildSection(String title, String viewAllText) {
@@ -48,7 +57,7 @@ class RestrorentProfileScreen extends StatelessWidget{
       ),
     );
   }
-  Widget getCards() {
+  Widget getCards(CommonCounter commonCounter) {
     return
       Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -106,10 +115,9 @@ class RestrorentProfileScreen extends StatelessWidget{
           SizedBox(height: 10,),
           const CustomText(text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",  sizeOfFont :10,color: onboardingbgColor, fontfamilly: montBook),
           SizedBox(height: 10,),
-
           Row(
             children: [
-              Container(
+              commonCounter.isDeal ?  Container(
                 margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 3),
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 decoration: BoxDecoration(
@@ -117,10 +125,12 @@ class RestrorentProfileScreen extends StatelessWidget{
                   borderRadius: BorderRadius.circular(20),
                   border: Border.all(width: 1, color: Colors.white),
                 ),
-                child: const CustomText(text: "Deals",sizeOfFont: 10,weight: FontWeight.w700,color: hintColor,),
-              ),
-              SizedBox(width: 8,),
-              Container(
+                child: GestureDetector(
+                    onTap: (){
+                      commonCounter.gettodayDeal(false);
+                    },
+                    child: CustomText(text: "Deals",sizeOfFont: 10,fontfamilly:montBook,color: hintColor,)),
+              ) :  Container(
                 margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 3),
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 decoration: BoxDecoration(
@@ -128,7 +138,39 @@ class RestrorentProfileScreen extends StatelessWidget{
                   borderRadius: BorderRadius.circular(20),
                   border: Border.all(width: 1, color: Colors.white),
                 ),
-                child: const CustomText(text: "Deals you loved",sizeOfFont: 10,weight: FontWeight.w700,color: hintColor,),
+                child: GestureDetector(
+                    onTap: (){
+                      commonCounter.gettodayDeal(true);
+                    },
+                    child: CustomText(text: "Deals",sizeOfFont: 10,fontfamilly:montBook,color: hintColor,)),
+              ) ,
+              SizedBox(width: 8,),
+              !commonCounter.isDeal ?  Container(
+                margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 3),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                decoration: BoxDecoration(
+                  color: btnbgColor.withOpacity(0.3),
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(width: 1, color: Colors.white),
+                ),
+                child: GestureDetector(
+                    onTap: (){
+                      commonCounter.gettodayDeal(true);
+                    },
+                    child: const CustomText(text: "Deals you loved",sizeOfFont: 10,fontfamilly: montBook,color: hintColor,)),
+              ) :  Container(
+                margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 3),
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                decoration: BoxDecoration(
+                  color: btnbgColor,
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(width: 1, color: Colors.white),
+                ),
+                child: GestureDetector(
+                    onTap: (){
+                      commonCounter.gettodayDeal(false);
+                    },
+                    child: const CustomText(text: "Deals you loved",sizeOfFont: 10,fontfamilly: montBook,color: hintColor,)),
               )
             ],
           )

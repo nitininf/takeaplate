@@ -15,79 +15,78 @@ class LogInScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
-    return SafeArea(
-      child: Scaffold(
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          // Background Image
+          Image.asset(
+            appBackground, // Replace with your background image path
+            fit: BoxFit.cover,
+          ),
 
-        body: Stack(
-          fit: StackFit.expand,
-          children: [
-            // Background Image
-            Image.asset(
-              appBackground, // Replace with your background image path
-              fit: BoxFit.cover,
-            ),
-
-            // Centered Widgets
-            SingleChildScrollView(
-              child: Column(
-                children: [
-                  Column(
+          // Centered Widgets
+          SingleChildScrollView(
+            child: Column(
+              children: [
+                Column(
+                  children: [
+                    SizedBox(height: screenHeight*0.100,),
+                    Image.asset(
+                      appLogo, // Replace with your first small image path
+                      height: 100,
+                      width: 100,
+                      fit: BoxFit.contain,
+                    ),
+                    const SizedBox(height: 40,),
+                    Image.asset(
+                      textImage, // Replace with your second small image path,
+                      width: screenWidth*0.5,
+                    ),
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 40,right: 40,top: 20,bottom: 20),
+                  child: Column(
                     children: [
-                      SizedBox(height: screenHeight*0.100,),
-                      Image.asset(
-                        appLogo, // Replace with your first small image path
-                        height: 100,
-                        width: 100,
-                        fit: BoxFit.contain,
+                      CommonEmailField(hintText: email,),
+                      const SizedBox(height: 20,),
+                      const CommonPasswordField(isPassword: true,),
+                      const SizedBox(height: 30,),
+                      CommonButton(btnBgColor: btnbgColor, btnText: login, onClick: (){
+
+                      }),
+                      const SizedBox(height: 20,),
+                      GestureDetector(child: const CustomText(text: forgotpss,color: hintColor,fontfamilly: montBold,),
+
+                      onTap: (){
+                      //  Navigator.pushNamed(context, '/PassWordSentScreen');
+                        DialogHelper.showCommonPopup(context,title: sentPss,subtitle: checkInbox);
+                      },),
+                       SizedBox(height: screenHeight*0.100,),
+                      // Horizontal line using Divider
+                      const Divider(
+                        color: hintColor,
+                        thickness: 1,
                       ),
-                      const SizedBox(height: 40,),
-                      Image.asset(
-                        textImage, // Replace with your second small image path,
-                        width: screenWidth*0.5,
+                      const SizedBox(height: 20,),
+                      const CustomText(text: notMmberyet,color: hintColor,fontfamilly: montBold,),
+                      const SizedBox(height: 10,),
+                      GestureDetector(child: const CustomText(text: createyouraccount,color: btnbgColor,sizeOfFont: 18,fontfamilly: montBold,)
+                      ,
+                        onTap: (){
+                        Navigator.pushNamed(context, '/SignupScreen');
+                        },
                       ),
+
                     ],
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 40,right: 40,top: 20,bottom: 20),
-                    child: Column(
-                      children: [
-                        CommonEmailField(hintText: email,),
-                        const SizedBox(height: 20,),
-                        const CommonPasswordField(isPassword: true,),
-                        const SizedBox(height: 30,),
-                        CommonButton(btnBgColor: btnbgColor, btnText: login, onClick: (){
-
-                        }),
-                        const SizedBox(height: 20,),
-                        GestureDetector(child: const CustomText(text: forgotpss,color: hintColor,fontfamilly: montBold,),
-
-                        onTap: (){
-                          DialogHelper.showCommonPopup(context,title: sentPss,subtitle: checkInbox);
-                        },),
-                         SizedBox(height: screenHeight*0.100,),
-                        // Horizontal line using Divider
-                        const Divider(
-                          color: hintColor,
-                          thickness: 1,
-                        ),
-                        const SizedBox(height: 20,),
-                        const CustomText(text: notMmberyet,color: hintColor,fontfamilly: montBold,),
-                        const SizedBox(height: 10,),
-                        GestureDetector(child: const CustomText(text: createyouraccount,color: btnbgColor,sizeOfFont: 18,fontfamilly: montBold,)
-                        ,
-                          onTap: (){
-                          Navigator.pushNamed(context, '/SignupScreen');
-                          },
-                        ),
-
-                      ],
-                    ),
-                  )
-                ],
-              ),
+                )
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

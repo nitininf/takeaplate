@@ -16,6 +16,7 @@ class OrderAndPayScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: bgColor,
         body: Padding(
           padding: const EdgeInsets.all(25.0),
           child: Column(
@@ -73,7 +74,7 @@ class OrderAndPayScreen extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(width: 0, color: Colors.grey),
+            border: Border.all(width: 0, color: viewallColor),
           ),
           child:  Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -98,9 +99,9 @@ class OrderAndPayScreen extends StatelessWidget {
                       ),
                       child: CustomText(text: "Report", color: hintColor, fontfamilly: montLight,sizeOfFont: 11,)
                   ) :Text(""),
-                  const  Padding(
+                    Padding(
                     padding:  EdgeInsets.only(left: 2.0,top: 5),
-                    child: CustomText(text: "...",sizeOfFont: 20, color: btnbgColor, fontfamilly: montBold),
+                    child: Image.asset(three_dot,width: 14,height: 4,),
                   ),
                 ],
               )
@@ -162,7 +163,7 @@ class OrderAndPayScreen extends StatelessWidget {
       commonCounter.isViewMore ? Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-     CustomText(text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation \n\n-Lorem ipsum dolor \n -sit amet, consectetur \n -adipiscing elit, sed do \n -eusmod tempor \n -incididunt ut",fontfamilly: montRegular,sizeOfFont: 12,color: cardTextColor,),
+     CustomText(text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation \n\n-Lorem ipsum dolor \n -sit amet, consectetur \n -adipiscing elit, sed do \n -eusmod tempor \n -incididunt ut",fontfamilly: montRegular,sizeOfFont: 12,color: cardTextColor.withOpacity(0.47),),
         SizedBox(height: 10,),
         Row(
           children: [

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../SCREENS/closet_screen/closest_screen.dart';
+import '../SCREENS/contact_us/contacctus_settings.dart';
 import '../SCREENS/contact_us/contact_us.dart';
 import '../SCREENS/edit_profile/edit_profile.dart';
 import '../SCREENS/faq_screen/faq_screen.dart';
@@ -59,6 +60,7 @@ MultiProvider getProviders() {
         '/FaqScreenScreen': (context) => FaqScreenScreen(),
         '/EditProfileScreen': (context) => EditProfileScreen(),
         '/ContactUs': (context) => ContactUs(),
+        '/ContactUsSetting': (context) => ContactUsSetting(),
         '/ClosestScreen': (context) => ClosestScreen(),
         '/NotificationCenterScreen': (context) => NotificationCenterScreen(),
         '/YourNotificationScreen': (context) => YourNotificationScreen(),

@@ -8,27 +8,30 @@ import 'package:takeaplate/UTILS/fontfaimlly_string.dart';
 class FaqScreenScreen extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
-    return SafeArea(child: Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            CustomAppBar(),
-            SizedBox(height: 10,),
-            GestureDetector(child: Padding(
-              padding: const EdgeInsets.only(left: 8.0),
-              child: CustomText(text: "FAQ'S",color: editbgColor,sizeOfFont: 20,fontfamilly: montHeavy,),
-            ),
-            onTap: (){
-            //  Navigator.pushNamed(context, '/SettingScreen');
-            },),
-            SizedBox(height: 10,),
-            buildVeerticalCards()
-          ],
+    return Scaffold(
+      backgroundColor: bgColor,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 20.0,right: 20,left: 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CustomAppBar(),
+              SizedBox(height: 10,),
+              GestureDetector(child: Padding(
+                padding: const EdgeInsets.only(left: 8.0),
+                child: CustomText(text: "FAQ'S",color: editbgColor,sizeOfFont: 20,fontfamilly: montHeavy,),
+              ),
+              onTap: (){
+              //  Navigator.pushNamed(context, '/SettingScreen');
+              },),
+              SizedBox(height: 10,),
+              buildVeerticalCards()
+            ],
+          ),
         ),
       ),
-    ));
+    );
   }
 
   Widget buildVeerticalCards() {

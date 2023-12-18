@@ -33,7 +33,7 @@ class CommonEditText extends StatelessWidget {
 
         TextFormField(
           onTap: onTap,
-          keyboardType: isPassword ? TextInputType.name : TextInputType.datetime,
+         // keyboardType: isPassword ? TextInputType.name : TextInputType.datetime,
           inputFormatters:!isPassword? <TextInputFormatter>[
             FilteringTextInputFormatter.allow(RegExp(r'^[+-]?[\d]+\.?[\d]*$')),
           ]: null,

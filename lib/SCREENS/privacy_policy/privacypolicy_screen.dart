@@ -9,20 +9,22 @@ import '../../CUSTOM_WIDGETS/custom_text_style.dart';
 class PrivacyPolicyScreen extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
-   return SafeArea(child: Scaffold(
-
-     body: Padding(
-       padding: const EdgeInsets.only(top: 20.0,bottom: 20,left: 29,right: 29),
-       child: Column(
-         crossAxisAlignment: CrossAxisAlignment.start,
-         children: [
-           CustomAppBar(),
-           SizedBox(height: 20,),
-          getView()
-         ],
+   return Scaffold(
+    backgroundColor: bgColor,
+     body: SafeArea(
+       child: Padding(
+         padding: const EdgeInsets.only(top: 0.0,bottom: 20,left: 29,right: 29),
+         child: Column(
+           crossAxisAlignment: CrossAxisAlignment.start,
+           children: [
+             CustomAppBar(),
+             SizedBox(height: 20,),
+            getView()
+           ],
+         ),
        ),
      ),
-   ));
+   );
   }
   Widget getView(){
     return  Expanded(

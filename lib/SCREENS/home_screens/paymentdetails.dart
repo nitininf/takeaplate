@@ -17,6 +17,7 @@ class PaymentDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: bgColor,
         body: Padding(
           padding: const EdgeInsets.all(25.0),
           child: Column(

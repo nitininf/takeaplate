@@ -15,20 +15,22 @@ class OrderSummeryScreen extends StatelessWidget{
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
-    return  SafeArea(child: Scaffold(
-        body: Padding(
-          padding: const EdgeInsets.only(right: 25.0,left: 25,bottom: 0,top: 15),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const CustomAppBar(),
-              SizedBox(height: 10,),
-              getView(screenHeight)
-            ],
+    return  Scaffold(
+      backgroundColor: bgColor,
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.only(right: 25.0,left: 25,bottom: 0,top: 0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const CustomAppBar(),
+                SizedBox(height: 10,),
+                getView(screenHeight)
+              ],
+            ),
           ),
         )
-
-    ),
+    
     );
   }
 

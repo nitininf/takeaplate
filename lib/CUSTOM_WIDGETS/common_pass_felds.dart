@@ -25,7 +25,7 @@ class CommonPasswordField extends StatelessWidget {
          // obscureText: !loginViewModel!.isPasswordVisible,
           maxLines: 1,
           controller: controller,
-          style: const TextStyle(fontSize: 20,fontFamily: montBook,color: headingColor),
+          style: const TextStyle(fontSize: 20,fontFamily: montBook,color: hintColor),
           decoration: InputDecoration(
               filled: true,
               fillColor: editbgColor,

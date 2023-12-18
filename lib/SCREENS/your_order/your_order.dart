@@ -13,9 +13,10 @@ class YourOrderScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Padding(
+    return Scaffold(
+      backgroundColor: bgColor,
+      body: SafeArea(
+        child: Padding(
           padding: const EdgeInsets.only(top: 20.0,bottom: 20,left: 25,right: 25),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,

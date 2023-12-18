@@ -12,86 +12,84 @@ class UploadPhoto extends StatelessWidget {
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
-    return SafeArea(
-      child: Scaffold(
+    return Scaffold(
 
-        body: Stack(
-          fit: StackFit.expand,
-          children: [
-            Image.asset(
-              appBackground,
-              fit: BoxFit.cover,
-            ),
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          Image.asset(
+            appBackground,
+            fit: BoxFit.cover,
+          ),
 
-            Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 40.0,right: 40),
-                  child: Column(
-                    children: [
-                      SizedBox(height: screenHeight*0.04,),
-                      Image.asset(
-                        appLogo, // Replace with your first small image path
-                        height: 80,
-                        width: 80,
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 40.0,right: 40),
+                child: Column(
+                  children: [
+                    SizedBox(height: screenHeight*0.04,),
+                    Image.asset(
+                      appLogo, // Replace with your first small image path
+                      height: 80,
+                      width: 80,
+                    ),
+                    SizedBox(height: screenHeight*0.03,),
+                    const Padding(
+                      padding: EdgeInsets.only(left: 18,top: 25),
+                      child: Align(
+                          alignment: Alignment.topLeft,
+                          child: CustomText(text: profilePicture,color: Colors.white,fontfamilly: montHeavy,sizeOfFont: 20,)),
+                    ),
+                    SizedBox(height: screenHeight*0.04,),
+
+                    Container(
+                      height: screenHeight*0.350,
+                      width: screenWidth*0.760,
+                      margin: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                      decoration: BoxDecoration(
+                           color: editbgColor,
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(width: 0, color: editbgColor,
+
+
+                          )
+
                       ),
-                      SizedBox(height: screenHeight*0.03,),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 18,top: 25),
-                        child: Align(
-                            alignment: Alignment.topLeft,
-                            child: CustomText(text: profilePicture,color: Colors.white,fontfamilly: montHeavy,sizeOfFont: 20,)),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(appLogo,
+                          height: 42,
+                          width: 40,
+                          fit: BoxFit.contain,),
+                          SizedBox(height: 16,),
+                          const CustomText(text: uploadphoto,
+                          color: Colors.white,
+                          fontfamilly: montBook,
+                          sizeOfFont: 20,)
+                        ],
                       ),
-                      SizedBox(height: screenHeight*0.04,),
-
-                      Container(
-                        height: screenHeight*0.350,
-                        width: screenWidth*0.760,
-                        margin: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                        decoration: BoxDecoration(
-                             color: editbgColor,
-                            borderRadius: BorderRadius.circular(16),
-                            border: Border.all(width: 0, color: editbgColor,
-
-
-                            )
-
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image.asset(appLogo,
-                            height: 42,
-                            width: 40,
-                            fit: BoxFit.contain,),
-                            SizedBox(height: 16,),
-                            const CustomText(text: uploadphoto,
-                            color: Colors.white,
-                            fontfamilly: montBook,
-                            sizeOfFont: 20,)
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
+                    )
+                  ],
                 ),
+              ),
 
 
-                Padding(
-                  padding: const EdgeInsets.all(59.0),
-                  child: CommonButton(btnBgColor: btnbgColor, btnText: next, onClick: (){
-                    Navigator.pushNamed(context, '/SetYourPasswordScreen');
-                  }),
-                )
+              Padding(
+                padding: const EdgeInsets.all(59.0),
+                child: CommonButton(btnBgColor: btnbgColor, btnText: next, onClick: (){
+                  Navigator.pushNamed(context, '/SetYourPasswordScreen');
+                }),
+              )
 
-              ],
-            ),
-          ],
-        ),
-
+            ],
+          ),
+        ],
       ),
+
     );
   }
 }

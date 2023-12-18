@@ -18,27 +18,30 @@ class PaymentMethodScreen extends StatelessWidget {
   //var counterProvider=Provider.of<CommonCounter>(navigatorKey.currentContext!, listen: false);
   @override
   Widget build(BuildContext context) {
-    return  SafeArea(child: Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.only(left: 25.0,right: 25,top: 10,bottom: 20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-           getView(),
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: CommonButton(btnText: "ADD NEW",btnBgColor: btnbgColor,btnTextColor: btntxtColor,onClick: (){
-               // Navigator.pushNamed(context, '/RestrorentProfileScreen');
-                DialogHelper.addCardDialoge(context);
-              },),
-            ),
-
-          ],
+    return  Scaffold(
+      backgroundColor: bgColor,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.only(left: 25.0,right: 25,top: 0,bottom: 20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+             getView(),
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: CommonButton(btnText: "ADD NEW",btnBgColor: btnbgColor,btnTextColor: btntxtColor,onClick: (){
+                 // Navigator.pushNamed(context, '/RestrorentProfileScreen');
+                  DialogHelper.addCardDialoge(context);
+                },),
+              ),
+            
+            ],
+          ),
         ),
       ),
-
-
-    ));
+    
+    
+    );
   }
 
   Widget getView(){

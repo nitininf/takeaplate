@@ -1,8 +1,4 @@
-import 'dart:ui';
-
 import 'package:flutter/foundation.dart';
-import '../UTILS/request_string.dart';
-import '../UTILS/utils.dart';
 
 class CommonCounter extends ChangeNotifier {
   int count = 1;
@@ -11,6 +7,12 @@ class CommonCounter extends ChangeNotifier {
   bool isSaved=true;
   String textName="VIEW MORE";
   bool isViewMore=true;
+  bool isNotification=true;
+  bool isNotification_one=true;
+  bool isNotification_two=true;
+  bool isNoti=true;
+  List<int> myIntList = [];
+  bool isDeal=true;
   // Private constructor to prevent external instantiation
   CommonCounter._();
 
@@ -25,7 +27,10 @@ class CommonCounter extends ChangeNotifier {
     return _instance!;
   }
 
-
+  void gettodayDeal(bool _isDeal){
+    isDeal=_isDeal;
+    notifyListeners();
+  }
   getUserId() async {
     String? userId = "";//await Utility.getStringValue(RequestString.USER_ID);
     print("UserId: $userId");
@@ -49,6 +54,23 @@ class CommonCounter extends ChangeNotifier {
     }else{
       isViewMore=true;
     }
+    notifyListeners();
+  }
+  void notificationShowOn(bool isNotify) {
+    isNotification=isNotify;
+    notifyListeners();
+  }
+  void notificationShowOn_one(bool isNotify) {
+    isNotification_one=isNotify;
+    notifyListeners();
+  }
+  void notificationShowOn_two(bool isNotify) {
+    isNotification_two=isNotify;
+    notifyListeners();
+  }
+  void notificationCenter(bool isNotify,{int? count}) {
+    isNoti=isNotify;
+     myIntList.add(count!);
     notifyListeners();
   }
 }

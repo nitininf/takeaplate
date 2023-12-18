@@ -26,6 +26,7 @@ const starColor = Color(0xff1C2936);
 const graysColor = Color(0xff707070);
 const cardTextColor = Color(0xff043856);
 const pickuptColor = Color(0xff0B291F);
+const bgColor = Color(0xffF8F8F8);
 const newcardbgColor = Color(0xff22314a);
 const  imgbgColor = Color(0xffa0baa9);
 const grayColor = Color(0x7B3D3F41);

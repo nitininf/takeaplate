@@ -15,24 +15,24 @@ class FavouriteScreen extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    return  SafeArea(
-        child: Scaffold(
-          body: Padding(padding: const EdgeInsets.all(20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const CustomAppBar(),
-                const Padding(
-                  padding: EdgeInsets.only(left: 8.0,top: 26),
-                  child: CustomText(text: "YOUR FAVOURITES", color: btnbgColor, fontfamilly: montHeavy, sizeOfFont: 20),
-                ),
-                buildHorizontalList(items),
-                buildVeerticalCards()
-              ],
-            ),
+    return  Scaffold(
+      backgroundColor: bgColor,
+      body: SafeArea(
+        child: Padding(padding:  EdgeInsets.only(bottom:20,right: 20,left: 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const CustomAppBar(),
+              const Padding(
+                padding: EdgeInsets.only(left: 8.0,top: 26),
+                child: CustomText(text: "YOUR FAVOURITES", color: btnbgColor, fontfamilly: montHeavy, sizeOfFont: 20),
+              ),
+              buildHorizontalList(items),
+              buildVeerticalCards()
+            ],
           ),
-        )
-
+        ),
+      ),
     );
   }
   Widget buildHorizontalList(List<String> items) {

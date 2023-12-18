@@ -61,7 +61,7 @@ class DialogHelper {
               Column(
                 children: <Widget>[
                   SizedBox(
-                    height: screenHeight * 0.16,
+                    height: title==sentPss ?screenHeight * 0.08: screenHeight * 0.16,
                   ),
                   Padding(
                     padding: const EdgeInsets.only(left: 0.0,right: 0.0,top: 30.0,bottom: 10),
