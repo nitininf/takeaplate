@@ -50,7 +50,14 @@ class _BaseHomeScreen extends State<BaseHome> {
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
+    var counterProvider=Provider.of<CommonCounter>(navigatorKey.currentContext!, listen: false);
+    if(counterProvider.count=="Click"){
+      setState(() {
+        _selectedIndex=3;
+        counterProvider.count="";
+      });
 
+    }
     return Scaffold(
       key: _scaffoldKey,
       extendBody: true,

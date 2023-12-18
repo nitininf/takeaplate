@@ -185,65 +185,71 @@ class RestrorentProfileScreen extends StatelessWidget{
     );
   }
   Widget getFavCards() {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(width: 0, color: Colors.grey),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const   Expanded(
+    return
+      GestureDetector(
+        onTap: (){
+          Navigator.pushNamed(navigatorKey.currentContext!, '/OrderAndPayScreen');
+        },
+        child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(width: 0, color: Colors.grey),
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const   Expanded(
 
-            child:  Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CustomText(text: "Surprise Pack", maxLin: 1,color: btntxtColor, fontfamilly: montBold,sizeOfFont: 21,),
+              child:  Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CustomText(text: "Surprise Pack", maxLin: 1,color: btntxtColor, fontfamilly: montBold,sizeOfFont: 21,),
 
-                CustomText(text: "Salad & Co", maxLin: 1,color: btntxtColor, fontfamilly: montRegular,sizeOfFont: 16,),
+                  CustomText(text: "Salad & Co", maxLin: 1,color: btntxtColor, fontfamilly: montRegular,sizeOfFont: 16,),
 
-                CustomText(text: "Tomorrow-7:35-8:40 Am", maxLin: 1,color: graysColor,sizeOfFont: 11, fontfamilly: montRegular),
-                SizedBox(height: 5,),
-                Row(
-                  children: [
-                    Icon(Icons.star_border,size: 20,color:graysColor,),
-                    Icon(Icons.star_border,size: 20,color: graysColor),
-                    Icon(Icons.star_border,size: 20,color: graysColor,),
-                    Icon(Icons.star_border,size: 20,color: graysColor,),
-                    Icon(Icons.star_border,size: 20,color: graysColor,),
-                    SizedBox(width: 10,),
-                    Expanded(child: CustomText(text: "84 Km",maxLin: 1, color: graysColor,sizeOfFont: 15, fontfamilly: montSemiBold)),
-                  ],
+                  CustomText(text: "Tomorrow-7:35-8:40 Am", maxLin: 1,color: graysColor,sizeOfFont: 11, fontfamilly: montRegular),
+                  SizedBox(height: 5,),
+                  Row(
+                    children: [
+                      Icon(Icons.star_border,size: 20,color:graysColor,),
+                      Icon(Icons.star_border,size: 20,color: graysColor),
+                      Icon(Icons.star_border,size: 20,color: graysColor,),
+                      Icon(Icons.star_border,size: 20,color: graysColor,),
+                      Icon(Icons.star_border,size: 20,color: graysColor,),
+                      SizedBox(width: 10,),
+                      Expanded(child: CustomText(text: "84 Km",maxLin: 1, color: graysColor,sizeOfFont: 15, fontfamilly: montSemiBold)),
+                    ],
 
-                ),
-                SizedBox(height: 5,),
-                CustomText(text: "\$"+"9.99", color: dolorColor,sizeOfFont: 27, fontfamilly: montHeavy,),
-
-              ],
-            ),
-          ),
-          const SizedBox(width: 18,),
-          Expanded(
-            child: Stack(
-              alignment: Alignment.topRight,
-              clipBehavior: Clip.none,
-              children: [
-                Image.asset(food_image, height: 130, width: 130, fit: BoxFit.cover),
-                Positioned(
-                  right: -4,
-                  child: Image.asset(
-                    save_icon,
-                    height: 15,
-                    width: 18,
                   ),
-                ),
-              ],
+                  SizedBox(height: 5,),
+                  CustomText(text: "\$"+"9.99", color: dolorColor,sizeOfFont: 27, fontfamilly: montHeavy,),
+
+                ],
+              ),
             ),
-          ),
-        ],
-      ),
-    );
+            const SizedBox(width: 18,),
+            Expanded(
+              child: Stack(
+                alignment: Alignment.topRight,
+                clipBehavior: Clip.none,
+                children: [
+                  Image.asset(food_image, height: 130, width: 130, fit: BoxFit.cover),
+                  Positioned(
+                    right: -4,
+                    child: Image.asset(
+                      save_icon,
+                      height: 15,
+                      width: 18,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+            ),
+      );
   }
 }

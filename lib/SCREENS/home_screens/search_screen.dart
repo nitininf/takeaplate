@@ -1,13 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:takeaplate/SCREENS/home_screens/base_home.dart';
+import 'package:takeaplate/main.dart';
 import '../../CUSTOM_WIDGETS/custom_search_field.dart';
 import '../../CUSTOM_WIDGETS/custom_text_style.dart';
+import '../../MULTI-PROVIDER/common_counter.dart';
 import '../../UTILS/app_color.dart';
 import '../../UTILS/fontfaimlly_string.dart';
 
 class SearchScreen extends StatelessWidget{
   final TextEditingController _searchController = TextEditingController();
   final FocusNode _searchFocusNode = FocusNode();
+  var counterProvider=Provider.of<CommonCounter>(navigatorKey.currentContext!, listen: false);
+
   @override
   Widget build(BuildContext context) {
  return  SafeArea(child: Scaffold(
@@ -41,7 +47,13 @@ class SearchScreen extends StatelessWidget{
       scrollDirection: Axis.vertical,
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        children: List.generate(5, (index) =>  getView("Surprise Pack", "15/02/2023")),
+        children: List.generate(5, (index) =>  GestureDetector(
+          onTap: (){
+            counterProvider.getscreen();
+            print("sdsddsdfdsdf${counterProvider.count}");
+            Navigator.pushReplacementNamed(navigatorKey.currentContext!, '/BaseHome');
+          },
+            child: getView("Surprise Pack", "15/02/2023"))),
       ),
     );
   }

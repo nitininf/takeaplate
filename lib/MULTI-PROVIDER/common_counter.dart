@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 class CommonCounter extends ChangeNotifier {
-  int count = 1;
+  String count = "";
   DateTime dateTtime=DateTime.now();
    String btnName="SAVE";
   bool isSaved=true;
@@ -10,8 +10,8 @@ class CommonCounter extends ChangeNotifier {
   bool isNotification=true;
   bool isNotification_one=true;
   bool isNotification_two=true;
-  bool isNoti=true;
-  List<int> myIntList = [];
+    List<bool> isNoti=[true,true,true,true,true];
+  //List<int> myIntList = [];
   bool isDeal=true;
   // Private constructor to prevent external instantiation
   CommonCounter._();
@@ -27,6 +27,10 @@ class CommonCounter extends ChangeNotifier {
     return _instance!;
   }
 
+  void getscreen(){
+    count="Click";
+    notifyListeners();
+  }
   void gettodayDeal(bool _isDeal){
     isDeal=_isDeal;
     notifyListeners();
@@ -68,9 +72,10 @@ class CommonCounter extends ChangeNotifier {
     isNotification_two=isNotify;
     notifyListeners();
   }
-  void notificationCenter(bool isNotify,{int? count}) {
-    isNoti=isNotify;
-     myIntList.add(count!);
+  void notificationCenter(bool isNotify,{int pos=0}) {
+      isNoti[pos]=isNotify;
+      print("nbbb${pos}");
+    // myIntList.add(count!);
     notifyListeners();
   }
 }

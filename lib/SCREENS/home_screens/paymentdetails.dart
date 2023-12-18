@@ -42,7 +42,7 @@ class PaymentDetailsScreen extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(left: 30.0,right: 30,bottom: 20),
                         child: CommonButton(btnBgColor: btnbgColor, btnText: orderandpay, onClick: (){
-                          //Navigator.pushNamed(context, '/RestrurentScreen');
+                          Navigator.pushNamed(context, '/BaseHome');
                         }),
                       )
                     ],

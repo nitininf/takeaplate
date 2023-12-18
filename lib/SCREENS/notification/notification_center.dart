@@ -72,12 +72,32 @@ class NotificationCenterScreen extends StatelessWidget{
        GestureDetector(
          onTap: () {
 
-           commonProvider.isNoti ? commonProvider.notificationCenter(
-                 false,) : commonProvider.notificationCenter(true,);
+           if(pos==0) {
+             commonProvider.isNoti[0] ? commonProvider.notificationCenter(
+               false,pos: 0) : commonProvider.notificationCenter(true,pos: 0);
+             print("my pos ${pos}");
+           }
+          else if(pos==1) {
+             commonProvider.isNoti[pos] ? commonProvider.notificationCenter(
+               false,pos: 1) : commonProvider.notificationCenter(true,pos: 1);
+             print("my pos ${pos}+${commonProvider.isNoti[pos]}");
+           }
+          else if(pos==2) {
+             commonProvider.isNoti[pos] ? commonProvider.notificationCenter(
+               false,pos: 2) : commonProvider.notificationCenter(true,pos: 2);
+           }
+           else if(pos==3) {
+             commonProvider.isNoti[pos] ? commonProvider.notificationCenter(
+               false,pos: 3) : commonProvider.notificationCenter(true,pos: 3);
+           }
+           else if(pos==4) {
+             commonProvider.isNoti[pos] ? commonProvider.notificationCenter(
+               false,pos: 4) : commonProvider.notificationCenter(true,pos: 4);
+           }
 
 
          },
-         child:   commonProvider.isNoti ? Image.asset(radioon,
+         child:   commonProvider.isNoti[pos] ? Image.asset(radioon,
            height: 35,
            width: 35,) : Image.asset(radiofficon,
            height: 35,

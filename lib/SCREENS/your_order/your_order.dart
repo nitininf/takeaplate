@@ -72,11 +72,12 @@ class YourOrderScreen extends StatelessWidget {
               width: 280,
               child: Image.asset(food_image, height: 275,width: 275, fit: BoxFit.fill)),
           const SizedBox(height: 20,),
-          const Row(
+           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               CustomText(text: "Surprise Pack", sizeOfFont: 18, color: btntxtColor, fontfamilly: montBold,weight: FontWeight.w900,),
-              CustomText(text: "...",sizeOfFont: 18, color: btnbgColor, fontfamilly: montBold),
+              //CustomText(text: "...",sizeOfFont: 18, color: btnbgColor, fontfamilly: montBold),
+              Image.asset(three_dot,width: 14,height: 4,)
             ],
           ),
           const Row(
@@ -88,6 +89,8 @@ class YourOrderScreen extends StatelessWidget {
                 padding: EdgeInsets.only(top: 10.0),
                 child: CustomText(text: "Pick up Time:11:00 am", sizeOfFont: 11,color: viewallColor, fontfamilly: montLight),
               ),
+
+
             ],
           ),
 
@@ -109,14 +112,14 @@ class YourOrderScreen extends StatelessWidget {
           ),
           SizedBox(height: 10,),
 
-          CommonButton(btnBgColor: onboardingBtn, btnTextColor:pickuptColor,btnText: "PICK UP AT 11 AM", onClick: (){
-          //  DialogHelper.showCommonPopup(navigatorKey.currentContext!,title: "RATE YOUR EXPERIENCE");
-           // Navigator.pushNamed(navigatorKey.currentContext!, '/ClosestScreen');
+         /* CommonButton(btnBgColor: onboardingBtn,sizeOfFont: 17, btnTextColor:pickuptColor.withOpacity(0.54),btnText: "PICK UP AT 11 AM", onClick: (){
+          }),*/
+          CommonButton(btnBgColor: onboardingBtn,sizeOfFont: 17, btnTextColor:pickuptColor,btnText: "ORDER READY FOR PICKUP", onClick: (){
+              DialogHelper.showCommonPopup(navigatorKey.currentContext!,title: "RATE YOUR EXPERIENCE",subtitle: null,isDelete: false);
           }),
-
           SizedBox(height: 10,),
           CustomText(text: "Order N. #2134445`", color: viewallColor, sizeOfFont:16,fontfamilly: montLight),
-          const CustomText(text: "23 Dreamland Av.., Australia", sizeOfFont: 14, color: viewallColor, fontfamilly: montBold),
+          const CustomText(text: "23 Dreamland Av.., Australia", sizeOfFont: 14, color: offerColor, fontfamilly: montBold),
           SizedBox(height: 10,),
           const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

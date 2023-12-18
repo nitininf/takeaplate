@@ -123,9 +123,9 @@ class DialogHelper {
                         Align(
                           alignment: Alignment.center,
                           child: CustomText(text:title ?? "" ,
-                            sizeOfFont: 17,
+                            sizeOfFont: 21,
                             color: hintColor,
-                            fontfamilly: montBook,
+                            fontfamilly: montHeavy,
                             isAlign: true,),
                         ),
                         const SizedBox(height: 20,),
