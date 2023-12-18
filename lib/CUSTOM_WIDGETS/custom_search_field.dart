@@ -20,36 +20,51 @@ class CustomSearchField extends StatelessWidget {
    // final FocusNode _focusNode = FocusNode();
     return
       TextFormField(
-          keyboardType: TextInputType.text,
-         controller: controller,
-          textAlign: TextAlign.start,
-           focusNode: focusnde,
-          style: const TextStyle(
-              fontSize: 18,
-              color: hintColor,
-              fontFamily: montBook),
+        keyboardType: TextInputType.text,
+        controller: controller,
+        textAlign: TextAlign.start,
+      //  focusNode: focusNode,
+        style: const TextStyle(
+          fontSize: 18,
+          color: hintColor,
+          fontFamily: montBook,
+        ),
+        decoration: InputDecoration(
+          filled: true,
+          fillColor: editbgColor,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20),
+            borderSide: BorderSide.none,
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20),
+            borderSide: BorderSide.none,
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20),
+            borderSide: BorderSide.none,
+          ),
+          errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20),
+            borderSide: BorderSide.none,
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20),
+            borderSide: BorderSide.none,
+          ),
+          suffixIcon: const Padding(
+            padding: EdgeInsets.only(right: 20.0, top: 10, bottom: 10),
+            child: Icon(Icons.search, color: hintColor, size: 25),
+          ),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 30, vertical: 13),
+          hintStyle: const TextStyle(
+            color: hintColor,
+            fontFamily: montBook,
+            fontSize: 18,
+          ),
+          hintText: hintText ?? "Gold Coast, Australia",
+        ),
+      );
 
-          decoration: InputDecoration(
-              filled: true,
-              fillColor: editbgColor,
-              border: OutlineInputBorder(borderRadius: BorderRadius.circular(20),borderSide: BorderSide.none),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(20),
-                borderSide: BorderSide.none,
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(20),
-                borderSide: BorderSide.none,
-              ),
-              suffixIcon:const Padding(
-                padding:  EdgeInsets.only(right: 20.0,top: 10,bottom: 10),
-                child:  Icon(Icons.search,color: hintColor,size: 25,),
-              ),
-              contentPadding:  const EdgeInsets.symmetric(horizontal: 30,vertical: 13),
-              hintStyle:  const TextStyle(
-                  color: hintColor,
-                  fontFamily: montBook,
-                  fontSize: 18),
-              hintText: hintText ?? "Gold Coast, Australia"));
   }
 }

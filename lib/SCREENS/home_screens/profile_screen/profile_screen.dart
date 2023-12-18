@@ -57,18 +57,20 @@ class ProfileScreen extends StatelessWidget{
     );
   }
 
-  Widget getCards() {
+  Widget getCards({Color? bclor}) {
     return
       GestureDetector(
         onTap: (){
           Navigator.pushNamed(navigatorKey.currentContext!, '/YourOrderScreen');
         },
-        child: Container(
+        child:
+        Container(
           margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
             border: Border.all(width: 0, color: Colors.grey),
+            color: bclor?.withOpacity(0.40)
           ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -79,9 +81,9 @@ class ProfileScreen extends StatelessWidget{
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const CustomText(text: "Surprise Pack",maxLin: 1, color: btntxtColor, fontfamilly: montBold,sizeOfFont: 21,),
-                 
-                    const CustomText(text: "Salad & Co", maxLin:1,color: viewallColor, fontfamilly: montRegular,sizeOfFont: 16,),
-                 
+
+                    const CustomText(text: "Salad & Co.", maxLin:1,color: viewallColor, fontfamilly: montRegular,sizeOfFont: 16,),
+
                     const CustomText(text: "Tomorrow-7:35-8:40 Am",maxLin: 1, color: graysColor,sizeOfFont: 11, fontfamilly: montRegular),
                     SizedBox(height: 5,),
                     Row(
@@ -105,7 +107,7 @@ class ProfileScreen extends StatelessWidget{
                     ),
                     SizedBox(height: 0,),
                     CustomText(text: "\$"+"9.99", color: dolorColor,sizeOfFont: 26, fontfamilly: montHeavy,),
-                 
+
                   ],
                                ),
                ),
@@ -175,7 +177,7 @@ class ProfileScreen extends StatelessWidget{
             const SizedBox(height: 30,),
             buildSection("CURRENT ORDERS", viewall),
             const SizedBox(height: 5,),
-            getCards(),
+            getCards(bclor: onboardingBtn),
             getCards(),
             const Padding(
               padding: EdgeInsets.only(left: 25.0,right: 25,top: 15,bottom: 15),
@@ -244,7 +246,7 @@ class ProfileScreen extends StatelessWidget{
             children: [
               CustomText(text: "Surprise Pack",maxLin: 1, color: btntxtColor, fontfamilly: montBold,sizeOfFont: 21,),
 
-              CustomText(text: "Salad & Co", maxLin:1,color: viewallColor, fontfamilly: montRegular,sizeOfFont: 16,),
+              CustomText(text: "Salad & Co.", maxLin:1,color: viewallColor, fontfamilly: montRegular,sizeOfFont: 16,),
 
               CustomText(text: "Tomorrow-7:35-8:40 Am", maxLin:1,color: graysColor,sizeOfFont: 11, fontfamilly: montRegular),
               SizedBox(height: 5,),

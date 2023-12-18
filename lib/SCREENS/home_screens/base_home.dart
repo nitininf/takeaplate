@@ -40,6 +40,9 @@ class _BaseHomeScreen extends State<BaseHome> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
+      if(_selectedIndex==4) {
+        _widgetOptions[4] =   ProfileScreen();
+      }
     });
   }
 
@@ -155,8 +158,8 @@ class _BaseHomeScreen extends State<BaseHome> {
               BottomNavigationBarItem(
                 icon: Image.asset(
                   profile_icon,
-                  height: 30,
-                  width: 30,
+                  height: 25,
+                  width: 25,
                   color: _selectedIndex == 4 ? btnbgColor : viewallColor,
                 ),
                 label: '',

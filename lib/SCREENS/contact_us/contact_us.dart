@@ -109,7 +109,7 @@ class ContactUs extends StatelessWidget{
                     keyboardType: TextInputType.text,
                     maxLines: 15,
                     //   controller: controller,
-                    style:  const TextStyle(fontWeight: FontWeight.w500, fontSize: 20,fontFamily: montBook,color:btntxtColor
+                    style:  const TextStyle(fontSize: 20,fontFamily: montBook,color:btntxtColor
                     ),
                     decoration:  InputDecoration(
                         border: InputBorder.none,

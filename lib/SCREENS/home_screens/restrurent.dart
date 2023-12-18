@@ -71,12 +71,12 @@ class RestrurentScreen extends StatelessWidget{
           children: List.generate(items.length, (index) => GestureDetector(onTap:(){
             Navigator.pushNamed(navigatorKey.currentContext!, '/RestrorentProfileScreen');
           },
-              child: getFavCards())),
+              child: getFavCards(index))),
         ),
       ),
     );
   }
-  Widget getFavCards() {
+  Widget getFavCards(int index) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
@@ -87,11 +87,11 @@ class RestrurentScreen extends StatelessWidget{
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const  Expanded(
+            Expanded(
             child:  Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CustomText(text: "Salad & Co", color: btntxtColor, fontfamilly: montBold,sizeOfFont: 27,maxLin: 1,),
+                index%2==0 ?CustomText(text: "Salad & Co.", color: btntxtColor, fontfamilly: montBold,sizeOfFont: 27,maxLin: 1,) :CustomText(text: "Fruit Bowl", color: btntxtColor, fontfamilly: montBold,sizeOfFont: 27,maxLin: 1,),
             
                 CustomText(text: "Health Foods", color: graysColor, fontfamilly: montRegular,sizeOfFont: 16,maxLin: 1,),
             

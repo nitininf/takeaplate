@@ -74,7 +74,7 @@ class OrderSummeryScreen extends StatelessWidget{
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 12),
                     decoration: BoxDecoration(
-                        color: editprofilbgColor,
+                        color: onboardingBtn.withOpacity(0.15),
                         borderRadius: BorderRadius.circular(16),
                         border: Border.all(width: 0, color: grayColor)
 
@@ -85,7 +85,7 @@ class OrderSummeryScreen extends StatelessWidget{
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           CustomText(text: "Total",color: viewallColor,sizeOfFont: 21,fontfamilly: montBold,),
-                          CustomText(text: "\$39.99",color: dolorColor,sizeOfFont: 21,fontfamilly: montBold,),
+                          CustomText(text: "\$39.99",color: offerColor,sizeOfFont: 21,fontfamilly: montBold,),
 
 
                         ],
@@ -128,15 +128,15 @@ class OrderSummeryScreen extends StatelessWidget{
               ),
               child: Column(
                 children: [
-                  getMasterCard(mastercardColor),
-                  getMasterCard(hintColor),
+                  getMasterCard(mastercardColor,"-2211"),
+                  getMasterCard(hintColor,"-4251"),
                 ],
               )
             ),
             Padding(
               padding: const EdgeInsets.only(top: 30.0,right: 33,left: 33,bottom: 20),
               child: CommonButton(btnBgColor: btnbgColor, btnText: "ORDER & PAY", onClick: (){
-                DialogHelper.showCommonPopup(navigatorKey.currentContext!,title: "YOUR PAYMENT WAS SUCCESSULL",subtitle: "YOU WILL GET A NOTIFICATION WHEN THE ORDER IS CONFIIRMED");
+                DialogHelper.showCommonPopup(navigatorKey.currentContext!,title: "YOUR PAYMENT WAS SUCCESSULL",subtitle: "YOU WILL GET A NOTIFICATION WHEN THE ORDER IS CONFIRMED");
               }),
             ),
 
@@ -145,7 +145,7 @@ class OrderSummeryScreen extends StatelessWidget{
     );
   }
 
-  Widget getMasterCard(Color colorbg){
+  Widget getMasterCard(Color colorbg,String payment){
     return Container(
        margin: const EdgeInsets.symmetric(horizontal: 1, vertical: 0),
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
@@ -159,7 +159,7 @@ class OrderSummeryScreen extends StatelessWidget{
           Image.asset(master_card,fit: BoxFit.contain,height: 40,width: 70,),
           SizedBox(width: 10,),
           Expanded(child: CustomText(text: "MasterCard",color: viewallColor,sizeOfFont: 14,fontfamilly: montBold,)),
-          CustomText(text: "-2211",color: viewallColor,sizeOfFont: 14,fontfamilly: montRegular,),
+          CustomText(text: payment,color: viewallColor,sizeOfFont: 14,fontfamilly: montRegular,),
         ],
       ),
     );
@@ -212,7 +212,7 @@ class OrderSummeryScreen extends StatelessWidget{
                 ),
               ),
 
-              CustomText(text: "\$9.99",sizeOfFont: 15,color: dolorColor,fontfamilly: montHeavy,)
+              CustomText(text: "\$9.99",sizeOfFont: 15,color: offerColor,fontfamilly: montHeavy,)
             ],
           ),
           SizedBox(height: 5,),

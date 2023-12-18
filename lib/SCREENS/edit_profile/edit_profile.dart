@@ -51,15 +51,15 @@ class EditProfileScreen extends StatelessWidget{
                   alignment: Alignment.center,
                   child: Image.asset(profile_img,height: 300,fit: BoxFit.contain,)),
               const SizedBox(height: 15,),
-              CommonEditText(hintText: fullName,isbgColor: true,),
+              CommonEmailField(hintText: fullName,isbgColor: true,),
               const SizedBox(height: 15,),
               CommonEmailField(hintText: email,isbgColor: true,),
               const SizedBox(height: 15,),
-              CommonEditText(hintText: phoneNumber,fontfamilly: montBook,isbgColor: true,),
+              CommonEmailField(hintText: phoneNumber,isbgColor: true,),
               const SizedBox(height: 15,),
               Row(
                 children: [
-                  Expanded(child: CommonEditText(hintText: dob,isbgColor: true,)),
+                  Expanded(child: CommonEmailField(hintText: dob,isbgColor: true,)),
                   const SizedBox(width: 10,),
                   Expanded(child: CommonEditText(hintText: gender,isPassword: true,isbgColor: true,)),
                 ],

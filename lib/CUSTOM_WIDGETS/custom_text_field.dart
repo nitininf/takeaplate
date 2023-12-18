@@ -41,7 +41,7 @@ class CommonTextField extends StatelessWidget {
             focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(18),borderSide: BorderSide(color:editbgColor,style:BorderStyle.solid )),
 
             suffixIcon: (isPassword ?? false)
-                ? IconButton(onPressed:(){}, icon: Image.asset(arrow_back,height: 16,width: 12,))
+                ? IconButton(onPressed:onTap, icon: Image.asset(arrow_back,height: 16,width: 12,))
                 : const SizedBox(),
             contentPadding:
             const EdgeInsets.symmetric(horizontal: 16, vertical: 16),

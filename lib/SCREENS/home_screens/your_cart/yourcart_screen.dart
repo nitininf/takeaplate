@@ -68,7 +68,7 @@ class YourCardScreen extends StatelessWidget{
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         CustomText(text: "Total",color: btntxtColor,sizeOfFont: 21,fontfamilly: montBold,),
-                        CustomText(text: "\$39.99",color: dolorColor,sizeOfFont: 28,fontfamilly: montHeavy,),
+                        CustomText(text: "\$39.99",color: offerColor,sizeOfFont: 28,fontfamilly: montHeavy,),
 
 
                       ],
@@ -143,7 +143,7 @@ class YourCardScreen extends StatelessWidget{
                 ),
               ),
 
-              CustomText(text: "\$9.99",sizeOfFont: 15,color: dolorColor,fontfamilly: montHeavy,)
+              CustomText(text: "\$9.99",sizeOfFont: 15,color: offerColor,fontfamilly: montHeavy,)
             ],
           ),
           SizedBox(height: 5,),
