@@ -21,7 +21,7 @@ class EditProfileScreen extends StatelessWidget{
       backgroundColor: bgColor,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.only(top:0.0,bottom: 20,left: 25,right: 25),
+          padding: const EdgeInsets.only(top:5.0,bottom: 20,left: 25,right: 25),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
@@ -40,16 +40,34 @@ class EditProfileScreen extends StatelessWidget{
     return Expanded(
       child: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.only(left: 20.0,right: 20.0),
+          padding: const EdgeInsets.only(left: 20.0,right: 20.0,top: 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const SizedBox(height: 10,),
               const CustomText(text: "EDIT PROFILE",sizeOfFont: 20,fontfamilly: montHeavy,color: btnbgColor,),
               const SizedBox(height: 10,),
-              Align(
+
+          Container(
+            height: 300,
+            width: 300,
+            decoration: const BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(edit_photo),
+                fit: BoxFit.contain,
+              ),
+            ),
+            child:  Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(appLogo,width: 146,height: 79,fit: BoxFit.contain,),
+                CustomText(text: "Change Photo",sizeOfFont: 20,fontfamilly: montBook,color: hintColor,),
+              ],
+            ),
+          ),
+            /*  Align(
                   alignment: Alignment.center,
-                  child: Image.asset(profile_img,height: 300,fit: BoxFit.contain,)),
+                  child: Image.asset(profile_img,height: 300,fit: BoxFit.contain,)),*/
               const SizedBox(height: 15,),
               CommonEmailField(hintText: fullName,isbgColor: true,),
               const SizedBox(height: 15,),

@@ -81,6 +81,10 @@ class _BaseHomeScreen extends State<BaseHome> {
               _selectedIndex = 4;
               _widgetOptions[4] = ContactUs();
             }
+            else if(_selectedIndex==4){
+              _selectedIndex = 4;
+              _widgetOptions[4] = ProfileScreen();
+            }
           });
         }),
       ),
@@ -117,11 +121,12 @@ class _BaseHomeScreen extends State<BaseHome> {
       ),
       bottomNavigationBar: SafeArea(
         child: Container(
-          padding: const EdgeInsets.only(left: 8, right: 8, top: 3),
+          padding: const EdgeInsets.only(left: 8, right: 8, top: 4),
           decoration: BoxDecoration(
+            color: hintColor,
             borderRadius: const BorderRadius.only(
                 topRight: Radius.circular(20), topLeft: Radius.circular(20)),
-            border: Border.all(width: 0, color: grayColor),
+            border: Border.all(width: 0, color: hintColor),
           ),
           child: BottomNavigationBar(
             type: BottomNavigationBarType.fixed,
@@ -228,8 +233,10 @@ class RightDrawerMenuWidget extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 8),
                 child: IconButton(
                   onPressed: () => Navigator.pop(context),
-                  icon: const Icon(
-                    Icons.arrow_back_ios,
+                  icon:  Image.asset(
+                    back_arrow,
+                    height: 27,
+                    width: 17,
                     color: btnbgColor,
                   ),
                 ),

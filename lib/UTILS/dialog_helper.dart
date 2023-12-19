@@ -105,7 +105,7 @@ class DialogHelper {
 
                         Padding(
                           padding: const EdgeInsets.only(left: 15.0,right: 15,top: 6,bottom: 20),
-                          child: CommonButton(btnBgColor:hintColor, btnText: done, onClick: (){
+                          child: CommonButton(btnBgColor:onboardingBtn, btnText: done, onClick: (){
                             Navigator.pop(context);
                           }),
                         ),
@@ -129,7 +129,9 @@ class DialogHelper {
                             isAlign: true,),
                         ),
                         const SizedBox(height: 20,),
-                        const Row(
+
+                       Image.asset(star_box,height: 42,fit: BoxFit.contain,),
+                       /* const Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -139,14 +141,14 @@ class DialogHelper {
                             Icon(Icons.star_border,size: 35,color: btnbgColor,),
                             Icon(Icons.star_border,size: 35,color: btnbgColor,),
                           ],
-                        ),
+                        ),*/
                         SizedBox(
                           height: screenHeight * 0.05,
                         ),
 
                         Padding(
                           padding: const EdgeInsets.only(left: 15.0,right: 15,top: 6,bottom: 20),
-                          child: CommonButton(btnBgColor:hintColor, btnText: "RATE", onClick: (){
+                          child: CommonButton(btnBgColor:onboardingBtn, btnText: "RATE", onClick: (){
                             Navigator.pop(context);
                             showCommonPopup(context,title: "YOUR RATING HAS BEEN SUBMITTED",subtitle: "THANK YOU FOR GIVING YOUR FEEDBACK");
                           }),

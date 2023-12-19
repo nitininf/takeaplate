@@ -180,7 +180,11 @@ class HomeScreen extends StatelessWidget {
       scrollDirection: Axis.horizontal,
       child: Row(
         mainAxisSize: MainAxisSize.min,
-        children: List.generate(items.length, (index) => getFavCards()),
+        children: List.generate(items.length, (index) => GestureDetector(
+          onTap: (){
+            Navigator.pushNamed(navigatorKey.currentContext!, '/OrderAndPayScreen');
+          },
+            child: getFavCards())),
       ),
     );
   }
