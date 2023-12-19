@@ -150,7 +150,7 @@ class DialogHelper {
                           padding: const EdgeInsets.only(left: 15.0,right: 15,top: 6,bottom: 20),
                           child: CommonButton(btnBgColor:onboardingBtn, btnText: "RATE", onClick: (){
                             Navigator.pop(context);
-                            showCommonPopup(context,title: "YOUR RATING HAS BEEN SUBMITTED",subtitle: "THANK YOU FOR GIVING YOUR FEEDBACK");
+                            showCommonPopup(context,title: "YOUR RATING HAS BEEN SUBMITTED",subtitle: "THANK YOU FOR GIVING US YOUR FEEDBACK");
                           }),
                         ),
                         SizedBox(height: 10,)

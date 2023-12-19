@@ -27,14 +27,15 @@ class CommonEmailField extends StatelessWidget {
         obscureText: isPassword ?? false,
         maxLines: maxLine ?? 1,
         controller: controller,
-        style:  TextStyle(fontSize: 20,fontFamily: montBook,color:isbgColor ? btntxtColor:  readybgColor
+        style:  TextStyle(fontSize: 20,fontFamily: montBook,color:isbgColor ? btntxtColor:  readybgColor,
+          decoration: TextDecoration.none,
         ),
 
 
         decoration: InputDecoration(
             filled: true,
             fillColor: isbgColor ? hintColor : editbgColor,
-
+            labelStyle: TextStyle(decoration: TextDecoration.none),
             enabledBorder: !isbgColor ? OutlineInputBorder(borderRadius: BorderRadius.circular(20),borderSide: BorderSide.none)
                 : OutlineInputBorder(borderRadius: BorderRadius.circular(20),borderSide: BorderSide(color: editbgColor,width: 1)),
             focusedBorder: !isbgColor ? OutlineInputBorder(borderRadius: BorderRadius.circular(20),borderSide: BorderSide.none)

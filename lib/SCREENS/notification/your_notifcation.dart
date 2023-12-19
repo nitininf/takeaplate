@@ -55,7 +55,7 @@ class YourNotificationScreen extends StatelessWidget{
         children: [
           Expanded(
             flex: 1,
-              child: CustomText(text: "New meal purchase has been confirmation",color: editbgColor,sizeOfFont: 14,fontfamilly: montSemiBold,)
+              child: CustomText(text: "Your Meal purchase has been confirmed!",color: editbgColor,sizeOfFont: 14,fontfamilly: montSemiBold,)
           ),
           Expanded(
             flex: 0,

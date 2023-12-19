@@ -19,6 +19,7 @@ class PaymentMethodScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: bgColor,
       body: SafeArea(
         child: Padding(
@@ -76,7 +77,7 @@ class PaymentMethodScreen extends StatelessWidget {
             )
           ],
         ),
-        const  SizedBox(height: 10,),
+        const  SizedBox(height: 17,),
         Container(
             decoration: BoxDecoration(
               color: hintColor,
@@ -86,7 +87,7 @@ class PaymentMethodScreen extends StatelessWidget {
 
             ),
             child: Column(
-              children: List.generate(5, (index) => index==0 ? getMasterCard(colorbg:mastercardColor, commonCounter:commonProvider) : getMasterCard(colorbg:hintColor, commonCounter:commonProvider)  )
+              children: List.generate(5, (index) => index==0 ? getMasterCard(colorbg:offerColor.withOpacity(0.50), commonCounter:commonProvider) : getMasterCard(colorbg:hintColor, commonCounter:commonProvider)  )
 
             )
         ),
@@ -98,7 +99,7 @@ class PaymentMethodScreen extends StatelessWidget {
   }
   Widget getMasterCard({Color? colorbg,CommonCounter? commonCounter}){
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 1, vertical: 0),
+      margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 0),
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
       decoration: BoxDecoration(
         color: colorbg,
@@ -121,9 +122,9 @@ class PaymentMethodScreen extends StatelessWidget {
       onTap: (){
         DialogHelper.showCommonPopup(navigatorKey.currentContext!,title: "ARE YOU SURE YOU WANT TO DELETE THIS CARD?",isDelete: true);
       },
-      child: const Padding(
-        padding: EdgeInsets.all(8.0),
-        child: Icon(Icons.close_outlined,size: 13,),
+      child:  Padding(
+        padding: EdgeInsets.all(7.0),
+        child: Image.asset(cross,width: 8,height: 8,),
       ),
     ) : const Text("");
   }

@@ -11,6 +11,8 @@ import '../../CUSTOM_WIDGETS/common_email_field.dart';
 import '../../CUSTOM_WIDGETS/custom_text_style.dart';
 
 class LogInScreen extends StatelessWidget {
+  const LogInScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;

@@ -54,7 +54,7 @@ class FaqScreenScreen extends StatelessWidget{
         decoration: BoxDecoration(
           color: colorbg !=null ? faqSelectedColor : hintColor,
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(width: 0, color: Colors.grey),
+          border: Border.all(width: 0, color: editbgColor.withOpacity(0.24)),
 
         ),
         child: Column(
@@ -63,7 +63,7 @@ class FaqScreenScreen extends StatelessWidget{
           children: [
             Padding(
               padding: const EdgeInsets.only(top: 15.0,),
-              child: CustomText(text: "How do  I know when the best deals are available? ",color: colorbg==null ? editbgColor :colorbg,sizeOfFont: 17,fontfamilly: colorbg==null ? montRegular : montBold,),
+              child: CustomText(text: "How do I know when the best deals are available? ",color: colorbg==null ? editbgColor :colorbg,sizeOfFont: 17,fontfamilly: colorbg==null ? montRegular : montBold,),
             ),
             getSubTitle(colorbg: colorbg)
 

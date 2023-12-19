@@ -39,6 +39,7 @@ const String eclipse = "images/eclipse.png";
 const String three_dot = "images/three_dot.png";
 const String edit_photo = "images/ediit_profile.png";
 const String star_box = "images/star_box.png";
+const String cross = "images/cross.png";
 
 
 
