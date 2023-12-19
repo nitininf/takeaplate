@@ -42,6 +42,8 @@ class CommonEditText extends StatelessWidget {
           maxLength: 15,
           controller: controller,
           style:  TextStyle(
+            decoration: TextDecoration.none,
+            decorationThickness: 0,
             fontSize: isnewCard ? 16 : 20,
             fontFamily: fontfamilly ?? montBook,
             color: isbgColor ? editbgColor :isnewCard ? onboardingBtn : readybgColor, // Make sure to define your colors properly

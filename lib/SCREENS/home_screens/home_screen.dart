@@ -116,12 +116,12 @@ class HomeScreen extends StatelessWidget {
       scrollDirection: Axis.horizontal,
       child: Row(
         mainAxisSize: MainAxisSize.min,
-        children: List.generate(items.length, (index) => getCards()),
+        children: List.generate(items.length, (index) => getCards(index)),
       ),
     );
   }
 
-  Widget getCards() {
+  Widget getCards(int index) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
@@ -157,7 +157,7 @@ class HomeScreen extends StatelessWidget {
             alignment: Alignment.topRight,
             clipBehavior: Clip.none,
             children: [
-              Image.asset(food_image, height: 80, width: 80, fit: BoxFit.cover),
+             index%2==0 ? Image.asset(restrorent_img, height: 83, width: 80, fit: BoxFit.contain) :Image.asset(food_image, height: 83, width: 80, fit: BoxFit.contain),
               Positioned(
                 right: -4,
                 child: Image.asset(

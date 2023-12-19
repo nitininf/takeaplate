@@ -29,6 +29,7 @@ class CommonEmailField extends StatelessWidget {
         controller: controller,
         style:  TextStyle(fontSize: 20,fontFamily: montBook,color:isbgColor ? btntxtColor:  readybgColor,
           decoration: TextDecoration.none,
+          decorationThickness: 0,
         ),
 
 

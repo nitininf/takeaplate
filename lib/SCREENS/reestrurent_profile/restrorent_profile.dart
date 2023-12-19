@@ -70,17 +70,22 @@ class RestrorentProfileScreen extends StatelessWidget{
               Positioned(
                 bottom: -60,
                 right: 10,
-                child: Container(
-                  width: 120,
-                  height: 120,
-                  decoration: BoxDecoration(
-                    color: imgbgColor,
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(width: 0, color: Colors.grey),
+                child: GestureDetector(
+                  onTap: (){
+                    Navigator.pushNamed(navigatorKey.currentContext!, '/OrderAndPayScreen');
+                  },
+                  child: Container(
+                    width: 120,
+                    height: 120,
+                    decoration: BoxDecoration(
+                      color: imgbgColor,
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(width: 0, color: Colors.grey),
 
-                  ),
-                  child:  Center(
-                      child: Image.asset(restrorent_img, fit: BoxFit.fill)
+                    ),
+                    child:  Center(
+                        child: Image.asset(restrorent_img, fit: BoxFit.fill)
+                    ),
                   ),
                 ),
               ),

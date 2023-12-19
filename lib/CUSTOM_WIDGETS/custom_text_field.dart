@@ -31,7 +31,9 @@ class CommonTextField extends StatelessWidget {
         controller: controller,
         readOnly: true,
         onTap: onTap,
-        style: const TextStyle( fontSize: 14,fontFamily: montMedium,color: btntxtColor),
+        style: const TextStyle( fontSize: 14,fontFamily: montMedium,color: btntxtColor,
+          decoration: TextDecoration.none,
+          decorationThickness: 0,),
 
 
         decoration: InputDecoration(

@@ -14,11 +14,11 @@ class OrderAndPayScreen extends StatelessWidget {
   var counterProvider=Provider.of<CommonCounter>(navigatorKey.currentContext!, listen: false);
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: bgColor,
-        body: Padding(
-          padding: const EdgeInsets.all(25.0),
+    return Scaffold(
+      backgroundColor: bgColor,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.only(left: 22.0,right: 22,bottom: 22,top: 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
