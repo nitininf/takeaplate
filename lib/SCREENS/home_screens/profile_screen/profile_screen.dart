@@ -69,7 +69,7 @@ class ProfileScreen extends StatelessWidget{
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(width: 0, color: Colors.grey),
+            border: Border.all(width: 0,   color: editbgColor.withOpacity(0.25),),
             color: bclor?.withOpacity(0.40)
           ),
           child: Row(
@@ -215,7 +215,7 @@ class ProfileScreen extends StatelessWidget{
       decoration: BoxDecoration(
         color: mastercardColor,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(width: 0, color: Colors.grey),
+        border: Border.all(width: 0,   color: editbgColor.withOpacity(0.25),),
       ),
       child:  Row(
         children: [
@@ -235,7 +235,7 @@ class ProfileScreen extends StatelessWidget{
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(width: 0, color: Colors.grey),
+        border: Border.all(width: 0,   color: editbgColor.withOpacity(0.25),),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,

@@ -14,28 +14,25 @@ class RestrurentScreen extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-   return  SafeArea(
-       child: Scaffold(
-         backgroundColor: bgColor,
-       body: Padding(
-           padding: const EdgeInsets.only(top: 5.0,right:20,left: 20 ,bottom: 10),
-       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-         children: [
-           const SizedBox(height: 20),
-           const CustomSearchField(hintText:"Search"),
-           const Padding(
-             padding: EdgeInsets.only(left: 13.0,top: 30),
-             child: CustomText(text: "RESTAURANTS", color: btnbgColor, fontfamilly: montHeavy, sizeOfFont: 20),
-           ),
-           buildHorizontalList(items),
-           buildVeerticalCards()
-         ],
+   return  Scaffold(
+     backgroundColor: bgColor,
+   body: Padding(
+       padding: const EdgeInsets.only(top: 5.0,right:20,left: 20 ,bottom: 10),
+   child: Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+     children: [
+       const SizedBox(height: 20),
+       const CustomSearchField(hintText:"Search"),
+       const Padding(
+         padding: EdgeInsets.only(left: 13.0,top: 30),
+         child: CustomText(text: "RESTAURANTS", color: btnbgColor, fontfamilly: montHeavy, sizeOfFont: 20),
        ),
-       ),
-   )
-
-   );
+       buildHorizontalList(items),
+       buildVeerticalCards()
+     ],
+   ),
+   ),
+      );
   }
   Widget buildHorizontalList(List<String> items) {
     return SingleChildScrollView(
@@ -82,7 +79,7 @@ class RestrurentScreen extends StatelessWidget{
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(width: 0, color: Colors.grey),
+        border: Border.all(width: 0,   color: editbgColor.withOpacity(0.25),),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,

@@ -94,7 +94,7 @@ class _BaseHomeScreen extends State<BaseHome> {
           child: Column(
             children: [
               Padding(
-                padding: EdgeInsets.only(left: 28.0, right: 30, top: 10),
+                padding: EdgeInsets.only(left: 28.0, right: 30, top: 6),
                 child: CustomAppBar(
                   onTap: () {
                     _scaffoldKey.currentState!.openEndDrawer();

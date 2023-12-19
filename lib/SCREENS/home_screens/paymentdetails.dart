@@ -36,7 +36,7 @@ class PaymentDetailsScreen extends StatelessWidget {
                     children: [
                       SizedBox(height: 20,),
                       getFavCards(),
-                      buildSection(total, "\$9.90"),
+                      buildSection(total, "\$9.99"),
 
                       paymentDetails(),
                       Padding(
@@ -66,7 +66,7 @@ class PaymentDetailsScreen extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(width: 0, color: Colors.grey),
+          border: Border.all(width: 0,   color: editbgColor.withOpacity(0.25),),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -88,7 +88,7 @@ class PaymentDetailsScreen extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(width: 0, color: Colors.grey),
+          border: Border.all(width: 0, color: editbgColor.withOpacity(0.25),),
         ),
         child:
         Column(
@@ -101,9 +101,9 @@ class PaymentDetailsScreen extends StatelessWidget {
                 height: 49,
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30),
+                  borderRadius: BorderRadius.circular(20),
                   border: Border.all(
-                    color: grayColor,
+                    color: editbgColor.withOpacity(0.25),
                     width: 1.0, // Adjust the width as needed
                   ),
                 ),
@@ -125,9 +125,9 @@ class PaymentDetailsScreen extends StatelessWidget {
                 height: 49,
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30),
+                  borderRadius: BorderRadius.circular(20),
                   border: Border.all(
-                    color: grayColor,
+                    color: editbgColor.withOpacity(0.25),
                     width: 1.0, // Adjust the width as needed
                   ),
                 ),
@@ -150,9 +150,9 @@ class PaymentDetailsScreen extends StatelessWidget {
                     height: 49,
                     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
+                      borderRadius: BorderRadius.circular(20),
                       border: Border.all(
-                        color: grayColor,
+                        color: editbgColor.withOpacity(0.25),
                         width: 1.0, // Adjust the width as needed
                       ),
                     ),
@@ -173,9 +173,9 @@ class PaymentDetailsScreen extends StatelessWidget {
                     height: 49,
                     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 0),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
+                      borderRadius: BorderRadius.circular(20),
                       border: Border.all(
-                        color: grayColor,
+                        color: editbgColor.withOpacity(0.25),
                         width: 1.0, // Adjust the width as needed
                       ),
                     ),
@@ -217,7 +217,7 @@ class PaymentDetailsScreen extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(width: 0, color: Colors.grey),
+        border: Border.all(width: 0,   color: editbgColor.withOpacity(0.25),),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,

@@ -17,7 +17,7 @@ class YourCardScreen extends StatelessWidget{
    return  SafeArea(child: Scaffold(
    backgroundColor: bgColor,
      body: Padding(
-       padding: const EdgeInsets.only(right: 35.0,left: 35,bottom: 0),
+       padding: const EdgeInsets.only(right: 35.0,left: 35,bottom: 0,top: 5),
        child: Column(
          crossAxisAlignment: CrossAxisAlignment.start,
          children: [
@@ -44,7 +44,7 @@ class YourCardScreen extends StatelessWidget{
             child: const CustomText(text: "YOUR CART",color: editbgColor,sizeOfFont: 20,fontfamilly: montHeavy,),
           ),
           Container(
-            margin: const EdgeInsets.symmetric(horizontal: 10,vertical: 10),
+            margin: const EdgeInsets.symmetric(horizontal: 10,vertical: 20),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(width: 1, color: grayColor)),

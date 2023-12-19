@@ -13,50 +13,48 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: bgColor,
-        body: Padding(
-          padding: const EdgeInsets.only(top: 9.0,right:20,left: 20 ,bottom: 10),
-          child: Column(
-           // crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const SizedBox(height: 20),
-              CustomSearchField(hintText: "Search"),
-              Expanded(
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
-                  child: Column(
-                    children: [
+    return Scaffold(
+      backgroundColor: bgColor,
+      body: Padding(
+        padding: const EdgeInsets.only(top: 9.0,right:20,left: 20 ,bottom: 10),
+        child: Column(
+         // crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            const SizedBox(height: 20),
+            CustomSearchField(hintText: "Search"),
+            Expanded(
+              child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: Column(
+                  children: [
 
-                      buildHorizontalList(items),
-                      buildSection(closet, viewall),
-                      buildHorizontalCards(),
-                        const Padding(
-                         padding: EdgeInsets.only(top: 10.0,left: 20,right: 20,bottom: 15),
-                         child: Divider(
-                          color: Colors.grey,
-                          thickness: 0,
-                                               ),
-                       ),
-                      buildSection(lastminute, viewall),
-                      buildHorizontalFavCards(),
-                      buildHorizontalFavCards(),
+                    buildHorizontalList(items),
+                    buildSection(closet, viewall),
+                    buildHorizontalCards(),
                       const Padding(
-                        padding: EdgeInsets.only(top: 10.0,left: 15,right: 15,bottom: 15),
-                        child: Divider(
-                          color: Colors.grey,
-                          thickness: 0,
-                        ),
+                       padding: EdgeInsets.only(top: 10.0,left: 20,right: 20,bottom: 15),
+                       child: Divider(
+                        color: Colors.grey,
+                        thickness: 0,
+                                             ),
+                     ),
+                    buildSection(lastminute, viewall),
+                    buildHorizontalFavCards(),
+                    buildHorizontalFavCards(),
+                    const Padding(
+                      padding: EdgeInsets.only(top: 10.0,left: 15,right: 15,bottom: 15),
+                      child: Divider(
+                        color: Colors.grey,
+                        thickness: 0,
                       ),
-                      buildSection(myfav, viewall),
-                      buildHorizontalFavCards(),
-                    ],
-                  ),
+                    ),
+                    buildSection(myfav, viewall),
+                    buildHorizontalFavCards(),
+                  ],
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -129,7 +127,7 @@ class HomeScreen extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(width: 0, color: Colors.grey),
+        border: Border.all(width: 0,   color: editbgColor.withOpacity(0.25),),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -195,7 +193,7 @@ class HomeScreen extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(width: 0, color: Colors.grey),
+        border: Border.all(width: 0,   color: editbgColor.withOpacity(0.25),),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,

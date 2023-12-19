@@ -136,7 +136,7 @@ class OrderSummeryScreen extends StatelessWidget{
             Padding(
               padding: const EdgeInsets.only(top: 30.0,right: 33,left: 33,bottom: 20),
               child: CommonButton(btnBgColor: btnbgColor, btnText: "ORDER & PAY", onClick: (){
-                DialogHelper.showCommonPopup(navigatorKey.currentContext!,title: "YOUR PAYMENT WAS SUCCESSULL",subtitle: "YOU WILL GET A NOTIFICATION WHEN THE ORDER IS CONFIRMED");
+                DialogHelper.showCommonPopup(navigatorKey.currentContext!,title: "YOUR PAYMENT WAS SUCCESSFULL",subtitle: "YOU WILL GET A NOTIFICATION WHEN THE ORDER IS CONFIRMED");
               }),
             ),
 

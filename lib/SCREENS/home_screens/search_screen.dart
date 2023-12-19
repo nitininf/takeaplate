@@ -16,7 +16,7 @@ class SearchScreen extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
- return  SafeArea(child: Scaffold(
+ return  Scaffold(
   backgroundColor: bgColor,
    body: Padding(
      padding: EdgeInsets.only(top: 20.0,bottom: 20,left: 28,right: 28),
@@ -39,7 +39,7 @@ class SearchScreen extends StatelessWidget{
        ],
        ),
    )
- ));
+ );
   }
 
   Widget getSearchList() {

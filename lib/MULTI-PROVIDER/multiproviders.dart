@@ -76,6 +76,7 @@ MultiProvider getProviders() {
       theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: btnbgColor),
           useMaterial3: true,
+
           fontFamily: "Mont"),
       // home: AppRoot(),
     ),

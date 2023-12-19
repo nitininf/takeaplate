@@ -100,7 +100,7 @@ class OrderAndPayScreen extends StatelessWidget {
                       child: CustomText(text: "Report", color: hintColor, fontfamilly: montLight,sizeOfFont: 11,)
                   ) :Text(""),
                     Padding(
-                    padding:  EdgeInsets.only(left: 2.0,top: 5),
+                    padding:  EdgeInsets.only(left: 2.0,top: 18),
                     child: Image.asset(three_dot,width: 14,height: 4,),
                   ),
                 ],
