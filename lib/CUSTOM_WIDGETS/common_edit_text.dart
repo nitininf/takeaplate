@@ -9,6 +9,7 @@ class CommonEditText extends StatelessWidget {
   final TextEditingController? controller;
   final String hintText;
   final bool isPassword;
+  final bool isSelection;
   final bool isbgColor;
   final bool isnewCard;
   final VoidCallback? onTap; // Corrected the callback type to VoidCallback
@@ -19,6 +20,7 @@ class CommonEditText extends StatelessWidget {
     this.controller,
     required this.hintText,
     this.isPassword = false, // Provide a default value for isPassword
+    this.isSelection = false, // Provide a default value for isPassword
     this.isbgColor = false, // Provide a default value for isPassword
     this.isnewCard = false, // Provide a default value for isPassword
     this.onTap,
@@ -33,6 +35,8 @@ class CommonEditText extends StatelessWidget {
 
         TextFormField(
           onTap: onTap,
+         readOnly: isSelection,
+
          // keyboardType: isPassword ? TextInputType.name : TextInputType.datetime,
          /* inputFormatters:!isPassword? <TextInputFormatter>[
             FilteringTextInputFormatter.allow(RegExp(r'^[+-]?[\d]+\.?[\d]*$')),
@@ -41,6 +45,8 @@ class CommonEditText extends StatelessWidget {
           validator: FormValidator.validateEmpty,
           maxLength: 15,
           controller: controller,
+          // focusNode: focusNode,
+          autofocus: !isSelection, // Set autofocus based on isCalender value
           style:  TextStyle(
             decoration: TextDecoration.none,
             decorationThickness: 0,

@@ -9,7 +9,7 @@ import '../../UTILS/app_images.dart';
 import '../../UTILS/fontfaimlly_string.dart';
 import '../../main.dart';
 
-class RestrurentScreen extends StatelessWidget{
+class RestaurantsScreen extends StatelessWidget{
   final List<String> items = ['Healthy', 'Sushi', 'Desserts', 'Sugar', 'Sweets'];
 
   @override

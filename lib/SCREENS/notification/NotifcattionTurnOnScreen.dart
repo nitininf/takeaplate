@@ -24,15 +24,20 @@ class NotificationTurnOnScreen extends StatelessWidget {
         .width;
 
     return Scaffold(
-        body: Container(
+      body:
+      SingleChildScrollView(
+
+        child: Container(
           height: screenHeight,
           width: screenWidth,
           decoration: const BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage(notification_center), fit: BoxFit.cover)),
+            image: DecorationImage(
+              image: AssetImage(notification_center),
+              fit: BoxFit.cover,
+            ),
+          ),
           child: Padding(
-            padding: const EdgeInsets.only(
-                top: 0.0, right: 35, left: 35, bottom: 15),
+            padding: const EdgeInsets.only(top: 0.0, right: 35, left: 35, bottom: 15),
             child: SafeArea(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -54,177 +59,177 @@ class NotificationTurnOnScreen extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         // SizedBox(height: screenHeight * 0.25,),
-                       // getWidget(title: favRes),
-                      //  getWidget(title: nearby, subtitle: miss),
-                       // getWidget(title: confirm),
-                    Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 13, vertical: 13),
-                    padding: const EdgeInsets.symmetric(horizontal: 1, vertical: 8),
-                    decoration: BoxDecoration(
-                        color: editbgColor,
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(width: 1, color: editbgColor)),
-                    child: Row(
-                      children: [
-                        Expanded(child: Image.asset(appLogo, height: 33, width: 33,)),
-                        Expanded(
-                            flex: 3,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const SizedBox(height: 10,),
-                                Align(
-                                  child: CustomText(text:favRes! ,fontfamilly: montBold,color: hintColor,sizeOfFont: 12,
-                                    isAlign: false,
-                                  ),
-                                  alignment: Alignment.topLeft,
-                                ),
-                                //SizedBox(height: 5,),
-                                Align(
-                                  alignment: Alignment.topLeft,
-                                  child: CustomText(text:"" ,fontfamilly: montLight,color: hintColor,sizeOfFont: 12,
-                                    isAlign: false,
-                                  ),
-                                ),
-                              ],
-                            )),
-                        Consumer<CommonCounter>(builder: (context,commonProvider,child){
-                          return
-                            Expanded(child:
-                            GestureDetector(
-                              onTap: (){
-                                commonProvider.isNotification ? commonProvider.notificationShowOn(false) : commonProvider.notificationShowOn(true);
-                              },
-                              child: commonProvider.isNotification ? Image.asset(radioon,
-                                height: 17,
-                                width: 17,) : Image.asset(notification_off,
-                                height: 17,
-                                width: 17,
-                              ),
-                            )
-                            );
+                        // getWidget(title: favRes),
+                        //  getWidget(title: nearby, subtitle: miss),
+                        // getWidget(title: confirm),
+                        Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 13, vertical: 13),
+                          padding: const EdgeInsets.symmetric(horizontal: 1, vertical: 8),
+                          decoration: BoxDecoration(
+                              color: editbgColor,
+                              borderRadius: BorderRadius.circular(16),
+                              border: Border.all(width: 1, color: editbgColor)),
+                          child: Row(
+                            children: [
+                              Expanded(child: Image.asset(appLogo, height: 33, width: 33,)),
+                              Expanded(
+                                  flex: 3,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const SizedBox(height: 10,),
+                                      Align(
+                                        child: CustomText(text:favRes! ,fontfamilly: montBold,color: hintColor,sizeOfFont: 12,
+                                          isAlign: false,
+                                        ),
+                                        alignment: Alignment.topLeft,
+                                      ),
+                                      //SizedBox(height: 5,),
+                                      Align(
+                                        alignment: Alignment.topLeft,
+                                        child: CustomText(text:"" ,fontfamilly: montLight,color: hintColor,sizeOfFont: 12,
+                                          isAlign: false,
+                                        ),
+                                      ),
+                                    ],
+                                  )),
+                              Consumer<CommonCounter>(builder: (context,commonProvider,child){
+                                return
+                                  Expanded(child:
+                                  GestureDetector(
+                                    onTap: (){
+                                      commonProvider.isNotification ? commonProvider.notificationShowOn(false) : commonProvider.notificationShowOn(true);
+                                    },
+                                    child: commonProvider.isNotification ? Image.asset(radioon,
+                                      height: 17,
+                                      width: 17,) : Image.asset(notification_off,
+                                      height: 17,
+                                      width: 17,
+                                    ),
+                                  )
+                                  );
 
-                        }
+                              }
+                              )
+                            ]
+                            ,
+                          )
+                          ,
+                        ),
+                        Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 13, vertical: 13),
+                          padding: const EdgeInsets.symmetric(horizontal: 1, vertical: 8),
+                          decoration: BoxDecoration(
+                              color: editbgColor,
+                              borderRadius: BorderRadius.circular(16),
+                              border: Border.all(width: 1, color: editbgColor)),
+                          child: Row(
+                            children: [
+                              Expanded(child: Image.asset(appLogo, height: 33, width: 33,)),
+                              Expanded(
+                                  flex: 3,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const SizedBox(height: 10,),
+                                      const  Align(
+                                        child: CustomText(text:nearby ,fontfamilly: montBold,color: hintColor,sizeOfFont: 12,
+                                          isAlign: false,
+                                        ),
+                                        alignment: Alignment.topLeft,
+                                      ),
+                                      //SizedBox(height: 5,),
+                                      Align(
+                                        alignment: Alignment.topLeft,
+                                        child: CustomText(text:miss! ,fontfamilly: montLight,color: hintColor,sizeOfFont: 12,
+                                          isAlign: false,
+                                        ),
+                                      ),
+                                    ],
+                                  )),
+                              Consumer<CommonCounter>(builder: (context,commonProvider,child){
+                                return
+                                  Expanded(child:
+                                  GestureDetector(
+                                    onTap: (){
+                                      commonProvider.isNotification_one ? commonProvider.notificationShowOn_one(false) : commonProvider.notificationShowOn_one(true);
+                                    },
+                                    child: commonProvider.isNotification_one ? Image.asset(radioon,
+                                      height: 17,
+                                      width: 17,) : Image.asset(notification_off,
+                                      height: 17,
+                                      width: 17,
+                                    ),
+                                  )
+                                  );
+
+                              }
+                              )
+                            ]
+                            ,
+                          )
+                          ,
+                        ),
+                        Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 13, vertical: 13),
+                          padding: const EdgeInsets.symmetric(horizontal: 1, vertical: 8),
+                          decoration: BoxDecoration(
+                              color: editbgColor,
+                              borderRadius: BorderRadius.circular(16),
+                              border: Border.all(width: 1, color: editbgColor)),
+                          child: Row(
+                            children: [
+                              Expanded(child: Image.asset(appLogo, height: 33, width: 33,)),
+                              Expanded(
+                                  flex: 3,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const SizedBox(height: 10,),
+                                      Align(
+                                        child: CustomText(text:confirm! ,fontfamilly: montBold,color: hintColor,sizeOfFont: 12,
+                                          isAlign: false,
+                                        ),
+                                        alignment: Alignment.topLeft,
+                                      ),
+                                      //SizedBox(height: 5,),
+                                      Align(
+                                        alignment: Alignment.topLeft,
+                                        child: CustomText(text:""! ,fontfamilly: montLight,color: hintColor,sizeOfFont: 12,
+                                          isAlign: false,
+                                        ),
+                                      ),
+                                    ],
+                                  )),
+                              Consumer<CommonCounter>(builder: (context,commonProvider,child){
+                                return
+                                  Expanded(child:
+                                  GestureDetector(
+                                    onTap: (){
+                                      commonProvider.isNotification_two ? commonProvider.notificationShowOn_two(false) : commonProvider.notificationShowOn_two(true);
+                                    },
+                                    child: commonProvider.isNotification_two ? Image.asset(radioon,
+                                      height: 17,
+                                      width: 17,) : Image.asset(notification_off,
+                                      height: 17,
+                                      width: 17,
+                                    ),
+                                  )
+                                  );
+
+                              }
+                              )
+                            ]
+                            ,
+                          )
+                          ,
                         )
-                      ]
-                      ,
-                    )
-                    ,
-                  ),
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 13, vertical: 13),
-              padding: const EdgeInsets.symmetric(horizontal: 1, vertical: 8),
-              decoration: BoxDecoration(
-                  color: editbgColor,
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(width: 1, color: editbgColor)),
-              child: Row(
-                children: [
-                  Expanded(child: Image.asset(appLogo, height: 33, width: 33,)),
-                  Expanded(
-                      flex: 3,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const SizedBox(height: 10,),
-                          const  Align(
-                            child: CustomText(text:nearby ,fontfamilly: montBold,color: hintColor,sizeOfFont: 12,
-                              isAlign: false,
-                            ),
-                            alignment: Alignment.topLeft,
-                          ),
-                          //SizedBox(height: 5,),
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: CustomText(text:miss! ,fontfamilly: montLight,color: hintColor,sizeOfFont: 12,
-                              isAlign: false,
-                            ),
-                          ),
-                        ],
-                      )),
-                  Consumer<CommonCounter>(builder: (context,commonProvider,child){
-                    return
-                      Expanded(child:
-                      GestureDetector(
-                        onTap: (){
-                          commonProvider.isNotification_one ? commonProvider.notificationShowOn_one(false) : commonProvider.notificationShowOn_one(true);
-                        },
-                        child: commonProvider.isNotification_one ? Image.asset(radioon,
-                          height: 17,
-                          width: 17,) : Image.asset(notification_off,
-                          height: 17,
-                          width: 17,
-                        ),
-                      )
-                      );
-
-                  }
-                  )
-                ]
-                ,
-              )
-              ,
-            ),
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 13, vertical: 13),
-              padding: const EdgeInsets.symmetric(horizontal: 1, vertical: 8),
-              decoration: BoxDecoration(
-                  color: editbgColor,
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(width: 1, color: editbgColor)),
-              child: Row(
-                children: [
-                  Expanded(child: Image.asset(appLogo, height: 33, width: 33,)),
-                  Expanded(
-                      flex: 3,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const SizedBox(height: 10,),
-                          Align(
-                            child: CustomText(text:confirm! ,fontfamilly: montBold,color: hintColor,sizeOfFont: 12,
-                              isAlign: false,
-                            ),
-                            alignment: Alignment.topLeft,
-                          ),
-                          //SizedBox(height: 5,),
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: CustomText(text:""! ,fontfamilly: montLight,color: hintColor,sizeOfFont: 12,
-                              isAlign: false,
-                            ),
-                          ),
-                        ],
-                      )),
-                  Consumer<CommonCounter>(builder: (context,commonProvider,child){
-                    return
-                      Expanded(child:
-                      GestureDetector(
-                        onTap: (){
-                          commonProvider.isNotification_two ? commonProvider.notificationShowOn_two(false) : commonProvider.notificationShowOn_two(true);
-                        },
-                        child: commonProvider.isNotification_two ? Image.asset(radioon,
-                          height: 17,
-                          width: 17,) : Image.asset(notification_off,
-                          height: 17,
-                          width: 17,
-                        ),
-                      )
-                      );
-
-                  }
-                  )
-                ]
-                ,
-              )
-              ,
-            )
                       ],
                     ),
                   ),
                   Column(
                     children: [
-                      const Align(
+                      Align(
                         alignment: Alignment.center,
                         child: CustomText(
                           text: dealAgain,
@@ -234,7 +239,8 @@ class NotificationTurnOnScreen extends StatelessWidget {
                           isAlign: false,
                         ),
                       ),
-                      const Align(
+                      const SizedBox(height: 10),
+                      Align(
                         alignment: Alignment.center,
                         child: CustomText(
                           text: choose,
@@ -244,128 +250,32 @@ class NotificationTurnOnScreen extends StatelessWidget {
                           isAlign: false,
                         ),
                       ),
-                      SizedBox(height: 20,),
+                      const SizedBox(height: 20),
                       CommonButton(
                         btnBgColor: btnbgColor,
                         btnText: turnonnotification,
                         sizeOfFont: 17,
                         onClick: () {
-                          Navigator.pushNamed(context, '/BaseHome');
+
+
+                          print('Notification 1 Status: ${Provider.of<CommonCounter>(context, listen: false).isNotification}');
+                          print('Notification 2 Status: ${Provider.of<CommonCounter>(context, listen: false).isNotification_one}');
+                          print('Notification 3 Status: ${Provider.of<CommonCounter>(context, listen: false).isNotification_two}');
+
+
+                          // Navigator.pushNamed(context, '/BaseHome');
                         },
                       ),
                     ],
-                  )
+                  ),
                 ],
               ),
             ),
           ),
-
-
-          /* Stack(
-          alignment: Alignment.center,
-          children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-               */ /* SizedBox(
-                  height: 470,
-                  width: 235,
-                  child: Center(
-                    child: Image.asset(
-                      mobile_bg,
-                      fit: BoxFit.fill,
-                    ),
-
-                  ),
-                ),*/ /*
-              ],
-            ),
-            Column(
-              children: [
-                SizedBox(
-                  height: screenHeight * 0.06,
-                ),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    SizedBox(
-                      width: screenHeight * 0.08,
-                    ),
-                   */ /* Align(
-                      alignment: Alignment.center,
-                      child: Image.asset(
-                        appLogo,
-                        height: 80,
-                        width: 80,
-                      ),
-                    ),*/ /*
-                    SizedBox(height: screenWidth * 0.05,),
-                    const CustomText(
-                      text: skip,
-                      color: hintColor,
-                      fontfamilly: montBold,
-                    ),
-                  ],
-                )
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 40.0,right: 35,left: 35,bottom: 10),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Column(
-                    children: [
-                      SizedBox(height: screenHeight * 0.25,),
-                      getWidget(title: favRes),
-                      getWidget(title: nearby, subtitle: miss),
-                      getWidget(title: confirm),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      const Align(
-                        alignment: Alignment.center,
-                        child: CustomText(
-                          text: dealAgain,
-                          fontfamilly: montBold,
-                          color: hintColor,
-                          sizeOfFont: 18,
-                          isAlign: false,
-                        ),
-                      ),
-                      const  Align(
-                        alignment: Alignment.center,
-                        child:  CustomText(
-                          text: choose,
-                          fontfamilly: montBook,
-                          color: btnbgColor,
-                          sizeOfFont: 16,
-                          isAlign: false,
-                        ),
-                      ),
-                      SizedBox(height: 20,),
-                      CommonButton(
-                        btnBgColor: btnbgColor,
-                        btnText: turnonnotification,
-                        onClick: () {
-                          Navigator.pushNamed(context, '/BaseHome');
-                        },
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            ),
-          ],
-        )*/
-
-        )
-
-
+        ),
+      ),
     );
+
   }
 
 

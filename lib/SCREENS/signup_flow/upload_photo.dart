@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/common_button.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/common_edit_text.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/custom_text_style.dart';
+import 'package:takeaplate/MULTI-PROVIDER/selectImageProvider.dart';
 import 'package:takeaplate/UTILS/app_color.dart';
 import 'package:takeaplate/UTILS/app_images.dart';
 import 'package:takeaplate/UTILS/app_strings.dart';
 import 'package:takeaplate/UTILS/fontfaimlly_string.dart';
 
 class UploadPhoto extends StatelessWidget {
+
+  TextEditingController selectedImagePathController = TextEditingController();
+
+
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -61,15 +68,38 @@ class UploadPhoto extends StatelessWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Image.asset(appLogo,
-                          height: 42,
-                          width: 40,
-                          fit: BoxFit.contain,),
-                          SizedBox(height: 16,),
-                          const CustomText(text: uploadphoto,
-                          color: Colors.white,
-                          fontfamilly: montBook,
-                          sizeOfFont: 20,)
+                          GestureDetector(
+                            onTap: () async {
+                              final image = await _getImage(context);
+                              // if (image != null) {
+                              //   // Use the selected image (update your provider or state as needed)
+                              // }
+                            },
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                // Display the selected image or a default one
+                                // You can use a provider to manage the selected image state
+                                Consumer<SelectImageProvider>(
+                                  builder: (context, provider, child) {
+                                    return Image.asset(
+                                      appLogo,
+                                      height: 42,
+                                      width: 40,
+                                      fit: BoxFit.contain,
+                                    );
+                                  },
+                                ),
+                                SizedBox(height: 16,),
+                                const CustomText(
+                                  text: uploadphoto,
+                                  color: Colors.white,
+                                  fontfamilly: montBook,
+                                  sizeOfFont: 20,
+                                )
+                              ],
+                            ),
+                          ),
                         ],
                       ),
                     )
@@ -80,9 +110,19 @@ class UploadPhoto extends StatelessWidget {
 
               Padding(
                 padding: const EdgeInsets.all(59.0),
-                child: CommonButton(btnBgColor: btnbgColor, btnText: next, onClick: (){
-                  Navigator.pushNamed(context, '/SetYourPasswordScreen');
-                }),
+                child: CommonButton(btnBgColor: btnbgColor, btnText: next, onClick: ()async {
+                  String? selectedImagePath = selectedImagePathController.text;
+
+                  // Check if selectedImagePath is not null
+                  if (selectedImagePath != null) {
+                    print('Selected Image Path: $selectedImagePath');
+                    // Perform the navigation here
+                    Navigator.pushNamed(context, '/SetYourPasswordScreen');
+                  } else {
+                    // Print a message if the selectedImagePath is null
+                    print('Image not selected');
+                  }
+                },),
               )
 
             ],
@@ -92,4 +132,37 @@ class UploadPhoto extends StatelessWidget {
 
     );
   }
+
+  Future<String?> _getImage(BuildContext context) async {
+    final picker = ImagePicker();
+    final pickedFile = await showDialog<PickedFile?>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text("Select Image Source"),
+        actions: [
+          TextButton(
+            onPressed: () async {
+              final image = await picker.getImage(source: ImageSource.camera);
+              Navigator.pop(context, image != null ? image : null);
+            },
+            child: Text("Camera"),
+          ),
+          TextButton(
+            onPressed: () async {
+              final image = await picker.getImage(source: ImageSource.gallery);
+              Navigator.pop(context, image != null ? image : null);
+            },
+            child: Text("Gallery"),
+          ),
+        ],
+      ),
+    );
+
+
+    selectedImagePathController.text = pickedFile!.path;
+
+
+    return pickedFile != null ? pickedFile.path : null;
+  }
+
 }

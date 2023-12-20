@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/common_button.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/common_pass_felds.dart';
@@ -11,12 +12,19 @@ import '../../CUSTOM_WIDGETS/common_email_field.dart';
 import '../../CUSTOM_WIDGETS/custom_text_style.dart';
 
 class LogInScreen extends StatelessWidget {
-  const LogInScreen({super.key});
+
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+   LogInScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
+
+
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Stack(
@@ -52,17 +60,23 @@ class LogInScreen extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 40,right: 40,top: 20,bottom: 20),
                   child: Column(
                     children: [
-                      CommonEmailField(hintText: email,),
+                      CommonEmailField(hintText: email,controller: usernameController,),
                       const SizedBox(height: 20,),
-                      const CommonPasswordField(isPassword: true,),
+                      CommonPasswordField(isPassword: true,controller: passwordController,),
                       const SizedBox(height: 30,),
                       CommonButton(btnBgColor: btnbgColor, btnText: login, onClick: (){
+
+                        print("username: ${usernameController.text} ,\n password: ${passwordController.text}");
                         Navigator.pushNamed(context, '/BaseHome');
                       }),
                       const SizedBox(height: 20,),
                       GestureDetector(child: const CustomText(text: forgotpss,color: hintColor,fontfamilly: montBold,),
 
                       onTap: (){
+
+
+
+
                       //  Navigator.pushNamed(context, '/PassWordSentScreen');
                         DialogHelper.showCommonPopup(context,title: sentPss,subtitle: checkInbox);
                       },),

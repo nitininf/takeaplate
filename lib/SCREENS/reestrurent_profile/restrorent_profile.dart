@@ -9,7 +9,7 @@ import '../../UTILS/app_color.dart';
 import '../../UTILS/app_images.dart';
 import '../../UTILS/fontfaimlly_string.dart';
 
-class RestrorentProfileScreen extends StatelessWidget{
+class RestaurantsProfileScreen extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
    return Scaffold(

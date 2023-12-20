@@ -10,6 +10,26 @@ import 'package:takeaplate/UTILS/fontfaimlly_string.dart';
 import '../../CUSTOM_WIDGETS/common_email_field.dart';
 
 class SetYourPasswordScreen extends StatelessWidget {
+
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController confirmPasswordController = TextEditingController();
+  String? _validatePassword(String value) {
+    // Password validation logic goes here
+    if (value.length < 8) {
+      return 'Password must be at least 8 characters';
+    }
+    // Add more validation rules as needed
+    return null;
+  }
+
+  String? _validateConfirmPassword(String value) {
+    // Confirm password validation logic goes here
+    if (value != passwordController.text) {
+      return 'Passwords do not match';
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -54,12 +74,17 @@ class SetYourPasswordScreen extends StatelessWidget {
                     ),
                     CommonEmailField(
                       hintText: password,
+                      controller: passwordController,
+
+
                     ),
                     const SizedBox(
                       height: 20,
                     ),
                     CommonEmailField(
                       hintText: conpassword,
+                      controller: confirmPasswordController,
+
                     ),
                   ],
                 ),
@@ -70,8 +95,10 @@ class SetYourPasswordScreen extends StatelessWidget {
                     btnBgColor: btnbgColor,
                     btnText: next,
                     onClick: () {
-                      Navigator.pushNamed(
-                          context, '/NotificationTurnOnScreen');
+
+                      print("password:${passwordController.text} \n Confirm Password:${confirmPasswordController.text}");
+
+                      Navigator.pushNamed(context, '/NotificationTurnOnScreen');
                     }),
               )
             ],

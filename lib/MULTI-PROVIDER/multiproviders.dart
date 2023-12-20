@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:takeaplate/MULTI-PROVIDER/DateProvider.dart';
+import 'package:takeaplate/MULTI-PROVIDER/GenderProvider.dart';
+import 'package:takeaplate/MULTI-PROVIDER/selectImageProvider.dart';
+
 import '../SCREENS/closet_screen/closest_screen.dart';
 import '../SCREENS/contact_us/contacctus_settings.dart';
 import '../SCREENS/contact_us/contact_us.dart';
@@ -34,8 +38,13 @@ import 'package:provider/provider.dart';
 MultiProvider getProviders() {
 
   return MultiProvider(
+
     providers: [
       ChangeNotifierProvider(create: (_) => CommonCounter()),
+      ChangeNotifierProvider(create: (_) => DateProvider()),
+      ChangeNotifierProvider(create: (_) => GenderProvider()),
+      ChangeNotifierProvider(create: (_) => SelectImageProvider()),
+
     ],
     child:
     MaterialApp(
@@ -55,8 +64,8 @@ MultiProvider getProviders() {
         '/BaseHome': (context) => BaseHome(),
         '/OrderAndPayScreen': (context) => OrderAndPayScreen(),
         '/PaymentDetailsScreen': (context) => PaymentDetailsScreen(),
-        '/RestrurentScreen': (context) => RestrurentScreen(),
-        '/MyOrdersSccreen': (context) => MyOrdersSccreen(),
+        '/RestaurantsScreen': (context) => RestaurantsScreen(),
+        '/MyOrdersScreen': (context) => MyOrdersScreen(),
         '/FaqScreenScreen': (context) => FaqScreenScreen(),
         '/EditProfileScreen': (context) => EditProfileScreen(),
         '/ContactUs': (context) => ContactUs(),
@@ -71,7 +80,7 @@ MultiProvider getProviders() {
         '/FavouriteScreen': (context) => FavouriteScreen(),
         '/OrderSummeryScreen': (context) => OrderSummeryScreen(),
         '/PaymentMethodScreen': (context) => PaymentMethodScreen(),
-        '/RestrorentProfileScreen': (context) => RestrorentProfileScreen(),
+        '/RestaurantsProfileScreen': (context) => RestaurantsProfileScreen(),
       },
       theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: btnbgColor),

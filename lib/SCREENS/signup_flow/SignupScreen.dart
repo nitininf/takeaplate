@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/common_button.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/common_edit_text.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/common_email_field.dart';
@@ -8,7 +9,16 @@ import 'package:takeaplate/UTILS/app_images.dart';
 import 'package:takeaplate/UTILS/app_strings.dart';
 import 'package:takeaplate/UTILS/fontfaimlly_string.dart';
 
+import '../../MULTI-PROVIDER/DateProvider.dart';
+List<String> genders = ['Male', 'Female', 'Other'];
 class SignUpScreen extends StatelessWidget {
+
+  TextEditingController fullNameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController phoneNumberController = TextEditingController();
+  TextEditingController dobController = TextEditingController();
+  TextEditingController genderController = TextEditingController(text: genders[0]);
+
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -51,20 +61,23 @@ class SignUpScreen extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: screenHeight * 0.04),
-                      CommonEmailField(hintText: fullName),
+                      CommonEmailField(hintText: fullName,controller: fullNameController,),
                       const SizedBox(height: 20),
-                      CommonEmailField(hintText: email),
+                      CommonEmailField(hintText: email,controller: emailController,),
                       const SizedBox(height: 20),
-                      CommonEmailField(hintText: phoneNumber,),
+                      CommonEmailField(hintText: phoneNumber,controller: phoneNumberController,isPhoneNumber: true,),
                       const SizedBox(height: 30),
                       Row(
                         children: [
-                          Expanded(child: CommonEditText(hintText: dob)),
-                          SizedBox(width: 10),
+                          Expanded(child:
+                          CommonEditText(hintText: dob , controller: dobController,onTap: () => _selectDate(context),isSelection: true),),
+                          const SizedBox(width: 10),
                           Expanded(
-                            child: CommonEditText(
-                              hintText: gender,
-                              isPassword: true,
+                            child:
+                            CommonEditText(hintText: gender,isPassword: true,isSelection: true, controller: genderController,
+                              onTap: () {
+                                _showGenderDropdown(context);
+                              },
                             ),
                           ),
                         ],
@@ -79,6 +92,10 @@ class SignUpScreen extends StatelessWidget {
                     btnBgColor: btnbgColor,
                     btnText: next,
                     onClick: () {
+
+                      print("Full Name: ${fullNameController.text} ,\n Email: ${emailController.text},\n Phone Number: ${phoneNumberController.text},\n Date Of Birth: ${dobController.text},\n Gender: ${genderController.text}");
+
+
                       Navigator.pushNamed(context, '/UploadPhoto');
                     },
                   ),
@@ -101,6 +118,54 @@ class SignUpScreen extends StatelessWidget {
       ),
     ),*/
 
+    );
+  }
+
+  Future<void> _selectDate(BuildContext context) async {
+    print("Selecting date...");
+    final DateProvider dateProvider = Provider.of<DateProvider>(context, listen: false);
+    DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+    );
+
+    if (picked != null && picked != dateProvider.selectedDate) {
+      dateProvider.setSelectedDate(picked);
+      dobController.text = dateProvider.formattedSelectedDate;
+         }
+  }
+
+  Future<void> _showGenderDropdown(BuildContext context) async {
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          height: 200,
+          child: Column(
+            children: [
+              ListTile(
+                title: Text('Select Gender', style: TextStyle(fontWeight: FontWeight.bold)),
+              ),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: genders.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return ListTile(
+                      title: Text(genders[index]),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        genderController.text = genders[index];
+                      },
+                    );
+                  },
+                ),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

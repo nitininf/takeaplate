@@ -33,7 +33,7 @@ class _BaseHomeScreen extends State<BaseHome> {
     SearchScreen(),
     YourCardScreen(),
     HomeScreen(),
-    RestrurentScreen(),
+    RestaurantsScreen(),
     ProfileScreen(),
   ];
 
