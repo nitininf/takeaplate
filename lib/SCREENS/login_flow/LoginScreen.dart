@@ -57,7 +57,7 @@ class LogInScreen extends StatelessWidget {
                       const CommonPasswordField(isPassword: true,),
                       const SizedBox(height: 30,),
                       CommonButton(btnBgColor: btnbgColor, btnText: login, onClick: (){
-
+                        Navigator.pushNamed(context, '/BaseHome');
                       }),
                       const SizedBox(height: 20,),
                       GestureDetector(child: const CustomText(text: forgotpss,color: hintColor,fontfamilly: montBold,),

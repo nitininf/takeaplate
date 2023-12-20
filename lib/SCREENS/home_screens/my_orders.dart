@@ -13,22 +13,22 @@ class MyOrdersSccreen extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return
-      SafeArea(
-        child: Scaffold(
-          backgroundColor: bgColor,
-          body:
-          Padding(
-            padding: const EdgeInsets.all(20.0),
+      Scaffold(
+        backgroundColor: bgColor,
+        body:
+        SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 20.0,right: 20,left: 20,top: 10),
             child:  ListView(
               children: [
                 const CustomAppBar(),
                 SizedBox(height: 10,),
                 GestureDetector(child: buildSection("CURRENT ORDERS", viewall),
                   onTap: (){
-
+                
                  // Navigator.pushNamed(context, '/PrivacyPolicyScreen');
                   },
-
+                
                 ),
                 SizedBox(height: 5,),
                 getCards(),
@@ -40,12 +40,12 @@ class MyOrdersSccreen extends StatelessWidget{
                 buildSection("PREVIOUS ORDERS", viewall),
                 buildVerticalCards(),
                 buildVerticalCards(),
-
+                
               ],
             )
           ),
-    )
-      );
+        ),
+          );
 
 
 

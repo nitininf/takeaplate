@@ -15,11 +15,11 @@ class PaymentDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: bgColor,
-        body: Padding(
-          padding: const EdgeInsets.all(25.0),
+    return Scaffold(
+      backgroundColor: bgColor,
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 25.0,left: 25,right: 25,top: 10),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [

@@ -13,7 +13,7 @@ class ProfileScreen extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
 
-    return  SafeArea(child: Scaffold(
+    return  Scaffold(
       backgroundColor: bgColor,
       body: Padding(
         padding: const EdgeInsets.only(top: 5.0,right:25,left: 25 ,bottom: 10),
@@ -25,7 +25,7 @@ class ProfileScreen extends StatelessWidget{
           ],
         ),
       ),
-    ));
+    );
   }
 
   Widget buildSection(String title, String viewAllText) {

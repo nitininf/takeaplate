@@ -6,7 +6,7 @@ class CommonCounter extends ChangeNotifier {
    String btnName="SAVE";
   bool isSaved=true;
   String textName="VIEW MORE";
-  bool isViewMore=true;
+  bool isViewMore=false;
   bool isNotification=true;
   bool isNotification_one=true;
   bool isNotification_two=true;

@@ -14,7 +14,7 @@ class YourCardScreen extends StatelessWidget{
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
-   return  SafeArea(child: Scaffold(
+   return  Scaffold(
    backgroundColor: bgColor,
      body: Padding(
        padding: const EdgeInsets.only(right: 35.0,left: 35,bottom: 0,top: 5),
@@ -26,7 +26,6 @@ class YourCardScreen extends StatelessWidget{
        ),
      )
 
-   ),
    );
   }
 

@@ -89,19 +89,39 @@ class RestrorentProfileScreen extends StatelessWidget{
                   ),
                 ),
               ),
-
             ],
           ),
-          const SizedBox(height: 5,),
-          const Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              CustomText(text: "Salad & Co.", sizeOfFont: 20, color: viewallColor, fontfamilly: montBold,),
-              CustomText(text: "Health Foods", color: viewallColor, sizeOfFont:16,fontfamilly: montRegular),
-              CustomText(text: "23 Dreamland Av.., Australia", weight : FontWeight.w300, sizeOfFont :11,color: viewallColor, fontfamilly: montLight),
+         // const SizedBox(height: 5,),
+          Padding(
+            padding: const EdgeInsets.only(right: 9.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                 const Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CustomText(text: "Salad & Co.", sizeOfFont: 20, color: viewallColor, fontfamilly: montBold,),
+                    CustomText(text: "Health Foods", color: viewallColor, sizeOfFont:16,fontfamilly: montRegular),
+                    CustomText(text: "23 Dreamland Av.., Australia", weight : FontWeight.w300, sizeOfFont :11,color: viewallColor, fontfamilly: montLight),
 
-            ],
+                  ],
+                ),
+                GestureDetector(
+                  onTap: (){
+                    Navigator.pushNamed(navigatorKey.currentContext!, '/OrderAndPayScreen');
+                  },
+                  child: Container(
+                    width: 120,
+                    height: 60,
+                  child: Text(""),
+
+                  ),
+                ),
+              ],
+            ),
           ),
+
+
           const SizedBox(height: 5,),
           const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
