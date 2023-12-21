@@ -1,3 +1,4 @@
+import 'package:custom_rating_bar/custom_rating_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -130,7 +131,16 @@ class DialogHelper {
                         ),
                         const SizedBox(height: 20,),
 
-                       Image.asset(star_box,height: 42,fit: BoxFit.contain,),
+                       // Image.asset(star_box,height: 42,fit: BoxFit.contain,),
+
+                        RatingBar(
+                          filledIcon: Icons.star,
+                          emptyIcon: Icons.star_border,
+                          onRatingChanged: (value) => print('$value'),
+                          initialRating: 3,
+                          maxRating: 5,
+                        ),
+
                        /* const Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.center,
