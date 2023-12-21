@@ -113,7 +113,10 @@ class DialogHelper {
                         SizedBox(height: 10,)
                       ])
                       :  !isDelete! ?
-                      Column(children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
                         SizedBox(
                           height: screenHeight * 0.03,
                         ),
@@ -134,12 +137,17 @@ class DialogHelper {
                        // Image.asset(star_box,height: 42,fit: BoxFit.contain,),
 
                         RatingBar(
-                          filledIcon: Icons.star,
-                          emptyIcon: Icons.star_border,
-                          onRatingChanged: (value) => print('$value'),
-                          initialRating: 3,
-                          maxRating: 5,
-                        ),
+                            filledIcon: Icons.star,
+                            emptyIcon: Icons.star_border,
+                            onRatingChanged: (value) => print('$value'),
+                            initialRating: 0,
+                            alignment: Alignment.center,
+                            emptyColor: btnbgColor,
+                            filledColor: btnbgColor,
+
+                            maxRating: 5,
+                          ),
+
 
                        /* const Row(
                           crossAxisAlignment: CrossAxisAlignment.center,
