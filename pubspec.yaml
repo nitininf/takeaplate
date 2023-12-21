@@ -45,6 +45,7 @@ dependencies:
   date_time_picker:
   page_indicator: ^0.4.1
   image_picker: ^0.8.4
+  custom_rating_bar: ^2.0.5
 
 
 dev_dependencies:

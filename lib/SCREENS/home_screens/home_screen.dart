@@ -1,3 +1,4 @@
+import 'package:custom_rating_bar/custom_rating_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/common_button.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/custom_text_style.dart';
@@ -8,6 +9,7 @@ import 'package:takeaplate/UTILS/fontfaimlly_string.dart';
 import 'package:takeaplate/main.dart';
 import '../../CUSTOM_WIDGETS/custom_app_bar.dart';
 import '../../CUSTOM_WIDGETS/custom_search_field.dart';
+
 class HomeScreen extends StatelessWidget {
   final List<String> items = ['Healthy', 'Sushi', 'Desserts', 'Sugar', 'Sweets'];
 
@@ -35,9 +37,7 @@ class HomeScreen extends StatelessWidget {
                        padding: EdgeInsets.only(top: 10.0,left: 20,right: 20,bottom: 15),
                        child: Divider(
                         color: Colors.grey,
-                        thickness: 0,
-                                             ),
-                     ),
+                        thickness: 0,),),
                     buildSection(lastminute, viewall),
                     buildHorizontalFavCards(),
                     buildHorizontalFavCards(),
@@ -60,6 +60,8 @@ class HomeScreen extends StatelessWidget {
     );
 
   }
+
+  // Horizontal scroll for food type - healthy , sushi etc
 
   Widget buildHorizontalList(List<String> items) {
     return SingleChildScrollView(
@@ -139,17 +141,18 @@ class HomeScreen extends StatelessWidget {
 
               CustomText(text: "Health Foods", color: btntxtColor, fontfamilly: montRegular,sizeOfFont: 14,),
 
-              CustomText(text: "3 offers available", color: offerColor,sizeOfFont: 9, fontfamilly: montBook,),
-  SizedBox(height: 1,),
-              Row(
-                children: [
-                  Icon(Icons.star,size: 20,color: btnbgColor,),
-                  Icon(Icons.star,size: 20,color: btnbgColor,),
-                  Icon(Icons.star,size: 20,color: btnbgColor,),
-                  Icon(Icons.star,size: 20,color: btnbgColor,),
-                  Icon(Icons.star,size: 20,color: btnbgColor,),
-                ],
+              CustomText(text: "3 offers available", color: offerColor,sizeOfFont: 9, fontfamilly: montBook,), SizedBox(height: 1,),
+
+              RatingBar.readOnly(
+                filledIcon: Icons.star,
+                emptyIcon: Icons.star_border,
+                filledColor: btnbgColor,
+                initialRating: 4,
+                size: 20,
+                maxRating: 5,
+
               ),
+
             ],
           ),
           const SizedBox(width: 18,),
@@ -209,11 +212,14 @@ class HomeScreen extends StatelessWidget {
               SizedBox(height: 5,),
               Row(
                 children: [
-                  Icon(Icons.star_border,size: 20,color:graysColor,),
-                  Icon(Icons.star_border,size: 20,color: graysColor),
-                  Icon(Icons.star_border,size: 20,color: graysColor,),
-                  Icon(Icons.star_border,size: 20,color: graysColor,),
-                  Icon(Icons.star_border,size: 20,color: graysColor,),
+                 RatingBar.readOnly(
+                    filledIcon: Icons.star,
+                    emptyIcon: Icons.star_border,
+                    filledColor: btnbgColor,
+                    size: 20,
+                    initialRating: 4,
+                    maxRating: 5,
+                  ),
                   SizedBox(width: 10,),
                   CustomText(text: "84 Km", color: graysColor,sizeOfFont: 15, fontfamilly: montSemiBold),
                    ],

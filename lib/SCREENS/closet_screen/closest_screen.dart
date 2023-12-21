@@ -1,3 +1,4 @@
+import 'package:custom_rating_bar/custom_rating_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/custom_app_bar.dart';
@@ -102,11 +103,21 @@ class ClosestScreen extends StatelessWidget{
                   SizedBox(height: 1,),
                   Row(
                     children: [
-                      Icon(Icons.star,size: 20,color: btnbgColor,),
-                      Icon(Icons.star,size: 20,color: btnbgColor,),
-                      Icon(Icons.star,size: 20,color: btnbgColor,),
-                      Icon(Icons.star,size: 20,color: btnbgColor,),
-                      Icon(Icons.star,size: 20,color: btnbgColor,),
+                      // Icon(Icons.star,size: 20,color: btnbgColor,),
+                      // Icon(Icons.star,size: 20,color: btnbgColor,),
+                      // Icon(Icons.star,size: 20,color: btnbgColor,),
+                      // Icon(Icons.star,size: 20,color: btnbgColor,),
+                      // Icon(Icons.star,size: 20,color: btnbgColor,),
+
+                      RatingBar.readOnly(
+                        filledIcon: Icons.star,
+                        emptyIcon: Icons.star_border,
+                        filledColor: btnbgColor,
+                        initialRating: 4,
+                        size: 20,
+                        maxRating: 5,
+
+                      ),
                     ],
                   ),
                 ],

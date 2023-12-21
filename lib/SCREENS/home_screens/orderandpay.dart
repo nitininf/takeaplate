@@ -1,3 +1,4 @@
+import 'package:custom_rating_bar/custom_rating_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/common_button.dart';
@@ -126,11 +127,21 @@ class OrderAndPayScreen extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  Icon(Icons.star,size: 20,color: btnbgColor,),
-                  Icon(Icons.star,size: 20,color: btnbgColor,),
-                  Icon(Icons.star,size: 20,color: btnbgColor,),
-                  Icon(Icons.star,size: 20,color: btnbgColor,),
-                  Icon(Icons.star,size: 20,color: btnbgColor,),
+                  // Icon(Icons.star,size: 20,color: btnbgColor,),
+                  // Icon(Icons.star,size: 20,color: btnbgColor,),
+                  // Icon(Icons.star,size: 20,color: btnbgColor,),
+                  // Icon(Icons.star,size: 20,color: btnbgColor,),
+                  // Icon(Icons.star,size: 20,color: btnbgColor,),
+
+                  RatingBar.readOnly(
+                    filledIcon: Icons.star,
+                    emptyIcon: Icons.star_border,
+                    filledColor: btnbgColor,
+                    initialRating: 4,
+                    size: 20,
+                    maxRating: 5,
+
+                  ),
                 ],
               ),
               CustomText(text: "84 Km", color: editbgColor,  fontfamilly: montLight,sizeOfFont: 17,),

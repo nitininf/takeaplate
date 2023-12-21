@@ -1,3 +1,4 @@
+import 'package:custom_rating_bar/custom_rating_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/custom_app_bar.dart';
@@ -100,11 +101,22 @@ class FavouriteScreen extends StatelessWidget{
                 SizedBox(height: 5,),
                 Row(
                   children: [
-                    Icon(Icons.star,size: 20,color: btnbgColor,),
-                    Icon(Icons.star,size: 20,color: btnbgColor,),
-                    Icon(Icons.star,size: 20,color: btnbgColor,),
-                    Icon(Icons.star,size: 20,color: btnbgColor,),
-                    Icon(Icons.star,size: 20,color: btnbgColor,),
+                    // Icon(Icons.star,size: 20,color: btnbgColor,),
+                    // Icon(Icons.star,size: 20,color: btnbgColor,),
+                    // Icon(Icons.star,size: 20,color: btnbgColor,),
+                    // Icon(Icons.star,size: 20,color: btnbgColor,),
+                    // Icon(Icons.star,size: 20,color: btnbgColor,),
+
+                    RatingBar.readOnly(
+                      filledIcon: Icons.star,
+                      emptyIcon: Icons.star_border,
+                      filledColor: btnbgColor,
+                      initialRating: 4,
+                      size: 20,
+                      maxRating: 5,
+
+                    ),
+
                     SizedBox(width: 10,),
                     Expanded(child: CustomText(text: "3 offers available", maxLin:1,color: offerColor,sizeOfFont: 11, fontfamilly: montBook,)),
                   ],

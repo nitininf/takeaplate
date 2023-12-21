@@ -263,7 +263,7 @@ class NotificationTurnOnScreen extends StatelessWidget {
                           print('Notification 3 Status: ${Provider.of<CommonCounter>(context, listen: false).isNotification_two}');
 
 
-                          // Navigator.pushNamed(context, '/BaseHome');
+                          Navigator.pushNamed(context, '/BaseHome');
                         },
                       ),
                     ],
