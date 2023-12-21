@@ -40,4 +40,24 @@ class RequestString{
   static const String APPLY="apply";
   static const String REMOVE="remove";
   static const String SAVE="save";
+  static const String PASSWORD="password";
+
+  // User Details
+
+  static const String ID = "id";
+  static const String NAME = "name";
+  static const String TOKEN = "token";
+  static const String EMAIL = "email";
+  static const String EMAIL_VERIFIED_AT = "email_verified_at";
+  static const String USER_TYPE = "user_type";
+  static const String PHONE_NO = "phone_no";
+  static const String DOB = "DOB";
+  static const String GENDER = "gender";
+  static const String USER_IMAGE = "user_image";
+  static const String STATUS = "status";
+  static const String FCM_TOKEN = "fcm_token";
+  static const String CREATED_AT = "created_at";
+  static const String UPDATED_AT = "updated_at";
+
+
 }

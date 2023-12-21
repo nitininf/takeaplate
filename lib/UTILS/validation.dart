@@ -18,6 +18,31 @@ class FormValidator {
     return null;
   }
 
+  static String? validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Password field is empty';
+    }
+
+    // Check if the password meets the criteria
+    // For example, require at least 8 characters with at least one letter and one number
+    if (value.length < 8) {
+      return 'Password must be at least 8 characters long';
+    }
+
+    // Check if the password contains at least one letter
+    if (!RegExp(r'[a-zA-Z]').hasMatch(value)) {
+      return 'Password must contain at least one letter';
+    }
+
+    // Check if the password contains at least one number
+    if (!RegExp(r'[0-9]').hasMatch(value)) {
+      return 'Password must contain at least one number';
+    }
+
+    // Return null if the password is valid
+    return null;
+  }
+
   static String? validatePhoneNumber(String? value) {
     // Ensure that the phone number is not empty
     if (value == null || value.isEmpty) {
@@ -36,21 +61,6 @@ class FormValidator {
     return null;
   }
 
-  static String? validatePassword(String? password) {
-    // Define a regular expression pattern for a strong password
-    //final passwordPattern = r'^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[\W_]).{8,}$';
-    final passwordPattern = r'^(?=.*[a-z]).{8,}$';
-
-    // Create a regular expression object
-    final regExp = RegExp(passwordPattern);
-
-    if (password == null || password.isEmpty) {
-      return 'Password cannot be empty.';
-    } else if (!regExp.hasMatch(password)) {
-      return 'Password should be strong minimum length 8';
-    }
-    return null;
-  }
 }
 
 class PasswordValidationResult {
