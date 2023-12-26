@@ -1,4 +1,6 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/common_button.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/common_edit_text.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/custom_text_style.dart';
@@ -8,30 +10,27 @@ import 'package:takeaplate/UTILS/app_strings.dart';
 import 'package:takeaplate/UTILS/fontfaimlly_string.dart';
 
 import '../../CUSTOM_WIDGETS/common_email_field.dart';
+import '../../MULTI-PROVIDER/AuthenticationProvider.dart';
+import '../../MULTI-PROVIDER/SignUp_StepTwo.dart';
+import '../../Response_Model/RegisterResponse.dart';
+import '../../UTILS/request_string.dart';
 
 class SetYourPasswordScreen extends StatelessWidget {
 
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
-  String? _validatePassword(String value) {
-    // Password validation logic goes here
-    if (value.length < 8) {
-      return 'Password must be at least 8 characters';
-    }
-    // Add more validation rules as needed
-    return null;
-  }
 
-  String? _validateConfirmPassword(String value) {
-    // Confirm password validation logic goes here
-    if (value != passwordController.text) {
-      return 'Passwords do not match';
-    }
-    return null;
-  }
 
   @override
   Widget build(BuildContext context) {
+
+    var getUserBasicDetails = Provider.of<SignUp_StepTwo>(context);
+
+    // // Access the user's information
+    // var userInformation = SignUp_StepOne();
+
+
+
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -94,11 +93,103 @@ class SetYourPasswordScreen extends StatelessWidget {
                 child: CommonButton(
                     btnBgColor: btnbgColor,
                     btnText: next,
-                    onClick: () {
+                    onClick: () async {
 
-                      print("password:${passwordController.text} \n Confirm Password:${confirmPasswordController.text}");
+                      print("\nFull Name: ${getUserBasicDetails.fullName}, \nEmail: ${getUserBasicDetails.email}, \nPhone Number: ${getUserBasicDetails.phoneNumber}, \nDOB: ${getUserBasicDetails.dob}, \nGender: ${getUserBasicDetails.gender}, \nimage: ${getUserBasicDetails.user_image}");
 
-                      Navigator.pushNamed(context, '/NotificationTurnOnScreen');
+
+                      if (getUserBasicDetails.fullName.isNotEmpty &&
+                          getUserBasicDetails.email.isNotEmpty &&
+                          getUserBasicDetails.phoneNumber.isNotEmpty &&
+                          getUserBasicDetails.dob.isNotEmpty &&
+                          getUserBasicDetails.gender.isNotEmpty &&
+                          getUserBasicDetails.user_image.isNotEmpty &&
+                          passwordController.text.isNotEmpty &&
+                          confirmPasswordController.text.isNotEmpty) {
+
+                        // Check password length
+                        if (passwordController.text.length >= 8) {
+                          if (passwordController.text == confirmPasswordController.text) {
+                            try {
+                              var formData = {
+                                RequestString.NAME: getUserBasicDetails.fullName,
+                                RequestString.EMAIL: getUserBasicDetails.email,
+                                RequestString.PHONE_NO: getUserBasicDetails.phoneNumber,
+                                RequestString.DOB: getUserBasicDetails.dob,
+                                RequestString.GENDER: getUserBasicDetails.gender,
+                                RequestString.USER_IMAGE: getUserBasicDetails.user_image ?? '',
+                                RequestString.PASSWORD: passwordController.text,
+                                RequestString.CONFIRM_PASSWORD: confirmPasswordController.text,
+                              };
+
+                              RegisterResponse data = await Provider.of<AuthenticationProvider>(context, listen: false)
+                                  .registerUser(formData);
+
+                              if (data.status == true && data.message == "User registered successfully") {
+                                // Registration successful
+                                print(data);
+                                Navigator.pushNamed(context, '/NotificationTurnOnScreen');
+                              } else {
+                                // Registration failed
+                                print("Registration failed: ${data.message}");
+
+                                final snackBar = SnackBar(
+                                  content:  Text('${data.message}'),
+
+                                );
+
+// Show the SnackBar
+                                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+// Automatically hide the SnackBar after 1 second
+                                Future.delayed(Duration(milliseconds: 1000), () {
+                                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                });
+                              }
+                            } catch (e) {
+                              // Display error message
+                              print("Error: $e");
+                            }
+                          } else {
+                            // Password and confirm password do not match
+                            final snackBar = SnackBar(
+                              content: const Text('Password and confirm password do not match.'),
+                              action: SnackBarAction(
+                                label: 'Ok',
+                                onPressed: () {
+                                  // Some code to undo the change.
+                                },
+                              ),
+                            );
+                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                          }
+                        } else {
+                          // Password is too short
+                          final snackBar = SnackBar(
+                            content: const Text('Password should be at least 8 characters.'),
+                            action: SnackBarAction(
+                              label: 'Ok',
+                              onPressed: () {
+                                // Some code to undo the change.
+                              },
+                            ),
+                          );
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                        }
+                      } else {
+                        // Show an error message or handle empty fields
+                        final snackBar = SnackBar(
+                          content: const Text('Please fill in all the fields.'),
+                          action: SnackBarAction(
+                            label: 'Ok',
+                            onPressed: () {
+                              // Some code to undo the change.
+                            },
+                          ),
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                      }
+
                     }),
               )
             ],

@@ -5,7 +5,8 @@ class NetworkStrings {
   /// Frontend Route /////////////////////////////////////////
   static const String SHARE_BASE_URL = "https://beta.syllo.co/";
   //JobWish networkstriing
-  static const String API_BASE_URL = "https://jobwish.ch/staging/wp-json/jobwish/v1/"; //"https://beta-api.syllo.co/api/";
+  // static const String API_BASE_URL_PREV = "https://jobwish.ch/staging/wp-json/jobwish/v1/"; //"https://beta-api.syllo.co/api/";
+  static const String API_BASE_URL = "http://3.145.80.252/api";
   static const String ACCEPT = 'application/json';
   static const String TOKEN_KEY = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczovL2pvYndpc2guY2gvc3RhZ2luZyIsImlhdCI6MTcwMDgwNzEwOSwibmJmIjoxNzAwODA3MTA5LCJleHAiOjE3MDE0MTE5MDksImRhdGEiOnsidXNlciI6eyJpZCI6IjEifX19.Bbj5h7J4XglOyDjESHBssneQhRCofvIKcGpznmEa8w8';
 

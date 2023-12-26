@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 import '../UTILS/dialog_helper.dart';
+import '../UTILS/request_string.dart';
 import '../UTILS/utils.dart';
 import '../main.dart';
 import '../utils/network_strings.dart';
@@ -87,7 +88,8 @@ class Network {
      DialogHelper.showLoading(navigatorKey.currentContext!);
     }
     Response? response;
-  // // String? token = await // // Utility.getStringValue(NetworkStrings.TOKEN_KEY);
+    var token = Utility.getStringValue(RequestString.TOKEN);
+    print("Auth token:$token");
 
     if (await InternetConnectionChecker().hasConnection) {
       try {
@@ -98,7 +100,7 @@ class Network {
             options: Options(
                 headers: {
                   'Accept': NetworkStrings.ACCEPT,
-                //  'Authorization': token == null ? "" : "Bearer $token",
+                  'Authorization': token == null ? "" : "Bearer $token",
                 },
                 sendTimeout:  Duration(milliseconds: receivingTimeOut),
                 receiveTimeout: Duration(milliseconds: receivingTimeOut)));
@@ -122,51 +124,110 @@ class Network {
     return response;
   }
 
-  ////////////////// Delete Request /////////////////////////
+  // ////////////////// Delete Request /////////////////////////
+  // Future<Response?> deleteRequest({
+  //   required String endPoint,
+  //   Map<String, dynamic>? formData,
+  //   bool isLoader = true,
+  // }) async {
+  //   if (isLoader) {
+  //    DialogHelper.showLoading(navigatorKey.currentContext!);
+  //   }
+  //   Response? response;
+  //   //String? token = await // // Utility.getStringValue(NetworkStrings.TOKEN_KEY);
+  //
+  //   if (await InternetConnectionChecker().hasConnection) {
+  //     try {
+  //       _dio?.options.connectTimeout = Duration(milliseconds: connectTimeOut);
+  //       response = await _dio!.delete(NetworkStrings.API_BASE_URL + endPoint,
+  //           data: formData,
+  //           queryParameters: formData,
+  //           cancelToken: _cancelRequestToken,
+  //           options: Options(
+  //               headers: {
+  //                 'Accept': NetworkStrings.ACCEPT,
+  //                // 'Authorization': token == null ? "" : "Bearer $token",
+  //               },
+  //               sendTimeout: Duration(milliseconds: receivingTimeOut),
+  //               receiveTimeout: Duration(milliseconds: receivingTimeOut)));
+  //       DialogHelper.hideLoading(navigatorKey.currentContext!);
+  //     } on DioException catch (e) {
+  //       DialogHelper.hideLoading(navigatorKey.currentContext!);
+  //       print("$endPoint Dio: ${e.message}" );
+  //       if (e.response?.statusCode == 403) {
+  //         // // Utility.clearAll();
+  //       //  getx.Get.offAll(const SignInScreen());
+  //       }
+  //       DialogHelper.showErrorDialog( navigatorKey.currentContext!,
+  //           title: "Server response", description: e.response?.data['message']);
+  //     }
+  //   } else {
+  //     _noInternetConnection();
+  //   }
+  //   print(
+  //       "API=======${NetworkStrings.API_BASE_URL + endPoint}\n\nrequest======$formData\n\nresponse========== $response");
+  //
+  //   return response;
+  // }
+
+
+
+  //////////////Delete Updated//////////
+
+
   Future<Response?> deleteRequest({
     required String endPoint,
-    Map<String, dynamic>? formData,
     bool isLoader = true,
   }) async {
     if (isLoader) {
-     DialogHelper.showLoading(navigatorKey.currentContext!);
+      DialogHelper.showLoading(navigatorKey.currentContext!);
     }
+
+    var token =  await Utility.getStringValue(RequestString.TOKEN);
+    print("auth Token: $token");
+
     Response? response;
-    //String? token = await // // Utility.getStringValue(NetworkStrings.TOKEN_KEY);
 
     if (await InternetConnectionChecker().hasConnection) {
       try {
         _dio?.options.connectTimeout = Duration(milliseconds: connectTimeOut);
-        response = await _dio!.delete(NetworkStrings.API_BASE_URL + endPoint,
-            data: formData,
-            queryParameters: formData,
-            cancelToken: _cancelRequestToken,
-            options: Options(
-                headers: {
-                  'Accept': NetworkStrings.ACCEPT,
-                 // 'Authorization': token == null ? "" : "Bearer $token",
-                },
-                sendTimeout: Duration(milliseconds: receivingTimeOut),
-                receiveTimeout: Duration(milliseconds: receivingTimeOut)));
+        response = await _dio!.delete(
+          NetworkStrings.API_BASE_URL + endPoint,
+          cancelToken: _cancelRequestToken,
+          options: Options(
+            headers: {
+              'Accept': NetworkStrings.ACCEPT,
+              'Authorization': 'Bearer ${await Utility.getStringValue(RequestString.TOKEN)}',
+            },
+            sendTimeout: Duration(milliseconds: receivingTimeOut),
+            receiveTimeout: Duration(milliseconds: receivingTimeOut),
+          ),
+        );
         DialogHelper.hideLoading(navigatorKey.currentContext!);
       } on DioException catch (e) {
         DialogHelper.hideLoading(navigatorKey.currentContext!);
-        print("$endPoint Dio: ${e.message}" );
+        print("$endPoint Dio: ${e.message}");
         if (e.response?.statusCode == 403) {
-          // // Utility.clearAll();
-        //  getx.Get.offAll(const SignInScreen());
+          // Perform actions for 403 Forbidden, e.g., navigate to sign-in screen
+          // getx.Get.offAll(const SignInScreen());
         }
-        DialogHelper.showErrorDialog( navigatorKey.currentContext!,
-            title: "Server response", description: e.response?.data['message']);
+        DialogHelper.showErrorDialog(
+          navigatorKey.currentContext!,
+          title: "Server response",
+          description: e.response?.data['message'],
+        );
       }
     } else {
       _noInternetConnection();
     }
+
     print(
-        "API=======${NetworkStrings.API_BASE_URL + endPoint}\n\nrequest======$formData\n\nresponse========== $response");
+      "API=======${NetworkStrings.API_BASE_URL + endPoint}\n\nresponse========== $response",
+    );
 
     return response;
   }
+
 
   ////////////////// Put Request /////////////////////////
   Future<Response?> putRequest(

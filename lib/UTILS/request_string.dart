@@ -40,7 +40,7 @@ class RequestString{
   static const String APPLY="apply";
   static const String REMOVE="remove";
   static const String SAVE="save";
-  static const String PASSWORD="password";
+
 
   // User Details
 
@@ -54,6 +54,9 @@ class RequestString{
   static const String DOB = "DOB";
   static const String GENDER = "gender";
   static const String USER_IMAGE = "user_image";
+  static const String PASSWORD="password";
+  static const String CONFIRM_PASSWORD="confirm_password";
+
   static const String STATUS = "status";
   static const String FCM_TOKEN = "fcm_token";
   static const String CREATED_AT = "created_at";

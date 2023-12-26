@@ -1,6 +1,8 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/common_button.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/common_edit_text.dart';
 import 'package:takeaplate/UTILS/app_color.dart';
@@ -10,7 +12,12 @@ import 'package:takeaplate/main.dart';
 import '../../CUSTOM_WIDGETS/custom_app_bar.dart';
 import '../../CUSTOM_WIDGETS/custom_text_field.dart';
 import '../../CUSTOM_WIDGETS/custom_text_style.dart';
+import '../../MULTI-PROVIDER/AuthenticationProvider.dart';
 import '../../MULTI-PROVIDER/common_counter.dart';
+import '../../Response_Model/DeleteAccountResponse.dart';
+import '../../UTILS/dialog_helper.dart';
+import '../../UTILS/request_string.dart';
+import '../../UTILS/utils.dart';
 
 class SettingScreen extends StatelessWidget{
   //var counterProvider=Provider.of<CommonCounter>(navigatorKey.currentContext!, listen: false);
@@ -33,10 +40,97 @@ class SettingScreen extends StatelessWidget{
                children: [
                  CommonButton(btnBgColor: btnbgColor, btnText:"LOG OUT", onClick: (){
                    //Navigator.pushNamed(context, '/ContactUs');
+
+                   SharedPreferences.getInstance().then((prefs) {
+                     prefs.clear();
+                   });
+
+                   // Navigate to the desired screen, e.g., login screen
+                   Navigator.pushNamedAndRemoveUntil(
+                     context,
+                     '/Create_Login',
+                         (Route<dynamic> route) => false, // Clear all routes in the stack
+                   );
+
+                   final snackBar = SnackBar(
+                     content: const Text('Logged out successfully.'),
+
+                   );
+
+// Show the SnackBar
+                   ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+// Automatically hide the SnackBar after 1 second
+                   Future.delayed(Duration(milliseconds: 500), () {
+                     ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                   });
+
+
                  }),
                  SizedBox(height: 10,),
-                 CustomText(text: "DELETE ACCOUNT",sizeOfFont: 15,weight: FontWeight.w400,color: grayColor,),
-               ],
+                 GestureDetector(
+                   onTap: () async {
+
+                     try {
+
+
+
+                       DeleteAccountResponse data = await Provider.of<
+                           AuthenticationProvider>(context, listen: false)
+                           .deleteAccount();
+
+                       if (data.status == true &&
+                           data.message == "Account deleted successfully") {
+
+
+                           SharedPreferences.getInstance().then((prefs) {
+                             prefs.clear();
+                           });
+
+                           // Navigate to the desired screen, e.g., login screen
+                           Navigator.pushNamedAndRemoveUntil(
+                           context,
+                           '/Create_Login',
+                               (Route<dynamic> route) => false, // Clear all routes in the stack
+                         );
+
+                         final snackBar = SnackBar(
+                           content: const Text('Account deleted successfully.'),
+
+                         );
+
+// Show the SnackBar
+                         ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+// Automatically hide the SnackBar after 1 second
+                         Future.delayed(Duration(milliseconds: 500), () {
+                           ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                         });
+
+
+
+
+                         // Navigate to the next screen or perform other actions after login
+                       } else {
+                         // Login failed
+                         print("Something went wrong: ${data.message}");
+                       }
+
+
+                     } catch (e) {
+                       // Display error message
+                       print("Error: $e");
+                     }
+
+
+                   },
+                   child: CustomText(
+                     text: "DELETE ACCOUNT",
+                     sizeOfFont: 15,
+                     weight: FontWeight.w400,
+                     color: grayColor,
+                   ),
+                 ), ],
              ),
            ),
          ],

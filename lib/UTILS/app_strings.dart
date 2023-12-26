@@ -14,6 +14,7 @@ const String fullName = "Full Name";
 const String phoneNumber = "Phone Number";
 const String next = "NEXT";
 const String dob = "DOB";
+const String reset = "Reset";
 const String gender = "Gender";
 const String profilePicture = "PROFILE PICTURE";
 const String uploadphoto = "Upload Photo";

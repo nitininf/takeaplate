@@ -9,6 +9,9 @@ import '../../CUSTOM_WIDGETS/custom_text_field.dart';
 import '../../UTILS/app_color.dart';
 import 'package:page_indicator/page_indicator.dart';
 
+import '../../UTILS/request_string.dart';
+import '../../UTILS/utils.dart';
+
 class OnBoardingScreen extends StatefulWidget {
   const OnBoardingScreen({super.key});
 
@@ -140,7 +143,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen>
                         btnBgColor: index == 1 ? onboardingBtn : onboardingBtn,
                         btnTextColor: btntxtColor,
                         btnText: next,
-                        onClick: () {
+                        onClick: () async {
                           if (index < 2) {
                             _pageController.animateToPage(
                               (_pageController.page ?? 0).toInt() + 1,
@@ -148,7 +151,17 @@ class _OnBoardingScreenState extends State<OnBoardingScreen>
                               curve: Curves.linear,
                             );
                           } else {
+
+                            int? userId = await Utility.getIntValue(RequestString.ID);
+                            print("userId: ${userId}");
+
+                            if(userId != null){
+
+                              Navigator.pushNamed(context, '/BaseHome');
+
+                            }else {
                               Navigator.pushNamed(context, '/Create_Login');
+                            }
                               }
                         },
                       ),

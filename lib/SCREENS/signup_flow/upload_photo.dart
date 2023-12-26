@@ -1,3 +1,6 @@
+
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -5,18 +8,34 @@ import 'package:takeaplate/CUSTOM_WIDGETS/common_button.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/common_edit_text.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/custom_text_style.dart';
 import 'package:takeaplate/MULTI-PROVIDER/selectImageProvider.dart';
+import 'package:takeaplate/Response_Model/RegisterResponse.dart';
 import 'package:takeaplate/UTILS/app_color.dart';
 import 'package:takeaplate/UTILS/app_images.dart';
 import 'package:takeaplate/UTILS/app_strings.dart';
 import 'package:takeaplate/UTILS/fontfaimlly_string.dart';
+
+import '../../MULTI-PROVIDER/AuthenticationProvider.dart';
+import '../../MULTI-PROVIDER/SignUp_StepOne.dart';
+import '../../MULTI-PROVIDER/SignUp_StepTwo.dart';
+import '../../UTILS/request_string.dart';
 
 class UploadPhoto extends StatelessWidget {
 
   TextEditingController selectedImagePathController = TextEditingController();
 
 
+
   @override
   Widget build(BuildContext context) {
+
+    var getUserBasicDetails = Provider.of<SignUp_StepOne>(context);
+
+    // // Access the user's information
+    // var userInformation = SignUp_StepOne();
+
+
+
+
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -57,23 +76,28 @@ class UploadPhoto extends StatelessWidget {
                       margin: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
                       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                       decoration: BoxDecoration(
-                           color: editbgColor,
-                          borderRadius: BorderRadius.circular(16),
-                          border: Border.all(width: 0, color: editbgColor,
-
-
-                          )
-
+                        image: selectedImagePathController.text.isNotEmpty
+                            ? DecorationImage(
+                          image: FileImage(File(selectedImagePathController.text)),
+                          fit: BoxFit.cover,
+                        )
+                            : const DecorationImage(
+                          image: AssetImage(edit_photo),
+                          fit: BoxFit.contain,
+                        ),
                       ),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           GestureDetector(
                             onTap: () async {
+
                               final image = await _getImage(context);
-                              // if (image != null) {
-                              //   // Use the selected image (update your provider or state as needed)
-                              // }
+                              if (image != null) {
+                                // Update the selected image in the provider or state
+                                Provider.of<SelectImageProvider>(context, listen: false).setSelectedImage(image);
+                              }
+
                             },
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -110,19 +134,28 @@ class UploadPhoto extends StatelessWidget {
 
               Padding(
                 padding: const EdgeInsets.all(59.0),
-                child: CommonButton(btnBgColor: btnbgColor, btnText: next, onClick: ()async {
-                  String? selectedImagePath = selectedImagePathController.text;
+                child: CommonButton(btnBgColor: btnbgColor, btnText: next, onClick: () async {
+                  String selectedImagePath = selectedImagePathController.text;
 
-                  // Check if selectedImagePath is not null
-                  if (selectedImagePath != null) {
-                    print('Selected Image Path: $selectedImagePath');
-                    // Perform the navigation here
-                    Navigator.pushNamed(context, '/SetYourPasswordScreen');
-                  } else {
-                    // Print a message if the selectedImagePath is null
-                    print('Image not selected');
-                  }
-                },),
+
+                  // Perform the navigation here
+
+                  var saveUserImage = Provider.of<SignUp_StepTwo>(context, listen: false);
+
+                  // Set user information in the provider
+                  saveUserImage.saveSignUpStepTwoData(
+                    fullName: getUserBasicDetails.fullName,
+                    email: getUserBasicDetails.email,
+                    phoneNumber: getUserBasicDetails.phoneNumber,
+                    dob: getUserBasicDetails.dob,
+                    gender: getUserBasicDetails.gender,
+                    user_image: selectedImagePath ?? '',
+
+                  );
+
+
+                  Navigator.pushNamed(context, '/SetYourPasswordScreen');
+                                },),
               )
 
             ],

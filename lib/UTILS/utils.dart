@@ -26,8 +26,9 @@ class Utility {
     prefs?.clear();
   }
 
-  saveIntValue(String key, int value) async {
-    prefs = await SharedPreferences.getInstance();
+  static setIntValue(String key, int value) async {
+    await getSharedPreferences();
+
     prefs?.setInt(key, value);
   }
 
@@ -52,7 +53,7 @@ class Utility {
     return prefs?.getString(value);
   }
 
-  Future<int?> getIntValue(String value) async {
+  static Future<int?> getIntValue(String value) async {
     prefs = await SharedPreferences.getInstance();
     return prefs?.getInt(value);
   }

@@ -270,7 +270,7 @@ class RightDrawerMenuWidget extends StatelessWidget {
                         //Navigator.pushNamed(context, '/ContactUs');
                       }
                     },
-                    dense: true,
+                    // dense: true,
                     title: Align(
                       alignment: Alignment.topRight,
                       child: Padding(

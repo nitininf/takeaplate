@@ -18,12 +18,12 @@ import '../../UTILS/request_string.dart';
 import '../../UTILS/utils.dart';
 import '../../UTILS/validation.dart';
 
-class LogInScreen extends StatelessWidget {
+class ForgotPasswordScreen extends StatelessWidget {
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-   LogInScreen({super.key});
+  ForgotPasswordScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -68,53 +68,30 @@ class LogInScreen extends StatelessWidget {
                   child: Column(
                     children: [
                       CommonEmailField(hintText: email,controller: emailController,),
-                      const SizedBox(height: 20,),
-                      CommonPasswordField(isPassword: true,controller: passwordController,),
                       const SizedBox(height: 30,),
-                      CommonButton(btnBgColor: btnbgColor, btnText: login, onClick: () async {
+
+                      CommonButton(btnBgColor: btnbgColor, btnText: reset, onClick: () async {
 
 
 
 
-                        if (emailController.text.isNotEmpty && passwordController.text.isNotEmpty) {
+                        if (emailController.text.isNotEmpty) {
                           try {
                             var formData = {
                               RequestString.EMAIL: emailController.text,
-                              RequestString.PASSWORD: passwordController.text,
+
 
                             };
 
-                            LoginResponse data = await Provider.of<AuthenticationProvider>(context, listen: false)
-                                .loginUser(formData);
+                            ForgotPasswordResponse data = await Provider.of<
+                                AuthenticationProvider>(context, listen: false)
+                                .forgotPassword(formData);
 
-                            if (data.status == true && data.message == "User login successfully") {
+                            if (data.status == true &&
+                                data.message == "Reset link sent to your email.") {
                               // Login successful
-                              int? id = data.data?.id;
-                              String? userToken = data.token;
-                              String? userName = data.data?.name;
-                              String? email = data.data?.email;
-                              int? phoneNo = data.data?.phoneNo;
-                              String? dataOfBirth = data.data?.dOB;
-                              String? userImage = data.data?.userImage;
-                              String? gender = data.data?.gender;
+                              DialogHelper.showCommonPopup(context,title: sentPss,subtitle: checkInbox);
 
-                              // Save user data to SharedPreferences
-
-
-                              await Utility.getSharedPreferences();
-
-                              await Utility.setIntValue(RequestString.ID, id!);
-                              await Utility.setStringValue(RequestString.TOKEN, userToken!);
-                              await Utility.setStringValue(RequestString.NAME, userName!);
-                              await Utility.setStringValue(RequestString.EMAIL, email!);
-                              await Utility.setIntValue(RequestString.PHONE_NO, phoneNo!);
-                              await Utility.setStringValue(RequestString.DOB, dataOfBirth!);
-                              await Utility.setStringValue(RequestString.USER_IMAGE, userImage!);
-                              await Utility.setStringValue(RequestString.GENDER, gender!);
-
-
-
-                              Navigator.pushNamed(context, '/BaseHome');
 
                               // Print data to console
                               print(data);
@@ -123,20 +100,6 @@ class LogInScreen extends StatelessWidget {
                             } else {
                               // Login failed
                               print("Something went wrong: ${data.message}");
-
-                              final snackBar = SnackBar(
-                                content:  Text('${data.message}'),
-
-                              );
-
-// Show the SnackBar
-                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
-
-// Automatically hide the SnackBar after 1 second
-                              Future.delayed(Duration(milliseconds: 1000), () {
-                                ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                              });
-
                             }
                           } catch (e) {
                             // Display error message
@@ -147,7 +110,7 @@ class LogInScreen extends StatelessWidget {
                         else {
                           // Show an error message or handle empty fields
                           final snackBar = SnackBar(
-                            content: const Text('Please enter both email and password.'),
+                            content: const Text('Please email id to reset your password.'),
                             action: SnackBarAction(
                               label: 'Ok',
                               onPressed: () {
@@ -165,31 +128,7 @@ class LogInScreen extends StatelessWidget {
 
 
                       }),
-                      const SizedBox(height: 20,),
-                      GestureDetector(child: const CustomText(text: forgotpss,color: hintColor,fontfamilly: montBold,),
 
-                      onTap: ()  {
-
-                        Navigator.pushNamed(context, '/ForgotPasswordScreen');
-
-
-                      //  Navigator.pushNamed(context, '/PassWordSentScreen');
-                      },),
-                       SizedBox(height: screenHeight*0.100,),
-                      // Horizontal line using Divider
-                      const Divider(
-                        color: hintColor,
-                        thickness: 1,
-                      ),
-                      const SizedBox(height: 20,),
-                      const CustomText(text: notMmberyet,color: hintColor,fontfamilly: montBold,),
-                      const SizedBox(height: 10,),
-                      GestureDetector(child: const CustomText(text: createyouraccount,color: btnbgColor,sizeOfFont: 18,fontfamilly: montBold,)
-                      ,
-                        onTap: (){
-                        Navigator.pushNamed(context, '/SignupScreen');
-                        },
-                      ),
 
                     ],
                   ),
