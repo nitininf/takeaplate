@@ -9,6 +9,7 @@ import 'package:takeaplate/CUSTOM_WIDGETS/common_edit_text.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/custom_text_style.dart';
 import 'package:takeaplate/MULTI-PROVIDER/selectImageProvider.dart';
 import 'package:takeaplate/Response_Model/RegisterResponse.dart';
+import 'package:takeaplate/Response_Model/UploadImageResponse.dart';
 import 'package:takeaplate/UTILS/app_color.dart';
 import 'package:takeaplate/UTILS/app_images.dart';
 import 'package:takeaplate/UTILS/app_strings.dart';
@@ -137,24 +138,82 @@ class UploadPhoto extends StatelessWidget {
                 child: CommonButton(btnBgColor: btnbgColor, btnText: next, onClick: () async {
                   String selectedImagePath = selectedImagePathController.text;
 
-
-                  // Perform the navigation here
-
-                  var saveUserImage = Provider.of<SignUp_StepTwo>(context, listen: false);
-
-                  // Set user information in the provider
-                  saveUserImage.saveSignUpStepTwoData(
-                    fullName: getUserBasicDetails.fullName,
-                    email: getUserBasicDetails.email,
-                    phoneNumber: getUserBasicDetails.phoneNumber,
-                    dob: getUserBasicDetails.dob,
-                    gender: getUserBasicDetails.gender,
-                    user_image: selectedImagePath ?? '',
-
-                  );
+                  if (selectedImagePath.isNotEmpty) {
+                    try {
 
 
-                  Navigator.pushNamed(context, '/SetYourPasswordScreen');
+                      UploadImageResponse data = await Provider.of<AuthenticationProvider>(context, listen: false)
+                          .uploadMultipartImage(File(selectedImagePath),"registration");
+
+                      if (data.status == true && data.message == "Image uploaded successfully") {
+
+
+
+                        // Perform the navigation here
+
+                        var saveUserImage = Provider.of<SignUp_StepTwo>(context, listen: false);
+
+                        // Set user information in the provider
+                        saveUserImage.saveSignUpStepTwoData(
+                          fullName: getUserBasicDetails.fullName,
+                          email: getUserBasicDetails.email,
+                          phoneNumber: getUserBasicDetails.phoneNumber,
+                          dob: getUserBasicDetails.dob,
+                          gender: getUserBasicDetails.gender,
+                          user_image: data.url ?? '',
+
+                        );
+
+
+                        Navigator.pushNamed(context, '/SetYourPasswordScreen');
+                        // Print data to console
+                        print(data);
+
+                        // Navigate to the next screen or perform other actions after login
+                      } else {
+                        // Login failed
+                        print("Something went wrong: ${data.message}");
+
+                        final snackBar = SnackBar(
+                          content:  Text('${data.message}'),
+
+                        );
+
+// Show the SnackBar
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+// Automatically hide the SnackBar after 1 second
+                        Future.delayed(Duration(milliseconds: 1000), () {
+                          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                        });
+
+                      }
+                    } catch (e) {
+                      // Display error message
+                      print("Error: $e");
+                    }
+                  }
+
+                  else {
+                    // Show an error message or handle empty fields
+                    final snackBar = SnackBar(
+                      content: const Text('Please select or capture different image..'),
+                      action: SnackBarAction(
+                        label: 'Ok',
+                        onPressed: () {
+                          // Some code to undo the change.
+                        },
+                      ),
+                    );
+
+                    // Find the ScaffoldMessenger in the widget tree
+                    // and use it to show a SnackBar.
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  }
+
+
+
+
                                 },),
               )
 

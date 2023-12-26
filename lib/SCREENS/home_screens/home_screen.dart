@@ -1,5 +1,6 @@
 import 'package:custom_rating_bar/custom_rating_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/common_button.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/custom_text_style.dart';
 import 'package:takeaplate/UTILS/app_color.dart';
@@ -9,6 +10,8 @@ import 'package:takeaplate/UTILS/fontfaimlly_string.dart';
 import 'package:takeaplate/main.dart';
 import '../../CUSTOM_WIDGETS/custom_app_bar.dart';
 import '../../CUSTOM_WIDGETS/custom_search_field.dart';
+import '../../MULTI-PROVIDER/FavCardsProvider.dart';
+import '../../MULTI-PROVIDER/PlaceListProvider.dart';
 
 class HomeScreen extends StatelessWidget {
   final List<String> items = ['Healthy', 'Sushi', 'Desserts', 'Sugar', 'Sweets'];
@@ -39,8 +42,8 @@ class HomeScreen extends StatelessWidget {
                         color: Colors.grey,
                         thickness: 0,),),
                     buildSection(lastminute, viewall),
-                    buildHorizontalFavCards(),
-                    buildHorizontalFavCards(),
+                    buildHorizontalFavCards(context),
+
                     const Padding(
                       padding: EdgeInsets.only(top: 10.0,left: 15,right: 15,bottom: 15),
                       child: Divider(
@@ -49,7 +52,7 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ),
                     buildSection(myfav, viewall),
-                    buildHorizontalFavCards(),
+                    buildHorizontalFavCards(context),
                   ],
                 ),
               ),
@@ -114,53 +117,74 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget buildHorizontalCards() {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: List.generate(items.length, (index) => getCards(index)),
-      ),
+    return Consumer<PlaceListProvider>(
+      builder: (context, dataProvider, child) {
+        return SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: List.generate(
+              dataProvider.items.length,
+                  (index) => getCards(context, dataProvider.items[index]),
+            ),
+          ),
+        );
+      },
     );
   }
 
-  Widget getCards(int index) {
+  Widget getCards(BuildContext context, Map<String, dynamic> data) {
+
+    print("Data: $data");
+
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(width: 0,   color: editbgColor.withOpacity(0.25),),
+        border: Border.all(width: 0, color: editbgColor.withOpacity(0.25)),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-           const Column(
+          Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CustomText(text: "Salad & Co.", color: btntxtColor, fontfamilly: montBold,sizeOfFont: 24,),
-
-              CustomText(text: "Health Foods", color: btntxtColor, fontfamilly: montRegular,sizeOfFont: 14,),
-
-              CustomText(text: "3 offers available", color: offerColor,sizeOfFont: 9, fontfamilly: montBook,), SizedBox(height: 1,),
-
+              CustomText(
+                text: data['title'],
+                color: btntxtColor,
+                fontfamilly: montBold,
+                sizeOfFont: 24,
+              ),
+              CustomText(
+                text: data['category'],
+                color: btntxtColor,
+                fontfamilly: montRegular,
+                sizeOfFont: 14,
+              ),
+              CustomText(
+                text: data['offers'],
+                color: offerColor,
+                sizeOfFont: 9,
+                fontfamilly: montBook,
+              ),
+              SizedBox(height: 1),
               RatingBar.readOnly(
                 filledIcon: Icons.star,
                 emptyIcon: Icons.star_border,
                 filledColor: btnbgColor,
-                initialRating: 4,
+                initialRating: data['rating'].toDouble(),
                 size: 20,
                 maxRating: 5,
-
               ),
-
             ],
           ),
-          const SizedBox(width: 18,),
+          const SizedBox(width: 18),
           Stack(
             alignment: Alignment.topRight,
             clipBehavior: Clip.none,
             children: [
-             index%2==0 ? Image.asset(restrorent_img, height: 83, width: 80, fit: BoxFit.contain) :Image.asset(food_image, height: 83, width: 80, fit: BoxFit.contain),
+              data.length%2==0 ? Image.asset(restrorent_img, height: 83, width: 80, fit: BoxFit.contain) :Image.asset(food_image, height: 83, width: 80, fit: BoxFit.contain),
               Positioned(
                 right: -4,
                 child: Image.asset(
@@ -171,29 +195,36 @@ class HomeScreen extends StatelessWidget {
               ),
             ],
           ),
+
+
         ],
       ),
     );
   }
 
-  Widget buildHorizontalFavCards() {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: List.generate(items.length, (index) => GestureDetector(
-          onTap: (){
-            Navigator.pushNamed(navigatorKey.currentContext!, '/OrderAndPayScreen');
-          },
-            child: getFavCards())),
-      ),
+
+  Widget buildHorizontalFavCards(BuildContext context) {
+    return Consumer<FavCardsProvider>(
+      builder: (context, dataProvider, child) {
+        List<Map<String, dynamic>> recentItems = dataProvider.items.take(2).toList();
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: recentItems.map((item) {
+            return getFavCards(context, item);
+          }).toList(),
+        );
+      },
     );
   }
 
-  Widget getFavCards() {
+
+
+
+  Widget getFavCards(BuildContext context, Map<String, dynamic> data) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         border: Border.all(width: 0,   color: editbgColor.withOpacity(0.25),),
@@ -201,14 +232,14 @@ class HomeScreen extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Column(
+           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CustomText(text: "Surprise Pack", color: btntxtColor, fontfamilly: montBold,sizeOfFont: 21,),
+              CustomText(text: data['name'], color: btntxtColor, fontfamilly: montBold,sizeOfFont: 21,),
 
-              CustomText(text: "Salad & Co", color: btntxtColor, fontfamilly: montRegular,sizeOfFont: 16,),
+              CustomText(text: data['restaurant'], color: btntxtColor, fontfamilly: montRegular,sizeOfFont: 16,),
 
-              CustomText(text: "Tomorrow-7:35-8:40 Am", color: graysColor,sizeOfFont: 11, fontfamilly: montRegular),
+              CustomText(text: data['time'], color: graysColor,sizeOfFont: 11, fontfamilly: montRegular),
               SizedBox(height: 5,),
               Row(
                 children: [
@@ -217,16 +248,16 @@ class HomeScreen extends StatelessWidget {
                     emptyIcon: Icons.star_border,
                     filledColor: btnbgColor,
                     size: 20,
-                    initialRating: 4,
+                    initialRating: data['rating'].toDouble(),
                     maxRating: 5,
                   ),
                   SizedBox(width: 10,),
-                  CustomText(text: "84 Km", color: graysColor,sizeOfFont: 15, fontfamilly: montSemiBold),
+                  CustomText(text: data['distance'], color: graysColor,sizeOfFont: 15, fontfamilly: montSemiBold),
                    ],
 
               ),
               SizedBox(height: 5,),
-              CustomText(text: "\$"+"9.99", color: dolorColor,sizeOfFont: 27, fontfamilly: montHeavy,),
+              CustomText(text: "\$"+data['price'], color: dolorColor,sizeOfFont: 27, fontfamilly: montHeavy,),
 
             ],
           ),

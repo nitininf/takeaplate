@@ -36,6 +36,9 @@ import '../UTILS/app_color.dart';
 import '../UTILS/app_strings.dart';
 import '../main.dart';
 import '../payment_method/paymentmethod_screen.dart';
+import 'CartOperationProvider.dart';
+import 'FavCardsProvider.dart';
+import 'PlaceListProvider.dart';
 import 'SignUp_StepTwo.dart';
 import 'common_counter.dart';
 import 'package:provider/provider.dart';
@@ -51,6 +54,9 @@ MultiProvider getProviders() {
       ChangeNotifierProvider(create: (_) => SelectImageProvider()),
       ChangeNotifierProvider(create: (_) => SignUp_StepOne()),
       ChangeNotifierProvider(create: (_) => SignUp_StepTwo()),
+      ChangeNotifierProvider(create: (_) => PlaceListProvider()),
+      ChangeNotifierProvider(create: (_) => FavCardsProvider()),
+      ChangeNotifierProvider(create: (_) => CartOperationProvider()),
 
     ],
     child:

@@ -269,7 +269,7 @@ class Network {
     return response;
   }
 
-  Future<String?> uploadFile(File file, String type) async {
+  Future<Response?> uploadFile(File file, String type) async {
     String fileName = file.path.split('/').last;
     FormData formData = FormData.fromMap({
       "file": await MultipartFile.fromFile(file.path, filename: fileName),
@@ -283,7 +283,7 @@ class Network {
       try {
         _dio?.options.connectTimeout = Duration(milliseconds: connectTimeOut);
         response = await _dio!.post(
-            NetworkStrings.API_BASE_URL + NetworkStrings.uploadFile,
+            NetworkStrings.API_BASE_URL + '/upload-image',
             data: formData,
             cancelToken: _cancelRequestToken,
             options: Options(
