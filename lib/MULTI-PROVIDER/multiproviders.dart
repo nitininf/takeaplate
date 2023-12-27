@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:takeaplate/MULTI-PROVIDER/ContactUsProvider.dart';
 import 'package:takeaplate/MULTI-PROVIDER/DateProvider.dart';
 import 'package:takeaplate/MULTI-PROVIDER/GenderProvider.dart';
 import 'package:takeaplate/MULTI-PROVIDER/AuthenticationProvider.dart';
@@ -57,6 +58,7 @@ MultiProvider getProviders() {
       ChangeNotifierProvider(create: (_) => PlaceListProvider()),
       ChangeNotifierProvider(create: (_) => FavCardsProvider()),
       ChangeNotifierProvider(create: (_) => CartOperationProvider()),
+      ChangeNotifierProvider(create: (_) => ContactUsProvider()),
 
     ],
     child:

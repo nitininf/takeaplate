@@ -13,14 +13,15 @@ import '../../MULTI-PROVIDER/DateProvider.dart';
 import '../../MULTI-PROVIDER/SignUp_StepOne.dart';
 
 List<String> genders = ['Male', 'Female', 'Other'];
+TextEditingController fullNameController = TextEditingController();
+TextEditingController emailController = TextEditingController();
+TextEditingController phoneNumberController = TextEditingController();
+TextEditingController dobController = TextEditingController();
+TextEditingController genderController =
+TextEditingController(text: genders[0]);
 
 class SignUpScreen extends StatelessWidget {
-  TextEditingController fullNameController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController phoneNumberController = TextEditingController();
-  TextEditingController dobController = TextEditingController();
-  TextEditingController genderController =
-      TextEditingController(text: genders[0]);
+
 
   @override
   Widget build(BuildContext context) {
@@ -88,6 +89,7 @@ class SignUpScreen extends StatelessWidget {
                                 hintText: dob,
                                 controller: dobController,
                                 onTap: () => _selectDate(context),
+                                isIconShow: true,
                                 isSelection: true),
                           ),
                           const SizedBox(width: 10),
@@ -96,6 +98,7 @@ class SignUpScreen extends StatelessWidget {
                               hintText: gender,
                               isPassword: true,
                               isSelection: true,
+                              isIconShow: true,
                               controller: genderController,
                               onTap: () {
                                 _showGenderDropdown(context);
@@ -141,16 +144,23 @@ class SignUpScreen extends StatelessWidget {
                         print(
                             "Full Name: ${fullNameController.text} ,\n Email: ${emailController.text},\n Phone Number: ${phoneNumberController.text},\n Date Of Birth: ${dobController.text},\n Gender: ${genderController.text}");
 
+                        final DateProvider dateProvider = Provider.of<DateProvider>(context, listen: false);
+
+                        var date = dateProvider.formattedDate(DateTime.parse(dobController.text));
+
+
                         var saveUserBasicDetail =
                             Provider.of<SignUp_StepOne>(context, listen: false);
+
+
 
                         // Set user information in the provider
                         saveUserBasicDetail.saveSignUpStepOneData(
                           fullName: fullNameController.text,
                           email: emailController.text,
                           phoneNumber: phoneNumberController.text,
-                          dob: dobController.text,
-                          gender: genderController.text,
+                          dob: date,
+                          gender: genderController.text.toLowerCase(),
                         );
 
                         Navigator.pushNamed(context, '/UploadPhoto');

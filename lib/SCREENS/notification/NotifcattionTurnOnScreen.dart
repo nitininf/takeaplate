@@ -8,25 +8,19 @@ import 'package:takeaplate/UTILS/app_strings.dart';
 import 'package:takeaplate/UTILS/fontfaimlly_string.dart';
 
 import '../../MULTI-PROVIDER/common_counter.dart';
+import '../../UTILS/request_string.dart';
+import '../../UTILS/utils.dart';
 
 class NotificationTurnOnScreen extends StatelessWidget {
   const NotificationTurnOnScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    double screenHeight = MediaQuery
-        .of(context)
-        .size
-        .height;
-    double screenWidth = MediaQuery
-        .of(context)
-        .size
-        .width;
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      body:
-      SingleChildScrollView(
-
+      body: SingleChildScrollView(
         child: Container(
           height: screenHeight,
           width: screenWidth,
@@ -37,7 +31,8 @@ class NotificationTurnOnScreen extends StatelessWidget {
             ),
           ),
           child: Padding(
-            padding: const EdgeInsets.only(top: 0.0, right: 35, left: 35, bottom: 15),
+            padding: const EdgeInsets.only(
+                top: 0.0, right: 35, left: 35, bottom: 15),
             child: SafeArea(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -63,23 +58,36 @@ class NotificationTurnOnScreen extends StatelessWidget {
                         //  getWidget(title: nearby, subtitle: miss),
                         // getWidget(title: confirm),
                         Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 13, vertical: 13),
-                          padding: const EdgeInsets.symmetric(horizontal: 1, vertical: 8),
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 13, vertical: 13),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 1, vertical: 8),
                           decoration: BoxDecoration(
                               color: editbgColor,
                               borderRadius: BorderRadius.circular(16),
                               border: Border.all(width: 1, color: editbgColor)),
                           child: Row(
                             children: [
-                              Expanded(child: Image.asset(appLogo, height: 33, width: 33,)),
+                              Expanded(
+                                  child: Image.asset(
+                                appLogo,
+                                height: 33,
+                                width: 33,
+                              )),
                               Expanded(
                                   flex: 3,
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      const SizedBox(height: 10,),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
                                       Align(
-                                        child: CustomText(text:favRes! ,fontfamilly: montBold,color: hintColor,sizeOfFont: 12,
+                                        child: CustomText(
+                                          text: favRes!,
+                                          fontfamilly: montBold,
+                                          color: hintColor,
+                                          sizeOfFont: 12,
                                           isAlign: false,
                                         ),
                                         alignment: Alignment.topLeft,
@@ -87,53 +95,74 @@ class NotificationTurnOnScreen extends StatelessWidget {
                                       //SizedBox(height: 5,),
                                       Align(
                                         alignment: Alignment.topLeft,
-                                        child: CustomText(text:"" ,fontfamilly: montLight,color: hintColor,sizeOfFont: 12,
+                                        child: CustomText(
+                                          text: "",
+                                          fontfamilly: montLight,
+                                          color: hintColor,
+                                          sizeOfFont: 12,
                                           isAlign: false,
                                         ),
                                       ),
                                     ],
                                   )),
-                              Consumer<CommonCounter>(builder: (context,commonProvider,child){
-                                return
-                                  Expanded(child:
-                                  GestureDetector(
-                                    onTap: (){
-                                      commonProvider.isNotification ? commonProvider.notificationShowOn(false) : commonProvider.notificationShowOn(true);
-                                    },
-                                    child: commonProvider.isNotification ? Image.asset(radioon,
-                                      height: 17,
-                                      width: 17,) : Image.asset(notification_off,
-                                      height: 17,
-                                      width: 17,
-                                    ),
-                                  )
-                                  );
-
-                              }
-                              )
-                            ]
-                            ,
-                          )
-                          ,
+                              Consumer<CommonCounter>(
+                                  builder: (context, commonProvider, child) {
+                                return Expanded(
+                                    child: GestureDetector(
+                                  onTap: () {
+                                    commonProvider.isNotification
+                                        ? commonProvider
+                                            .notificationShowOn(false)
+                                        : commonProvider
+                                            .notificationShowOn(true);
+                                  },
+                                  child: commonProvider.isNotification
+                                      ? Image.asset(
+                                          radioon,
+                                          height: 17,
+                                          width: 17,
+                                        )
+                                      : Image.asset(
+                                          notification_off,
+                                          height: 17,
+                                          width: 17,
+                                        ),
+                                ));
+                              })
+                            ],
+                          ),
                         ),
                         Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 13, vertical: 13),
-                          padding: const EdgeInsets.symmetric(horizontal: 1, vertical: 8),
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 13, vertical: 13),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 1, vertical: 8),
                           decoration: BoxDecoration(
                               color: editbgColor,
                               borderRadius: BorderRadius.circular(16),
                               border: Border.all(width: 1, color: editbgColor)),
                           child: Row(
                             children: [
-                              Expanded(child: Image.asset(appLogo, height: 33, width: 33,)),
+                              Expanded(
+                                  child: Image.asset(
+                                appLogo,
+                                height: 33,
+                                width: 33,
+                              )),
                               Expanded(
                                   flex: 3,
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      const SizedBox(height: 10,),
-                                      const  Align(
-                                        child: CustomText(text:nearby ,fontfamilly: montBold,color: hintColor,sizeOfFont: 12,
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      const Align(
+                                        child: CustomText(
+                                          text: nearby,
+                                          fontfamilly: montBold,
+                                          color: hintColor,
+                                          sizeOfFont: 12,
                                           isAlign: false,
                                         ),
                                         alignment: Alignment.topLeft,
@@ -141,53 +170,74 @@ class NotificationTurnOnScreen extends StatelessWidget {
                                       //SizedBox(height: 5,),
                                       Align(
                                         alignment: Alignment.topLeft,
-                                        child: CustomText(text:miss! ,fontfamilly: montLight,color: hintColor,sizeOfFont: 12,
+                                        child: CustomText(
+                                          text: miss!,
+                                          fontfamilly: montLight,
+                                          color: hintColor,
+                                          sizeOfFont: 12,
                                           isAlign: false,
                                         ),
                                       ),
                                     ],
                                   )),
-                              Consumer<CommonCounter>(builder: (context,commonProvider,child){
-                                return
-                                  Expanded(child:
-                                  GestureDetector(
-                                    onTap: (){
-                                      commonProvider.isNotification_one ? commonProvider.notificationShowOn_one(false) : commonProvider.notificationShowOn_one(true);
-                                    },
-                                    child: commonProvider.isNotification_one ? Image.asset(radioon,
-                                      height: 17,
-                                      width: 17,) : Image.asset(notification_off,
-                                      height: 17,
-                                      width: 17,
-                                    ),
-                                  )
-                                  );
-
-                              }
-                              )
-                            ]
-                            ,
-                          )
-                          ,
+                              Consumer<CommonCounter>(
+                                  builder: (context, commonProvider, child) {
+                                return Expanded(
+                                    child: GestureDetector(
+                                  onTap: () {
+                                    commonProvider.isNotification_one
+                                        ? commonProvider
+                                            .notificationShowOn_one(false)
+                                        : commonProvider
+                                            .notificationShowOn_one(true);
+                                  },
+                                  child: commonProvider.isNotification_one
+                                      ? Image.asset(
+                                          radioon,
+                                          height: 17,
+                                          width: 17,
+                                        )
+                                      : Image.asset(
+                                          notification_off,
+                                          height: 17,
+                                          width: 17,
+                                        ),
+                                ));
+                              })
+                            ],
+                          ),
                         ),
                         Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 13, vertical: 13),
-                          padding: const EdgeInsets.symmetric(horizontal: 1, vertical: 8),
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 13, vertical: 13),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 1, vertical: 8),
                           decoration: BoxDecoration(
                               color: editbgColor,
                               borderRadius: BorderRadius.circular(16),
                               border: Border.all(width: 1, color: editbgColor)),
                           child: Row(
                             children: [
-                              Expanded(child: Image.asset(appLogo, height: 33, width: 33,)),
+                              Expanded(
+                                  child: Image.asset(
+                                appLogo,
+                                height: 33,
+                                width: 33,
+                              )),
                               Expanded(
                                   flex: 3,
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      const SizedBox(height: 10,),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
                                       Align(
-                                        child: CustomText(text:confirm! ,fontfamilly: montBold,color: hintColor,sizeOfFont: 12,
+                                        child: CustomText(
+                                          text: confirm!,
+                                          fontfamilly: montBold,
+                                          color: hintColor,
+                                          sizeOfFont: 12,
                                           isAlign: false,
                                         ),
                                         alignment: Alignment.topLeft,
@@ -195,34 +245,42 @@ class NotificationTurnOnScreen extends StatelessWidget {
                                       //SizedBox(height: 5,),
                                       Align(
                                         alignment: Alignment.topLeft,
-                                        child: CustomText(text:""! ,fontfamilly: montLight,color: hintColor,sizeOfFont: 12,
+                                        child: CustomText(
+                                          text: ""!,
+                                          fontfamilly: montLight,
+                                          color: hintColor,
+                                          sizeOfFont: 12,
                                           isAlign: false,
                                         ),
                                       ),
                                     ],
                                   )),
-                              Consumer<CommonCounter>(builder: (context,commonProvider,child){
-                                return
-                                  Expanded(child:
-                                  GestureDetector(
-                                    onTap: (){
-                                      commonProvider.isNotification_two ? commonProvider.notificationShowOn_two(false) : commonProvider.notificationShowOn_two(true);
-                                    },
-                                    child: commonProvider.isNotification_two ? Image.asset(radioon,
-                                      height: 17,
-                                      width: 17,) : Image.asset(notification_off,
-                                      height: 17,
-                                      width: 17,
-                                    ),
-                                  )
-                                  );
-
-                              }
-                              )
-                            ]
-                            ,
-                          )
-                          ,
+                              Consumer<CommonCounter>(
+                                  builder: (context, commonProvider, child) {
+                                return Expanded(
+                                    child: GestureDetector(
+                                  onTap: () {
+                                    commonProvider.isNotification_two
+                                        ? commonProvider
+                                            .notificationShowOn_two(false)
+                                        : commonProvider
+                                            .notificationShowOn_two(true);
+                                  },
+                                  child: commonProvider.isNotification_two
+                                      ? Image.asset(
+                                          radioon,
+                                          height: 17,
+                                          width: 17,
+                                        )
+                                      : Image.asset(
+                                          notification_off,
+                                          height: 17,
+                                          width: 17,
+                                        ),
+                                ));
+                              })
+                            ],
+                          ),
                         )
                       ],
                     ),
@@ -255,13 +313,16 @@ class NotificationTurnOnScreen extends StatelessWidget {
                         btnBgColor: btnbgColor,
                         btnText: turnonnotification,
                         sizeOfFont: 17,
-                        onClick: () {
-
-
-                          print('Notification 1 Status: ${Provider.of<CommonCounter>(context, listen: false).isNotification}');
-                          print('Notification 2 Status: ${Provider.of<CommonCounter>(context, listen: false).isNotification_one}');
-                          print('Notification 3 Status: ${Provider.of<CommonCounter>(context, listen: false).isNotification_two}');
-
+                        onClick: () async {
+                          var token =
+                              await Utility.getStringValue(RequestString.TOKEN);
+                          print(token);
+                          print(
+                              'Notification 1 Status: ${Provider.of<CommonCounter>(context, listen: false).isNotification}');
+                          print(
+                              'Notification 2 Status: ${Provider.of<CommonCounter>(context, listen: false).isNotification_one}');
+                          print(
+                              'Notification 3 Status: ${Provider.of<CommonCounter>(context, listen: false).isNotification_two}');
 
                           Navigator.pushNamed(context, '/BaseHome');
                         },
@@ -275,12 +336,10 @@ class NotificationTurnOnScreen extends StatelessWidget {
         ),
       ),
     );
-
   }
 
-
 /*  */
-  /*Widget getWidget({String? title, String? subtitle = ""}) {
+/*Widget getWidget({String? title, String? subtitle = ""}) {
     return
       Container(
         margin: const EdgeInsets.symmetric(horizontal: 13, vertical: 13),
@@ -339,4 +398,3 @@ class NotificationTurnOnScreen extends StatelessWidget {
   }
 */
 }
-

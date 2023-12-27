@@ -18,10 +18,12 @@ import '../../UTILS/request_string.dart';
 import '../../UTILS/utils.dart';
 import '../../UTILS/validation.dart';
 
+TextEditingController emailController = TextEditingController();
+TextEditingController passwordController = TextEditingController();
+
 class LogInScreen extends StatelessWidget {
 
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+
 
    LogInScreen({super.key});
 
@@ -93,7 +95,7 @@ class LogInScreen extends StatelessWidget {
                               String? userToken = data.token;
                               String? userName = data.data?.name;
                               String? email = data.data?.email;
-                              int? phoneNo = data.data?.phoneNo;
+                              String? phoneNo = data.data?.phoneNo.toString();
                               String? dataOfBirth = data.data?.dOB;
                               String? userImage = data.data?.userImage;
                               String? gender = data.data?.gender;
@@ -107,7 +109,7 @@ class LogInScreen extends StatelessWidget {
                               await Utility.setStringValue(RequestString.TOKEN, userToken!);
                               await Utility.setStringValue(RequestString.NAME, userName!);
                               await Utility.setStringValue(RequestString.EMAIL, email!);
-                              await Utility.setIntValue(RequestString.PHONE_NO, phoneNo!);
+                              await Utility.setStringValue(RequestString.PHONE_NO, phoneNo!);
                               await Utility.setStringValue(RequestString.DOB, dataOfBirth!);
                               await Utility.setStringValue(RequestString.USER_IMAGE, userImage!);
                               await Utility.setStringValue(RequestString.GENDER, gender!);

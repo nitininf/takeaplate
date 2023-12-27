@@ -67,7 +67,7 @@ class RestaurantsScreen extends StatelessWidget{
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: List.generate(items.length, (index) => GestureDetector(onTap:(){
-            Navigator.pushNamed(navigatorKey.currentContext!, '/RestrorentProfileScreen');
+            Navigator.pushNamed(navigatorKey.currentContext!, '/RestaurantsProfileScreen');
           },
               child: getFavCards(index))),
         ),

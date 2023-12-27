@@ -5,20 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/common_button.dart';
-import 'package:takeaplate/CUSTOM_WIDGETS/common_edit_text.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/custom_text_style.dart';
 import 'package:takeaplate/MULTI-PROVIDER/selectImageProvider.dart';
-import 'package:takeaplate/Response_Model/RegisterResponse.dart';
 import 'package:takeaplate/Response_Model/UploadImageResponse.dart';
 import 'package:takeaplate/UTILS/app_color.dart';
 import 'package:takeaplate/UTILS/app_images.dart';
 import 'package:takeaplate/UTILS/app_strings.dart';
 import 'package:takeaplate/UTILS/fontfaimlly_string.dart';
-
 import '../../MULTI-PROVIDER/AuthenticationProvider.dart';
 import '../../MULTI-PROVIDER/SignUp_StepOne.dart';
 import '../../MULTI-PROVIDER/SignUp_StepTwo.dart';
-import '../../UTILS/request_string.dart';
 
 class UploadPhoto extends StatelessWidget {
 
@@ -142,10 +138,12 @@ class UploadPhoto extends StatelessWidget {
                     try {
 
 
-                      UploadImageResponse data = await Provider.of<AuthenticationProvider>(context, listen: false)
+                      var data = await Provider.of<AuthenticationProvider>(context, listen: false)
                           .uploadMultipartImage(File(selectedImagePath),"registration");
 
-                      if (data.status == true && data.message == "Image uploaded successfully") {
+                      print(data);
+
+                      if (data.message == "Image uploaded successfully") {
 
 
 
@@ -170,7 +168,9 @@ class UploadPhoto extends StatelessWidget {
                         print(data);
 
                         // Navigate to the next screen or perform other actions after login
-                      } else {
+                      }
+
+                      else {
                         // Login failed
                         print("Something went wrong: ${data.message}");
 
@@ -188,6 +188,8 @@ class UploadPhoto extends StatelessWidget {
                         });
 
                       }
+
+
                     } catch (e) {
                       // Display error message
                       print("Error: $e");

@@ -61,6 +61,7 @@ class RequestString{
   static const String FCM_TOKEN = "fcm_token";
   static const String CREATED_AT = "created_at";
   static const String UPDATED_AT = "updated_at";
+  static const String COMMENTS = "comments";
 
 
 }

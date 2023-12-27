@@ -12,6 +12,7 @@ class CommonEmailField extends StatelessWidget {
     this.maxLine,
     this.isbgColor = false,
     this.isPhoneNumber = false,
+    this.isNotClickable = false,
   }) : super(key: key);
 
   final TextEditingController? controller;
@@ -20,6 +21,7 @@ class CommonEmailField extends StatelessWidget {
   final String hintText;
   final bool isbgColor;
   final bool isPhoneNumber;
+  final bool isNotClickable;
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +34,7 @@ class CommonEmailField extends StatelessWidget {
           : (isPassword ?? false)
           ? TextInputType.visiblePassword
           : TextInputType.text,
+      readOnly: isNotClickable,
       obscureText: isPassword ?? false,
       maxLines: maxLine ?? 1,
       controller: controller,
@@ -60,12 +63,12 @@ class CommonEmailField extends StatelessWidget {
             : OutlineInputBorder(
             borderRadius: BorderRadius.circular(20),
             borderSide: BorderSide(color: editbgColor, width: 1)),
-        suffixIcon: (isPassword ?? false)
-            ? const Icon(
-          Icons.remove_red_eye,
-          color: Colors.grey,
-        )
-            : const SizedBox(),
+        // suffixIcon: (isPassword ?? false)
+        //     ? const Icon(
+        //   Icons.remove_red_eye,
+        //   color: Colors.grey,
+        // )
+        //     : const SizedBox(),
         contentPadding: isbgColor
             ? const EdgeInsets.symmetric(horizontal: 20, vertical: 16)
             : const EdgeInsets.symmetric(horizontal: 16, vertical: 16),

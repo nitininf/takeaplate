@@ -10,7 +10,7 @@ class UploadImageResponse {
 
   UploadImageResponse.fromJson(Map<String, dynamic> json) {
     url = json['url'];
-    fileType = json['File type'];
+    fileType = json['fileType'];
     type = json['type'];
     message = json['message'];
     status = json['status'];
@@ -19,7 +19,7 @@ class UploadImageResponse {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['url'] = this.url;
-    data['File type'] = this.fileType;
+    data['fileType'] = this.fileType;
     data['type'] = this.type;
     data['message'] = this.message;
     data['status'] = this.status;

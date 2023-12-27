@@ -1,16 +1,14 @@
-class RegisterResponse {
+class ContactUsResponse {
   String? message;
   bool? status;
   Data? data;
-  String? token;
 
-  RegisterResponse({this.message, this.status, this.data, this.token});
+  ContactUsResponse({this.message, this.status, this.data});
 
-  RegisterResponse.fromJson(Map<String, dynamic> json) {
+  ContactUsResponse.fromJson(Map<String, dynamic> json) {
     message = json['message'];
     status = json['status'];
     data = json['data'] != null ? new Data.fromJson(json['data']) : null;
-    token = json['token'];
   }
 
   Map<String, dynamic> toJson() {
@@ -20,7 +18,6 @@ class RegisterResponse {
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
-    data['token'] = this.token;
     return data;
   }
 }
@@ -28,10 +25,8 @@ class RegisterResponse {
 class Data {
   String? name;
   String? email;
-  String? phoneNo;
-  String? dOB;
-  String? gender;
-  String? userImage;
+  String? comments;
+  int? userId;
   String? updatedAt;
   String? createdAt;
   int? id;
@@ -39,10 +34,8 @@ class Data {
   Data(
       {this.name,
         this.email,
-        this.phoneNo,
-        this.dOB,
-        this.gender,
-        this.userImage,
+        this.comments,
+        this.userId,
         this.updatedAt,
         this.createdAt,
         this.id});
@@ -50,10 +43,8 @@ class Data {
   Data.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     email = json['email'];
-    phoneNo = json['phone_no'];
-    dOB = json['DOB'];
-    gender = json['gender'];
-    userImage = json['user_image'];
+    comments = json['comments'];
+    userId = json['user_id'];
     updatedAt = json['updated_at'];
     createdAt = json['created_at'];
     id = json['id'];
@@ -63,10 +54,8 @@ class Data {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['name'] = this.name;
     data['email'] = this.email;
-    data['phone_no'] = this.phoneNo;
-    data['DOB'] = this.dOB;
-    data['gender'] = this.gender;
-    data['user_image'] = this.userImage;
+    data['comments'] = this.comments;
+    data['user_id'] = this.userId;
     data['updated_at'] = this.updatedAt;
     data['created_at'] = this.createdAt;
     data['id'] = this.id;

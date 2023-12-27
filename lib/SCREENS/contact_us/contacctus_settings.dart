@@ -1,18 +1,28 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/common_button.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/common_edit_text.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/common_email_field.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/custom_app_bar.dart';
+import 'package:takeaplate/MULTI-PROVIDER/ContactUsProvider.dart';
+import 'package:takeaplate/Response_Model/ContactUsResponse.dart';
 import 'package:takeaplate/main.dart';
 
 import '../../CUSTOM_WIDGETS/custom_text_style.dart';
 import '../../UTILS/app_color.dart';
 import '../../UTILS/app_strings.dart';
 import '../../UTILS/fontfaimlly_string.dart';
+import '../../UTILS/request_string.dart';
 import '../../UTILS/validation.dart';
 
+TextEditingController nameController = TextEditingController();
+TextEditingController emailController = TextEditingController();
+TextEditingController commentsController = TextEditingController();
+
 class ContactUsSetting extends StatelessWidget{
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,7 +34,7 @@ class ContactUsSetting extends StatelessWidget{
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                  const CustomAppBar(),
-                getView()
+                getView(context)
         
               ]
           ),
@@ -37,7 +47,7 @@ class ContactUsSetting extends StatelessWidget{
 
   }
 
-  Widget getView()
+  Widget getView(BuildContext context)
   {
     return Expanded(
       child: SingleChildScrollView(
@@ -60,9 +70,9 @@ class ContactUsSetting extends StatelessWidget{
                   ),
                 ),
                 child: TextFormField(
-                    validator: FormValidator.validateEmail,
+
                     keyboardType: TextInputType.text,
-                    //   controller: controller,
+                      controller: nameController,
                     style:  const TextStyle( fontSize: 20,fontFamily: montBook,color:editbgColor
                     ),
                     decoration: const InputDecoration(
@@ -85,7 +95,8 @@ class ContactUsSetting extends StatelessWidget{
                 child: TextFormField(
                     validator: FormValidator.validateEmail,
                     keyboardType: TextInputType.text,
-                    //   controller: controller,
+                    controller: emailController,
+
                     style:  const TextStyle( fontSize: 20,fontFamily: montBook,color:editbgColor
                     ),
                     decoration: const InputDecoration(
@@ -110,7 +121,7 @@ class ContactUsSetting extends StatelessWidget{
                     validator: FormValidator.validateEmail,
                     keyboardType: TextInputType.text,
                     maxLines: 15,
-                    //   controller: controller,
+                      controller: commentsController,
                     style:  const TextStyle(fontWeight: FontWeight.w500, fontSize: 14,fontFamily: montBook,color:btntxtColor
                     ),
                     decoration: const InputDecoration(
@@ -123,8 +134,74 @@ class ContactUsSetting extends StatelessWidget{
             const SizedBox(height: 30,),
             Padding(
               padding: const EdgeInsets.only(top: 8.0,left: 27,right: 27),
-              child: CommonButton(btnBgColor: btnbgColor, btnText: submit, onClick: (){
-                Navigator.pushNamed(navigatorKey.currentContext!, '/YourOrderScreen');
+              child: CommonButton(btnBgColor: btnbgColor, btnText: submit, onClick: () async {
+
+                if (nameController.text.isNotEmpty && emailController.text.isNotEmpty&& commentsController.text.isNotEmpty) {
+                  try {
+                    var formData = {
+                      RequestString.NAME: nameController.text,
+                      RequestString.EMAIL: emailController.text,
+                      RequestString.COMMENTS: commentsController.text,
+
+                    };
+
+                    ContactUsResponse data = await Provider.of<ContactUsProvider>(context, listen: false)
+                        .contactUsForm(formData);
+
+                    if (data.status == true && data.message == "Contact form submitted successfully") {
+
+
+
+                      Navigator.pushNamed(context, '/BaseHome');
+
+                      // Print data to console
+                      print(data);
+
+                      // Navigate to the next screen or perform other actions after login
+                    } else {
+                      // Login failed
+                      print("Something went wrong: ${data.message}");
+
+                      final snackBar = SnackBar(
+                        content:  Text('${data.message}'),
+
+                      );
+
+// Show the SnackBar
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+// Automatically hide the SnackBar after 1 second
+                      Future.delayed(Duration(milliseconds: 1000), () {
+                        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                      });
+
+                    }
+                  } catch (e) {
+                    // Display error message
+                    print("Error: $e");
+                  }
+                }
+
+                else {
+                  // Show an error message or handle empty fields
+                  final snackBar = SnackBar(
+                    content: const Text('Please enter all required parameters...'),
+                    action: SnackBarAction(
+                      label: 'Ok',
+                      onPressed: () {
+                        // Some code to undo the change.
+                      },
+                    ),
+                  );
+
+                  // Find the ScaffoldMessenger in the widget tree
+                  // and use it to show a SnackBar.
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                }
+
+                // Navigator.pushNamed(navigatorKey.currentContext!, '/YourOrderScreen');
+
+
               }),
             )
           ],

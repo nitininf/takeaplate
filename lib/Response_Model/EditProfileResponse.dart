@@ -1,16 +1,14 @@
-class RegisterResponse {
+class EditProfileResponse {
   String? message;
   bool? status;
   Data? data;
-  String? token;
 
-  RegisterResponse({this.message, this.status, this.data, this.token});
+  EditProfileResponse({this.message, this.status, this.data});
 
-  RegisterResponse.fromJson(Map<String, dynamic> json) {
+  EditProfileResponse.fromJson(Map<String, dynamic> json) {
     message = json['message'];
     status = json['status'];
     data = json['data'] != null ? new Data.fromJson(json['data']) : null;
-    token = json['token'];
   }
 
   Map<String, dynamic> toJson() {
@@ -20,56 +18,71 @@ class RegisterResponse {
     if (this.data != null) {
       data['data'] = this.data!.toJson();
     }
-    data['token'] = this.token;
     return data;
   }
 }
 
 class Data {
+  int? id;
   String? name;
   String? email;
-  String? phoneNo;
+  Null? emailVerifiedAt;
+  int? userType;
+  int? phoneNo;
   String? dOB;
   String? gender;
   String? userImage;
-  String? updatedAt;
+  int? status;
+  Null? fcmToken;
   String? createdAt;
-  int? id;
+  String? updatedAt;
 
   Data(
-      {this.name,
+      {this.id,
+        this.name,
         this.email,
+        this.emailVerifiedAt,
+        this.userType,
         this.phoneNo,
         this.dOB,
         this.gender,
         this.userImage,
-        this.updatedAt,
+        this.status,
+        this.fcmToken,
         this.createdAt,
-        this.id});
+        this.updatedAt});
 
   Data.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
     name = json['name'];
     email = json['email'];
+    emailVerifiedAt = json['email_verified_at'];
+    userType = json['user_type'];
     phoneNo = json['phone_no'];
     dOB = json['DOB'];
     gender = json['gender'];
     userImage = json['user_image'];
-    updatedAt = json['updated_at'];
+    status = json['status'];
+    fcmToken = json['fcm_token'];
     createdAt = json['created_at'];
-    id = json['id'];
+    updatedAt = json['updated_at'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
     data['name'] = this.name;
     data['email'] = this.email;
+    data['email_verified_at'] = this.emailVerifiedAt;
+    data['user_type'] = this.userType;
     data['phone_no'] = this.phoneNo;
     data['DOB'] = this.dOB;
     data['gender'] = this.gender;
     data['user_image'] = this.userImage;
-    data['updated_at'] = this.updatedAt;
+    data['status'] = this.status;
+    data['fcm_token'] = this.fcmToken;
     data['created_at'] = this.createdAt;
-    data['id'] = this.id;
+    data['updated_at'] = this.updatedAt;
     return data;
   }
 }

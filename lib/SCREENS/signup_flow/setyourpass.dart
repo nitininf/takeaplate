@@ -14,6 +14,7 @@ import '../../MULTI-PROVIDER/AuthenticationProvider.dart';
 import '../../MULTI-PROVIDER/SignUp_StepTwo.dart';
 import '../../Response_Model/RegisterResponse.dart';
 import '../../UTILS/request_string.dart';
+import '../../UTILS/utils.dart';
 
 class SetYourPasswordScreen extends StatelessWidget {
 
@@ -28,6 +29,7 @@ class SetYourPasswordScreen extends StatelessWidget {
 
     // // Access the user's information
     // var userInformation = SignUp_StepOne();
+    print("\nFull Name: ${getUserBasicDetails.fullName}, \nEmail: ${getUserBasicDetails.email}, \nPhone Number: ${getUserBasicDetails.phoneNumber}, \nDOB: ${getUserBasicDetails.dob}, \nGender: ${getUserBasicDetails.gender}, \nimage: ${getUserBasicDetails.user_image}");
 
 
 
@@ -122,11 +124,42 @@ class SetYourPasswordScreen extends StatelessWidget {
                                 RequestString.CONFIRM_PASSWORD: confirmPasswordController.text,
                               };
 
+                              formData.forEach((key, value) {
+                                print('Request: $key: $value');
+                              });
+
                               RegisterResponse data = await Provider.of<AuthenticationProvider>(context, listen: false)
                                   .registerUser(formData);
 
                               if (data.status == true && data.message == "User registered successfully") {
                                 // Registration successful
+
+                                int? id = data.data?.id;
+                                String? userToken = data.token;
+                                String? userName = data.data?.name;
+                                String? email = data.data?.email;
+                                String? phoneNo = data.data?.phoneNo;
+                                String? dataOfBirth = data.data?.dOB;
+                                String? userImage = data.data?.userImage;
+                                String? gender = data.data?.gender;
+
+                                // Save user data to SharedPreferences
+
+
+                                await Utility.getSharedPreferences();
+
+                                await Utility.setIntValue(RequestString.ID, id!);
+                                await Utility.setStringValue(RequestString.TOKEN, userToken!);
+                                await Utility.setStringValue(RequestString.NAME, userName!);
+                                await Utility.setStringValue(RequestString.EMAIL, email!);
+                                await Utility.setStringValue(RequestString.PHONE_NO, phoneNo!);
+                                await Utility.setStringValue(RequestString.DOB, dataOfBirth!);
+                                await Utility.setStringValue(RequestString.USER_IMAGE, userImage!);
+                                await Utility.setStringValue(RequestString.GENDER, gender!);
+
+
+
+
                                 print(data);
                                 Navigator.pushNamed(context, '/NotificationTurnOnScreen');
                               } else {
@@ -176,7 +209,9 @@ class SetYourPasswordScreen extends StatelessWidget {
                           );
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
                         }
-                      } else {
+                      }
+
+                      else {
                         // Show an error message or handle empty fields
                         final snackBar = SnackBar(
                           content: const Text('Please fill in all the fields.'),

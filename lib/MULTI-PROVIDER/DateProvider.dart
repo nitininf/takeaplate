@@ -12,7 +12,12 @@ class DateProvider extends ChangeNotifier {
 
   String get formattedSelectedDate {
     // Format the date as DD/MM/YY
-    return DateFormat('dd/MM/yy').format(_selectedDate);
+    return DateFormat('yyyy-MM-dd').format(_selectedDate);
+  }
+
+  String formattedDate(DateTime date) {
+    // Format the date as DD/MM/YY
+    return DateFormat('dd-MM-yyyy').format(date);
   }
 
   void setSelectedDate(DateTime date) {

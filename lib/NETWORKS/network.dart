@@ -88,19 +88,23 @@ class Network {
      DialogHelper.showLoading(navigatorKey.currentContext!);
     }
     Response? response;
-    var token = Utility.getStringValue(RequestString.TOKEN);
-    print("Auth token:$token");
+    var token = await Utility.getStringValue(RequestString.TOKEN);
+
+
 
     if (await InternetConnectionChecker().hasConnection) {
       try {
         _dio?.options.connectTimeout = Duration(seconds: connectTimeOut);
+
+        print("Request: ${NetworkStrings.API_BASE_URL + endPoint} +===+$formData+====+$token");
+
         response = await _dio!.post(NetworkStrings.API_BASE_URL + endPoint,
-            data: formData,
+            data: formData!,
             cancelToken: _cancelRequestToken,
             options: Options(
                 headers: {
                   'Accept': NetworkStrings.ACCEPT,
-                  'Authorization': token == null ? "" : "Bearer $token",
+                  'Authorization':token == "" ? "" : "Bearer $token",
                 },
                 sendTimeout:  Duration(milliseconds: receivingTimeOut),
                 receiveTimeout: Duration(milliseconds: receivingTimeOut)));
@@ -113,7 +117,7 @@ class Network {
           //getx.Get.offAll(const SignInScreen());
         }
         DialogHelper.showErrorDialog(navigatorKey.currentContext!,
-            title: "Server response", description: e.response?.data['message']);
+            title: "Server response", description: e.response?.data['message'].toString());
         print("my response mi : ${e.toString()}");
       }
     } else {
@@ -272,7 +276,7 @@ class Network {
   Future<Response?> uploadFile(File file, String type) async {
     String fileName = file.path.split('/').last;
     FormData formData = FormData.fromMap({
-      "file": await MultipartFile.fromFile(file.path, filename: fileName),
+      "image": await MultipartFile.fromFile(file.path, filename: fileName),
       "type": type
     });
     DialogHelper.showLoading(navigatorKey.currentContext!);
@@ -283,7 +287,7 @@ class Network {
       try {
         _dio?.options.connectTimeout = Duration(milliseconds: connectTimeOut);
         response = await _dio!.post(
-            NetworkStrings.API_BASE_URL + '/upload-image',
+           'http://3.145.80.252/api/upload-image',
             data: formData,
             cancelToken: _cancelRequestToken,
             options: Options(
@@ -302,13 +306,13 @@ class Network {
       //    getx.Get.offAll(const SignInScreen());
         }
         DialogHelper.showErrorDialog(navigatorKey.currentContext!,
-            title: "Server response", description: e.response?.data['message']);
+            title: "Server response", description: e.response?.statusMessage);
       }
     } else {
       _noInternetConnection();
     }
    // print('=====================${response?.data["data"]["url"]}');
-    return response?.data["data"]["url"];
+    return response;
   }
 
   Future<Response?> createProfile(Map<String,dynamic>? payload,{File? file,String? endPoint}) async {

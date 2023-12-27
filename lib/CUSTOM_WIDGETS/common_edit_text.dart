@@ -12,6 +12,7 @@ class CommonEditText extends StatelessWidget {
   final bool isSelection;
   final bool isbgColor;
   final bool isnewCard;
+  final bool isIconShow;
   final VoidCallback? onTap; // Corrected the callback type to VoidCallback
   FocusNode? focusNode;
   final String? fontfamilly;
@@ -23,6 +24,7 @@ class CommonEditText extends StatelessWidget {
     this.isSelection = false, // Provide a default value for isPassword
     this.isbgColor = false, // Provide a default value for isPassword
     this.isnewCard = false, // Provide a default value for isPassword
+    this.isIconShow = false, // Provide a default value for isPassword
     this.onTap,
     this.focusNode,
     this.fontfamilly,
@@ -64,8 +66,13 @@ class CommonEditText extends StatelessWidget {
             enabledBorder: !isbgColor ? OutlineInputBorder(borderRadius: BorderRadius.circular(20),borderSide: BorderSide.none)
                 : OutlineInputBorder(borderRadius: BorderRadius.circular(20),borderSide: BorderSide(color:editbgColor,style:BorderStyle.solid )),
 
-            suffixIcon: isPassword
-                ?  IconButton(onPressed:(){}, icon: Image.asset(down_arrow,height: 16,width: 12,))
+            suffixIcon: isIconShow
+                ? (isPassword
+                ? IconButton(
+              onPressed: () {},
+              icon: Image.asset(down_arrow, height: 16, width: 12),
+            )
+                : null) // Conditionally set suffixIcon to null if isIconShow is true and isPassword is false
                 : const SizedBox(),
             contentPadding: isbgColor ?const EdgeInsets.symmetric(horizontal: 20, vertical: 16)  : isnewCard ?const EdgeInsets.symmetric(horizontal: 20, vertical: 10):const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
             hintStyle:  TextStyle(
