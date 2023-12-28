@@ -12,7 +12,7 @@ class SharedPrefsUtils {
       'phoneNumber': await Utility.getStringValue(RequestString.PHONE_NO) ?? '',
       'dob':  await Utility.getStringValue(RequestString.DOB) ?? '',
       'gender':  await Utility.getStringValue(RequestString.GENDER) ?? '',
-      // 'selectedImagePath': prefs.getString(RequestString.USER_IMAGE) ?? '',
+      'selectedImagePath': await Utility.getStringValue(RequestString.USER_IMAGE) ?? '',
     };
 
     print(defaultValues);

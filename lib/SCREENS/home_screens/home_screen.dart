@@ -211,7 +211,15 @@ class HomeScreen extends StatelessWidget {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: recentItems.map((item) {
-            return getFavCards(context, item);
+            return GestureDetector(
+              onTap: (){
+                print(item.length);
+                Navigator.pushNamed(
+                  context,
+                  '/OrderAndPayScreen',
+                );
+              },
+                child: getFavCards(context, item));
           }).toList(),
         );
       },

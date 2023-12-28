@@ -127,11 +127,6 @@ class OrderAndPayScreen extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  // Icon(Icons.star,size: 20,color: btnbgColor,),
-                  // Icon(Icons.star,size: 20,color: btnbgColor,),
-                  // Icon(Icons.star,size: 20,color: btnbgColor,),
-                  // Icon(Icons.star,size: 20,color: btnbgColor,),
-                  // Icon(Icons.star,size: 20,color: btnbgColor,),
 
                   RatingBar.readOnly(
                     filledIcon: Icons.star,

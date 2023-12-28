@@ -1,11 +1,24 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:takeaplate/SCREENS/contact_us/contacctus_settings.dart';
 import 'package:takeaplate/UTILS/app_strings.dart';
 import '../../../CUSTOM_WIDGETS/custom_text_style.dart';
+import '../../../MULTI-PROVIDER/SharedPrefsUtils.dart';
 import '../../../UTILS/app_color.dart';
 import '../../../UTILS/app_images.dart';
 import '../../../UTILS/fontfaimlly_string.dart';
 import '../../../main.dart';
+
+
+TextEditingController fullNameController = TextEditingController();
+TextEditingController emailController = TextEditingController();
+TextEditingController phoneNumberController = TextEditingController();
+TextEditingController dobController = TextEditingController();
+
+TextEditingController selectedImagePathController = TextEditingController();
+
+
+bool isDateSelected = false; // Add a flag to check if the date is already selected
 
 class ProfileScreen extends StatelessWidget{
   double screenHeight = MediaQuery.of(navigatorKey.currentContext!).size.height;
@@ -13,19 +26,43 @@ class ProfileScreen extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
 
-    return  Scaffold(
+
+    return Scaffold(
       backgroundColor: bgColor,
       body: Padding(
-        padding: const EdgeInsets.only(top: 5.0,right:25,left: 25 ,bottom: 10),
-        child: Column(
-          children: [
-            const SizedBox(height: 20,),
-            getView()
+        padding: const EdgeInsets.only(top: 5.0, right: 25, left: 25, bottom: 10),
+        child: FutureBuilder<Map<String, String>>(
+          future: SharedPrefsUtils.getDefaultValuesFromPrefs(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              if (snapshot.hasError) {
+                return Center(
+                  child: Text('Error: ${snapshot.error}'),
+                );
+              } else {
+                Map<String, String> data = snapshot.data!;
+                fullNameController.text = data["fullName"]!;
+                emailController.text = data["email"]!;
+                phoneNumberController.text = data["phoneNumber"]!;
+                dobController.text = data["dob"]!;
+                selectedImagePathController.text = data["selectedImagePath"]!.toUpperCase();
 
-          ],
+                return Column(
+                  children: [
+                    SizedBox(height: 20),
+                    getView(),
+                  ],
+                );
+              }
+            } else {
+              // Show a loading indicator while fetching data
+              return Center(child: CircularProgressIndicator());
+            }
+          },
         ),
       ),
     );
+
   }
 
   Widget buildSection(String title, String viewAllText) {
@@ -154,8 +191,8 @@ class ProfileScreen extends StatelessWidget{
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const CustomText(text: "Jack Brown",color: viewallColor,sizeOfFont: 25,fontfamilly: montBold,),
-                    const CustomText(text: "Gold Coast, Australia",sizeOfFont: 15,fontfamilly:montRegular,color: viewallColor,),
+                     CustomText(text: fullNameController.text,color: viewallColor,sizeOfFont: 25,fontfamilly: montBold,),
+                     CustomText(text: emailController.text,sizeOfFont: 15,fontfamilly:montRegular,color: viewallColor,),
                     Container(
                       margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 3),
                       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),

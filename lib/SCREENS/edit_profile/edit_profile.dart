@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/custom_app_bar.dart';
@@ -55,6 +56,7 @@ class EditProfileScreen extends StatelessWidget {
         phoneNumberController.text = data["phoneNumber"]!;
         dobController.text = data["dob"]!;
         genderController.text = data["gender"]!.toUpperCase();
+        selectedImagePathController.text = data["selectedImagePath"]!.toUpperCase();
         isInitialized = true; // Set the flag to true after initializing controllers
       });
     }
@@ -98,14 +100,21 @@ class EditProfileScreen extends StatelessWidget {
                 const SizedBox(
                   height: 10,
                 ),
+
+
                 Container(
                   height: 300,
                   width: 300,
+                  margin: const EdgeInsets.only(bottom: 20),
                   decoration: BoxDecoration(
                     image: selectedImagePathController.text.isNotEmpty
                         ? DecorationImage(
-                      image:
-                      FileImage(File(selectedImagePathController.text)),
+                      image: FileImage(File(selectedImagePathController.text)),
+                      fit: BoxFit.cover,
+                    )
+                        : Provider.of<SelectImageProvider>(context).selectedImage.isNotEmpty
+                        ? DecorationImage(
+                      image: FileImage(File(Provider.of<SelectImageProvider>(context).selectedImage)),
                       fit: BoxFit.cover,
                     )
                         : const DecorationImage(
@@ -122,22 +131,22 @@ class EditProfileScreen extends StatelessWidget {
                           if (image != null) {
                             // Update the selected image in the provider or state
                             Provider.of<SelectImageProvider>(
-                                context, listen: false)
-                                .setSelectedImage(image);
+                              context,
+                              listen: false,
+                            ).setSelectedImage(image);
 
                             try {
-                              var data = await Provider.of<
-                                  AuthenticationProvider>(
-                                  context,
-                                  listen: false)
-                                  .uploadMultipartImage(
-                                  File(selectedImagePathController.text),
-                                  "profile");
+                              var data = await Provider.of<AuthenticationProvider>(
+                                context,
+                                listen: false,
+                              ).uploadMultipartImage(
+                                File(selectedImagePathController.text),
+                                "profile",
+                              );
 
                               print(data);
 
-                              if (data.message ==
-                                  "Image uploaded successfully") {
+                              if (data.message == "Image uploaded successfully") {
                                 receivedImageUrl.text = data.url ?? '';
 
                                 // Print data to console
@@ -152,15 +161,12 @@ class EditProfileScreen extends StatelessWidget {
                                   content: Text('${data.message}'),
                                 );
 
-// Show the SnackBar
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(snackBar);
+                                // Show the SnackBar
+                                ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
-// Automatically hide the SnackBar after 1 second
-                                Future.delayed(
-                                    Duration(milliseconds: 1000), () {
-                                  ScaffoldMessenger.of(context)
-                                      .hideCurrentSnackBar();
+                                // Automatically hide the SnackBar after 1 second
+                                Future.delayed(Duration(milliseconds: 1000), () {
+                                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
                                 });
                               }
                             } catch (e) {
@@ -197,6 +203,7 @@ class EditProfileScreen extends StatelessWidget {
                     ],
                   ),
                 ),
+
 
                 /*  Align(
                   alignment: Alignment.center,
@@ -319,6 +326,7 @@ class EditProfileScreen extends StatelessWidget {
                             String? dataOfBirth = data.data?.dOB;
                             String? userImage = data.data?.userImage;
                             String? gender = data.data?.gender;
+                            String? userPhoto = selectedImagePathController.text;
 
                             // Save user data to SharedPreferences
 
@@ -334,6 +342,8 @@ class EditProfileScreen extends StatelessWidget {
                                 RequestString.USER_IMAGE, userImage!);
                             await Utility.setStringValue(
                                 RequestString.GENDER, gender!);
+                            await Utility.setStringValue(
+                                RequestString.USER_IMAGE, userPhoto!);
 
                             print(data);
                             Navigator.pushNamed(
@@ -439,36 +449,82 @@ class EditProfileScreen extends StatelessWidget {
     }
   }
 
+
+
   Future<String?> _getImage(BuildContext context) async {
     final picker = ImagePicker();
     final pickedFile = await showDialog<PickedFile?>(
       context: context,
-      builder: (context) =>
-          AlertDialog(
-            title: Text("Select Image Source"),
-            actions: [
-              TextButton(
-                onPressed: () async {
-                  final image = await picker.getImage(
-                      source: ImageSource.camera);
-                  Navigator.pop(context, image != null ? image : null);
-                },
-                child: Text("Camera"),
-              ),
-              TextButton(
-                onPressed: () async {
-                  final image = await picker.getImage(
-                      source: ImageSource.gallery);
-                  Navigator.pop(context, image != null ? image : null);
-                },
-                child: Text("Gallery"),
-              ),
-            ],
+      builder: (context) => AlertDialog(
+        title: Text("Select Image Source"),
+        actions: [
+          TextButton(
+            onPressed: () async {
+              final image = await picker.getImage(source: ImageSource.camera);
+              Navigator.pop(context, image);
+            },
+            child: Text("Camera"),
           ),
+          TextButton(
+            onPressed: () async {
+              final image = await picker.getImage(source: ImageSource.gallery);
+              Navigator.pop(context, image);
+            },
+            child: Text("Gallery"),
+          ),
+        ],
+      ),
     );
 
-    selectedImagePathController.text = pickedFile!.path;
-
-    return pickedFile != null ? pickedFile.path : null;
+    if (pickedFile != null) {
+      // Call the crop function and return the cropped image path
+      final imagePath = await _cropImage(pickedFile, context);
+      if (imagePath != null) {
+        // Update the selected image path
+        selectedImagePathController.text = imagePath;
+      }
+      return imagePath;
+    } else {
+      // User canceled image selection
+      return null;
+    }
   }
+
+  Future<String?> _cropImage(PickedFile image, BuildContext context) async {
+    CroppedFile? croppedFile = await ImageCropper().cropImage(
+      sourcePath: image.path,
+      aspectRatioPresets: [
+        CropAspectRatioPreset.square,
+        CropAspectRatioPreset.ratio3x2,
+        CropAspectRatioPreset.original,
+        CropAspectRatioPreset.ratio4x3,
+        CropAspectRatioPreset.ratio16x9
+      ],
+      uiSettings: [
+        AndroidUiSettings(
+            toolbarTitle: 'Cropper',
+            toolbarColor: Colors.deepOrange,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.original,
+            lockAspectRatio: false),
+        IOSUiSettings(
+          title: 'Cropper',
+        ),
+        WebUiSettings(
+          context: context,
+        ),
+      ],
+    );
+
+    print("croppedFile: ${croppedFile?.path}");
+
+    if (croppedFile != null) {
+      selectedImagePathController.text = croppedFile.path;
+      return croppedFile.path;
+    } else {
+      selectedImagePathController.text = "";
+      return "";
+    }
+  }
+
 }

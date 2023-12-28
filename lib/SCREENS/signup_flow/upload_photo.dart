@@ -2,6 +2,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/common_button.dart';
@@ -68,14 +69,19 @@ class UploadPhoto extends StatelessWidget {
                     SizedBox(height: screenHeight*0.04,),
 
                     Container(
-                      height: screenHeight*0.350,
-                      width: screenWidth*0.760,
+                      height: screenHeight * 0.350,
+                      width: screenWidth * 0.760,
                       margin: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
                       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                       decoration: BoxDecoration(
                         image: selectedImagePathController.text.isNotEmpty
                             ? DecorationImage(
                           image: FileImage(File(selectedImagePathController.text)),
+                          fit: BoxFit.cover,
+                        )
+                            : Provider.of<SelectImageProvider>(context).selectedImage.isNotEmpty
+                            ? DecorationImage(
+                          image: FileImage(File(Provider.of<SelectImageProvider>(context).selectedImage)),
                           fit: BoxFit.cover,
                         )
                             : const DecorationImage(
@@ -88,23 +94,19 @@ class UploadPhoto extends StatelessWidget {
                         children: [
                           GestureDetector(
                             onTap: () async {
-
                               final image = await _getImage(context);
                               if (image != null) {
                                 // Update the selected image in the provider or state
                                 Provider.of<SelectImageProvider>(context, listen: false).setSelectedImage(image);
                               }
-
                             },
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                // Display the selected image or a default one
-                                // You can use a provider to manage the selected image state
                                 Consumer<SelectImageProvider>(
                                   builder: (context, provider, child) {
                                     return Image.asset(
-                                      appLogo,
+                                   appLogo,
                                       height: 42,
                                       width: 40,
                                       fit: BoxFit.contain,
@@ -123,7 +125,9 @@ class UploadPhoto extends StatelessWidget {
                           ),
                         ],
                       ),
-                    )
+                    ),
+
+
                   ],
                 ),
               ),
@@ -237,14 +241,14 @@ class UploadPhoto extends StatelessWidget {
           TextButton(
             onPressed: () async {
               final image = await picker.getImage(source: ImageSource.camera);
-              Navigator.pop(context, image != null ? image : null);
+              Navigator.pop(context, image);
             },
             child: Text("Camera"),
           ),
           TextButton(
             onPressed: () async {
               final image = await picker.getImage(source: ImageSource.gallery);
-              Navigator.pop(context, image != null ? image : null);
+              Navigator.pop(context, image);
             },
             child: Text("Gallery"),
           ),
@@ -252,11 +256,56 @@ class UploadPhoto extends StatelessWidget {
       ),
     );
 
-
-    selectedImagePathController.text = pickedFile!.path;
-
-
-    return pickedFile != null ? pickedFile.path : null;
+    if (pickedFile != null) {
+      // Call the crop function and return the cropped image path
+      final imagePath = await _cropImage(pickedFile, context);
+      if (imagePath != null) {
+        // Update the selected image path
+        selectedImagePathController.text = imagePath;
+      }
+      return imagePath;
+    } else {
+      // User canceled image selection
+      return null;
+    }
   }
+
+  Future<String?> _cropImage(PickedFile image, BuildContext context) async {
+    CroppedFile? croppedFile = await ImageCropper().cropImage(
+      sourcePath: image.path,
+      aspectRatioPresets: [
+        CropAspectRatioPreset.square,
+        CropAspectRatioPreset.ratio3x2,
+        CropAspectRatioPreset.original,
+        CropAspectRatioPreset.ratio4x3,
+        CropAspectRatioPreset.ratio16x9
+      ],
+      uiSettings: [
+        AndroidUiSettings(
+            toolbarTitle: 'Cropper',
+            toolbarColor: Colors.deepOrange,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.original,
+            lockAspectRatio: false),
+        IOSUiSettings(
+          title: 'Cropper',
+        ),
+        WebUiSettings(
+          context: context,
+        ),
+      ],
+    );
+
+    print("croppedFile: ${croppedFile?.path}");
+
+    if (croppedFile != null) {
+      selectedImagePathController.text = croppedFile.path;
+      return croppedFile.path;
+    } else {
+      selectedImagePathController.text = "";
+      return "";
+    }
+  }
+
 
 }
