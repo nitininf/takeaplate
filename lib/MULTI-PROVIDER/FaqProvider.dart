@@ -6,10 +6,13 @@ class FaqProvider extends ChangeNotifier {
   final Network _network = Network();
   int _expandedIndex = -1;
   bool _isDataFetched = false;
+  Data? _selectedFaq;
 
   int get expandedIndex => _expandedIndex;
 
   bool get isDataFetched => _isDataFetched;
+
+  Data? get selectedFaq => _selectedFaq;
 
   void setExpandedIndex(int index) {
     _expandedIndex = index;
@@ -18,6 +21,11 @@ class FaqProvider extends ChangeNotifier {
 
   void setDataFetched() {
     _isDataFetched = true;
+    notifyListeners();
+  }
+
+  void selectFaq(Data faqData) {
+    _selectedFaq = faqData;
     notifyListeners();
   }
 

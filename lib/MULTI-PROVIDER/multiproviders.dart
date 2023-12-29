@@ -40,6 +40,7 @@ import '../payment_method/paymentmethod_screen.dart';
 import 'CartOperationProvider.dart';
 import 'FaqProvider.dart';
 import 'FavCardsProvider.dart';
+import 'OrderAndPayProvider.dart';
 import 'PlaceListProvider.dart';
 import 'SignUp_StepTwo.dart';
 import 'common_counter.dart';
@@ -61,6 +62,7 @@ MultiProvider getProviders() {
       ChangeNotifierProvider(create: (_) => CartOperationProvider()),
       ChangeNotifierProvider(create: (_) => ContactUsProvider()),
       ChangeNotifierProvider(create: (_) => FaqProvider()),
+      ChangeNotifierProvider(create: (_) => OrderAndPayProvider()),
 
     ],
     child:

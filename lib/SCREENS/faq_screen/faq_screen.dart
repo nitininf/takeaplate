@@ -1,8 +1,6 @@
 import 'package:expandable/expandable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
 import '../../MULTI-PROVIDER/FaqProvider.dart';
 import '../../Response_Model/FaqResponse.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/custom_app_bar.dart';
@@ -25,19 +23,14 @@ class FaqScreenScreen extends StatelessWidget {
             children: [
               CustomAppBar(),
               SizedBox(height: 10,),
-              GestureDetector(
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 8.0),
-                  child: CustomText(
-                    text: "FAQ'S",
-                    color: editbgColor,
-                    sizeOfFont: 20,
-                    fontfamilly: montHeavy,
-                  ),
+              Padding(
+                padding: const EdgeInsets.only(left: 8.0),
+                child: CustomText(
+                  text: "FAQ'S",
+                  color: editbgColor,
+                  sizeOfFont: 20,
+                  fontfamilly: montHeavy,
                 ),
-                onTap: () {
-                  //  Navigator.pushNamed(context, '/SettingScreen');
-                },
               ),
               SizedBox(height: 10,),
               buildVerticalCards(faqProvider),
@@ -61,12 +54,14 @@ class FaqScreenScreen extends StatelessWidget {
         } else {
           print("FAQ Data: ${snapshot.data?.data}"); // Add this line for debugging
           return Expanded(
-            child: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: snapshot.data!.data!.map((faq) => getExpandable(faqData: faq, collapse: true)).toList(),
-              ),
+            child: ListView.builder(
+              itemCount: snapshot.data!.data!.length,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 12.0), // Adjust the value according to your preference
+                  child: ExpandablePanelWidget(faqData: snapshot.data!.data![index], collapse: true),
+                );
+              },
             ),
           );
         }
@@ -75,39 +70,62 @@ class FaqScreenScreen extends StatelessWidget {
   }
 
 
-  Widget getExpandable({required Data faqData, required bool collapse}) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 8.0, right: 8, bottom: 8),
-      child: Card(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20.0),
-          side: BorderSide(color: Colors.grey),
-        ),
-        elevation: 0,
-        child: ExpandableNotifier(
-          child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20.0),
-              color: collapse ? Colors.white : Colors.red,
-            ),
+
+}
+
+class ExpandablePanelWidget extends StatefulWidget {
+  final Data faqData;
+  final bool collapse;
+
+  const ExpandablePanelWidget({Key? key, required this.faqData, required this.collapse}) : super(key: key);
+
+  @override
+  _ExpandablePanelWidgetState createState() => _ExpandablePanelWidgetState();
+}
+
+class _ExpandablePanelWidgetState extends State<ExpandablePanelWidget> {
+  late ExpandableController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = ExpandableController(initialExpanded: !widget.collapse);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ExpandableNotifier(
+      controller: _controller,
+      child: Builder(
+        builder: (context) {
+          return Container(
+            decoration: _getContainerDecoration(),
             child: ScrollOnExpand(
               child: ExpandablePanel(
-                header: Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: CustomText(
-                      text: faqData.questions ?? "Default Question",
-                      color: editbgColor,
-                      sizeOfFont: 17,
-                      fontfamilly: montRegular,
-                    ),
-                  ),
+                header: Builder(
+                  builder: (BuildContext context) {
+                    return ListTile(
+                      title: CustomText(
+                        text: widget.faqData.questions ?? "Default Question",
+                        color: _getTextColor(),
+
+                        sizeOfFont: 17,
+                        fontfamilly: montBold,
+                      ),
+                      onTap: () {
+                        setState(() {
+                          _controller.toggle();
+                          print("Expanded: ${_controller.expanded}");
+                        });
+
+                      },
+                    );
+                  },
                 ),
                 expanded: Padding(
-                  padding: EdgeInsets.all(20),
+                  padding: EdgeInsets.only(right: 20,left: 20,top: 0,bottom: 20),
                   child: CustomText(
-                    text: faqData.answers ?? "Lorem ipsum dolor sit amet...",
+                    text: widget.faqData.answers ?? "Lorem ipsum dolor sit amet...",
                     color: editbgColor,
                     sizeOfFont: 17,
                     fontfamilly: montRegular,
@@ -116,18 +134,41 @@ class FaqScreenScreen extends StatelessWidget {
                 theme: const ExpandableThemeData(
                   tapBodyToExpand: true,
                   tapBodyToCollapse: true,
-                ), collapsed:  SizedBox(
-
                 ),
-
+                collapsed: SizedBox(),
               ),
             ),
-          ),
-        ),
+          );
+        }
       ),
     );
   }
+  Color _getContainerColor() {
+    return _controller.expanded ? Color(0x76f8b097) : Colors.white;
+  }
 
+  Color _getTextColor() {
+    return _controller.expanded ? Color(0xfff39474) : Colors.black;
+  }
 
+  BoxDecoration _getContainerDecoration() {
+    return _controller.expanded ? BoxDecoration(
+      borderRadius: BorderRadius.circular(20.0),
+      color: _getContainerColor(),
 
+    ):BoxDecoration(
+      borderRadius: BorderRadius.circular(20.0),
+      color: _getContainerColor(),
+      border: Border.all(
+        color: Colors.black, // Set the border color to black
+        width: 1.0, // Set the border width
+      ),
+    );
+  }
 }
+
+
+
+
+
+

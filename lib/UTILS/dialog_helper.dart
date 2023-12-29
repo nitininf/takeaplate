@@ -107,7 +107,13 @@ class DialogHelper {
                         Padding(
                           padding: const EdgeInsets.only(left: 15.0,right: 15,top: 6,bottom: 20),
                           child: CommonButton(btnBgColor:onboardingBtn, btnText: done, onClick: (){
-                            Navigator.pop(context);
+                            if (title == sentPss) {
+                              // Navigate to login screen
+                              Navigator.pushNamed(context, '/Create_Login');
+                            } else {
+                              // Perform the default behavior
+                              Navigator.pop(context);
+                            }
                           }),
                         ),
                         SizedBox(height: 10,)

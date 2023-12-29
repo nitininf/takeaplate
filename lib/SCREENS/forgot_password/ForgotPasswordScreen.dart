@@ -18,10 +18,13 @@ import '../../UTILS/request_string.dart';
 import '../../UTILS/utils.dart';
 import '../../UTILS/validation.dart';
 
+
+TextEditingController emailController = TextEditingController();
+TextEditingController passwordController = TextEditingController();
+
 class ForgotPasswordScreen extends StatelessWidget {
 
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+
 
   ForgotPasswordScreen({super.key});
 

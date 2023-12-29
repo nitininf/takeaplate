@@ -58,6 +58,9 @@ class EditProfileScreen extends StatelessWidget {
         genderController.text = data["gender"]!.toUpperCase();
         selectedImagePathController.text = data["selectedImagePath"]!.toUpperCase();
         isInitialized = true; // Set the flag to true after initializing controllers
+
+
+
       });
     }
     return Scaffold(
