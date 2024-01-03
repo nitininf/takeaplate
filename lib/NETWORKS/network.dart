@@ -77,7 +77,7 @@ class Network {
     return response;
   }
 
-  ////////////////// Post Request /////////////////////////
+  ///////////////////// Post Request /////////////////////////
 
   Future<Response?> postRequest({
     required String endPoint,
@@ -125,56 +125,10 @@ class Network {
     }
     print(
         "API=======${NetworkStrings.API_BASE_URL + endPoint}\n\nrequest======$formData\n\nresponse========== $response");
+
     return response;
+
   }
-
-  // ////////////////// Delete Request /////////////////////////
-  // Future<Response?> deleteRequest({
-  //   required String endPoint,
-  //   Map<String, dynamic>? formData,
-  //   bool isLoader = true,
-  // }) async {
-  //   if (isLoader) {
-  //    DialogHelper.showLoading(navigatorKey.currentContext!);
-  //   }
-  //   Response? response;
-  //   //String? token = await // // Utility.getStringValue(NetworkStrings.TOKEN_KEY);
-  //
-  //   if (await InternetConnectionChecker().hasConnection) {
-  //     try {
-  //       _dio?.options.connectTimeout = Duration(milliseconds: connectTimeOut);
-  //       response = await _dio!.delete(NetworkStrings.API_BASE_URL + endPoint,
-  //           data: formData,
-  //           queryParameters: formData,
-  //           cancelToken: _cancelRequestToken,
-  //           options: Options(
-  //               headers: {
-  //                 'Accept': NetworkStrings.ACCEPT,
-  //                // 'Authorization': token == null ? "" : "Bearer $token",
-  //               },
-  //               sendTimeout: Duration(milliseconds: receivingTimeOut),
-  //               receiveTimeout: Duration(milliseconds: receivingTimeOut)));
-  //       DialogHelper.hideLoading(navigatorKey.currentContext!);
-  //     } on DioException catch (e) {
-  //       DialogHelper.hideLoading(navigatorKey.currentContext!);
-  //       print("$endPoint Dio: ${e.message}" );
-  //       if (e.response?.statusCode == 403) {
-  //         // // Utility.clearAll();
-  //       //  getx.Get.offAll(const SignInScreen());
-  //       }
-  //       DialogHelper.showErrorDialog( navigatorKey.currentContext!,
-  //           title: "Server response", description: e.response?.data['message']);
-  //     }
-  //   } else {
-  //     _noInternetConnection();
-  //   }
-  //   print(
-  //       "API=======${NetworkStrings.API_BASE_URL + endPoint}\n\nrequest======$formData\n\nresponse========== $response");
-  //
-  //   return response;
-  // }
-
-
 
   //////////////Delete Updated//////////
 

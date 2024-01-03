@@ -56,7 +56,7 @@ class EditProfileScreen extends StatelessWidget {
         phoneNumberController.text = data["phoneNumber"]!;
         dobController.text = data["dob"]!;
         genderController.text = data["gender"]!.toUpperCase();
-        selectedImagePathController.text = data["selectedImagePath"]!.toUpperCase();
+        selectedImagePathController.text = data["selectedImagePath"]!;
         isInitialized = true; // Set the flag to true after initializing controllers
 
 
@@ -329,7 +329,7 @@ class EditProfileScreen extends StatelessWidget {
                             String? dataOfBirth = data.data?.dOB;
                             String? userImage = data.data?.userImage;
                             String? gender = data.data?.gender;
-                            String? userPhoto = selectedImagePathController.text;
+                            String? userPhoto = data.data?.userImage;
 
                             // Save user data to SharedPreferences
 

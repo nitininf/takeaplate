@@ -16,6 +16,8 @@ import 'package:takeaplate/UTILS/fontfaimlly_string.dart';
 import '../../MULTI-PROVIDER/AuthenticationProvider.dart';
 import '../../MULTI-PROVIDER/SignUp_StepOne.dart';
 import '../../MULTI-PROVIDER/SignUp_StepTwo.dart';
+import '../../UTILS/request_string.dart';
+import '../../UTILS/utils.dart';
 
 class UploadPhoto extends StatelessWidget {
 
@@ -149,6 +151,8 @@ class UploadPhoto extends StatelessWidget {
 
                       if (data.message == "Image uploaded successfully") {
 
+                        await Utility.getSharedPreferences();
+                        await Utility.setStringValue(RequestString.USER_IMAGE, data.url ?? '');
 
 
                         // Perform the navigation here

@@ -129,7 +129,9 @@ class _ExpandablePanelWidgetState extends State<ExpandablePanelWidget> {
                     color: editbgColor,
                     sizeOfFont: 17,
                     fontfamilly: montRegular,
+
                   ),
+
                 ),
                 theme: const ExpandableThemeData(
                   tapBodyToExpand: true,
@@ -148,7 +150,7 @@ class _ExpandablePanelWidgetState extends State<ExpandablePanelWidget> {
   }
 
   Color _getTextColor() {
-    return _controller.expanded ? Color(0xfff39474) : Colors.black;
+    return _controller.expanded ?  Color(0xfff39474) : Colors.black;
   }
 
   BoxDecoration _getContainerDecoration() {
