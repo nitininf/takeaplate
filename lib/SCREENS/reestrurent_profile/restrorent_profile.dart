@@ -6,6 +6,7 @@ import 'package:takeaplate/CUSTOM_WIDGETS/custom_app_bar.dart';
 import 'package:takeaplate/main.dart';
 import '../../CUSTOM_WIDGETS/custom_text_style.dart';
 import '../../MULTI-PROVIDER/common_counter.dart';
+import '../../Response_Model/RestaurantsListResponse.dart';
 import '../../UTILS/app_color.dart';
 import '../../UTILS/app_images.dart';
 import '../../UTILS/fontfaimlly_string.dart';
@@ -13,6 +14,12 @@ import '../../UTILS/fontfaimlly_string.dart';
 class RestaurantsProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+
+    final Data data = ModalRoute.of(context)!.settings.arguments as Data;
+
+    // Print the data
+    print(data.address);
+
     return Scaffold(
       backgroundColor: bgColor,
       body: SafeArea(
@@ -20,14 +27,14 @@ class RestaurantsProfileScreen extends StatelessWidget {
           padding:
               const EdgeInsets.only(top: 0.0, bottom: 20, left: 25, right: 25),
           child: Column(
-            children: [CustomAppBar(), getView()],
+            children: [CustomAppBar(), getView(data)],
           ),
         ),
       ),
     );
   }
 
-  Widget getView() {
+  Widget getView(Data data) {
     return Expanded(child: SingleChildScrollView(
       child: Consumer<CommonCounter>(builder: (context, commonProvider, child) {
         return Column(
@@ -35,7 +42,7 @@ class RestaurantsProfileScreen extends StatelessWidget {
             SizedBox(
               height: 10,
             ),
-            getCards(commonProvider),
+            getCards(commonProvider,data),
             !commonProvider.isDeal
                 ? buildSection("TODAY'S DEALS", "")
                 : buildSection("YOUR FAVOURITES", ""),
@@ -67,18 +74,19 @@ class RestaurantsProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget getCards(CommonCounter commonCounter) {
+  Widget getCards(CommonCounter commonCounter, Data data) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Stack(
           clipBehavior: Clip.none,
           children: [
-            Image.asset(
-              restrorent_food,
+            Image.network(
+              data.bannerImage ?? restrorent_food,
               fit: BoxFit.contain,
               height: 200,
             ),
+
             Positioned(
               bottom: -60,
               right: 10,
@@ -108,22 +116,22 @@ class RestaurantsProfileScreen extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Column(
+               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomText(
-                    text: "Salad & Co.",
+                    text: data.name ?? 'NA',
                     sizeOfFont: 20,
                     color: viewallColor,
                     fontfamilly: montBold,
                   ),
                   CustomText(
-                      text: "Health Foods",
+                      text: data.category ?? 'NA',
                       color: viewallColor,
                       sizeOfFont: 16,
                       fontfamilly: montRegular),
                   CustomText(
-                      text: "23 Dreamland Av.., Australia",
+                      text: data.address ?? 'NA',
                       weight: FontWeight.w300,
                       sizeOfFont: 11,
                       color: viewallColor,

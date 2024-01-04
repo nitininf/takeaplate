@@ -3,6 +3,7 @@ import 'package:takeaplate/MULTI-PROVIDER/ContactUsProvider.dart';
 import 'package:takeaplate/MULTI-PROVIDER/DateProvider.dart';
 import 'package:takeaplate/MULTI-PROVIDER/GenderProvider.dart';
 import 'package:takeaplate/MULTI-PROVIDER/AuthenticationProvider.dart';
+import 'package:takeaplate/MULTI-PROVIDER/RestaurantsListProvider.dart';
 import 'package:takeaplate/MULTI-PROVIDER/SignUp_StepOne.dart';
 import 'package:takeaplate/MULTI-PROVIDER/selectImageProvider.dart';
 
@@ -63,6 +64,7 @@ MultiProvider getProviders() {
       ChangeNotifierProvider(create: (_) => ContactUsProvider()),
       ChangeNotifierProvider(create: (_) => FaqProvider()),
       ChangeNotifierProvider(create: (_) => OrderAndPayProvider()),
+      ChangeNotifierProvider(create: (_) => RestaurantsListProvider()),
 
     ],
     child:
