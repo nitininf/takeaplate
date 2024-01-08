@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "562730144845",
+    "project_id": "take-a-plate-356e3",
+    "storage_bucket": "take-a-plate-356e3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:562730144845:android:8907ec7a14f1c028f93804",
+        "android_client_info": {
+          "package_name": "com.takeaplate"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDyup8mWm5isLugPk9RQx4XTnx58sn6_bg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

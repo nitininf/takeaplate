@@ -5,18 +5,24 @@ import 'package:provider/provider.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/custom_app_bar.dart';
 import 'package:takeaplate/main.dart';
 import '../../CUSTOM_WIDGETS/custom_text_style.dart';
+import '../../MULTI-PROVIDER/RestaurantsListProvider.dart';
 import '../../MULTI-PROVIDER/common_counter.dart';
 import '../../Response_Model/RestaurantsListResponse.dart';
+import '../../Response_Model/RestaurentDealResponse.dart';
 import '../../UTILS/app_color.dart';
 import '../../UTILS/app_images.dart';
 import '../../UTILS/fontfaimlly_string.dart';
 
 class RestaurantsProfileScreen extends StatelessWidget {
+
+  final RestaurantsListProvider restaurantsProvider = RestaurantsListProvider();
+
   @override
   Widget build(BuildContext context) {
 
     final Data data = ModalRoute.of(context)!.settings.arguments as Data;
-
+var restaurantId = data.id;
+var restaurantName = data.name;
     // Print the data
     print(data.address);
 
@@ -27,14 +33,14 @@ class RestaurantsProfileScreen extends StatelessWidget {
           padding:
               const EdgeInsets.only(top: 0.0, bottom: 20, left: 25, right: 25),
           child: Column(
-            children: [CustomAppBar(), getView(data)],
+            children: [CustomAppBar(), getView(data,restaurantId,restaurantName)],
           ),
         ),
       ),
     );
   }
 
-  Widget getView(Data data) {
+  Widget getView(Data data, int? restaurantId, String? restaurantName) {
     return Expanded(child: SingleChildScrollView(
       child: Consumer<CommonCounter>(builder: (context, commonProvider, child) {
         return Column(
@@ -46,7 +52,7 @@ class RestaurantsProfileScreen extends StatelessWidget {
             !commonProvider.isDeal
                 ? buildSection("TODAY'S DEALS", "")
                 : buildSection("YOUR FAVOURITES", ""),
-            buildVeerticalCards()
+            buildVerticalCards(restaurantId,restaurantName)
           ],
         );
       }),
@@ -281,17 +287,54 @@ class RestaurantsProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget buildVeerticalCards() {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: List.generate(8, (index) => getFavCards()),
+  Widget buildVerticalCards(int? restaurantId, String? restaurantName) {
+    return FutureBuilder<RestaurentDealResponse>(
+      future: restaurantsProvider.getRestaurantsDealsList(restaurantId),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Text('Failed to fetch restaurants. Please try again.');
+        } else if (!snapshot.hasData ||
+            snapshot.data == null ||
+            snapshot.data!.data == null) {
+          return Text('No restaurants available');
+        } else {
+          List<dealData>? items = snapshot.data!.data;
+
+          return SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              children: List.generate(
+                items!.length,
+                    (index) => GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(
+                      navigatorKey.currentContext!,
+                      '/RestaurantsProfileScreen',
+                      arguments: items[index],
+                    );
+                  },
+                  child: getFavCards(index, items[index],restaurantName),
+                ),
+              ),
+            ),
+          );
+        }
+      },
     );
   }
 
-  Widget getFavCards() {
+  Widget getFavCards(int index, dealData data, String? restaurantName) {
+
+    var startTiming = data.customTime?.startTime;
+    var endTiming = data.customTime?.endTime;
+
+
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(navigatorKey.currentContext!, '/OrderAndPayScreen');
+        Navigator.pushNamed(navigatorKey.currentContext!, '/OrderAndPayScreen', arguments: data,);
       },
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
@@ -303,26 +346,26 @@ class RestaurantsProfileScreen extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Expanded(
+             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomText(
-                    text: "Surprise Pack",
+                    text: data.name ?? "",
                     maxLin: 1,
                     color: btntxtColor,
                     fontfamilly: montBold,
                     sizeOfFont: 21,
                   ),
                   CustomText(
-                    text: "Salad & Co",
+                    text: restaurantName ?? "",
                     maxLin: 1,
                     color: btntxtColor,
                     fontfamilly: montRegular,
                     sizeOfFont: 16,
                   ),
                   CustomText(
-                      text: "Tomorrow-7:35-8:40 Am",
+                      text: '${startTiming ?? ""} - ${endTiming ?? ""}',
                       maxLin: 1,
                       color: graysColor,
                       sizeOfFont: 11,
@@ -356,7 +399,7 @@ class RestaurantsProfileScreen extends StatelessWidget {
                     height: 5,
                   ),
                   CustomText(
-                    text: "\$" + "9.99",
+                    text: '\$ ${data.price ?? ""}',
                     color: dolorColor,
                     sizeOfFont: 27,
                     fontfamilly: montHeavy,

@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:takeaplate/MULTI-PROVIDER/OrderAndPayProvider.dart';
 import 'package:takeaplate/MULTI-PROVIDER/OrderAndPayProvider.dart';
 import 'package:takeaplate/MULTI-PROVIDER/common_counter.dart';
+import 'package:takeaplate/Response_Model/RestaurentDealResponse.dart';
 
 import '../../CUSTOM_WIDGETS/common_button.dart';
 import '../../CUSTOM_WIDGETS/custom_app_bar.dart';
@@ -20,6 +21,9 @@ class OrderAndPayScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var commonProvider = Provider.of<CommonCounter>(context, listen: false);
     var orderAndPayProvider = Provider.of<OrderAndPayProvider>(context, listen: false);
+
+    final dealData data = ModalRoute.of(context)!.settings.arguments as dealData;
+
 
     return Scaffold(
       backgroundColor: bgColor,
@@ -39,7 +43,7 @@ class OrderAndPayScreen extends StatelessWidget {
                     children: [
                       const SizedBox(height: 30,),
                       buildSection(lastminute, "",orderAndPayProvider,commonProvider),
-                      getCards(context,orderAndPayProvider,commonProvider),
+                      getCards(context,orderAndPayProvider,commonProvider,data),
                       const SizedBox(height: 10,),
                       Padding(
                         padding: EdgeInsets.only(left: 30, right: 30),
@@ -75,7 +79,7 @@ class OrderAndPayScreen extends StatelessWidget {
     );
   }
 
-  Widget getCards(BuildContext context, OrderAndPayProvider orderAndPayProvider, CommonCounter commonProvider) {
+  Widget getCards(BuildContext context, OrderAndPayProvider orderAndPayProvider, CommonCounter commonProvider, dealData data) {
     return Consumer<OrderAndPayProvider>(builder: ((context, orderAndPayProvider, child) {
       return Container(
         margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
@@ -88,19 +92,17 @@ class OrderAndPayScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-                height: 280,
-                width: 280,
-                child: Image.asset(
-                  food_image,
-                  height: 275,
-                  width: 275,
-                  fit: BoxFit.fill,
-                )),
-            SizedBox(height: 20,),
+
+                child: Image.network(
+                  data.profileImage ?? restrorent_food,
+                  fit: BoxFit.contain,
+                ),),
+            SizedBox(height: 30,),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                CustomText(text: orderAndPayProvider.foodData[0]["name"], sizeOfFont: 20, color: viewallColor, fontfamilly: montBold),
+
+                CustomText(text: data.name ?? "", sizeOfFont: 20, color: viewallColor, fontfamilly: montBold),
                 Row(
                   children: [
                     !commonProvider.isViewMore ? Container(
@@ -123,10 +125,10 @@ class OrderAndPayScreen extends StatelessWidget {
              Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                CustomText(text: orderAndPayProvider.foodData[0]["category"], color: viewallColor, sizeOfFont: 16, fontfamilly: montLight),
+                CustomText(text: data.category?? "", color: viewallColor, sizeOfFont: 16, fontfamilly: montLight),
                 Padding(
                   padding: EdgeInsets.only(top: 10.0),
-                  child: CustomText(text: orderAndPayProvider.foodData[0]["pickUpTime"], sizeOfFont: 11, color: viewallColor, fontfamilly: montLight),
+                  child: CustomText(text: '${data.customTime?.startTime ?? ""} - ${data.customTime?.endTime ?? ""}', sizeOfFont: 11, color: viewallColor, fontfamilly: montLight),
                 ),
               ],
             ),
@@ -156,11 +158,12 @@ class OrderAndPayScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 CustomText(text: "Description...", color: viewallColor, fontfamilly: montLight, sizeOfFont: 12,),
-                CustomText(text: orderAndPayProvider.foodData[0]["price"], color: offerColor, sizeOfFont: 27, fontfamilly: montHeavy),
+                CustomText(text: '\$ ${data.price ?? ""}', color: offerColor, sizeOfFont: 27, fontfamilly: montHeavy),
               ],
             ),
             SizedBox(height: 10,),
-            viewMore(commonProvider,orderAndPayProvider)
+            viewMore(commonProvider,orderAndPayProvider,data),
+            SizedBox(height: 10,),
 
           ],
         ),
@@ -168,18 +171,19 @@ class OrderAndPayScreen extends StatelessWidget {
     }));
   }
 
-  Widget viewMore(CommonCounter commonCounter, OrderAndPayProvider orderAndPayProvider) {
+  Widget viewMore(CommonCounter commonCounter, OrderAndPayProvider orderAndPayProvider, dealData data) {
     return Consumer<CommonCounter>(builder: (context, commonCounter, child) {
       return commonCounter.isViewMore ? Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CustomText(text: orderAndPayProvider.foodData[0]["description"], fontfamilly: montRegular, sizeOfFont: 12,
+          CustomText(text: data.description??"", fontfamilly: montRegular, sizeOfFont: 12,
             color: cardTextColor.withOpacity(0.47),),
           SizedBox(height: 10,),
           Row(
             children: [
-              for (var feature in orderAndPayProvider.foodData[0]["features"])
-                featureImage(feature),
+              featureImage(data.allergens??"")
+              // for (var feature in orderAndPayProvider.foodData[0]["features"])
+              //   featureImage(feature),
             ],
           ),
           SizedBox(height: 20,),
@@ -208,13 +212,13 @@ class OrderAndPayScreen extends StatelessWidget {
     String imagePath = "";
 
     switch (feature) {
-      case "Gluten-Free":
+      case "Gluten Free":
         imagePath = gluten_free;
         break;
-      case "Soy-Free":
+      case "Soy Free":
         imagePath = soy_free;
         break;
-      case "Location-Free":
+      case "Lactose Free":
         imagePath = location_freee;
         break;
     // Add more cases for other features if needed
