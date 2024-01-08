@@ -176,9 +176,8 @@ class RestaurantsProfileScreen extends StatelessWidget {
         SizedBox(
           height: 10,
         ),
-        const CustomText(
-            text:
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+         CustomText(
+            text: data.description ?? 'NA',
             sizeOfFont: 10,
             color: onboardingbgColor,
             fontfamilly: montBook),
