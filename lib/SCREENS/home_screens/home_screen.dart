@@ -1,5 +1,6 @@
 import 'package:custom_rating_bar/custom_rating_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/common_button.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/custom_text_style.dart';
@@ -16,8 +17,17 @@ import '../../MULTI-PROVIDER/PlaceListProvider.dart';
 class HomeScreen extends StatelessWidget {
   final List<String> items = ['Healthy', 'Sushi', 'Desserts', 'Sugar', 'Sweets'];
 
+
+
   @override
   Widget build(BuildContext context) {
+
+    Future.delayed(Duration.zero, () async {
+      Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+      print('latitude - ${position.latitude}');
+    });
+
+
     return Scaffold(
       backgroundColor: bgColor,
       body: Padding(

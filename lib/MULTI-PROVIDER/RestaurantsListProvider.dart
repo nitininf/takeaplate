@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:takeaplate/Response_Model/RestaurentDealResponse.dart';
+import 'package:takeaplate/Response_Model/RestaurantDealResponse.dart';
 
 import '../NETWORKS/network.dart';
 import '../Response_Model/RestaurantsListResponse.dart';
@@ -40,7 +40,7 @@ class RestaurantsListProvider extends ChangeNotifier {
 
       );
 
-      print("Restaurants response : ${response}");
+      print("Restaurant's Deal response : ${response}");
 
       if (response != null && response.data is Map<String, dynamic>) {
         final Map<String, dynamic> responseData = response.data;

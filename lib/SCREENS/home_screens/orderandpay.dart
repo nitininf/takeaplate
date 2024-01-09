@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:takeaplate/MULTI-PROVIDER/OrderAndPayProvider.dart';
 import 'package:takeaplate/MULTI-PROVIDER/OrderAndPayProvider.dart';
 import 'package:takeaplate/MULTI-PROVIDER/common_counter.dart';
-import 'package:takeaplate/Response_Model/RestaurentDealResponse.dart';
+import 'package:takeaplate/Response_Model/RestaurantDealResponse.dart';
 
 import '../../CUSTOM_WIDGETS/common_button.dart';
 import '../../CUSTOM_WIDGETS/custom_app_bar.dart';
@@ -153,7 +153,7 @@ class OrderAndPayScreen extends StatelessWidget {
               ],
             ),
             SizedBox(height: 10,),
-            const CustomText(text: "23 Dreamland Av.., Australia", color: viewallColor, fontfamilly: montLight, sizeOfFont: 12,),
+             CustomText(text: data.store?.address ?? "", color: viewallColor, fontfamilly: montLight, sizeOfFont: 12,),
              Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

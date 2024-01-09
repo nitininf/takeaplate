@@ -8,7 +8,7 @@ import '../../CUSTOM_WIDGETS/custom_text_style.dart';
 import '../../MULTI-PROVIDER/RestaurantsListProvider.dart';
 import '../../MULTI-PROVIDER/common_counter.dart';
 import '../../Response_Model/RestaurantsListResponse.dart';
-import '../../Response_Model/RestaurentDealResponse.dart';
+import '../../Response_Model/RestaurantDealResponse.dart';
 import '../../UTILS/app_color.dart';
 import '../../UTILS/app_images.dart';
 import '../../UTILS/fontfaimlly_string.dart';
@@ -22,9 +22,9 @@ class RestaurantsProfileScreen extends StatelessWidget {
 
     final Data data = ModalRoute.of(context)!.settings.arguments as Data;
 var restaurantId = data.id;
-var restaurantName = data.name;
     // Print the data
     print(data.address);
+    print('restaurantId - ${restaurantId}');
 
     return Scaffold(
       backgroundColor: bgColor,
@@ -33,14 +33,14 @@ var restaurantName = data.name;
           padding:
               const EdgeInsets.only(top: 0.0, bottom: 20, left: 25, right: 25),
           child: Column(
-            children: [CustomAppBar(), getView(data,restaurantId,restaurantName)],
+            children: [CustomAppBar(), getView(data,restaurantId)],
           ),
         ),
       ),
     );
   }
 
-  Widget getView(Data data, int? restaurantId, String? restaurantName) {
+  Widget getView(Data data, int? restaurantId) {
     return Expanded(child: SingleChildScrollView(
       child: Consumer<CommonCounter>(builder: (context, commonProvider, child) {
         return Column(
@@ -52,7 +52,7 @@ var restaurantName = data.name;
             !commonProvider.isDeal
                 ? buildSection("TODAY'S DEALS", "")
                 : buildSection("YOUR FAVOURITES", ""),
-            buildVerticalCards(restaurantId,restaurantName)
+            buildVerticalCards(restaurantId)
           ],
         );
       }),
@@ -287,10 +287,13 @@ var restaurantName = data.name;
     );
   }
 
-  Widget buildVerticalCards(int? restaurantId, String? restaurantName) {
+  Widget buildVerticalCards(int? restaurantId) {
     return FutureBuilder<RestaurentDealResponse>(
       future: restaurantsProvider.getRestaurantsDealsList(restaurantId),
       builder: (context, snapshot) {
+
+        print(snapshot);
+
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
@@ -298,7 +301,7 @@ var restaurantName = data.name;
         } else if (!snapshot.hasData ||
             snapshot.data == null ||
             snapshot.data!.data == null) {
-          return Text('No restaurants available');
+          return Text('No Deals available');
         } else {
           List<dealData>? items = snapshot.data!.data;
 
@@ -316,7 +319,7 @@ var restaurantName = data.name;
                       arguments: items[index],
                     );
                   },
-                  child: getFavCards(index, items[index],restaurantName),
+                  child: getFavCards(index, items[index]),
                 ),
               ),
             ),
@@ -326,7 +329,7 @@ var restaurantName = data.name;
     );
   }
 
-  Widget getFavCards(int index, dealData data, String? restaurantName) {
+  Widget getFavCards(int index, dealData data) {
 
     var startTiming = data.customTime?.startTime;
     var endTiming = data.customTime?.endTime;
@@ -358,7 +361,7 @@ var restaurantName = data.name;
                     sizeOfFont: 21,
                   ),
                   CustomText(
-                    text: restaurantName ?? "",
+                    text: data.store?.name ?? "",
                     maxLin: 1,
                     color: btntxtColor,
                     fontfamilly: montRegular,
