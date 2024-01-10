@@ -143,7 +143,7 @@ class OrderAndPayScreen extends StatelessWidget {
                       filledIcon: Icons.star,
                       emptyIcon: Icons.star_border,
                       filledColor: btnbgColor,
-                      initialRating: orderAndPayProvider.foodData[0]["rating"],
+                      initialRating: data.averageRating ?? 0,
                       size: 20,
                       maxRating: 5,
                     ),

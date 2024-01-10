@@ -104,7 +104,6 @@ class EditProfileScreen extends StatelessWidget {
                   height: 10,
                 ),
 
-
                 Container(
                   height: 300,
                   width: 300,
@@ -112,12 +111,12 @@ class EditProfileScreen extends StatelessWidget {
                   decoration: BoxDecoration(
                     image: selectedImagePathController.text.isNotEmpty
                         ? DecorationImage(
-                      image: FileImage(File(selectedImagePathController.text)),
+                      image: NetworkImage(selectedImagePathController.text),
                       fit: BoxFit.cover,
                     )
                         : Provider.of<SelectImageProvider>(context).selectedImage.isNotEmpty
                         ? DecorationImage(
-                      image: FileImage(File(Provider.of<SelectImageProvider>(context).selectedImage)),
+                      image: NetworkImage(Provider.of<SelectImageProvider>(context).selectedImage),
                       fit: BoxFit.cover,
                     )
                         : const DecorationImage(
@@ -125,85 +124,39 @@ class EditProfileScreen extends StatelessWidget {
                       fit: BoxFit.contain,
                     ),
                   ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      GestureDetector(
-                        onTap: () async {
-                          final image = await _getImage(context);
-                          if (image != null) {
-                            // Update the selected image in the provider or state
-                            Provider.of<SelectImageProvider>(
-                              context,
-                              listen: false,
-                            ).setSelectedImage(image);
-
-                            try {
-                              var data = await Provider.of<AuthenticationProvider>(
-                                context,
-                                listen: false,
-                              ).uploadMultipartImage(
-                                File(selectedImagePathController.text),
-                                "profile",
-                              );
-
-                              print(data);
-
-                              if (data.message == "Image uploaded successfully") {
-                                receivedImageUrl.text = data.url ?? '';
-
-                                // Print data to console
-                                print(data);
-
-                                // Navigate to the next screen or perform other actions after login
-                              } else {
-                                // Login failed
-                                print("Something went wrong: ${data.message}");
-
-                                final snackBar = SnackBar(
-                                  content: Text('${data.message}'),
-                                );
-
-                                // Show the SnackBar
-                                ScaffoldMessenger.of(context).showSnackBar(snackBar);
-
-                                // Automatically hide the SnackBar after 1 second
-                                Future.delayed(Duration(milliseconds: 1000), () {
-                                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                                });
-                              }
-                            } catch (e) {
-                              // Display error message
-                              print("Error: $e");
-                            }
-                          }
-                        },
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            // Display the selected image or a default one
-                            // You can use a provider to manage the selected image state
-                            Consumer<SelectImageProvider>(
-                              builder: (context, provider, child) {
-                                return Image.asset(
-                                  appLogo,
-                                  width: 146,
-                                  height: 79,
-                                  fit: BoxFit.contain,
-                                );
-                              },
-                            ),
-                            SizedBox(height: 16),
-                            CustomText(
-                              text: "Change Photo",
-                              sizeOfFont: 20,
-                              fontfamilly: montBook,
-                              color: hintColor,
+                  child: Visibility(
+                    visible: selectedImagePathController.text == null || selectedImagePathController.text.isEmpty,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        // Display the selected image or a default one
+                        // You can use a provider to manage the selected image state
+                        Consumer<SelectImageProvider>(
+                          builder: (context, provider, child) {
+                            return selectedImagePathController.text.isNotEmpty
+                                ? Image.file(
+                              File(selectedImagePathController.text),
+                              width: 146,
+                              height: 79,
+                              fit: BoxFit.cover,
                             )
-                          ],
+                                : Image.asset(
+                              appLogo,
+                              width: 146,
+                              height: 79,
+                              fit: BoxFit.contain,
+                            );
+                          },
                         ),
-                      ),
-                    ],
+                        SizedBox(height: 16),
+                        CustomText(
+                          text: "Change Photo",
+                          sizeOfFont: 20,
+                          fontfamilly: montBook,
+                          color: hintColor,
+                        )
+                      ],
+                    ),
                   ),
                 ),
 
@@ -283,14 +236,15 @@ class EditProfileScreen extends StatelessWidget {
                               .text},\n Phone Number: ${phoneNumberController
                               .text},\n Date Of Birth: ${dobController
                               .text},\n Gender: ${genderController
-                              .text}\nImage: ${receivedImageUrl.text}");
+                              .text}\nImage: ${selectedImagePathController.
+                              text}");
 
                       if (fullNameController.text.isNotEmpty &&
                           emailController.text.isNotEmpty &&
                           phoneNumberController.text.isNotEmpty &&
                           dobController.text.isNotEmpty &&
                           genderController.text.isNotEmpty &&
-                          receivedImageUrl.text.isNotEmpty) {
+                          selectedImagePathController.text.isNotEmpty) {
                         // Check password length
                         final DateProvider dateProvider =
                         Provider.of<DateProvider>(context, listen: false);
@@ -304,10 +258,8 @@ class EditProfileScreen extends StatelessWidget {
                             RequestString.EMAIL: emailController.text,
                             RequestString.PHONE_NO: phoneNumberController.text,
                             RequestString.DOB: date,
-                            RequestString.GENDER:
-                            genderController.text.toLowerCase(),
-                            RequestString.USER_IMAGE: receivedImageUrl.text ??
-                                '',
+                            RequestString.GENDER: genderController.text.toLowerCase(),
+                            RequestString.USER_IMAGE: selectedImagePathController.text ?? '',
                           };
 
                           formData.forEach((key, value) {

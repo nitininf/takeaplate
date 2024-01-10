@@ -84,6 +84,67 @@ class Utility {
   //   }
   // }
 
+
+  static bool containsUpperCase(String value) {
+    return RegExp(r'[A-Z]').hasMatch(value);
+  }
+
+  static bool containsLowerCase(String value) {
+    return RegExp(r'[a-z]').hasMatch(value);
+  }
+
+  static bool containsDigit(String value) {
+    return RegExp(r'[0-9]').hasMatch(value);
+  }
+
+  static bool containsSpecialChar(String value) {
+    return RegExp(r'[!@#\$&*~]').hasMatch(value);
+  }
+
+  static bool isStrongPassword(String value) {
+    return containsUpperCase(value) &&
+        containsLowerCase(value) &&
+        containsDigit(value) &&
+        containsSpecialChar(value) &&
+        value.length >= 8;
+  }
+
+  static String getPasswordCriteriaMessage(String value) {
+    String message = '';
+
+    if (containsUpperCase(value)) {
+      message += 'Contains uppercase letter. ';
+    } else {
+      message += 'Missing uppercase letter. ';
+    }
+
+    if (containsLowerCase(value)) {
+      message += 'Contains lowercase letter. ';
+    } else {
+      message += 'Missing lowercase letter. ';
+    }
+
+    if (containsDigit(value)) {
+      message += 'Contains digit. ';
+    } else {
+      message += 'Missing digit. ';
+    }
+
+    if (containsSpecialChar(value)) {
+      message += 'Contains special character. ';
+    } else {
+      message += 'Missing special character. ';
+    }
+
+    if (value.length >= 8) {
+      message += 'Password length is sufficient.';
+    } else {
+      message += 'Password should be at least 8 characters.';
+    }
+
+    return message.trim();
+  }
+
   static void showAlert(BuildContext context, String text, String des) {
     Widget continueButton = TextButton(
       child: const Text("Got it"),

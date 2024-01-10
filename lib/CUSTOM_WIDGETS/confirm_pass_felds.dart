@@ -3,26 +3,23 @@ import '../UTILS/app_color.dart';
 import '../UTILS/app_strings.dart';
 import '../UTILS/fontfaimlly_string.dart';
 import '../UTILS/validation.dart';
-
-class CommonPasswordField extends StatefulWidget {
-  const CommonPasswordField({
+class ConfirmPasswordField extends StatefulWidget {
+  const ConfirmPasswordField({
     Key? key,
     this.controller,
     this.isPassword = false,
     this.isConfirmPassword = false,
-
   }) : super(key: key);
 
   final TextEditingController? controller;
   final bool? isPassword;
   final bool? isConfirmPassword;
 
-
   @override
-  _CommonPasswordFieldState createState() => _CommonPasswordFieldState();
+  _ConfirmPasswordFieldState createState() => _ConfirmPasswordFieldState();
 }
 
-class _CommonPasswordFieldState extends State<CommonPasswordField> {
+class _ConfirmPasswordFieldState extends State<ConfirmPasswordField> {
   bool _isPasswordVisible = false;
 
   @override
@@ -76,3 +73,4 @@ class _CommonPasswordFieldState extends State<CommonPasswordField> {
     );
   }
 }
+

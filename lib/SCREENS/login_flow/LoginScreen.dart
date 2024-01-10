@@ -71,7 +71,7 @@ class LogInScreen extends StatelessWidget {
                     children: [
                       CommonEmailField(hintText: email,controller: emailController,),
                       const SizedBox(height: 20,),
-                      CommonPasswordField(isPassword: true,controller: passwordController,),
+                      CommonPasswordField(isPassword: true,controller: passwordController,isConfirmPassword: false,),
                       const SizedBox(height: 30,),
                       CommonButton(btnBgColor: btnbgColor, btnText: login, onClick: () async {
 

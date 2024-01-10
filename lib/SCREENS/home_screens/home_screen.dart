@@ -1,6 +1,7 @@
 import 'package:custom_rating_bar/custom_rating_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/common_button.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/custom_text_style.dart';
@@ -13,6 +14,7 @@ import '../../CUSTOM_WIDGETS/custom_app_bar.dart';
 import '../../CUSTOM_WIDGETS/custom_search_field.dart';
 import '../../MULTI-PROVIDER/FavCardsProvider.dart';
 import '../../MULTI-PROVIDER/PlaceListProvider.dart';
+import '../../UTILS/utils.dart';
 
 class HomeScreen extends StatelessWidget {
   final List<String> items = ['Healthy', 'Sushi', 'Desserts', 'Sugar', 'Sweets'];
@@ -23,8 +25,23 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
 
     Future.delayed(Duration.zero, () async {
-      Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-      print('latitude - ${position.latitude}');
+      bool isLocationPermissionGranted =
+      await requestLocationPermissionAndShowAlert(context);
+
+      if (isLocationPermissionGranted) {
+        Position position =
+        await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+        final snackBar = SnackBar(
+          content:  Text('Current Location : ${position.latitude} - ${position.longitude}'),
+          action: SnackBarAction(
+            label: 'Ok',
+            onPressed: () {
+              // Some code to undo the change.
+            },
+          ),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
     });
 
 
@@ -45,14 +62,24 @@ class HomeScreen extends StatelessWidget {
 
                     buildHorizontalList(items),
                     buildSection(closet, viewall),
-                    buildHorizontalCards(),
+                    buildClosestDealCards(),
                       const Padding(
                        padding: EdgeInsets.only(top: 10.0,left: 20,right: 20,bottom: 15),
                        child: Divider(
                         color: Colors.grey,
                         thickness: 0,),),
                     buildSection(lastminute, viewall),
-                    buildHorizontalFavCards(context),
+                    buildLastMinuteDealCards(context),
+
+                    const Padding(
+                      padding: EdgeInsets.only(top: 10.0,left: 15,right: 15,bottom: 15),
+                      child: Divider(
+                        color: Colors.grey,
+                        thickness: 0,
+                      ),
+                    ),
+                    buildSection(collectTomorrow, viewall),
+                    buildCollectTomorrowCards(context),
 
                     const Padding(
                       padding: EdgeInsets.only(top: 10.0,left: 15,right: 15,bottom: 15),
@@ -62,7 +89,7 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ),
                     buildSection(myfav, viewall),
-                    buildHorizontalFavCards(context),
+                    buildMyFavoriteCards(context),
                   ],
                 ),
               ),
@@ -115,6 +142,9 @@ class HomeScreen extends StatelessWidget {
                 Navigator.pushNamed(
                     navigatorKey.currentContext!, '/ClosestScreen');
               }
+              else if(title==lastminute){
+                Navigator.pushNamed(navigatorKey.currentContext!, '/LastMinuteDealScreen');
+              }
               else if(title==myfav){
                 Navigator.pushNamed(navigatorKey.currentContext!, '/FavouriteScreen');
               }
@@ -126,7 +156,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget buildHorizontalCards() {
+  Widget buildClosestDealCards() {
     return Consumer<PlaceListProvider>(
       builder: (context, dataProvider, child) {
         return SingleChildScrollView(
@@ -135,7 +165,7 @@ class HomeScreen extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             children: List.generate(
               dataProvider.items.length,
-                  (index) => getCards(context, dataProvider.items[index]),
+                  (index) => getClosestDealData(context, dataProvider.items[index]),
             ),
           ),
         );
@@ -143,9 +173,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget getCards(BuildContext context, Map<String, dynamic> data) {
-
-    print("Data: $data");
+  Widget getClosestDealData(BuildContext context, Map<String, dynamic> data) {
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
@@ -179,13 +207,28 @@ class HomeScreen extends StatelessWidget {
                 fontfamilly: montBook,
               ),
               SizedBox(height: 1),
-              RatingBar.readOnly(
-                filledIcon: Icons.star,
-                emptyIcon: Icons.star_border,
-                filledColor: btnbgColor,
-                initialRating: data['rating'].toDouble(),
-                size: 20,
-                maxRating: 5,
+              Row(
+                children: [
+                  RatingBar.readOnly(
+                    filledIcon: Icons.star,
+                    emptyIcon: Icons.star_border,
+                    filledColor: btnbgColor,
+                    initialRating: data['rating'].toDouble(),
+                    size: 18,
+                    maxRating: 5,
+                  ),
+                  SizedBox(width: 10),
+
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 3),
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    decoration: BoxDecoration(
+                      color: editbgColor,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: const CustomText(text: "4 km",maxLin:1,sizeOfFont: 10,fontfamilly:montHeavy,color: btnbgColor,),
+                  ),
+                ],
               ),
             ],
           ),
@@ -212,34 +255,43 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-
-  Widget buildHorizontalFavCards(BuildContext context) {
+  Widget buildLastMinuteDealCards(BuildContext context) {
     return Consumer<FavCardsProvider>(
       builder: (context, dataProvider, child) {
-        List<Map<String, dynamic>> recentItems = dataProvider.items.take(2).toList();
+        // List<Map<String, dynamic>> recentItems = dataProvider.items.take(2).toList();
+        //
+        // return Column(
+        //   crossAxisAlignment: CrossAxisAlignment.start,
+        //   children: recentItems.map((item) {
+        //
+        //     return GestureDetector(
+        //       // onTap: (){
+        //       //   print(item.length);
+        //       //   Navigator.pushNamed(
+        //       //     context,
+        //       //     '/OrderAndPayScreen',
+        //       //   );
+        //       // },
+        //         child: getLastMinuteDealsCards(context, item));
+        //   }).toList(),
+        // );
 
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: recentItems.map((item) {
-            return GestureDetector(
-              onTap: (){
-                print(item.length);
-                Navigator.pushNamed(
-                  context,
-                  '/OrderAndPayScreen',
-                );
-              },
-                child: getFavCards(context, item));
-          }).toList(),
+        return SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: List.generate(
+              dataProvider.items.length,
+                  (index) => getLastMinuteDealsData(context, dataProvider.items[index]),
+            ),
+          ),
         );
+
       },
     );
   }
 
-
-
-
-  Widget getFavCards(BuildContext context, Map<String, dynamic> data) {
+  Widget getLastMinuteDealsData(BuildContext context, Map<String, dynamic> data) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
@@ -250,18 +302,18 @@ class HomeScreen extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-           Column(
+          Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CustomText(text: data['name'], color: btntxtColor, fontfamilly: montBold,sizeOfFont: 21,),
+              CustomText(text: data['name'], color: btntxtColor, fontfamilly: montBold,sizeOfFont: 18,),
 
-              CustomText(text: data['restaurant'], color: btntxtColor, fontfamilly: montRegular,sizeOfFont: 16,),
+              CustomText(text: data['restaurant'], color: btntxtColor, fontfamilly: montRegular,sizeOfFont: 13,),
 
-              CustomText(text: data['time'], color: graysColor,sizeOfFont: 11, fontfamilly: montRegular),
+              CustomText(text: data['time'], color: graysColor,sizeOfFont: 8, fontfamilly: montRegular),
               SizedBox(height: 5,),
               Row(
                 children: [
-                 RatingBar.readOnly(
+                  RatingBar.readOnly(
                     filledIcon: Icons.star,
                     emptyIcon: Icons.star_border,
                     filledColor: btnbgColor,
@@ -270,12 +322,112 @@ class HomeScreen extends StatelessWidget {
                     maxRating: 5,
                   ),
                   SizedBox(width: 10,),
-                  CustomText(text: data['distance'], color: graysColor,sizeOfFont: 15, fontfamilly: montSemiBold),
-                   ],
+                  CustomText(text: data['distance'], color: graysColor,sizeOfFont: 12, fontfamilly: montSemiBold),
+                ],
 
               ),
               SizedBox(height: 5,),
-              CustomText(text: "\$"+data['price'], color: dolorColor,sizeOfFont: 27, fontfamilly: montHeavy,),
+              CustomText(text: "\$"+data['price'], color: dolorColor,sizeOfFont: 24, fontfamilly: montHeavy,),
+
+            ],
+          ),
+          const SizedBox(width: 18,),
+          Align(
+            alignment: Alignment.centerRight,
+            child: Stack(
+              alignment: Alignment.topRight,
+              clipBehavior: Clip.none,
+              children: [
+                Image.asset(food_image, height: 100, width: 100, fit: BoxFit.cover),
+                Positioned(
+                  right: -4,
+                  child: Image.asset(
+                    save_icon,
+                    height: 15,
+                    width: 18,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget buildCollectTomorrowCards(BuildContext context) {
+    return Consumer<FavCardsProvider>(
+      builder: (context, dataProvider, child) {
+        // List<Map<String, dynamic>> recentItems = dataProvider.items.take(2).toList();
+        //
+        // return Column(
+        //   crossAxisAlignment: CrossAxisAlignment.start,
+        //   children: recentItems.map((item) {
+        //
+        //     return GestureDetector(
+        //       // onTap: (){
+        //       //   print(item.length);
+        //       //   Navigator.pushNamed(
+        //       //     context,
+        //       //     '/OrderAndPayScreen',
+        //       //   );
+        //       // },
+        //         child: getLastMinuteDealsCards(context, item));
+        //   }).toList(),
+        // );
+
+        return SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: List.generate(
+              dataProvider.items.length,
+                  (index) => getCollectTomorrowData(context, dataProvider.items[index]),
+            ),
+          ),
+        );
+
+      },
+    );
+  }
+
+  Widget getCollectTomorrowData(BuildContext context, Map<String, dynamic> data) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(width: 0,   color: editbgColor.withOpacity(0.25),),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CustomText(text: data['name'], color: btntxtColor, fontfamilly: montBold,sizeOfFont: 18,),
+
+              CustomText(text: data['restaurant'], color: btntxtColor, fontfamilly: montRegular,sizeOfFont: 13,),
+
+              CustomText(text: data['time'], color: graysColor,sizeOfFont: 8, fontfamilly: montRegular),
+              SizedBox(height: 5,),
+              Row(
+                children: [
+                  RatingBar.readOnly(
+                    filledIcon: Icons.star,
+                    emptyIcon: Icons.star_border,
+                    filledColor: btnbgColor,
+                    size: 20,
+                    initialRating: data['rating'].toDouble(),
+                    maxRating: 5,
+                  ),
+                  SizedBox(width: 10,),
+                  CustomText(text: data['distance'], color: graysColor,sizeOfFont: 12, fontfamilly: montSemiBold),
+                ],
+
+              ),
+              SizedBox(height: 5,),
+              CustomText(text: "\$"+data['price'], color: dolorColor,sizeOfFont: 24, fontfamilly: montHeavy,),
 
             ],
           ),
@@ -284,7 +436,7 @@ class HomeScreen extends StatelessWidget {
             alignment: Alignment.topRight,
             clipBehavior: Clip.none,
             children: [
-              Image.asset(food_image, height: 130, width: 130, fit: BoxFit.cover),
+              Image.asset(food_image, height: 100, width: 100, fit: BoxFit.cover),
               Positioned(
                 right: -4,
                 child: Image.asset(
@@ -299,5 +451,141 @@ class HomeScreen extends StatelessWidget {
       ),
     );
   }
+
+  Widget buildMyFavoriteCards(BuildContext context) {
+    return Consumer<FavCardsProvider>(
+      builder: (context, dataProvider, child) {
+        // List<Map<String, dynamic>> recentItems = dataProvider.items.take(2).toList();
+        //
+        // return Column(
+        //   crossAxisAlignment: CrossAxisAlignment.start,
+        //   children: recentItems.map((item) {
+        //
+        //     return GestureDetector(
+        //       // onTap: (){
+        //       //   print(item.length);
+        //       //   Navigator.pushNamed(
+        //       //     context,
+        //       //     '/OrderAndPayScreen',
+        //       //   );
+        //       // },
+        //         child: getLastMinuteDealsCards(context, item));
+        //   }).toList(),
+        // );
+
+        return SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: List.generate(
+              dataProvider.items.length,
+                  (index) => getFavCardsData(context, dataProvider.items[index]),
+            ),
+          ),
+        );
+
+      },
+    );
+  }
+
+  Widget getFavCardsData(BuildContext context, Map<String, dynamic> data) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(width: 0,   color: editbgColor.withOpacity(0.25),),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+           Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              CustomText(text: data['name'], color: btntxtColor, fontfamilly: montBold,sizeOfFont: 18,),
+
+              CustomText(text: data['restaurant'], color: btntxtColor, fontfamilly: montRegular,sizeOfFont: 13,),
+
+              CustomText(text: data['time'], color: graysColor,sizeOfFont: 8, fontfamilly: montRegular),
+              SizedBox(height: 5,),
+              Row(
+                children: [
+                 RatingBar.readOnly(
+                    filledIcon: Icons.star,
+                    emptyIcon: Icons.star_border,
+                    filledColor: btnbgColor,
+                    size: 20,
+                    initialRating: data['rating'].toDouble(),
+                    maxRating: 5,
+                  ),
+                  SizedBox(width: 10,),
+                  CustomText(text: data['distance'], color: graysColor,sizeOfFont: 12, fontfamilly: montSemiBold),
+                   ],
+
+              ),
+              SizedBox(height: 5,),
+              CustomText(text: "\$"+data['price'], color: dolorColor,sizeOfFont: 24, fontfamilly: montHeavy,),
+
+            ],
+          ),
+          const SizedBox(width: 18,),
+          Stack(
+            alignment: Alignment.topRight,
+            clipBehavior: Clip.none,
+            children: [
+              Image.asset(food_image, height: 100, width: 100, fit: BoxFit.cover),
+              Positioned(
+                right: -4,
+                child: Image.asset(
+                  save_icon,
+                  height: 15,
+                  width: 18,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<bool> requestLocationPermissionAndShowAlert(BuildContext context) async {
+    var status = await Permission.location.request();
+    if (status == PermissionStatus.granted) {
+      return true;
+    } else if (status == PermissionStatus.denied) {
+      final snackBar = SnackBar(
+        content:  Text('Location permission denied", "To use the features of NearBy or location , Please allow the permission'),
+        action: SnackBarAction(
+          label: 'Ok',
+          onPressed: () async {
+            // Some code to undo the change.
+           await requestLocationPermissionAndShowAlert(context);
+          },
+        ),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+      return false;
+    } else {
+      final snackBar = SnackBar(
+        content:  Text('Location permission denied", "To use the features of NearBy or location , Please allow the permission'),
+        action: SnackBarAction(
+          label: 'Ok',
+          onPressed: () async {
+            // Some code to undo the change.
+            await requestLocationPermissionAndShowAlert(context);
+
+          },
+        ),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+      // Handle other cases like PermissionStatus.permanentlyDenied
+      // You may want to open app settings here
+      return false;
+    }
+  }
+
 
 }

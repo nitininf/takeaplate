@@ -134,7 +134,7 @@ class ProfileScreen extends StatelessWidget{
                               borderRadius: BorderRadius.circular(20),
                               border: Border.all(width: 1, color: Colors.white),
                             ),
-                            child: const CustomText(text: "READY FOR PCKUP",maxLin:1,sizeOfFont: 10,fontfamilly:montHeavy,color: readyColor,),
+                            child: const CustomText(text: "READY FOR PICKUP",maxLin:1,sizeOfFont: 10,fontfamilly:montHeavy,color: readyColor,),
                           ),
                         ),
                         SizedBox(width: 10,),

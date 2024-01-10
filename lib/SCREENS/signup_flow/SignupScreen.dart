@@ -11,6 +11,7 @@ import 'package:takeaplate/UTILS/fontfaimlly_string.dart';
 
 import '../../MULTI-PROVIDER/DateProvider.dart';
 import '../../MULTI-PROVIDER/SignUp_StepOne.dart';
+import '../../UTILS/validation.dart';
 
 List<String> genders = ['Male', 'Female', 'Other'];
 TextEditingController fullNameController = TextEditingController();
@@ -18,11 +19,9 @@ TextEditingController emailController = TextEditingController();
 TextEditingController phoneNumberController = TextEditingController();
 TextEditingController dobController = TextEditingController();
 TextEditingController genderController =
-TextEditingController(text: genders[0]);
+    TextEditingController(text: genders[0]);
 
 class SignUpScreen extends StatelessWidget {
-
-
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -80,6 +79,7 @@ class SignUpScreen extends StatelessWidget {
                         hintText: phoneNumber,
                         controller: phoneNumberController,
                         isPhoneNumber: true,
+                        isPassword: false,
                       ),
                       const SizedBox(height: 30),
                       Row(
@@ -118,7 +118,10 @@ class SignUpScreen extends StatelessWidget {
                   child: CommonButton(
                     btnBgColor: btnbgColor,
                     btnText: next,
-                    onClick: () {
+                    onClick: () async {
+                      var validEmail =
+                          FormValidator.validateEmail(emailController.text);
+                      print(validEmail);
                       // Check if any field is null or empty
                       if (fullNameController.text.isEmpty ||
                           emailController.text.isEmpty ||
@@ -139,20 +142,31 @@ class SignUpScreen extends StatelessWidget {
                         Future.delayed(Duration(milliseconds: 1000), () {
                           ScaffoldMessenger.of(context).hideCurrentSnackBar();
                         });
+                      } else if (validEmail != null) {
+                        final snackBar = SnackBar(
+                          content: Text('Please enter valid email id'),
+                        );
+
+// Show the SnackBar
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+// Automatically hide the SnackBar after 1 second
+                        Future.delayed(Duration(milliseconds: 1000), () {
+                          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                        });
                       } else {
                         // If all fields are filled, proceed to the next screen
                         print(
                             "Full Name: ${fullNameController.text} ,\n Email: ${emailController.text},\n Phone Number: ${phoneNumberController.text},\n Date Of Birth: ${dobController.text},\n Gender: ${genderController.text}");
 
-                        final DateProvider dateProvider = Provider.of<DateProvider>(context, listen: false);
+                        final DateProvider dateProvider =
+                            Provider.of<DateProvider>(context, listen: false);
 
-                        var date = dateProvider.formattedDate(DateTime.parse(dobController.text));
-
+                        var date = dateProvider
+                            .formattedDate(DateTime.parse(dobController.text));
 
                         var saveUserBasicDetail =
                             Provider.of<SignUp_StepOne>(context, listen: false);
-
-
 
                         // Set user information in the provider
                         saveUserBasicDetail.saveSignUpStepOneData(

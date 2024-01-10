@@ -10,13 +10,14 @@ import '../../CUSTOM_WIDGETS/custom_text_style.dart';
 import '../../MULTI-PROVIDER/PlaceListProvider.dart';
 import '../../MULTI-PROVIDER/RestaurantsListProvider.dart';
 import '../../Response_Model/ClosestRestaurantResponse.dart';
+import '../../Response_Model/LastMinuteDealResponse.dart';
 import '../../Response_Model/RestaurantsListResponse.dart';
 import '../../UTILS/app_color.dart';
 import '../../UTILS/app_images.dart';
 import '../../UTILS/fontfaimlly_string.dart';
 import '../../main.dart';
 
-class ClosestScreen extends StatelessWidget{
+class LastMinuteDealScreen extends StatelessWidget{
   final List<String> items = ['Healthy', 'Sushi', 'Desserts', 'Sugar', 'Sweets'];
   final RestaurantsListProvider restaurantsProvider = RestaurantsListProvider();
 
@@ -76,8 +77,8 @@ class ClosestScreen extends StatelessWidget{
 
   Widget buildVerticalCards() {
     return Expanded(
-      child: FutureBuilder<ClosestRestaurantResponse>(
-        future: restaurantsProvider.getClosestRestaurantsList(),
+      child: FutureBuilder<LastMinuteDealResponse>(
+        future: restaurantsProvider.getLastMinuteDealsList(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator()); // Center the loading indicator
@@ -86,7 +87,7 @@ class ClosestScreen extends StatelessWidget{
           } else if (!snapshot.hasData || snapshot.data == null || snapshot.data!.data == null) {
             return Text('No restaurants available');
           } else {
-            List<closestData>? items = snapshot.data?.data;
+            List<LastMinuteDeals>? items = snapshot.data?.data;
 
             return SingleChildScrollView(
               scrollDirection: Axis.vertical,
@@ -116,10 +117,15 @@ class ClosestScreen extends StatelessWidget{
 
 
 
-  Widget getFavCards(int index, closestData item) {
+  Widget getFavCards(int index, LastMinuteDeals data) {
+
+    var startTiming = data.customTime?.startTime;
+    var endTiming = data.customTime?.endTime;
+
+
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(navigatorKey.currentContext!, '/RestrorentProfileScreen');
+        Navigator.pushNamed(navigatorKey.currentContext!, '/OrderAndPayScreen', arguments: data,);
       },
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
@@ -132,29 +138,32 @@ class ClosestScreen extends StatelessWidget{
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              flex: 2,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomText(
-                    text: item.name ?? '', // Assuming 'title' is a key in your data
+                    text: data.name ?? "",
+                    maxLin: 1,
                     color: btntxtColor,
                     fontfamilly: montBold,
-                    sizeOfFont: 24,
+                    sizeOfFont: 21,
                   ),
                   CustomText(
-                    text: item.category ?? '', // Assuming 'category' is a key in your data
+                    text: data.store?.name ?? "",
+                    maxLin: 1,
                     color: btntxtColor,
                     fontfamilly: montRegular,
-                    sizeOfFont: 14,
+                    sizeOfFont: 16,
                   ),
                   CustomText(
-                    text: 'offer', // Assuming 'offers' is a key in your data
-                    color: offerColor,
-                    sizeOfFont: 9,
-                    fontfamilly: montBook,
+                      text: '${startTiming ?? ""} - ${endTiming ?? ""}',
+                      maxLin: 1,
+                      color: graysColor,
+                      sizeOfFont: 11,
+                      fontfamilly: montRegular),
+                  SizedBox(
+                    height: 5,
                   ),
-                  SizedBox(height: 1),
                   Row(
                     children: [
                       RatingBar.readOnly(
@@ -162,37 +171,43 @@ class ClosestScreen extends StatelessWidget{
                         emptyIcon: Icons.star_border,
                         filledColor: btnbgColor,
                         initialRating: 5,
-                        size: 18,
+                        size: 20,
                         maxRating: 5,
                       ),
-                      SizedBox(width: 10),
-
-                      Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 3),
-                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                        decoration: BoxDecoration(
-                          color: editbgColor,
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: const CustomText(text: "4 km",maxLin:1,sizeOfFont: 10,fontfamilly:montHeavy,color: btnbgColor,),
+                      SizedBox(
+                        width: 10,
                       ),
+                      Expanded(
+                          child: CustomText(
+                              text: "84 Km",
+                              maxLin: 1,
+                              color: graysColor,
+                              sizeOfFont: 15,
+                              fontfamilly: montSemiBold)),
                     ],
                   ),
-
+                  SizedBox(
+                    height: 5,
+                  ),
+                  CustomText(
+                    text: '\$ ${data.price ?? ""}',
+                    color: dolorColor,
+                    sizeOfFont: 27,
+                    fontfamilly: montHeavy,
+                  ),
                 ],
               ),
             ),
-            const SizedBox(width: 18),
+            const SizedBox(
+              width: 18,
+            ),
             Expanded(
               child: Stack(
                 alignment: Alignment.topRight,
                 clipBehavior: Clip.none,
                 children: [
-                  Image.network(
-                    item.profileImage ?? food_image,
-                    fit: BoxFit.contain,
-
-                  ),
+                  Image.asset(food_image,
+                      height: 130, width: 130, fit: BoxFit.cover),
                   Positioned(
                     right: -4,
                     child: Image.asset(
@@ -209,6 +224,7 @@ class ClosestScreen extends StatelessWidget{
       ),
     );
   }
+
 
 
 

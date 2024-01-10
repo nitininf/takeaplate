@@ -382,7 +382,7 @@ var restaurantId = data.id;
                         filledIcon: Icons.star,
                         emptyIcon: Icons.star_border,
                         filledColor: btnbgColor,
-                        initialRating: 4,
+                        initialRating: data.averageRating ?? 0,
                         size: 20,
                         maxRating: 5,
                       ),

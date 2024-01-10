@@ -1,17 +1,17 @@
-class RestaurentDealResponse {
+class LastMinuteDealResponse {
   bool? status;
   String? message;
-  List<dealData>? data;
+  List<LastMinuteDeals>? data;
 
-  RestaurentDealResponse({this.status, this.message, this.data});
+  LastMinuteDealResponse({this.status, this.message, this.data});
 
-  RestaurentDealResponse.fromJson(Map<String, dynamic> json) {
+  LastMinuteDealResponse.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     message = json['message'];
     if (json['data'] != null) {
-      data = <dealData>[];
+      data = <LastMinuteDeals>[];
       json['data'].forEach((v) {
-        data!.add(new dealData.fromJson(v));
+        data!.add(new LastMinuteDeals.fromJson(v));
       });
     }
   }
@@ -27,7 +27,7 @@ class RestaurentDealResponse {
   }
 }
 
-class dealData {
+class LastMinuteDeals {
   int? id;
   int? storeId;
   String? name;
@@ -42,11 +42,10 @@ class dealData {
   Null? deletedAt;
   String? createdAt;
   String? updatedAt;
-  double? averageRating;
   CustomTime? customTime;
   Store? store;
 
-  dealData(
+  LastMinuteDeals(
       {this.id,
         this.storeId,
         this.name,
@@ -61,11 +60,10 @@ class dealData {
         this.deletedAt,
         this.createdAt,
         this.updatedAt,
-        this.averageRating,
         this.customTime,
         this.store});
 
-  dealData.fromJson(Map<String, dynamic> json) {
+  LastMinuteDeals.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     storeId = json['store_id'];
     name = json['name'];
@@ -80,7 +78,6 @@ class dealData {
     deletedAt = json['deleted_at'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
-    averageRating = json['average_rating'];
     customTime = json['custom_time'] != null
         ? new CustomTime.fromJson(json['custom_time'])
         : null;
@@ -103,7 +100,6 @@ class dealData {
     data['deleted_at'] = this.deletedAt;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
-    data['average_rating'] = this.averageRating;
     if (this.customTime != null) {
       data['custom_time'] = this.customTime!.toJson();
     }
@@ -322,7 +318,7 @@ class Friday {
 }
 
 class PickupTime {
-  String? name;
+  Null? name;
   String? endTime;
   String? startTime;
   String? enablePickupTime;

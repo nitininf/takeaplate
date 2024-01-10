@@ -62,11 +62,31 @@ class UploadPhoto extends StatelessWidget {
                       width: 80,
                     ),
                     SizedBox(height: screenHeight*0.03,),
-                    const Padding(
+                     Padding(
                       padding: EdgeInsets.only(left: 18,top: 25),
-                      child: Align(
-                          alignment: Alignment.topLeft,
-                          child: CustomText(text: profilePicture,color: Colors.white,fontfamilly: montHeavy,sizeOfFont: 20,)),
+                      child: Column(
+                        children: [
+                          Align(
+                              alignment: Alignment.topLeft,
+                              child: CustomText(text: profilePicture,color: Colors.white,fontfamilly: montHeavy,sizeOfFont: 20,)),
+Align(
+                              alignment: Alignment.topLeft,
+                              child: RichText(
+                                text: TextSpan(
+                                    text: 'Optional',
+                                    style: TextStyle(
+                                        color: Colors.white, fontFamily: montLight, fontSize: 18),
+                                    children: [
+                                      TextSpan(
+                                          text: ' *',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                            ))
+                                    ]),
+
+                              ),),
+                        ],
+                      ),
                     ),
                     SizedBox(height: screenHeight*0.04,),
 
@@ -102,32 +122,36 @@ class UploadPhoto extends StatelessWidget {
                                 Provider.of<SelectImageProvider>(context, listen: false).setSelectedImage(image);
                               }
                             },
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Consumer<SelectImageProvider>(
-                                  builder: (context, provider, child) {
-                                    return Image.asset(
-                                   appLogo,
-                                      height: 42,
-                                      width: 40,
-                                      fit: BoxFit.contain,
-                                    );
-                                  },
-                                ),
-                                SizedBox(height: 16,),
-                                const CustomText(
-                                  text: uploadphoto,
-                                  color: Colors.white,
-                                  fontfamilly: montBook,
-                                  sizeOfFont: 20,
-                                )
-                              ],
+                            child: Visibility(
+                              visible: selectedImagePathController.text.isEmpty,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Consumer<SelectImageProvider>(
+                                    builder: (context, provider, child) {
+                                      return Image.asset(
+                                        appLogo,
+                                        height: 42,
+                                        width: 40,
+                                        fit: BoxFit.contain,
+                                      );
+                                    },
+                                  ),
+                                  SizedBox(height: 16,),
+                                  const CustomText(
+                                    text: uploadphoto,
+                                    color: Colors.white,
+                                    fontfamilly: montBook,
+                                    sizeOfFont: 20,
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                         ],
                       ),
                     ),
+
 
 
                   ],
@@ -205,20 +229,22 @@ class UploadPhoto extends StatelessWidget {
                   }
 
                   else {
-                    // Show an error message or handle empty fields
-                    final snackBar = SnackBar(
-                      content: const Text('Please select or capture different image..'),
-                      action: SnackBarAction(
-                        label: 'Ok',
-                        onPressed: () {
-                          // Some code to undo the change.
-                        },
-                      ),
+                    var saveUserImage = Provider.of<SignUp_StepTwo>(context, listen: false);
+
+                    // Set user information in the provider
+                    saveUserImage.saveSignUpStepTwoData(
+                      fullName: getUserBasicDetails.fullName,
+                      email: getUserBasicDetails.email,
+                      phoneNumber: getUserBasicDetails.phoneNumber,
+                      dob: getUserBasicDetails.dob,
+                      gender: getUserBasicDetails.gender,
+                      user_image: '',
+
                     );
 
-                    // Find the ScaffoldMessenger in the widget tree
-                    // and use it to show a SnackBar.
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                    Navigator.pushNamed(context, '/SetYourPasswordScreen');
+
                   }
 
 
