@@ -1,9 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:takeaplate/Response_Model/RestaurantDealResponse.dart';
-
 import '../NETWORKS/network.dart';
-import '../Response_Model/ClosestRestaurantResponse.dart';
-import '../Response_Model/LastMinuteDealResponse.dart';
 import '../Response_Model/RestaurantsListResponse.dart';
 
 class RestaurantsListProvider extends ChangeNotifier {
@@ -35,7 +32,7 @@ class RestaurantsListProvider extends ChangeNotifier {
     }
   }
 
-  Future<ClosestRestaurantResponse> getClosestRestaurantsList() async {
+  Future<RestaurantsListResponse> getClosestRestaurantsList() async {
 
     try {
       final response = await _network.getRequest(
@@ -48,7 +45,7 @@ class RestaurantsListProvider extends ChangeNotifier {
       if (response != null && response.data is Map<String, dynamic>) {
         final Map<String, dynamic> responseData = response.data;
 
-        return ClosestRestaurantResponse.fromJson(responseData);
+        return RestaurantsListResponse.fromJson(responseData);
       } else {
         throw Exception('Failed to parse API response');
       }
@@ -87,7 +84,7 @@ class RestaurantsListProvider extends ChangeNotifier {
     }
   }
 
-  Future<LastMinuteDealResponse> getLastMinuteDealsList() async {
+  Future<RestaurentDealResponse> getLastMinuteDealsList() async {
 
     try {
       final response = await _network.getRequest(
@@ -100,7 +97,7 @@ class RestaurantsListProvider extends ChangeNotifier {
       if (response != null && response.data is Map<String, dynamic>) {
         final Map<String, dynamic> responseData = response.data;
 
-        return LastMinuteDealResponse.fromJson(responseData);
+        return RestaurentDealResponse.fromJson(responseData);
       } else {
         throw Exception('Failed to parse API response');
       }

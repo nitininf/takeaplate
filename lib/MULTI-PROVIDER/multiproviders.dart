@@ -7,7 +7,6 @@ import 'package:takeaplate/MULTI-PROVIDER/RestaurantsListProvider.dart';
 import 'package:takeaplate/MULTI-PROVIDER/SignUp_StepOne.dart';
 import 'package:takeaplate/MULTI-PROVIDER/selectImageProvider.dart';
 import 'package:takeaplate/SCREENS/last_minute_deal/last_minute_deal_screen.dart';
-
 import '../SCREENS/closet_screen/closest_screen.dart';
 import '../SCREENS/contact_us/contacctus_settings.dart';
 import '../SCREENS/contact_us/contact_us.dart';
@@ -44,6 +43,7 @@ import 'FaqProvider.dart';
 import 'FavCardsProvider.dart';
 import 'OrderAndPayProvider.dart';
 import 'PlaceListProvider.dart';
+import 'PrivacyPolicyProvider.dart';
 import 'SignUp_StepTwo.dart';
 import 'common_counter.dart';
 import 'package:provider/provider.dart';
@@ -66,6 +66,7 @@ MultiProvider getProviders() {
       ChangeNotifierProvider(create: (_) => FaqProvider()),
       ChangeNotifierProvider(create: (_) => OrderAndPayProvider()),
       ChangeNotifierProvider(create: (_) => RestaurantsListProvider()),
+      ChangeNotifierProvider(create: (_) => PrivacyPolicyProvider()),
 
     ],
     child:

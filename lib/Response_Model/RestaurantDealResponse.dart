@@ -42,7 +42,7 @@ class dealData {
   Null? deletedAt;
   String? createdAt;
   String? updatedAt;
-  double? averageRating;
+  String? averageRating;
   CustomTime? customTime;
   Store? store;
 

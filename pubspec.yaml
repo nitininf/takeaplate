@@ -53,6 +53,7 @@ dependencies:
   firebase_messaging: ^14.7.9
   geolocator: ^10.1.0
   permission_handler: ^11.1.0
+  flutter_widget_from_html: ^0.14.11
 
 
 

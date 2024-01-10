@@ -40,7 +40,7 @@ class Data {
   String? pin;
   OpeningHour? openingHour;
   PickupTime? pickupTime;
-  Null? deletedAt;
+  String? deletedAt;
   String? createdAt;
   String? updatedAt;
 
@@ -194,7 +194,7 @@ class Friday {
 }
 
 class PickupTime {
-  Null? name;
+  String? name;
   String? endTime;
   String? startTime;
   String? enablePickupTime;

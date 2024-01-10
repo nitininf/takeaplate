@@ -1,17 +1,12 @@
 import 'package:custom_rating_bar/custom_rating_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/custom_app_bar.dart';
 import 'package:takeaplate/UTILS/app_strings.dart';
-
 import '../../CUSTOM_WIDGETS/custom_search_field.dart';
 import '../../CUSTOM_WIDGETS/custom_text_style.dart';
-import '../../MULTI-PROVIDER/PlaceListProvider.dart';
 import '../../MULTI-PROVIDER/RestaurantsListProvider.dart';
-import '../../Response_Model/ClosestRestaurantResponse.dart';
-import '../../Response_Model/LastMinuteDealResponse.dart';
-import '../../Response_Model/RestaurantsListResponse.dart';
+import '../../Response_Model/RestaurantDealResponse.dart';
 import '../../UTILS/app_color.dart';
 import '../../UTILS/app_images.dart';
 import '../../UTILS/fontfaimlly_string.dart';
@@ -77,7 +72,7 @@ class LastMinuteDealScreen extends StatelessWidget{
 
   Widget buildVerticalCards() {
     return Expanded(
-      child: FutureBuilder<LastMinuteDealResponse>(
+      child: FutureBuilder<RestaurentDealResponse>(
         future: restaurantsProvider.getLastMinuteDealsList(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -87,7 +82,7 @@ class LastMinuteDealScreen extends StatelessWidget{
           } else if (!snapshot.hasData || snapshot.data == null || snapshot.data!.data == null) {
             return Text('No restaurants available');
           } else {
-            List<LastMinuteDeals>? items = snapshot.data?.data;
+            List<dealData>? items = snapshot.data?.data;
 
             return SingleChildScrollView(
               scrollDirection: Axis.vertical,
@@ -117,7 +112,7 @@ class LastMinuteDealScreen extends StatelessWidget{
 
 
 
-  Widget getFavCards(int index, LastMinuteDeals data) {
+  Widget getFavCards(int index, dealData data) {
 
     var startTiming = data.customTime?.startTime;
     var endTiming = data.customTime?.endTime;
@@ -169,8 +164,11 @@ class LastMinuteDealScreen extends StatelessWidget{
                       RatingBar.readOnly(
                         filledIcon: Icons.star,
                         emptyIcon: Icons.star_border,
+                        halfFilledIcon: Icons.star_half,
+                        isHalfAllowed: true,
+                        halfFilledColor: btnbgColor,
                         filledColor: btnbgColor,
-                        initialRating: 5,
+                        initialRating: double.parse(data.averageRating ?? '0'),
                         size: 20,
                         maxRating: 5,
                       ),

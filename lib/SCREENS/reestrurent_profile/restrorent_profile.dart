@@ -23,7 +23,6 @@ class RestaurantsProfileScreen extends StatelessWidget {
     final Data data = ModalRoute.of(context)!.settings.arguments as Data;
 var restaurantId = data.id;
     // Print the data
-    print(data.address);
     print('restaurantId - ${restaurantId}');
 
     return Scaffold(
@@ -170,6 +169,9 @@ var restaurantId = data.id;
                 RatingBar.readOnly(
                   filledIcon: Icons.star,
                   emptyIcon: Icons.star_border,
+                  halfFilledIcon: Icons.star_half,
+                  isHalfAllowed: true,
+                  halfFilledColor: btnbgColor,
                   filledColor: btnbgColor,
                   initialRating: 4,
                   size: 20,
@@ -381,8 +383,11 @@ var restaurantId = data.id;
                       RatingBar.readOnly(
                         filledIcon: Icons.star,
                         emptyIcon: Icons.star_border,
+                        halfFilledIcon: Icons.star_half,
+                        isHalfAllowed: true,
+                        halfFilledColor: btnbgColor,
                         filledColor: btnbgColor,
-                        initialRating: data.averageRating ?? 0,
+                        initialRating: double.parse(data.averageRating ?? '2'),
                         size: 20,
                         maxRating: 5,
                       ),

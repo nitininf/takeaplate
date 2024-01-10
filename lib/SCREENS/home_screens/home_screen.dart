@@ -14,10 +14,14 @@ import '../../CUSTOM_WIDGETS/custom_app_bar.dart';
 import '../../CUSTOM_WIDGETS/custom_search_field.dart';
 import '../../MULTI-PROVIDER/FavCardsProvider.dart';
 import '../../MULTI-PROVIDER/PlaceListProvider.dart';
+import '../../MULTI-PROVIDER/RestaurantsListProvider.dart';
+import '../../Response_Model/RestaurantDealResponse.dart';
+import '../../Response_Model/RestaurantsListResponse.dart';
 import '../../UTILS/utils.dart';
 
 class HomeScreen extends StatelessWidget {
   final List<String> items = ['Healthy', 'Sushi', 'Desserts', 'Sugar', 'Sweets'];
+  final RestaurantsListProvider restaurantsProvider = RestaurantsListProvider();
 
 
 
@@ -31,16 +35,16 @@ class HomeScreen extends StatelessWidget {
       if (isLocationPermissionGranted) {
         Position position =
         await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-        final snackBar = SnackBar(
-          content:  Text('Current Location : ${position.latitude} - ${position.longitude}'),
-          action: SnackBarAction(
-            label: 'Ok',
-            onPressed: () {
-              // Some code to undo the change.
-            },
-          ),
-        );
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        // final snackBar = SnackBar(
+        //   content:  Text('Current Location : \n${position.latitude} - \n${position.longitude}'),
+        //   action: SnackBarAction(
+        //     label: 'Ok',
+        //     onPressed: () {
+        //       // Some code to undo the change.
+        //     },
+        //   ),
+        // );
+        // ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
     });
 
@@ -157,23 +161,45 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget buildClosestDealCards() {
-    return Consumer<PlaceListProvider>(
-      builder: (context, dataProvider, child) {
-        return SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: List.generate(
-              dataProvider.items.length,
-                  (index) => getClosestDealData(context, dataProvider.items[index]),
+    return FutureBuilder<RestaurantsListResponse>(
+      future: restaurantsProvider.getClosestRestaurantsList(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator()); // Center the loading indicator
+        } else if (snapshot.hasError) {
+          return Text('Failed to fetch places. Please try again.');
+        } else if (!snapshot.hasData ||
+            snapshot.data == null ||
+            snapshot.data!.data == null) {
+          return Text('No places available');
+        } else {
+          List<Data>? items = snapshot.data!.data;
+
+          return SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: List.generate(
+                items!.length,
+                    (index) => GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(
+                            navigatorKey.currentContext!,
+                            '/RestaurantsProfileScreen',
+                            arguments: items[index], // Pass the data as arguments
+                          );
+                        },
+                        child: getClosestDealData(index, items[index])),
+              ),
             ),
-          ),
-        );
+          );
+        }
       },
     );
   }
 
-  Widget getClosestDealData(BuildContext context, Map<String, dynamic> data) {
+
+  Widget getClosestDealData(int index, Data data) {
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
@@ -189,19 +215,19 @@ class HomeScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               CustomText(
-                text: data['title'],
+                text: data.name ?? '',
                 color: btntxtColor,
                 fontfamilly: montBold,
                 sizeOfFont: 24,
               ),
               CustomText(
-                text: data['category'],
+                text: data.category ?? '',
                 color: btntxtColor,
                 fontfamilly: montRegular,
                 sizeOfFont: 14,
               ),
               CustomText(
-                text: data['offers'],
+                text: '3 Offers available',
                 color: offerColor,
                 sizeOfFont: 9,
                 fontfamilly: montBook,
@@ -212,8 +238,11 @@ class HomeScreen extends StatelessWidget {
                   RatingBar.readOnly(
                     filledIcon: Icons.star,
                     emptyIcon: Icons.star_border,
+                    halfFilledIcon: Icons.star_half,
+                    isHalfAllowed: true,
+                    halfFilledColor: btnbgColor,
                     filledColor: btnbgColor,
-                    initialRating: data['rating'].toDouble(),
+                    initialRating: 4,
                     size: 18,
                     maxRating: 5,
                   ),
@@ -237,7 +266,11 @@ class HomeScreen extends StatelessWidget {
             alignment: Alignment.topRight,
             clipBehavior: Clip.none,
             children: [
-              data.length%2==0 ? Image.asset(restrorent_img, height: 83, width: 80, fit: BoxFit.contain) :Image.asset(food_image, height: 83, width: 80, fit: BoxFit.contain),
+              Image.network(
+                data.profileImage ?? food_image,
+                fit: BoxFit.contain,
+                height: 83, width: 80,
+              ),
               Positioned(
                 right: -4,
                 child: Image.asset(
@@ -256,42 +289,47 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget buildLastMinuteDealCards(BuildContext context) {
-    return Consumer<FavCardsProvider>(
-      builder: (context, dataProvider, child) {
-        // List<Map<String, dynamic>> recentItems = dataProvider.items.take(2).toList();
-        //
-        // return Column(
-        //   crossAxisAlignment: CrossAxisAlignment.start,
-        //   children: recentItems.map((item) {
-        //
-        //     return GestureDetector(
-        //       // onTap: (){
-        //       //   print(item.length);
-        //       //   Navigator.pushNamed(
-        //       //     context,
-        //       //     '/OrderAndPayScreen',
-        //       //   );
-        //       // },
-        //         child: getLastMinuteDealsCards(context, item));
-        //   }).toList(),
-        // );
+    return FutureBuilder<RestaurentDealResponse>(
+      future: restaurantsProvider.getLastMinuteDealsList(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator()); // Center the loading indicator
+        } else if (snapshot.hasError) {
+          return Text('Failed to fetch places. Please try again.');
+        } else if (!snapshot.hasData ||
+            snapshot.data == null ||
+            snapshot.data!.data == null) {
+          return Text('No places available');
+        } else {
+          List<dealData>? items = snapshot.data!.data;
 
-        return SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: List.generate(
-              dataProvider.items.length,
-                  (index) => getLastMinuteDealsData(context, dataProvider.items[index]),
+          return SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: List.generate(
+                items!.length,
+                    (index) => GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(
+                        navigatorKey.currentContext!,
+                        '/OrderAndPayScreen',
+                        arguments: items[index], // Pass the data as arguments
+                      );
+                    },
+                    child: getLastMinuteDealsData(index, items[index])),
+              ),
             ),
-          ),
-        );
-
+          );
+        }
       },
     );
+
   }
 
-  Widget getLastMinuteDealsData(BuildContext context, Map<String, dynamic> data) {
+  Widget getLastMinuteDealsData(int index, dealData item) {
+    var startTiming = item.customTime?.startTime;
+    var endTiming = item.customTime?.endTime;
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
@@ -305,29 +343,32 @@ class HomeScreen extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CustomText(text: data['name'], color: btntxtColor, fontfamilly: montBold,sizeOfFont: 18,),
+              CustomText(text: item.name ?? '', color: btntxtColor, fontfamilly: montBold,sizeOfFont: 18,),
 
-              CustomText(text: data['restaurant'], color: btntxtColor, fontfamilly: montRegular,sizeOfFont: 13,),
+              CustomText(text: item.store?.name ?? '', color: btntxtColor, fontfamilly: montRegular,sizeOfFont: 13,),
 
-              CustomText(text: data['time'], color: graysColor,sizeOfFont: 8, fontfamilly: montRegular),
+              CustomText(text: '${startTiming ?? ""} - ${endTiming ?? ""}', color: graysColor,sizeOfFont: 8, fontfamilly: montRegular),
               SizedBox(height: 5,),
               Row(
                 children: [
                   RatingBar.readOnly(
                     filledIcon: Icons.star,
                     emptyIcon: Icons.star_border,
+                    halfFilledIcon: Icons.star_half,
+                    isHalfAllowed: true,
+                    halfFilledColor: btnbgColor,
                     filledColor: btnbgColor,
                     size: 20,
-                    initialRating: data['rating'].toDouble(),
+                    initialRating: double.parse(item.averageRating ?? '0'),
                     maxRating: 5,
                   ),
                   SizedBox(width: 10,),
-                  CustomText(text: data['distance'], color: graysColor,sizeOfFont: 12, fontfamilly: montSemiBold),
+                  CustomText(text: '8KM', color: graysColor,sizeOfFont: 12, fontfamilly: montSemiBold),
                 ],
 
               ),
               SizedBox(height: 5,),
-              CustomText(text: "\$"+data['price'], color: dolorColor,sizeOfFont: 24, fontfamilly: montHeavy,),
+              CustomText(text: '\$ ${item.price ?? "NA"}', color: dolorColor,sizeOfFont: 24, fontfamilly: montHeavy,),
 
             ],
           ),
@@ -416,6 +457,9 @@ class HomeScreen extends StatelessWidget {
                   RatingBar.readOnly(
                     filledIcon: Icons.star,
                     emptyIcon: Icons.star_border,
+                    halfFilledIcon: Icons.star_half,
+                    isHalfAllowed: true,
+                    halfFilledColor: btnbgColor,
                     filledColor: btnbgColor,
                     size: 20,
                     initialRating: data['rating'].toDouble(),
@@ -513,6 +557,9 @@ class HomeScreen extends StatelessWidget {
                  RatingBar.readOnly(
                     filledIcon: Icons.star,
                     emptyIcon: Icons.star_border,
+                   halfFilledIcon: Icons.star_half,
+                   isHalfAllowed: true,
+                   halfFilledColor: btnbgColor,
                     filledColor: btnbgColor,
                     size: 20,
                     initialRating: data['rating'].toDouble(),

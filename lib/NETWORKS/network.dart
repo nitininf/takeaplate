@@ -44,6 +44,10 @@ class Network {
       Map<String, dynamic>? queryParameters}) async {
     Response? response;
    // String? token = await // // Utility.getStringValue(NetworkStrings.TOKEN_KEY);
+
+    var token = await Utility.getStringValue(RequestString.TOKEN);
+
+
     if (await InternetConnectionChecker().hasConnection) {
       try {
         _dio?.options.connectTimeout =  Duration(milliseconds: connectTimeOut);
@@ -53,7 +57,8 @@ class Network {
             options: Options(
               headers: {
                 'Accept': NetworkStrings.ACCEPT,
-               // 'Authorization': token == null ? "" : "Bearer $token",
+                'Authorization':token == "" ? "" : "Bearer $token",
+
               },
               sendTimeout: Duration(milliseconds: receivingTimeOut),
               receiveTimeout: Duration(milliseconds: receivingTimeOut),

@@ -1,14 +1,26 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+import 'package:provider/provider.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/custom_app_bar.dart';
 import 'package:takeaplate/UTILS/app_color.dart';
 import 'package:takeaplate/UTILS/fontfaimlly_string.dart';
-
 import '../../CUSTOM_WIDGETS/custom_text_style.dart';
+import '../../MULTI-PROVIDER/PrivacyPolicyProvider.dart';
+import '../../Response_Model/PrivacyPolicyResponse.dart';
+
+
 
 class PrivacyPolicyScreen extends StatelessWidget{
+
+  final PrivacyPolicyProvider privacyPolicyProvider = PrivacyPolicyProvider();
+
   @override
   Widget build(BuildContext context) {
+
+
+
    return Scaffold(
     backgroundColor: bgColor,
      body: SafeArea(
@@ -19,14 +31,40 @@ class PrivacyPolicyScreen extends StatelessWidget{
            children: [
              CustomAppBar(),
              SizedBox(height: 20,),
-            getView()
+
+               hitApi()
+
+
+
            ],
          ),
        ),
      ),
    );
   }
-  Widget getView(){
+
+  Widget hitApi() {
+
+    return FutureBuilder<PrivacyPolicyResponse>(
+      future: privacyPolicyProvider.getPrivacyPolicyData(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator()); // Center the loading indicator
+
+        } else if (snapshot.hasError) {
+          return Text('Failed to fetch places. Please try again.');
+
+        } else if (snapshot.hasData) {
+          // Display HTML data
+          return getView(snapshot.data?.data ?? '');
+        } else {
+          return Text("No data available");
+        }
+      },
+    );
+  }
+
+  Widget getView(String s){
     return  Expanded(
       child: SingleChildScrollView(
         child: Padding(
@@ -35,20 +73,24 @@ class PrivacyPolicyScreen extends StatelessWidget{
             children: [
               GestureDetector(child: CustomText(text: "PRIVACY POLICY",sizeOfFont: 20,fontfamilly: montHeavy,color: editbgColor,),
                 onTap: (){
-                 // Navigator.pushNamed(context, '/TermsAndConditionScreen');
+                  // Navigator.pushNamed(context, '/TermsAndConditionScreen');
                 },),
               Container(
-                margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 15),
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                decoration: BoxDecoration(
-                    color: faqSelectedColor,
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(width: 1, color: Colors.white)),
-                child:CustomText(text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor Incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor Incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor Incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do elusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation Lorem ipsum dolor sit amet, consectetur",color:editbgColor,sizeOfFont: 15,fontfamilly: montRegular,),
+                  margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 15),
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  decoration: BoxDecoration(
+                      color: faqSelectedColor,
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(width: 1, color: Colors.white)),
+                  child:
+                  HtmlWidget(s)
               ),
             ],),
         ),
       ),
     );
   }
+
+
+
 }
