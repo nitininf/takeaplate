@@ -1,12 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/custom_app_bar.dart';
+import 'package:takeaplate/MULTI-PROVIDER/TermsAndConditionsProvider.dart';
+import 'package:takeaplate/Response_Model/TermsAndConditionsResponse.dart';
 
 import '../../CUSTOM_WIDGETS/custom_text_style.dart';
 import '../../UTILS/app_color.dart';
 import '../../UTILS/fontfaimlly_string.dart';
 
 class TermsAndConditionScreen extends StatelessWidget{
+  final TermsAndConditionsProvider privacyPolicyProvider = TermsAndConditionsProvider();
 
   @override
   Widget build(BuildContext context) {
@@ -20,14 +24,37 @@ class TermsAndConditionScreen extends StatelessWidget{
             children: [
               CustomAppBar(),
               SizedBox(height: 20,),
-              getView()
+              hitApi()
             ],
           ),
         ),
       ),
     );
   }
-  Widget getView(){
+
+  Widget hitApi() {
+
+    return FutureBuilder<TermsAndConditionsResponse>(
+      future: privacyPolicyProvider.getPrivacyPolicyData(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(child: CircularProgressIndicator()); // Center the loading indicator
+
+        } else if (snapshot.hasError) {
+          return Text('Failed to fetch terms and condition data. Please try again.');
+
+        } else if (snapshot.hasData) {
+          // Display HTML data
+          return getView(snapshot.data?.data ?? '');
+        } else {
+          return Text("No data available");
+        }
+      },
+    );
+  }
+
+
+  Widget getView(String s){
     return  Expanded(
       child: SingleChildScrollView(
         child: Padding(
@@ -45,7 +72,7 @@ class TermsAndConditionScreen extends StatelessWidget{
                     color: faqSelectedColor,
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(width: 1, color: Colors.white)),
-                child:CustomText(text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor Incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation, Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor Incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor Incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do elusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation Lorem ipsum dolor sit amet, consectetur",color:editbgColor,sizeOfFont: 15,fontfamilly: montRegular,),
+                child:  HtmlWidget(s),
               ),
             ],),
         ),

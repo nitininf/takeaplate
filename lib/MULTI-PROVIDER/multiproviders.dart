@@ -45,6 +45,7 @@ import 'OrderAndPayProvider.dart';
 import 'PlaceListProvider.dart';
 import 'PrivacyPolicyProvider.dart';
 import 'SignUp_StepTwo.dart';
+import 'TermsAndConditionsProvider.dart';
 import 'common_counter.dart';
 import 'package:provider/provider.dart';
 MultiProvider getProviders() {
@@ -67,6 +68,7 @@ MultiProvider getProviders() {
       ChangeNotifierProvider(create: (_) => OrderAndPayProvider()),
       ChangeNotifierProvider(create: (_) => RestaurantsListProvider()),
       ChangeNotifierProvider(create: (_) => PrivacyPolicyProvider()),
+      ChangeNotifierProvider(create: (_) => TermsAndConditionsProvider()),
 
     ],
     child:

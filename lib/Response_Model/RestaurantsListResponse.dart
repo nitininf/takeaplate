@@ -1,9 +1,11 @@
 class RestaurantsListResponse {
   String? message;
   List<Data>? data;
+  String? nextPageUrl;
   bool? status;
 
-  RestaurantsListResponse({this.message, this.data, this.status});
+  RestaurantsListResponse(
+      {this.message, this.data, this.nextPageUrl, this.status});
 
   RestaurantsListResponse.fromJson(Map<String, dynamic> json) {
     message = json['message'];
@@ -13,6 +15,7 @@ class RestaurantsListResponse {
         data!.add(new Data.fromJson(v));
       });
     }
+    nextPageUrl = json['nextPageUrl'];
     status = json['status'];
   }
 
@@ -22,6 +25,7 @@ class RestaurantsListResponse {
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
+    data['nextPageUrl'] = this.nextPageUrl;
     data['status'] = this.status;
     return data;
   }
@@ -40,7 +44,7 @@ class Data {
   String? pin;
   OpeningHour? openingHour;
   PickupTime? pickupTime;
-  String? deletedAt;
+  Null? deletedAt;
   String? createdAt;
   String? updatedAt;
 

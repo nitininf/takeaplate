@@ -1,6 +1,6 @@
-import 'package:custom_rating_bar/custom_rating_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:custom_rating_bar/custom_rating_bar.dart';
 
 import '../../CUSTOM_WIDGETS/custom_app_bar.dart';
 import '../../CUSTOM_WIDGETS/custom_search_field.dart';
@@ -12,10 +12,68 @@ import '../../UTILS/app_images.dart';
 import '../../UTILS/fontfaimlly_string.dart';
 import '../../main.dart';
 
-class RestaurantsScreen extends StatelessWidget {
+class RestaurantsScreen extends StatefulWidget {
+  @override
+  _RestaurantsScreenState createState() => _RestaurantsScreenState();
+}
+
+class _RestaurantsScreenState extends State<RestaurantsScreen> {
   final List<String> items = ['Healthy', 'Sushi', 'Desserts', 'Sugar', 'Sweets'];
   final RestaurantsListProvider restaurantsProvider = RestaurantsListProvider();
   static const String placeholderImage = 'assets/placeholder_image.png';
+
+  int currentPage = 1;
+  bool isLoading = false;
+  bool hasMoreData = true;
+  List<Data> restaurantData = [];
+
+  ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_scrollListener);
+    _loadData();
+  }
+
+  void _scrollListener() {
+    if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+      // Reached the end of the list, load more data
+      _loadData();
+    }
+  }
+
+  void _loadData() async {
+    if (!isLoading && hasMoreData) {
+      try {
+        setState(() {
+          isLoading = true;
+        });
+
+        final nextPageData = await restaurantsProvider.getRestaurantsList(
+          page: currentPage,
+        );
+
+        if (nextPageData.data != null && nextPageData.data!.isNotEmpty) {
+          setState(() {
+            restaurantData.addAll(nextPageData.data!);
+            currentPage++;
+          });
+        } else {
+          // No more data available
+          setState(() {
+            hasMoreData = false;
+          });
+        }
+      } catch (error) {
+        print('Error loading more data: $error');
+      } finally {
+        setState(() {
+          isLoading = false;
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,36 +125,27 @@ class RestaurantsScreen extends StatelessWidget {
 
   Widget buildVeerticalCards() {
     return Expanded(
-      child: FutureBuilder<RestaurantsListResponse>(
-        future: restaurantsProvider.getRestaurantsList(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator()); // Center the loading indicator
-          } else if (snapshot.hasError) {
-            return Text('Failed to fetch restaurants. Please try again.');
-          } else if (!snapshot.hasData || snapshot.data == null || snapshot.data!.data == null) {
-            return Text('No restaurants available');
+      child: ListView.builder(
+        controller: _scrollController,
+        itemCount: restaurantData.length + (hasMoreData ? 1 : 0),
+        itemBuilder: (context, index) {
+          if (index < restaurantData.length) {
+            // Display restaurant card
+            return GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(
+                  navigatorKey.currentContext!,
+                  '/RestaurantsProfileScreen',
+                  arguments: restaurantData[index],
+                );
+              },
+              child: getFavCards(index, restaurantData[index]),
+            );
           } else {
-            List<Data>? items = snapshot.data!.data;
-
-            return SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: List.generate(
-                  items!.length,
-                      (index) => GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(
-                        navigatorKey.currentContext!,
-                        '/RestaurantsProfileScreen',
-                        arguments: items[index], // Pass the data as arguments
-                      );
-                    },
-                    child: getFavCards(index, items[index]),
-                  ),
-                ),
-              ),
+            // Display loading indicator while fetching more data
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Center(child: CircularProgressIndicator()),
             );
           }
         },
@@ -130,9 +179,6 @@ class RestaurantsScreen extends StatelessWidget {
                       filledIcon: Icons.star,
                       emptyIcon: Icons.star_border,
                       filledColor: btnbgColor,
-                      halfFilledIcon: Icons.star_half,
-                      isHalfAllowed: true,
-                      halfFilledColor: btnbgColor,
                       initialRating: 4,
                       size: 20,
                       maxRating: 5,
@@ -153,9 +199,7 @@ class RestaurantsScreen extends StatelessWidget {
                 Image.network(
                   data.profileImage ?? food_image,
                   fit: BoxFit.contain,
-
                 ),
-
                 Positioned(
                   right: -4,
                   child: Image.asset(save_icon, height: 15, width: 18,),

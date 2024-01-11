@@ -1,6 +1,7 @@
 import 'package:custom_rating_bar/custom_rating_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/custom_app_bar.dart';
 import 'package:takeaplate/UTILS/app_strings.dart';
 
@@ -20,24 +21,30 @@ class ClosestScreen extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-      backgroundColor: bgColor,
-      body: SafeArea(
-        child: Padding(padding: const EdgeInsets.only(top: 0.0,bottom: 20,left: 25,right: 25),
+    return  RefreshIndicator(
+      onRefresh: () {
+        // Use the Provider to refresh data
+        return Provider.of<RestaurantsListProvider>(context, listen: false).getClosestRestaurantsList();
+      },
+      child: Scaffold(
+        backgroundColor: bgColor,
+        body: SafeArea(
+          child: Padding(padding: const EdgeInsets.only(top: 0.0,bottom: 20,left: 25,right: 25),
 
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const CustomAppBar(),
-              const SizedBox(height: 20),
-              const CustomSearchField(hintText:"Search"),
-              const Padding(
-                padding: EdgeInsets.only(left: 13.0,top: 20),
-                child: CustomText(text: closet, color: btnbgColor, fontfamilly: montHeavy, sizeOfFont: 20),
-              ),
-              buildHorizontalList(items),
-              buildVerticalCards()
-            ],
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const CustomAppBar(),
+                const SizedBox(height: 20),
+                const CustomSearchField(hintText:"Search"),
+                const Padding(
+                  padding: EdgeInsets.only(left: 13.0,top: 20),
+                  child: CustomText(text: closet, color: btnbgColor, fontfamilly: montHeavy, sizeOfFont: 20),
+                ),
+                buildHorizontalList(items),
+                buildVerticalCards(context)
+              ],
+            ),
           ),
         ),
       ),
@@ -71,43 +78,45 @@ class ClosestScreen extends StatelessWidget{
   }
 
 
-  Widget buildVerticalCards() {
-    return Expanded(
-      child: FutureBuilder<RestaurantsListResponse>(
-        future: restaurantsProvider.getClosestRestaurantsList(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator()); // Center the loading indicator
-          } else if (snapshot.hasError) {
-            return Text('Failed to fetch restaurants. Please try again.');
-          } else if (!snapshot.hasData || snapshot.data == null || snapshot.data!.data == null) {
-            return Text('No restaurants available');
-          } else {
-            List<Data>? items = snapshot.data?.data;
+  Widget buildVerticalCards(BuildContext context) {
+    return
 
-            return SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: List.generate(
-                  items!.length,
-                      (index) => GestureDetector(
-                        onTap: () {
-                          Navigator.pushNamed(
-                            navigatorKey.currentContext!,
-                            '/RestaurantsProfileScreen',
-                            arguments: items[index], // Pass the data as arguments
-                          );
-                        },
-                    child: getFavCards(index, items[index]),
+      Expanded(
+        child: FutureBuilder<RestaurantsListResponse>(
+          future: restaurantsProvider.getClosestRestaurantsList(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Text('Failed to fetch restaurants. Please try again.');
+            } else if (!snapshot.hasData || snapshot.data == null || snapshot.data!.data == null) {
+              return Text('No restaurants available');
+            } else {
+              List<Data>? items = snapshot.data?.data;
+
+              return SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: List.generate(
+                    items!.length,
+                        (index) => GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(
+                          navigatorKey.currentContext!,
+                          '/RestaurantsProfileScreen',
+                          arguments: items[index],
+                        );
+                      },
+                      child: getFavCards(index, items[index]),
+                    ),
                   ),
                 ),
-              ),
-            );
-          }
-        },
-      ),
-    );
+              );
+            }
+          },
+        ),
+      );
 
   }
 

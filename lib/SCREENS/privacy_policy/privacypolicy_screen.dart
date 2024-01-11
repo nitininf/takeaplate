@@ -52,7 +52,7 @@ class PrivacyPolicyScreen extends StatelessWidget{
           return Center(child: CircularProgressIndicator()); // Center the loading indicator
 
         } else if (snapshot.hasError) {
-          return Text('Failed to fetch places. Please try again.');
+          return Text('Failed to fetch privacy policy data. Please try again.');
 
         } else if (snapshot.hasData) {
           // Display HTML data
