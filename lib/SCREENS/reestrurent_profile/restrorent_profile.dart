@@ -35,6 +35,7 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
   bool isLoading = false;
   bool hasMoreData = true;
   List<dealData> dealListData = [];
+  List<dealData> favouriteDealListData = [];
 
   ScrollController _scrollController = ScrollController();
 
@@ -72,11 +73,32 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
         );
 
         if (nextPageData.data != null && nextPageData.data!.isNotEmpty) {
-          setState(() {
-            dealListData.addAll(nextPageData.data!);
 
-            currentPage++;
-          });
+          for (dealData deal in nextPageData.data!) {
+
+            if(deal.favourite==false){
+
+              setState(() {
+
+                dealListData.add(deal);
+
+
+                currentPage++;
+              });
+
+            }else if(deal.favourite==true){
+
+              setState(() {
+
+                favouriteDealListData.add(deal);
+
+
+                currentPage++;
+              });
+            }
+          }
+
+
         } else {
           // No more data available
           setState(() {
@@ -123,7 +145,7 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
             !commonProvider.isDeal
                 ? buildSection("TODAY'S DEALS", "")
                 : buildSection("YOUR FAVOURITES", ""),
-            buildVerticalCards()
+            buildVerticalCards(commonProvider)
           ],
         ),
       );
@@ -364,7 +386,10 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
     );
   }
 
-  Widget buildVerticalCards() {
+  Widget buildVerticalCards(CommonCounter commonCounter) {
+    List<dealData> currentList =
+    commonCounter.isDeal ? dealListData : favouriteDealListData;
+
     return Expanded(
       child: RefreshIndicator(
         key: _refreshIndicatorKey,
@@ -374,19 +399,19 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
         onRefresh: _refreshData,
         child: ListView.builder(
           controller: _scrollController,
-          itemCount: dealListData.length + (hasMoreData ? 1 : 0),
+          itemCount: currentList.length + (hasMoreData ? 1 : 0),
           itemBuilder: (context, index) {
-            if (index < dealListData.length) {
+            if (index < currentList.length) {
               // Display restaurant card
               return GestureDetector(
                 onTap: () {
                   Navigator.pushNamed(
                     navigatorKey.currentContext!,
                     '/RestaurantsProfileScreen',
-                    arguments: dealListData[index],
+                    arguments: currentList[index],
                   );
                 },
-                child: getFavCards(index, dealListData[index]),
+                child: getFavCards(index, currentList[index]),
               );
             } else {
               // Display loading indicator while fetching more data
@@ -401,6 +426,7 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
     );
   }
 
+
   Future<void> _refreshData() async {
     // Call your API here to refresh the data
     try {
@@ -408,11 +434,36 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
           await restaurantsProvider.getRestaurantsDealsList(data.id, page: 1);
 
       if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
-        setState(() {
-          dealListData = refreshedData.data!;
-          currentPage = 1; // Reset the page to 2 as you loaded the first page.
-          hasMoreData = true; // Reset the flag for more data.
-        });
+
+
+          for (dealData deal in refreshedData.data!) {
+
+            if(deal.favourite==false){
+
+              setState(() {
+                dealListData = refreshedData as List<dealData>;
+                currentPage = 1; // Reset the page to 2 as you loaded the first page.
+                hasMoreData = true; // Reset the flag for more data.
+              });
+
+            } else if(deal.favourite==true){
+
+
+                setState(() {
+                  favouriteDealListData = refreshedData as List<dealData>;
+
+                  currentPage = 1; // Reset the page to 2 as you loaded the first page.
+                  hasMoreData = true; // Reset the flag for more data.
+                });
+
+            }
+          }
+
+
+        } else {
+
+
+
       }
     } catch (error) {
       print('Error refreshing data: $error');
@@ -554,23 +605,49 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
                                 ScaffoldMessenger.of(context).hideCurrentSnackBar();
                               });
 
-                              setState(() async {
-                                try {
-                                  final refreshedData = await restaurantsProvider.getRestaurantsDealsList(storeId, page: 1);
+                              setState(() {
 
-                                  if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
-                                    setState(() {
-                                      data.favourite = true;
+                                data.favourite = true;
 
-                                      dealListData = refreshedData.data!.cast<dealData>();
-                                      currentPage = 1; // Reset the page to 2 as you loaded the first page.
-                                      hasMoreData = true; // Reset the flag for more data.
-                                    });
-                                  }
-                                } catch (error) {
-                                  print('Error refreshing data: $error');
-                                }
+
                               });
+
+
+                              try {
+                                final refreshedData = await restaurantsProvider.getRestaurantsDealsList(storeId, page: 1);
+
+                                if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
+                                  for (dealData deal in refreshedData.data!) {
+
+                                    if(deal.favourite==false){
+
+                                      setState(() {
+                                        dealListData = refreshedData as List<dealData>;
+                                        currentPage = 1; // Reset the page to 2 as you loaded the first page.
+                                        hasMoreData = true; // Reset the flag for more data.
+                                      });
+
+                                    } else if(deal.favourite==true){
+
+
+                                      setState(() {
+
+                                        favouriteDealListData = refreshedData as List<dealData>;
+
+                                        currentPage = 1; // Reset the page to 2 as you loaded the first page.
+                                        hasMoreData = true; // Reset the flag for more data.
+                                      });
+
+                                    }
+                                  }
+
+
+                                }
+                              } catch (error) {
+                                print('Error refreshing data: $error');
+                              }
+
+
                             } else {
                               // API call failed
                               print("Something went wrong: ${favData.message}");
@@ -608,23 +685,48 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
                                 ScaffoldMessenger.of(context).hideCurrentSnackBar();
                               });
 
-                              setState(() async {
+                              setState(() {
 
-                                try {
-                                  final refreshedData = await restaurantsProvider.getRestaurantsDealsList(storeId, page: 1);
+                                data.favourite = false;
 
-                                  if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
-                                    setState(() {
-                                      data.favourite = false;
-                                      dealListData = refreshedData.data!.cast<dealData>();
-                                      currentPage = 1; // Reset the page to 2 as you loaded the first page.
-                                      hasMoreData = true; // Reset the flag for more data.
-                                    });
-                                  }
-                                } catch (error) {
-                                  print('Error refreshing data: $error');
-                                }
+
                               });
+
+                              try {
+                                final refreshedData = await restaurantsProvider.getRestaurantsDealsList(storeId, page: 1);
+
+                                if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
+                                  for (dealData deal in refreshedData.data!) {
+
+                                    if(deal.favourite==false){
+
+                                      setState(() {
+                                        dealListData = refreshedData as List<dealData>;
+                                        currentPage = 1; // Reset the page to 2 as you loaded the first page.
+                                        hasMoreData = true; // Reset the flag for more data.
+                                      });
+
+                                    } else if(deal.favourite==true){
+
+
+                                      setState(() {
+
+                                        favouriteDealListData = refreshedData as List<dealData>;
+
+                                        currentPage = 1; // Reset the page to 2 as you loaded the first page.
+                                        hasMoreData = true; // Reset the flag for more data.
+                                      });
+
+                                    }
+                                  }
+
+
+                                }
+                              } catch (error) {
+                                print('Error refreshing data: $error');
+                              }
+
+
                             } else {
                               // API call failed
                               print("Something went wrong: ${delData.message}");

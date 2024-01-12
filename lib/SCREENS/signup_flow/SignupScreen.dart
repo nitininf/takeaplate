@@ -26,178 +26,190 @@ class SignUpScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
-    return Scaffold(
-      extendBody: true,
-      resizeToAvoidBottomInset: true, // Set this to true
-      body: Container(
-        height: screenHeight,
-        width: screenWidth,
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage(appBackground),
-            fit: BoxFit.cover,
+    return WillPopScope(
+      onWillPop: () async {
+        // Clear the text fields when the user presses the back button
+        fullNameController.clear();
+        emailController.clear();
+        phoneNumberController.clear();
+        dobController.clear();
+
+        // Allow the back button action
+        return true;
+      },
+      child: Scaffold(
+        extendBody: true,
+        resizeToAvoidBottomInset: true, // Set this to true
+        body: Container(
+          height: screenHeight,
+          width: screenWidth,
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage(appBackground),
+              fit: BoxFit.cover,
+            ),
           ),
-        ),
-        child: SafeArea(
-          child: SingleChildScrollView(
-            // Wrap your Column with SingleChildScrollView
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(left: 40.0, right: 40),
-                  child: Column(
-                    children: [
-                      SizedBox(height: screenHeight * 0.04),
-                      Image.asset(
-                        appLogo,
-                        height: 80,
-                        width: 80,
-                      ),
-                      SizedBox(height: screenHeight * 0.04),
-                      const Align(
-                        alignment: Alignment.topLeft,
-                        child: CustomText(
-                          text: createyouraccount,
-                          color: hintColor,
-                          fontfamilly: montHeavy,
-                          sizeOfFont: 20,
+          child: SafeArea(
+            child: SingleChildScrollView(
+              // Wrap your Column with SingleChildScrollView
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 40.0, right: 40),
+                    child: Column(
+                      children: [
+                        SizedBox(height: screenHeight * 0.04),
+                        Image.asset(
+                          appLogo,
+                          height: 80,
+                          width: 80,
                         ),
-                      ),
-                      SizedBox(height: screenHeight * 0.04),
-                      CommonEmailField(
-                        hintText: fullName,
-                        controller: fullNameController,
-                      ),
-                      const SizedBox(height: 20),
-                      CommonEmailField(
-                        hintText: email,
-                        controller: emailController,
-                      ),
-                      const SizedBox(height: 20),
-                      CommonEmailField(
-                        hintText: phoneNumber,
-                        controller: phoneNumberController,
-                        isPhoneNumber: true,
-                        isPassword: false,
-                      ),
-                      const SizedBox(height: 30),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: CommonEditText(
-                                hintText: dob,
-                                controller: dobController,
-                                onTap: () => _selectDate(context),
-                                isIconShow: true,
-                                isSelection: true),
+                        SizedBox(height: screenHeight * 0.04),
+                        const Align(
+                          alignment: Alignment.topLeft,
+                          child: CustomText(
+                            text: createyouraccount,
+                            color: hintColor,
+                            fontfamilly: montHeavy,
+                            sizeOfFont: 20,
                           ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: CommonEditText(
-                              hintText: gender,
-                              isPassword: true,
-                              isSelection: true,
-                              isIconShow: true,
-                              controller: genderController,
-                              onTap: () {
-                                _showGenderDropdown(context);
-                              },
+                        ),
+                        SizedBox(height: screenHeight * 0.04),
+                        CommonEmailField(
+                          hintText: fullName,
+                          controller: fullNameController,
+                        ),
+                        const SizedBox(height: 20),
+                        CommonEmailField(
+                          hintText: email,
+                          controller: emailController,
+                        ),
+                        const SizedBox(height: 20),
+                        CommonEmailField(
+                          hintText: phoneNumber,
+                          controller: phoneNumberController,
+                          isPhoneNumber: true,
+                          isPassword: false,
+                        ),
+                        const SizedBox(height: 30),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: CommonEditText(
+                                  hintText: dob,
+                                  controller: dobController,
+                                  onTap: () => _selectDate(context),
+                                  isIconShow: true,
+                                  isSelection: true),
                             ),
-                          ),
-                        ],
-                      ),
-                    ],
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: CommonEditText(
+                                hintText: gender,
+                                isPassword: true,
+                                isSelection: true,
+                                isIconShow: true,
+                                controller: genderController,
+                                onTap: () {
+                                  _showGenderDropdown(context);
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                SizedBox(
-                  height: screenHeight * 0.170,
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 40, right: 40, bottom: 20),
-                  child: CommonButton(
-                    btnBgColor: btnbgColor,
-                    btnText: next,
-                    onClick: () async {
-                      var validEmail =
-                          FormValidator.validateEmail(emailController.text);
-                      print(validEmail);
-                      // Check if any field is null or empty
-                      if (fullNameController.text.isEmpty ||
-                          emailController.text.isEmpty ||
-                          phoneNumberController.text.isEmpty ||
-                          dobController.text.isEmpty ||
-                          genderController.text.isEmpty) {
-                        // Show an error message or perform any action for invalid input
-                        print("Please fill in all fields");
-
-                        final snackBar = SnackBar(
-                          content: Text('Please fill in all fields'),
-                        );
-
-// Show the SnackBar
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-
-// Automatically hide the SnackBar after 1 second
-                        Future.delayed(Duration(milliseconds: 1000), () {
-                          ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                        });
-                      } else if (validEmail != null) {
-                        final snackBar = SnackBar(
-                          content: Text('Please enter valid email id'),
-                        );
-
-// Show the SnackBar
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-
-// Automatically hide the SnackBar after 1 second
-                        Future.delayed(Duration(milliseconds: 1000), () {
-                          ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                        });
-                      } else {
-                        // If all fields are filled, proceed to the next screen
-                        print(
-                            "Full Name: ${fullNameController.text} ,\n Email: ${emailController.text},\n Phone Number: ${phoneNumberController.text},\n Date Of Birth: ${dobController.text},\n Gender: ${genderController.text}");
-
-                        final DateProvider dateProvider =
-                            Provider.of<DateProvider>(context, listen: false);
-
-                        var date = dateProvider
-                            .formattedDate(DateTime.parse(dobController.text));
-
-                        var saveUserBasicDetail =
-                            Provider.of<SignUp_StepOne>(context, listen: false);
-
-                        // Set user information in the provider
-                        saveUserBasicDetail.saveSignUpStepOneData(
-                          fullName: fullNameController.text,
-                          email: emailController.text,
-                          phoneNumber: phoneNumberController.text,
-                          dob: date,
-                          gender: genderController.text.toLowerCase(),
-                        );
-
-                        Navigator.pushNamed(context, '/UploadPhoto');
-                      }
-                    },
+                  SizedBox(
+                    height: screenHeight * 0.170,
                   ),
-                ),
-              ],
+                  Padding(
+                    padding: EdgeInsets.only(left: 40, right: 40, bottom: 20),
+                    child: CommonButton(
+                      btnBgColor: btnbgColor,
+                      btnText: next,
+                      onClick: () async {
+                        var validEmail =
+                            FormValidator.validateEmail(emailController.text);
+                        print(validEmail);
+                        // Check if any field is null or empty
+                        if (fullNameController.text.isEmpty ||
+                            emailController.text.isEmpty ||
+                            phoneNumberController.text.isEmpty ||
+                            dobController.text.isEmpty ||
+                            genderController.text.isEmpty) {
+                          // Show an error message or perform any action for invalid input
+                          print("Please fill in all fields");
+
+                          final snackBar = SnackBar(
+                            content: Text('Please fill in all fields'),
+                          );
+
+      // Show the SnackBar
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+      // Automatically hide the SnackBar after 1 second
+                          Future.delayed(Duration(milliseconds: 1000), () {
+                            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                          });
+                        } else if (validEmail != null) {
+                          final snackBar = SnackBar(
+                            content: Text('Please enter valid email id'),
+                          );
+
+      // Show the SnackBar
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+      // Automatically hide the SnackBar after 1 second
+                          Future.delayed(Duration(milliseconds: 1000), () {
+                            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                          });
+                        } else {
+                          // If all fields are filled, proceed to the next screen
+                          print(
+                              "Full Name: ${fullNameController.text} ,\n Email: ${emailController.text},\n Phone Number: ${phoneNumberController.text},\n Date Of Birth: ${dobController.text},\n Gender: ${genderController.text}");
+
+                          final DateProvider dateProvider =
+                              Provider.of<DateProvider>(context, listen: false);
+
+                          var date = dateProvider
+                              .formattedDate(DateTime.parse(dobController.text));
+
+                          var saveUserBasicDetail =
+                              Provider.of<SignUp_StepOne>(context, listen: false);
+
+                          // Set user information in the provider
+                          saveUserBasicDetail.saveSignUpStepOneData(
+                            fullName: fullNameController.text,
+                            email: emailController.text,
+                            phoneNumber: phoneNumberController.text,
+                            dob: date,
+                            gender: genderController.text.toLowerCase(),
+                          );
+
+                          Navigator.pushNamed(context, '/UploadPhoto');
+                        }
+                      },
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
-      ),
 
-      /*   bottomNavigationBar:  Padding(
-      padding:EdgeInsets.only(left: 40,right: 40,bottom: 20) ,
-      child: CommonButton(
-        btnBgColor: btnbgColor,
-        btnText: next,
-        onClick: () {
-          Navigator.pushNamed(context, '/UploadPhoto');
-        },
+        /*   bottomNavigationBar:  Padding(
+        padding:EdgeInsets.only(left: 40,right: 40,bottom: 20) ,
+        child: CommonButton(
+          btnBgColor: btnbgColor,
+          btnText: next,
+          onClick: () {
+            Navigator.pushNamed(context, '/UploadPhoto');
+          },
+        ),
+      ),*/
       ),
-    ),*/
     );
   }
 

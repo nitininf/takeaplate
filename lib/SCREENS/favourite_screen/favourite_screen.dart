@@ -11,6 +11,8 @@ import '../../UTILS/app_images.dart';
 import '../../UTILS/fontfaimlly_string.dart';
 import '../../main.dart';
 
+
+
 class FavouriteScreen extends StatelessWidget{
   final List<String> items = ['Healthy', 'Sushi', 'Desserts', 'Sugar', 'Sweets'];
 

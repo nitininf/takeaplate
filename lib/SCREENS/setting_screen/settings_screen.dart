@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/common_button.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/common_edit_text.dart';
+import 'package:takeaplate/SCREENS/login_flow/CreateOrLoginScreen.dart';
 import 'package:takeaplate/UTILS/app_color.dart';
 import 'package:takeaplate/UTILS/fontfaimlly_string.dart';
 import 'package:takeaplate/main.dart';
@@ -46,11 +47,10 @@ class SettingScreen extends StatelessWidget{
                    });
 
                    // Navigate to the desired screen, e.g., login screen
-                   Navigator.pushNamedAndRemoveUntil(
-                     context,
-                     '/Create_Login',
-                         (Route<dynamic> route) => false, // Clear all routes in the stack
-                   );
+
+                   Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(
+                       builder: (context) => CreateOrLogInScreen()), (Route route) => false);
+
 
                    final snackBar = SnackBar(
                      content: const Text('Logged out successfully.'),

@@ -111,7 +111,6 @@ class SetYourPasswordScreen extends StatelessWidget {
                           getUserBasicDetails.phoneNumber.isNotEmpty &&
                           getUserBasicDetails.dob.isNotEmpty &&
                           getUserBasicDetails.gender.isNotEmpty &&
-                          getUserBasicDetails.user_image.isNotEmpty &&
                           passwordController.text.isNotEmpty &&
                           confirmPasswordController.text.isNotEmpty) {
 

@@ -53,10 +53,17 @@ class _OnBoardingScreenState extends State<OnBoardingScreen>
                 child: Align(
                     alignment: Alignment.topRight,
                     child: GestureDetector(
-                      onTap: (){
+                      onTap: () async {
+                        int? userId = await Utility.getIntValue(RequestString.ID);
+                        print("userId: ${userId}");
 
-                        Navigator.pushNamed(context, '/BaseHome');
+                        if(userId != null){
 
+                          Navigator.pushNamed(context, '/BaseHome');
+
+                        }else {
+                          Navigator.pushNamed(context, '/Create_Login');
+                        }
 
                       },
                       child: CustomText(
