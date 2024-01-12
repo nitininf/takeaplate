@@ -1,11 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:custom_rating_bar/custom_rating_bar.dart';
+import 'package:provider/provider.dart';
 
 import '../../CUSTOM_WIDGETS/custom_app_bar.dart';
 import '../../CUSTOM_WIDGETS/custom_search_field.dart';
 import '../../CUSTOM_WIDGETS/custom_text_style.dart';
+import '../../MULTI-PROVIDER/FavoriteOperationProvider.dart';
 import '../../MULTI-PROVIDER/RestaurantsListProvider.dart';
+import '../../Response_Model/FavAddedResponse.dart';
+import '../../Response_Model/FavDeleteResponse.dart';
 import '../../Response_Model/RestaurantsListResponse.dart';
 import '../../UTILS/app_color.dart';
 import '../../UTILS/app_images.dart';
@@ -20,8 +24,7 @@ class RestaurantsScreen extends StatefulWidget {
 class _RestaurantsScreenState extends State<RestaurantsScreen> {
   final List<String> items = ['Healthy', 'Sushi', 'Desserts', 'Sugar', 'Sweets'];
   final RestaurantsListProvider restaurantsProvider = RestaurantsListProvider();
-  static const String placeholderImage = 'assets/placeholder_image.png';
-
+  bool isFavorite = false;
   int currentPage = 1;
   bool isLoading = false;
   bool hasMoreData = true;
@@ -35,6 +38,9 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
     _scrollController.addListener(_scrollListener);
     _loadData();
   }
+
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
+
 
   void _scrollListener() {
     if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
@@ -57,6 +63,9 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
         if (nextPageData.data != null && nextPageData.data!.isNotEmpty) {
           setState(() {
             restaurantData.addAll(nextPageData.data!);
+
+
+
             currentPage++;
           });
         } else {
@@ -91,7 +100,7 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
               child: CustomText(text: "RESTAURANTS", color: btnbgColor, fontfamilly: montHeavy, sizeOfFont: 20),
             ),
             buildHorizontalList(items),
-            buildVeerticalCards(),
+            buildVerticalCards(),
           ],
         ),
       ),
@@ -123,37 +132,64 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
     );
   }
 
-  Widget buildVeerticalCards() {
+  Widget buildVerticalCards() {
     return Expanded(
-      child: ListView.builder(
-        controller: _scrollController,
-        itemCount: restaurantData.length + (hasMoreData ? 1 : 0),
-        itemBuilder: (context, index) {
-          if (index < restaurantData.length) {
-            // Display restaurant card
-            return GestureDetector(
-              onTap: () {
-                Navigator.pushNamed(
-                  navigatorKey.currentContext!,
-                  '/RestaurantsProfileScreen',
-                  arguments: restaurantData[index],
-                );
-              },
-              child: getFavCards(index, restaurantData[index]),
-            );
-          } else {
-            // Display loading indicator while fetching more data
-            return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Center(child: CircularProgressIndicator()),
-            );
-          }
-        },
+      child: RefreshIndicator(
+        key: _refreshIndicatorKey,
+        color: Colors.white,
+        backgroundColor: editbgColor,
+        strokeWidth: 4.0,
+        onRefresh: _refreshData,
+        child: ListView.builder(
+          controller: _scrollController,
+          itemCount: restaurantData.length + (hasMoreData ? 1 : 0),
+          itemBuilder: (context, index) {
+            if (index < restaurantData.length) {
+              // Display restaurant card
+              return GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(
+                    navigatorKey.currentContext!,
+                    '/RestaurantsProfileScreen',
+                    arguments: restaurantData[index],
+                  );
+                },
+                child: getFavCards(index, restaurantData[index]),
+              );
+            } else {
+              // Display loading indicator while fetching more data
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Center(child: CircularProgressIndicator()),
+              );
+            }
+          },
+        ),
       ),
     );
   }
 
-  Widget getFavCards(int index, Data data) {
+  Future<void> _refreshData() async {
+    // Call your API here to refresh the data
+    try {
+      final refreshedData = await restaurantsProvider.getRestaurantsList(page: 1);
+
+      if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
+        setState(() {
+          restaurantData = refreshedData.data!;
+          currentPage = 1; // Reset the page to 2 as you loaded the first page.
+          hasMoreData = true; // Reset the flag for more data.
+        });
+      }
+    } catch (error) {
+      print('Error refreshing data: $error');
+    }
+  }
+
+
+  Widget getFavCards(int index, Data storeData) {
+
+
     // Use the 'data' parameter to access properties from the 'Data' class
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
@@ -169,9 +205,9 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CustomText(text: data.name ?? "", color: btntxtColor, fontfamilly: montBold, sizeOfFont: 27, maxLin: 1,),
-                CustomText(text: data.category ?? "", color: graysColor, fontfamilly: montRegular, sizeOfFont: 16, maxLin: 1,),
-                CustomText(text: data.address ?? "", color: graysColor, sizeOfFont: 12, fontfamilly: montLight, maxLin: 1,),
+                CustomText(text: storeData.name ?? "", color: btntxtColor, fontfamilly: montBold, sizeOfFont: 27, maxLin: 1,),
+                CustomText(text: storeData.category ?? "", color: graysColor, fontfamilly: montRegular, sizeOfFont: 16, maxLin: 1,),
+                CustomText(text: storeData.address ?? "", color: graysColor, sizeOfFont: 12, fontfamilly: montLight, maxLin: 1,),
                 SizedBox(height: 5,),
                 Row(
                   children: [
@@ -180,6 +216,7 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
                       emptyIcon: Icons.star_border,
                       filledColor: btnbgColor,
                       initialRating: 4,
+
                       size: 20,
                       maxRating: 5,
                     ),
@@ -197,12 +234,144 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
               clipBehavior: Clip.none,
               children: [
                 Image.network(
-                  data.profileImage ?? food_image,
+                  storeData.profileImage ?? food_image,
                   fit: BoxFit.contain,
                 ),
                 Positioned(
                   right: -4,
-                  child: Image.asset(save_icon, height: 15, width: 18,),
+                  child: GestureDetector(
+                    onTap: () async {
+
+                      bool? ratingStatus = storeData.favourite;
+
+                      print('ratingStatus:$ratingStatus');
+
+                      try {
+
+                        if (ratingStatus == false) {
+                          // Only hit the API if storeData.favourite is true
+                          var formData = {
+                            'favourite': 1,
+                          };
+
+                          FavAddedResponse favData = await Provider.of<FavoriteOperationProvider>(context, listen: false)
+                              .AddToFavoriteStore(storeData.id?? 0,formData);
+
+                          if (favData.status == true && favData.message == "Store Added in favourite successfully.") {
+                            // Print data to console
+                            print(favData);
+
+                            final snackBar = SnackBar(
+                              content:  Text('${favData.message}'),
+                            );
+
+                            // Show the SnackBar
+                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                            // Automatically hide the SnackBar after 1 second
+                            Future.delayed(Duration(milliseconds: 1000), () {
+                              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                            });
+
+                            setState(() async {
+                              try {
+                                final refreshedData = await restaurantsProvider.getRestaurantsList(page: 1);
+
+                                if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
+                                  setState(() {
+                                    storeData.favourite == true;
+                                    restaurantData = refreshedData.data!;
+                                    currentPage = 1; // Reset the page to 2 as you loaded the first page.
+                                    hasMoreData = true; // Reset the flag for more data.
+                                  });
+                                }
+                              } catch (error) {
+                                print('Error refreshing data: $error');
+                              }
+                            });
+                          } else {
+                            // API call failed
+                            print("Something went wrong: ${favData.message}");
+
+                            final snackBar = SnackBar(
+                              content:  Text('${favData.message}'),
+                            );
+
+                            // Show the SnackBar
+                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                            // Automatically hide the SnackBar after 1 second
+                            Future.delayed(Duration(milliseconds: 1000), () {
+                              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                            });
+                          }
+                        } else if (storeData.favourite == true){
+                          // If storeData.favourite is false, print its value
+                          FavDeleteResponse delData = await Provider.of<FavoriteOperationProvider>(context, listen: false)
+                              .RemoveFromFavoriteStore(storeData.id?? 0);
+
+                          if (delData.status == true && delData.message == "Favourite Store deleted successfully") {
+                            // Print data to console
+                            print(delData);
+
+                            final snackBar = SnackBar(
+                              content:  Text('${delData.message}'),
+                            );
+
+                            // Show the SnackBar
+                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                            // Automatically hide the SnackBar after 1 second
+                            Future.delayed(Duration(milliseconds: 1000), () {
+                              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                            });
+
+                            setState(() async {
+                              try {
+                                final refreshedData = await restaurantsProvider.getRestaurantsList(page: 1);
+
+                                if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
+                                  setState(() {
+                                    storeData.favourite == false;
+                                    restaurantData = refreshedData.data!;
+                                    currentPage = 1; // Reset the page to 2 as you loaded the first page.
+                                    hasMoreData = true; // Reset the flag for more data.
+                                  });
+                                }
+                              } catch (error) {
+                                print('Error refreshing data: $error');
+                              }
+                            });
+                          } else {
+                            // API call failed
+                            print("Something went wrong: ${delData.message}");
+
+                            final snackBar = SnackBar(
+                              content:  Text('${delData.message}'),
+                            );
+
+                            // Show the SnackBar
+                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                            // Automatically hide the SnackBar after 1 second
+                            Future.delayed(Duration(milliseconds: 1000), () {
+                              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                            });
+                          }
+                        }
+                      } catch (e) {
+                        // Display error message
+                        print("Error: $e");
+                      }
+                    },
+                    child: Image.asset(
+
+                      height: 15,
+                      width: 18,
+                      storeData.favourite == true  ? save_icon_red : save_icon,
+
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -211,4 +380,6 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
       ),
     );
   }
+
+
 }

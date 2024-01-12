@@ -46,7 +46,7 @@ class Network {
    // String? token = await // // Utility.getStringValue(NetworkStrings.TOKEN_KEY);
 
     var token = await Utility.getStringValue(RequestString.TOKEN);
-
+print('token:$token');
 
     if (await InternetConnectionChecker().hasConnection) {
       try {

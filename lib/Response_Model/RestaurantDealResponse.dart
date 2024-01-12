@@ -2,8 +2,23 @@ class RestaurentDealResponse {
   bool? status;
   String? message;
   List<dealData>? data;
+  int? currentPage;
+  int? perPage;
+  int? total;
+  int? lastPage;
+  String? nextPageUrl;
+  String? prevPageUrl;
 
-  RestaurentDealResponse({this.status, this.message, this.data});
+  RestaurentDealResponse(
+      {this.status,
+        this.message,
+        this.data,
+        this.currentPage,
+        this.perPage,
+        this.total,
+        this.lastPage,
+        this.nextPageUrl,
+        this.prevPageUrl});
 
   RestaurentDealResponse.fromJson(Map<String, dynamic> json) {
     status = json['status'];
@@ -14,6 +29,12 @@ class RestaurentDealResponse {
         data!.add(new dealData.fromJson(v));
       });
     }
+    currentPage = json['currentPage'];
+    perPage = json['perPage'];
+    total = json['total'];
+    lastPage = json['lastPage'];
+    nextPageUrl = json['nextPageUrl'];
+    prevPageUrl = json['prevPageUrl'];
   }
 
   Map<String, dynamic> toJson() {
@@ -23,6 +44,12 @@ class RestaurentDealResponse {
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
+    data['currentPage'] = this.currentPage;
+    data['perPage'] = this.perPage;
+    data['total'] = this.total;
+    data['lastPage'] = this.lastPage;
+    data['nextPageUrl'] = this.nextPageUrl;
+    data['prevPageUrl'] = this.prevPageUrl;
     return data;
   }
 }
@@ -39,9 +66,11 @@ class dealData {
   String? frequency;
   String? recurrentOrder;
   String? pickupTime;
-  Null? deletedAt;
+  String? deletedAt;
   String? createdAt;
   String? updatedAt;
+  int? collectTomorrow;
+  bool? favourite;
   String? averageRating;
   CustomTime? customTime;
   Store? store;
@@ -61,6 +90,8 @@ class dealData {
         this.deletedAt,
         this.createdAt,
         this.updatedAt,
+        this.collectTomorrow,
+        this.favourite,
         this.averageRating,
         this.customTime,
         this.store});
@@ -80,6 +111,8 @@ class dealData {
     deletedAt = json['deleted_at'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    collectTomorrow = json['collect_tomorrow'];
+    favourite = json['favourite'];
     averageRating = json['average_rating'];
     customTime = json['custom_time'] != null
         ? new CustomTime.fromJson(json['custom_time'])
@@ -103,6 +136,8 @@ class dealData {
     data['deleted_at'] = this.deletedAt;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
+    data['collect_tomorrow'] = this.collectTomorrow;
+    data['favourite'] = this.favourite;
     data['average_rating'] = this.averageRating;
     if (this.customTime != null) {
       data['custom_time'] = this.customTime!.toJson();
@@ -168,7 +203,7 @@ class Store {
   String? pin;
   OpeningHour? openingHour;
   PickupTime? pickupTime;
-  Null? deletedAt;
+  String? deletedAt;
   String? createdAt;
   String? updatedAt;
 

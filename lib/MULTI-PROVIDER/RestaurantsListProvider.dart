@@ -7,6 +7,8 @@ import '../Response_Model/RestaurantsListResponse.dart';
 
 class RestaurantsListProvider extends ChangeNotifier {
   final Network _network = Network();
+
+
   Future<RestaurantsListResponse> getRestaurantsList({int page = 1}) async {
     // Make network request with pagination parameters
     // You might need to update your API endpoint to support pagination
@@ -22,11 +24,11 @@ class RestaurantsListProvider extends ChangeNotifier {
     }
   }
 
-  Future<RestaurantsListResponse> getClosestRestaurantsList() async {
+  Future<RestaurantsListResponse> getClosestRestaurantsList({int page = 1}) async {
 
     try {
       final response = await _network.getRequest(
-        endPoint: '/closed-resturent', // Replace with your actual API endpoint
+        endPoint: '/closed-resturent/$page', // Replace with your actual API endpoint
 
       );
 
@@ -48,11 +50,11 @@ class RestaurantsListProvider extends ChangeNotifier {
     }
   }
 
-  Future<RestaurentDealResponse> getRestaurantsDealsList(int? restaurantId) async {
+  Future<RestaurentDealResponse> getRestaurantsDealsList(int? restaurantId,{int page = 1}) async {
 
     try {
       final response = await _network.getRequest(
-        endPoint: '/get-deal/${restaurantId}', // Replace with your actual API endpoint
+        endPoint: '/get-deal/${restaurantId}/$page', // Replace with your actual API endpoint
 
       );
 
@@ -74,11 +76,11 @@ class RestaurantsListProvider extends ChangeNotifier {
     }
   }
 
-  Future<RestaurentDealResponse> getLastMinuteDealsList() async {
+  Future<RestaurentDealResponse> getLastMinuteDealsList({int page = 1}) async {
 
     try {
       final response = await _network.getRequest(
-        endPoint: '/last-minute-deal', // Replace with your actual API endpoint
+        endPoint: '/last-minute-deal/$page', // Replace with your actual API endpoint
 
       );
 

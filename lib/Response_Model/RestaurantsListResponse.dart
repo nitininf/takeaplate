@@ -1,11 +1,24 @@
 class RestaurantsListResponse {
   String? message;
   List<Data>? data;
-  String? nextPageUrl;
   bool? status;
+  int? currentPage;
+  int? perPage;
+  int? total;
+  int? lastPage;
+  String? nextPageUrl;
+  String? prevPageUrl;
 
   RestaurantsListResponse(
-      {this.message, this.data, this.nextPageUrl, this.status});
+      {this.message,
+        this.data,
+        this.status,
+        this.currentPage,
+        this.perPage,
+        this.total,
+        this.lastPage,
+        this.nextPageUrl,
+        this.prevPageUrl});
 
   RestaurantsListResponse.fromJson(Map<String, dynamic> json) {
     message = json['message'];
@@ -15,8 +28,13 @@ class RestaurantsListResponse {
         data!.add(new Data.fromJson(v));
       });
     }
-    nextPageUrl = json['nextPageUrl'];
     status = json['status'];
+    currentPage = json['currentPage'];
+    perPage = json['perPage'];
+    total = json['total'];
+    lastPage = json['lastPage'];
+    nextPageUrl = json['nextPageUrl'];
+    prevPageUrl = json['prevPageUrl'];
   }
 
   Map<String, dynamic> toJson() {
@@ -25,8 +43,13 @@ class RestaurantsListResponse {
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
-    data['nextPageUrl'] = this.nextPageUrl;
     data['status'] = this.status;
+    data['currentPage'] = this.currentPage;
+    data['perPage'] = this.perPage;
+    data['total'] = this.total;
+    data['lastPage'] = this.lastPage;
+    data['nextPageUrl'] = this.nextPageUrl;
+    data['prevPageUrl'] = this.prevPageUrl;
     return data;
   }
 }
@@ -44,9 +67,10 @@ class Data {
   String? pin;
   OpeningHour? openingHour;
   PickupTime? pickupTime;
-  Null? deletedAt;
+  String? deletedAt;
   String? createdAt;
   String? updatedAt;
+  bool? favourite;
 
   Data(
       {this.id,
@@ -63,7 +87,8 @@ class Data {
         this.pickupTime,
         this.deletedAt,
         this.createdAt,
-        this.updatedAt});
+        this.updatedAt,
+        this.favourite});
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -85,6 +110,7 @@ class Data {
     deletedAt = json['deleted_at'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    favourite = json['favourite'];
   }
 
   Map<String, dynamic> toJson() {
@@ -108,6 +134,7 @@ class Data {
     data['deleted_at'] = this.deletedAt;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
+    data['favourite'] = this.favourite;
     return data;
   }
 }

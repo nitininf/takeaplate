@@ -1,24 +1,91 @@
 import 'package:custom_rating_bar/custom_rating_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/custom_app_bar.dart';
 import 'package:takeaplate/UTILS/app_strings.dart';
 import '../../CUSTOM_WIDGETS/custom_search_field.dart';
 import '../../CUSTOM_WIDGETS/custom_text_style.dart';
+import '../../MULTI-PROVIDER/FavoriteOperationProvider.dart';
 import '../../MULTI-PROVIDER/RestaurantsListProvider.dart';
+import '../../Response_Model/FavAddedResponse.dart';
+import '../../Response_Model/FavDeleteResponse.dart';
 import '../../Response_Model/RestaurantDealResponse.dart';
 import '../../UTILS/app_color.dart';
 import '../../UTILS/app_images.dart';
 import '../../UTILS/fontfaimlly_string.dart';
 import '../../main.dart';
 
-class LastMinuteDealScreen extends StatelessWidget{
+class LastMinuteDealScreen extends StatefulWidget {
+  const LastMinuteDealScreen({super.key});
+
+  @override
+  _LastMinuteDealScreenState createState() => _LastMinuteDealScreenState();
+}
+
+class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
+
   final List<String> items = ['Healthy', 'Sushi', 'Desserts', 'Sugar', 'Sweets'];
   final RestaurantsListProvider restaurantsProvider = RestaurantsListProvider();
+  int currentPage = 1;
+  bool isLoading = false;
+  bool hasMoreData = true;
+  List<dealData> dealListData = [];
 
+  ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_scrollListener);
+    _loadData();
+  }
+
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
+
+
+  void _scrollListener() {
+    if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+      // Reached the end of the list, load more data
+      _loadData();
+    }
+  }
+
+  void _loadData() async {
+    if (!isLoading && hasMoreData) {
+      try {
+        setState(() {
+          isLoading = true;
+        });
+
+        final nextPageData = await restaurantsProvider.getLastMinuteDealsList(
+          page: currentPage,
+        );
+
+        if (nextPageData.data != null && nextPageData.data!.isNotEmpty) {
+          setState(() {
+            dealListData.addAll(nextPageData.data!);
+            currentPage++;
+          });
+        } else {
+          // No more data available
+          setState(() {
+            hasMoreData = false;
+          });
+        }
+      } catch (error) {
+        print('Error loading more data: $error');
+      } finally {
+        setState(() {
+          isLoading = false;
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+
     return  Scaffold(
       backgroundColor: bgColor,
       body: SafeArea(
@@ -41,7 +108,8 @@ class LastMinuteDealScreen extends StatelessWidget{
         ),
       ),
     );
-  }
+
+}
 
   Widget buildHorizontalList(List<String> items) {
     return SingleChildScrollView(
@@ -69,46 +137,60 @@ class LastMinuteDealScreen extends StatelessWidget{
     );
   }
 
-
   Widget buildVerticalCards() {
     return Expanded(
-      child: FutureBuilder<RestaurentDealResponse>(
-        future: restaurantsProvider.getLastMinuteDealsList(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator()); // Center the loading indicator
-          } else if (snapshot.hasError) {
-            return Text('Failed to fetch restaurants. Please try again.');
-          } else if (!snapshot.hasData || snapshot.data == null || snapshot.data!.data == null) {
-            return Text('No restaurants available');
-          } else {
-            List<dealData>? items = snapshot.data?.data;
-
-            return SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: List.generate(
-                  items!.length,
-                      (index) => GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(
-                        navigatorKey.currentContext!,
-                        '/RestaurantsProfileScreen',
-                        arguments: items[index], // Pass the data as arguments
-                      );
-                    },
-                    child: getFavCards(index, items[index]),
-                  ),
-                ),
-              ),
-            );
-          }
-        },
+      child: RefreshIndicator(
+        key: _refreshIndicatorKey,
+        color: Colors.white,
+        backgroundColor: editbgColor,
+        strokeWidth: 4.0,
+        onRefresh: _refreshData,
+        child: ListView.builder(
+          controller: _scrollController,
+          itemCount: dealListData.length + (hasMoreData ? 1 : 0),
+          itemBuilder: (context, index) {
+            if (index < dealListData.length) {
+              // Display restaurant card
+              return GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(
+                    navigatorKey.currentContext!,
+                    '/RestaurantsProfileScreen',
+                    arguments: dealListData[index],
+                  );
+                },
+                child: getFavCards(index, dealListData[index]),
+              );
+            } else {
+              // Display loading indicator while fetching more data
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Center(child: CircularProgressIndicator()),
+              );
+            }
+          },
+        ),
       ),
     );
-
   }
+
+  Future<void> _refreshData() async {
+    // Call your API here to refresh the data
+    try {
+      final refreshedData = await restaurantsProvider.getLastMinuteDealsList(page: 1);
+
+      if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
+        setState(() {
+          dealListData = refreshedData.data!;
+          currentPage = 1; // Reset the page to 2 as you loaded the first page.
+          hasMoreData = true; // Reset the flag for more data.
+        });
+      }
+    } catch (error) {
+      print('Error refreshing data: $error');
+    }
+  }
+
 
 
 
@@ -208,12 +290,144 @@ class LastMinuteDealScreen extends StatelessWidget{
                       height: 130, width: 130, fit: BoxFit.cover),
                   Positioned(
                     right: -4,
-                    child: Image.asset(
-                      save_icon,
-                      height: 15,
-                      width: 18,
+                    child: GestureDetector(
+                      onTap: () async {
+
+                        bool? ratingStatus = data.favourite;
+                        int? dealId = data.id;
+                        int? storeId = data.storeId;
+
+                        print('ratingStatus:$ratingStatus');
+
+                        try {
+
+                          if (data.favourite == false) {
+                            // Only hit the API if data.favourite is true
+                            var formData = {
+                              'favourite': 1,
+                            };
+
+                            FavAddedResponse favData = await Provider.of<FavoriteOperationProvider>(context, listen: false)
+                                .AddToFavoriteDeal(dealId??0,formData);
+
+                            if (favData.status == true && favData.message == "Deal Added in favourite successfully.") {
+                              // Print data to console
+                              print(favData);
+
+                              final snackBar = SnackBar(
+                                content:  Text('${favData.message}'),
+                              );
+
+                              // Show the SnackBar
+                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                              // Automatically hide the SnackBar after 1 second
+                              Future.delayed(Duration(milliseconds: 1000), () {
+                                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                              });
+
+                              setState(() async {
+                                try {
+                                  final refreshedData = await restaurantsProvider.getRestaurantsDealsList(storeId, page: 1);
+
+                                  if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
+                                    setState(() {
+                                      data.favourite = true;
+
+                                      dealListData = refreshedData.data!.cast<dealData>();
+                                      currentPage = 1; // Reset the page to 2 as you loaded the first page.
+                                      hasMoreData = true; // Reset the flag for more data.
+                                    });
+                                  }
+                                } catch (error) {
+                                  print('Error refreshing data: $error');
+                                }
+                              });
+                            } else {
+                              // API call failed
+                              print("Something went wrong: ${favData.message}");
+
+                              final snackBar = SnackBar(
+                                content:  Text('${favData.message}'),
+                              );
+
+                              // Show the SnackBar
+                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                              // Automatically hide the SnackBar after 1 second
+                              Future.delayed(Duration(milliseconds: 1000), () {
+                                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                              });
+                            }
+                          } else if (data.favourite == true){
+                            // If data.favourite is false, print its value
+                            FavDeleteResponse delData = await Provider.of<FavoriteOperationProvider>(context, listen: false)
+                                .RemoveFromFavoriteDeal(data.id ?? 0);
+
+                            if (delData.status == true && delData.message == "Favourite Deal deleted successfully.") {
+                              // Print data to console
+                              print(delData);
+
+                              final snackBar = SnackBar(
+                                content:  Text('${delData.message}'),
+                              );
+
+                              // Show the SnackBar
+                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                              // Automatically hide the SnackBar after 1 second
+                              Future.delayed(Duration(milliseconds: 1000), () {
+                                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                              });
+
+                              setState(() async {
+
+                                try {
+                                  final refreshedData = await restaurantsProvider.getRestaurantsDealsList(storeId, page: 1);
+
+                                  if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
+                                    setState(() {
+                                      data.favourite = false;
+                                      dealListData = refreshedData.data!.cast<dealData>();
+                                      currentPage = 1; // Reset the page to 2 as you loaded the first page.
+                                      hasMoreData = true; // Reset the flag for more data.
+                                    });
+                                  }
+                                } catch (error) {
+                                  print('Error refreshing data: $error');
+                                }
+                              });
+                            } else {
+                              // API call failed
+                              print("Something went wrong: ${delData.message}");
+
+                              final snackBar = SnackBar(
+                                content:  Text('${delData.message}'),
+                              );
+
+                              // Show the SnackBar
+                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                              // Automatically hide the SnackBar after 1 second
+                              Future.delayed(Duration(milliseconds: 1000), () {
+                                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                              });
+                            }
+                          }
+                        } catch (e) {
+                          // Display error message
+                          print("Error: $e");
+                        }
+                      },
+                      child: Image.asset(
+
+                        height: 15,
+                        width: 18,
+                        data.favourite == true  ? save_icon_red : save_icon,
+                      ),
                     ),
                   ),
+
                 ],
               ),
             ),
@@ -222,8 +436,5 @@ class LastMinuteDealScreen extends StatelessWidget{
       ),
     );
   }
-
-
-
-
 }
+

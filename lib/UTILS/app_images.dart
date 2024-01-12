@@ -18,6 +18,7 @@ const String profile_icon = "images/profile_icon.png";
 const String bag_icon = "images/bag_icon.png";
 const String food_image = "images/food_image.png";
 const String save_icon = "images/save_icon.png";
+const String save_icon_red = "images/heart.png";
 const String star_image = "images/star_image.png";
 const String gluten_free = "images/gluten_free.png";
 const String soy_free = "images/soy_free.png";

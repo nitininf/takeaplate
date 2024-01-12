@@ -48,15 +48,23 @@ class _OnBoardingScreenState extends State<OnBoardingScreen>
               SizedBox(
                 height: screenHeight * 0.09,
               ),
-              const Padding(
+               Padding(
                 padding: EdgeInsets.only(right: 30.0),
                 child: Align(
                     alignment: Alignment.topRight,
-                    child: CustomText(
-                      text: skip,
-                      sizeOfFont: 13,
-                      color: Colors.white,
-                      fontfamilly: montBold,
+                    child: GestureDetector(
+                      onTap: (){
+
+                        Navigator.pushNamed(context, '/BaseHome');
+
+
+                      },
+                      child: CustomText(
+                        text: skip,
+                        sizeOfFont: 13,
+                        color: Colors.white,
+                        fontfamilly: montBold,
+                      ),
                     )),
               ),
               Align(

@@ -41,6 +41,7 @@ import '../payment_method/paymentmethod_screen.dart';
 import 'CartOperationProvider.dart';
 import 'FaqProvider.dart';
 import 'FavCardsProvider.dart';
+import 'FavoriteOperationProvider.dart';
 import 'OrderAndPayProvider.dart';
 import 'PlaceListProvider.dart';
 import 'PrivacyPolicyProvider.dart';
@@ -69,6 +70,7 @@ MultiProvider getProviders() {
       ChangeNotifierProvider(create: (_) => RestaurantsListProvider()),
       ChangeNotifierProvider(create: (_) => PrivacyPolicyProvider()),
       ChangeNotifierProvider(create: (_) => TermsAndConditionsProvider()),
+      ChangeNotifierProvider(create: (_) => FavoriteOperationProvider()),
 
     ],
     child:
@@ -107,7 +109,7 @@ MultiProvider getProviders() {
         '/FavouriteScreen': (context) => FavouriteScreen(),
         '/OrderSummeryScreen': (context) => OrderSummeryScreen(),
         '/PaymentMethodScreen': (context) => PaymentMethodScreen(),
-        '/RestaurantsProfileScreen': (context) => RestaurantsProfileScreen(),
+        '/RestaurantsProfileScreen': (context) => RestaurantsProfileScreen(context: context),
       },
       theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: btnbgColor),
