@@ -3,21 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
-import 'package:takeaplate/CUSTOM_WIDGETS/common_button.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/custom_text_style.dart';
 import 'package:takeaplate/UTILS/app_color.dart';
 import 'package:takeaplate/UTILS/app_images.dart';
 import 'package:takeaplate/UTILS/app_strings.dart';
 import 'package:takeaplate/UTILS/fontfaimlly_string.dart';
 import 'package:takeaplate/main.dart';
-import '../../CUSTOM_WIDGETS/custom_app_bar.dart';
 import '../../CUSTOM_WIDGETS/custom_search_field.dart';
 import '../../MULTI-PROVIDER/FavCardsProvider.dart';
-import '../../MULTI-PROVIDER/PlaceListProvider.dart';
 import '../../MULTI-PROVIDER/RestaurantsListProvider.dart';
 import '../../Response_Model/RestaurantDealResponse.dart';
 import '../../Response_Model/RestaurantsListResponse.dart';
-import '../../UTILS/utils.dart';
 
 class HomeScreen extends StatelessWidget {
   final List<String> items = ['Healthy', 'Sushi', 'Desserts', 'Sugar', 'Sweets'];

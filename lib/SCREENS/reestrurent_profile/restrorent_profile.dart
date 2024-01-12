@@ -143,8 +143,8 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
             ),
             getCards(commonProvider, data),
             !commonProvider.isDeal
-                ? buildSection("TODAY'S DEALS", "")
-                : buildSection("YOUR FAVOURITES", ""),
+                ? buildSection("YOUR FAVOURITES", "")
+                : buildSection("TODAY'S DEALS", ""),
             buildVerticalCards(commonProvider)
           ],
         ),

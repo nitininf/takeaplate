@@ -13,6 +13,7 @@ class CommonCounter extends ChangeNotifier {
     List<bool> isNoti=[true,true,true,true,true];
   //List<int> myIntList = [];
   bool isDeal=true;
+  bool isStore=true;
   // Private constructor to prevent external instantiation
   CommonCounter._();
 
@@ -35,6 +36,13 @@ class CommonCounter extends ChangeNotifier {
     isDeal=_isDeal;
     notifyListeners();
   }
+
+  void getFavStore(bool _isStore){
+    isStore=_isStore;
+
+    notifyListeners();
+  }
+
   getUserId() async {
     String? userId = "";//await Utility.getStringValue(RequestString.USER_ID);
     print("UserId: $userId");

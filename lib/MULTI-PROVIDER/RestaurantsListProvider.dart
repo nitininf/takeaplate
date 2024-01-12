@@ -24,6 +24,21 @@ class RestaurantsListProvider extends ChangeNotifier {
     }
   }
 
+  Future<RestaurantsListResponse> getFavRestaurantsList({int page = 1}) async {
+    // Make network request with pagination parameters
+    // You might need to update your API endpoint to support pagination
+    final response = await _network.getRequest(
+      endPoint: '/favourite-store-get/$page',
+    );
+
+    if (response != null && response.data is Map<String, dynamic>) {
+      final Map<String, dynamic> responseData = response.data;
+      return RestaurantsListResponse.fromJson(responseData);
+    } else {
+      throw Exception('Failed to parse API response');
+    }
+  }
+
   Future<RestaurantsListResponse> getClosestRestaurantsList({int page = 1}) async {
 
     try {
