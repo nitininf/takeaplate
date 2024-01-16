@@ -30,7 +30,7 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
   int currentPage = 1;
   bool isLoading = false;
   bool hasMoreData = true;
-  List<dealData> dealListData = [];
+  List<DealData> dealListData = [];
 
   ScrollController _scrollController = ScrollController();
 
@@ -155,7 +155,7 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
                 onTap: () {
                   Navigator.pushNamed(
                     navigatorKey.currentContext!,
-                    '/RestaurantsProfileScreen',
+                    '/OrderAndPayScreen',
                     arguments: dealListData[index],
                   );
                 },
@@ -194,7 +194,7 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
 
 
 
-  Widget getFavCards(int index, dealData data) {
+  Widget getFavCards(int index, DealData data) {
 
     var startTiming = data.customTime?.startTime;
     var endTiming = data.customTime?.endTime;
@@ -334,7 +334,7 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
                                     setState(() {
                                       data.favourite = true;
 
-                                      dealListData = refreshedData.data!.cast<dealData>();
+                                      dealListData = refreshedData.data!.cast<DealData>();
                                       currentPage = 1; // Reset the page to 2 as you loaded the first page.
                                       hasMoreData = true; // Reset the flag for more data.
                                     });
@@ -388,7 +388,7 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
                                   if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
                                     setState(() {
                                       data.favourite = false;
-                                      dealListData = refreshedData.data!.cast<dealData>();
+                                      dealListData = refreshedData.data!.cast<DealData>();
                                       currentPage = 1; // Reset the page to 2 as you loaded the first page.
                                       hasMoreData = true; // Reset the flag for more data.
                                     });

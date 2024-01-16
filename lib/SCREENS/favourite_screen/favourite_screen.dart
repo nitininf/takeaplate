@@ -7,6 +7,7 @@ import 'package:takeaplate/UTILS/app_strings.dart';
 import '../../MULTI-PROVIDER/FavoriteOperationProvider.dart';
 import '../../Response_Model/FavAddedResponse.dart';
 import '../../Response_Model/FavDeleteResponse.dart';
+import '../../Response_Model/RestaurantDealResponse.dart';
 import '../../Response_Model/RestaurantsListResponse.dart';
 
 import '../../CUSTOM_WIDGETS/custom_search_field.dart';
@@ -28,13 +29,22 @@ class FavouriteScreen extends StatefulWidget {
 
 class _FavouriteScreenState extends State<FavouriteScreen> {
 
-  final List<String> items = ['Healthy', 'Sushi', 'Desserts', 'Sugar', 'Sweets'];
+  final List<String> items = [
+    'Healthy',
+    'Sushi',
+    'Desserts',
+    'Sugar',
+    'Sweets'
+  ];
   final RestaurantsListProvider restaurantsProvider = RestaurantsListProvider();
-  bool isFavorite = false;
-  int currentPage = 1;
-  bool isLoading = false;
+  int isFavorite = 0;
+  int currentRestaurantPage = 1;
+  int currentDealPage = 1;
+  bool isRestaurantLoading = false;
+  bool isDealLoading = false;
   bool hasMoreData = true;
-  List<Data> restaurantData = [];
+  List<StoreData> restaurantData = [];
+  List<DealData> dealListingData = [];
 
   ScrollController _scrollController = ScrollController();
 
@@ -45,36 +55,54 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
     _loadData();
   }
 
-  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<
+      RefreshIndicatorState>();
 
 
   void _scrollListener() {
-    if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent) {
       // Reached the end of the list, load more data
       _loadData();
     }
   }
 
   void _loadData() async {
-    if (!isLoading && hasMoreData) {
+    if (!isRestaurantLoading && hasMoreData) {
       try {
         setState(() {
-          isLoading = true;
+          isRestaurantLoading = true;
         });
 
-        final nextPageData = await restaurantsProvider.getFavRestaurantsList(
-          page: currentPage,
+        final nextPageRestaurantData = await restaurantsProvider
+            .getFavRestaurantsList(
+          page: currentRestaurantPage,
         );
 
-        if (nextPageData.data != null && nextPageData.data!.isNotEmpty) {
+        if (nextPageRestaurantData.data != null &&
+            nextPageRestaurantData.data!.isNotEmpty) {
           setState(() {
-            restaurantData.addAll(nextPageData.data!);
-
-
-
-            currentPage++;
+            restaurantData.addAll(nextPageRestaurantData.data!);
+            currentRestaurantPage++;
           });
-        } else {
+        }
+
+          final nextPageDealData = await restaurantsProvider
+              .getFavDealsList(
+            page: currentDealPage,
+          );
+
+
+          if (nextPageDealData.data != null && nextPageDealData.data!.isNotEmpty) {
+            setState(() {
+              dealListingData.addAll(nextPageDealData.data!);
+              currentDealPage++;
+            });
+
+print(dealListingData);
+
+        }
+        else {
           // No more data available
           setState(() {
             hasMoreData = false;
@@ -84,7 +112,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
         print('Error loading more data: $error');
       } finally {
         setState(() {
-          isLoading = false;
+          isRestaurantLoading = false;
         });
       }
     }
@@ -92,19 +120,21 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
 
   @override
   Widget build(BuildContext context) {
-
-
-    return  Scaffold(
+    return Scaffold(
       backgroundColor: bgColor,
       body: SafeArea(
-        child: Padding(padding:  EdgeInsets.only(bottom:20,right: 20,left: 20),
+        child: Padding(
+          padding: EdgeInsets.only(bottom: 20, right: 20, left: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const CustomAppBar(),
               const Padding(
-                padding: EdgeInsets.only(left: 8.0,top: 26),
-                child: CustomText(text: "YOUR FAVOURITES", color: btnbgColor, fontfamilly: montHeavy, sizeOfFont: 20),
+                padding: EdgeInsets.only(left: 8.0, top: 26),
+                child: CustomText(text: "YOUR FAVOURITES",
+                    color: btnbgColor,
+                    fontfamilly: montHeavy,
+                    sizeOfFont: 20),
               ),
               getView(),
 
@@ -272,26 +302,34 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
         mainAxisSize: MainAxisSize.min,
         children: List.generate(
           items.length,
-              (index) => GestureDetector(
-            onTap: (){
-            },
-            child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 3, vertical: 10),
-              padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 10),
-              decoration: BoxDecoration(
-                color: editbgColor,
-                borderRadius: BorderRadius.circular(30),
-                border: Border.all(width: 1, color: Colors.white),
+              (index) =>
+              GestureDetector(
+                onTap: () {},
+                child: Container(
+                  margin: const EdgeInsets.symmetric(
+                      horizontal: 3, vertical: 10),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 22, vertical: 10),
+                  decoration: BoxDecoration(
+                    color: editbgColor,
+                    borderRadius: BorderRadius.circular(30),
+                    border: Border.all(width: 1, color: Colors.white),
+                  ),
+                  child: CustomText(text: items[index],
+                    color: hintColor,
+                    fontfamilly: montBook,
+                    sizeOfFont: 19,),
+                ),
               ),
-              child: CustomText(text: items[index], color: hintColor, fontfamilly: montBook,sizeOfFont: 19,),
-            ),
-          ),
         ),
       ),
     );
   }
 
-  Widget buildVerticalCards(CommonCounter commonProvider) {
+  Widget buildVerticalCards(CommonCounter commonCounter) {
+   var currentList = restaurantData;
+   // var currentList = commonCounter.isStore ? restaurantData : dealListingData;
+
     return Expanded(
       child: RefreshIndicator(
         key: _refreshIndicatorKey,
@@ -301,26 +339,29 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
         onRefresh: _refreshData,
         child: ListView.builder(
           controller: _scrollController,
-          itemCount: restaurantData.length + (hasMoreData ? 1 : 0),
+          itemCount: currentList.length + (hasMoreData ? 1 : 0),
           itemBuilder: (context, index) {
-            if (index < restaurantData.length) {
+            if (index < currentList.length) {
               // Display restaurant card
               return GestureDetector(
                 onTap: () {
                   Navigator.pushNamed(
                     navigatorKey.currentContext!,
                     '/RestaurantsProfileScreen',
-                    arguments: restaurantData[index],
+                    arguments: currentList[index],
                   );
                 },
-                child: getFavCards(index, restaurantData[index]),
+                child: getFavStoreCards(index, currentList[index]),
               );
-            } else {
+            }else {
               // Display loading indicator while fetching more data
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Center(child: CircularProgressIndicator()),
-              );
+              return FutureBuilder(future: Future.delayed(Duration(seconds: 3)),
+                  builder: (context, snapshot) =>
+                  snapshot.connectionState == ConnectionState.done
+                      ? SizedBox()
+                      : Padding(padding: const EdgeInsets.all(8.0),
+                    child: Center(child: CircularProgressIndicator()),
+                  ));
             }
           },
         ),
@@ -328,15 +369,18 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
     );
   }
 
+
   Future<void> _refreshData() async {
     // Call your API here to refresh the data
     try {
-      final refreshedData = await restaurantsProvider.getFavRestaurantsList(page: 1);
+      final refreshedData = await restaurantsProvider.getFavRestaurantsList(
+          page: 1);
 
       if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
         setState(() {
           restaurantData = refreshedData.data!;
-          currentPage = 1; // Reset the page to 2 as you loaded the first page.
+          currentRestaurantPage =
+          1; // Reset the page to 2 as you loaded the first page.
           hasMoreData = true; // Reset the flag for more data.
         });
       }
@@ -346,9 +390,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
   }
 
 
-  Widget getFavCards(int index, Data storeData) {
-
-
+  Widget getFavStoreCards(int index, StoreData storeData) {
     // Use the 'data' parameter to access properties from the 'Data' class
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
@@ -364,9 +406,21 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CustomText(text: storeData.name ?? "", color: btntxtColor, fontfamilly: montBold, sizeOfFont: 27, maxLin: 1,),
-                CustomText(text: storeData.category ?? "", color: graysColor, fontfamilly: montRegular, sizeOfFont: 16, maxLin: 1,),
-                CustomText(text: storeData.address ?? "", color: graysColor, sizeOfFont: 12, fontfamilly: montLight, maxLin: 1,),
+                CustomText(text: storeData.name ?? "",
+                  color: btntxtColor,
+                  fontfamilly: montBold,
+                  sizeOfFont: 27,
+                  maxLin: 1,),
+                CustomText(text: storeData.category ?? "",
+                  color: graysColor,
+                  fontfamilly: montRegular,
+                  sizeOfFont: 16,
+                  maxLin: 1,),
+                CustomText(text: storeData.address ?? "",
+                  color: graysColor,
+                  sizeOfFont: 12,
+                  fontfamilly: montLight,
+                  maxLin: 1,),
                 SizedBox(height: 5,),
                 Row(
                   children: [
@@ -380,7 +434,11 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                       maxRating: 5,
                     ),
                     SizedBox(width: 10,),
-                    Expanded(child: CustomText(text: "3 offers available", color: offerColor, sizeOfFont: 10, fontfamilly: montRegular, maxLin: 1,)),
+                    Expanded(child: CustomText(text: "3 offers available",
+                      color: offerColor,
+                      sizeOfFont: 10,
+                      fontfamilly: montRegular,
+                      maxLin: 1,)),
                   ],
                 ),
               ],
@@ -392,129 +450,151 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
               alignment: Alignment.topRight,
               clipBehavior: Clip.none,
               children: [
-                Image.network(
-                  storeData.profileImage ?? food_image,
+
+
+                storeData.profileImage != null ? Image.network(
+                  storeData.profileImage!,
                   fit: BoxFit.contain,
-                ),
+                ) : Image.asset(food_image),
                 Positioned(
                   right: -4,
                   child: GestureDetector(
                     onTap: () async {
-
-                      bool? ratingStatus = storeData.favourite;
+                      int? ratingStatus = storeData.favourite as int;
 
                       print('ratingStatus:$ratingStatus');
 
                       try {
-
-                        if (ratingStatus == false) {
+                        if (ratingStatus == 0) {
                           // Only hit the API if storeData.favourite is true
                           var formData = {
                             'favourite': 1,
                           };
 
-                          FavAddedResponse favData = await Provider.of<FavoriteOperationProvider>(context, listen: false)
-                              .AddToFavoriteStore(storeData.id?? 0,formData);
+                          FavAddedResponse favData = await Provider.of<
+                              FavoriteOperationProvider>(context, listen: false)
+                              .AddToFavoriteStore(storeData.id ?? 0, formData);
 
-                          if (favData.status == true && favData.message == "Store Added in favourite successfully.") {
+                          if (favData.status == true && favData.message ==
+                              "Store Added in favourite successfully.") {
                             // Print data to console
                             print(favData);
 
                             final snackBar = SnackBar(
-                              content:  Text('${favData.message}'),
+                              content: Text('${favData.message}'),
                             );
 
                             // Show the SnackBar
-                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                snackBar);
 
                             // Automatically hide the SnackBar after 1 second
                             Future.delayed(Duration(milliseconds: 1000), () {
-                              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                              ScaffoldMessenger.of(context)
+                                  .hideCurrentSnackBar();
                             });
 
-                            setState(() async {
-                              try {
-                                final refreshedData = await restaurantsProvider.getFavRestaurantsList(page: 1);
+                            setState(() {
+                              storeData.favourite = 1;
+                            });
+                            try {
+                              final refreshedData = await restaurantsProvider
+                                  .getFavRestaurantsList(page: 1);
 
-                                if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
-                                  setState(() {
-                                    storeData.favourite == true;
-                                    restaurantData = refreshedData.data!;
-                                    currentPage = 1; // Reset the page to 2 as you loaded the first page.
-                                    hasMoreData = true; // Reset the flag for more data.
-                                  });
-                                }
-                              } catch (error) {
-                                print('Error refreshing data: $error');
+                              if (refreshedData.data != null &&
+                                  refreshedData.data!.isNotEmpty) {
+                                setState(() {
+                                  restaurantData = refreshedData.data!;
+                                  currentRestaurantPage =
+                                  1; // Reset the page to 2 as you loaded the first page.
+                                  hasMoreData =
+                                  true; // Reset the flag for more data.
+                                });
                               }
-                            });
+                            } catch (error) {
+                              print('Error refreshing data: $error');
+                            }
                           } else {
                             // API call failed
                             print("Something went wrong: ${favData.message}");
 
                             final snackBar = SnackBar(
-                              content:  Text('${favData.message}'),
+                              content: Text('${favData.message}'),
                             );
 
                             // Show the SnackBar
-                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                snackBar);
 
                             // Automatically hide the SnackBar after 1 second
                             Future.delayed(Duration(milliseconds: 1000), () {
-                              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                              ScaffoldMessenger.of(context)
+                                  .hideCurrentSnackBar();
                             });
                           }
-                        } else if (storeData.favourite == true){
+                        } else if (storeData.favourite == 1) {
                           // If storeData.favourite is false, print its value
-                          FavDeleteResponse delData = await Provider.of<FavoriteOperationProvider>(context, listen: false)
-                              .RemoveFromFavoriteStore(storeData.id?? 0);
+                          FavDeleteResponse delData = await Provider.of<
+                              FavoriteOperationProvider>(context, listen: false)
+                              .RemoveFromFavoriteStore(storeData.id ?? 0);
 
-                          if (delData.status == true && delData.message == "Favourite Store deleted successfully") {
+                          if (delData.status == true && delData.message ==
+                              "Favourite Store deleted successfully") {
                             // Print data to console
                             print(delData);
 
                             final snackBar = SnackBar(
-                              content:  Text('${delData.message}'),
+                              content: Text('${delData.message}'),
                             );
 
                             // Show the SnackBar
-                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                snackBar);
 
                             // Automatically hide the SnackBar after 1 second
                             Future.delayed(Duration(milliseconds: 1000), () {
-                              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                              ScaffoldMessenger.of(context)
+                                  .hideCurrentSnackBar();
                             });
 
-                            setState(() async {
-                              try {
-                                final refreshedData = await restaurantsProvider.getFavRestaurantsList(page: 1);
 
-                                if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
-                                  setState(() {
-                                    storeData.favourite == false;
-                                    restaurantData = refreshedData.data!;
-                                    currentPage = 1; // Reset the page to 2 as you loaded the first page.
-                                    hasMoreData = true; // Reset the flag for more data.
-                                  });
-                                }
-                              } catch (error) {
-                                print('Error refreshing data: $error');
+                            setState(() {
+                              storeData.favourite = 0;
+                            });
+
+                            try {
+                              final refreshedData = await restaurantsProvider
+                                  .getFavRestaurantsList(page: 1);
+
+                              if (refreshedData.data != null &&
+                                  refreshedData.data!.isNotEmpty) {
+                                setState(() {
+                                  restaurantData = refreshedData.data!;
+                                  currentRestaurantPage =
+                                  1; // Reset the page to 2 as you loaded the first page.
+                                  hasMoreData =
+                                  true; // Reset the flag for more data.
+                                });
                               }
-                            });
+                            } catch (error) {
+                              print('Error refreshing data: $error');
+                            }
                           } else {
                             // API call failed
                             print("Something went wrong: ${delData.message}");
 
                             final snackBar = SnackBar(
-                              content:  Text('${delData.message}'),
+                              content: Text('${delData.message}'),
                             );
 
                             // Show the SnackBar
-                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                snackBar);
 
                             // Automatically hide the SnackBar after 1 second
                             Future.delayed(Duration(milliseconds: 1000), () {
-                              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                              ScaffoldMessenger.of(context)
+                                  .hideCurrentSnackBar();
                             });
                           }
                         }
@@ -527,7 +607,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
 
                       height: 15,
                       width: 18,
-                      storeData.favourite == true  ? save_icon_red : save_icon,
+                      storeData.favourite == 1 ? save_icon_red : save_icon,
 
                     ),
                   ),
@@ -539,6 +619,8 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
       ),
     );
   }
+
+
 
 }
 

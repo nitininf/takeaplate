@@ -40,6 +40,9 @@ class LogInScreen extends StatelessWidget {
         emailController.clear();
         passwordController.clear();
 
+        Navigator.of(context).pushNamedAndRemoveUntil('/Create_Login', (Route route) => false);
+
+
 
         // Allow the back button action
         return true;

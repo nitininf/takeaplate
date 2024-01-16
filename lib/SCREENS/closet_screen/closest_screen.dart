@@ -17,8 +17,6 @@ import '../../UTILS/app_images.dart';
 import '../../UTILS/fontfaimlly_string.dart';
 import '../../main.dart';
 
-
-
 class ClosestScreen extends StatefulWidget {
   const ClosestScreen({super.key});
 
@@ -27,14 +25,19 @@ class ClosestScreen extends StatefulWidget {
 }
 
 class _ClosestScreenState extends State<ClosestScreen> {
-
-  final List<String> items = ['Healthy', 'Sushi', 'Desserts', 'Sugar', 'Sweets'];
+  final List<String> items = [
+    'Healthy',
+    'Sushi',
+    'Desserts',
+    'Sugar',
+    'Sweets'
+  ];
   final RestaurantsListProvider restaurantsProvider = RestaurantsListProvider();
 
   int currentPage = 1;
   bool isLoading = false;
   bool hasMoreData = true;
-  List<Data> restaurantData = [];
+  List<StoreData> restaurantData = [];
 
   ScrollController _scrollController = ScrollController();
 
@@ -45,11 +48,12 @@ class _ClosestScreenState extends State<ClosestScreen> {
     _loadData();
   }
 
-  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
-
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      GlobalKey<RefreshIndicatorState>();
 
   void _scrollListener() {
-    if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent) {
       // Reached the end of the list, load more data
       _loadData();
     }
@@ -62,7 +66,8 @@ class _ClosestScreenState extends State<ClosestScreen> {
           isLoading = true;
         });
 
-        final nextPageData = await restaurantsProvider.getClosestRestaurantsList(
+        final nextPageData =
+            await restaurantsProvider.getClosestRestaurantsList(
           page: currentPage,
         );
 
@@ -87,23 +92,27 @@ class _ClosestScreenState extends State<ClosestScreen> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       backgroundColor: bgColor,
       body: SafeArea(
-        child: Padding(padding: const EdgeInsets.only(top: 0.0,bottom: 20,left: 25,right: 25),
-
+        child: Padding(
+          padding:
+              const EdgeInsets.only(top: 0.0, bottom: 20, left: 25, right: 25),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const CustomAppBar(),
               const SizedBox(height: 20),
-              const CustomSearchField(hintText:"Search"),
+              const CustomSearchField(hintText: "Search"),
               const Padding(
-                padding: EdgeInsets.only(left: 13.0,top: 20),
-                child: CustomText(text: closet, color: btnbgColor, fontfamilly: montHeavy, sizeOfFont: 20),
+                padding: EdgeInsets.only(left: 13.0, top: 20),
+                child: CustomText(
+                    text: closet,
+                    color: btnbgColor,
+                    fontfamilly: montHeavy,
+                    sizeOfFont: 20),
               ),
               buildHorizontalList(items),
               buildVerticalCards()
@@ -121,9 +130,8 @@ class _ClosestScreenState extends State<ClosestScreen> {
         mainAxisSize: MainAxisSize.min,
         children: List.generate(
           items.length,
-              (index) => GestureDetector(
-            onTap: (){
-            },
+          (index) => GestureDetector(
+            onTap: () {},
             child: Container(
               margin: const EdgeInsets.symmetric(horizontal: 3, vertical: 10),
               padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 10),
@@ -132,14 +140,18 @@ class _ClosestScreenState extends State<ClosestScreen> {
                 borderRadius: BorderRadius.circular(30),
                 border: Border.all(width: 1, color: Colors.white),
               ),
-              child: CustomText(text: items[index], color: hintColor, fontfamilly: montBook,sizeOfFont: 19,),
+              child: CustomText(
+                text: items[index],
+                color: hintColor,
+                fontfamilly: montBook,
+                sizeOfFont: 19,
+              ),
             ),
           ),
         ),
       ),
     );
   }
-
 
   Widget buildVerticalCards() {
     return Expanded(
@@ -167,10 +179,15 @@ class _ClosestScreenState extends State<ClosestScreen> {
               );
             } else {
               // Display loading indicator while fetching more data
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Center(child: CircularProgressIndicator()),
-              );
+              return FutureBuilder(
+                  future: Future.delayed(const Duration(seconds: 3)),
+                  builder: (context, snapshot) =>
+                      snapshot.connectionState == ConnectionState.done
+                          ? const SizedBox()
+                          : const Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: Center(child: CircularProgressIndicator()),
+                            ));
             }
           },
         ),
@@ -178,11 +195,11 @@ class _ClosestScreenState extends State<ClosestScreen> {
     );
   }
 
-
   Future<void> _refreshData() async {
     // Call your API here to refresh the data
     try {
-      final refreshedData = await restaurantsProvider.getRestaurantsList(page: 1);
+      final refreshedData =
+          await restaurantsProvider.getRestaurantsList(page: 1);
 
       if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
         setState(() {
@@ -196,9 +213,7 @@ class _ClosestScreenState extends State<ClosestScreen> {
     }
   }
 
-
-
-  Widget getFavCards(int index, Data item) {
+  Widget getFavCards(int index, StoreData item) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
@@ -215,13 +230,15 @@ class _ClosestScreenState extends State<ClosestScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CustomText(
-                  text: item.name ?? '', // Assuming 'title' is a key in your data
+                  text: item.name ?? '',
+                  // Assuming 'title' is a key in your data
                   color: btntxtColor,
                   fontfamilly: montBold,
                   sizeOfFont: 24,
                 ),
                 CustomText(
-                  text: item.category ?? '', // Assuming 'category' is a key in your data
+                  text: item.category ?? '',
+                  // Assuming 'category' is a key in your data
                   color: btntxtColor,
                   fontfamilly: montRegular,
                   sizeOfFont: 14,
@@ -247,19 +264,25 @@ class _ClosestScreenState extends State<ClosestScreen> {
                       maxRating: 5,
                     ),
                     SizedBox(width: 10),
-
                     Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 3),
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 0, vertical: 3),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 5),
                       decoration: BoxDecoration(
                         color: editbgColor,
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      child: const CustomText(text: "4 km",maxLin:1,sizeOfFont: 10,fontfamilly:montHeavy,color: btnbgColor,),
+                      child: const CustomText(
+                        text: "4 km",
+                        maxLin: 1,
+                        sizeOfFont: 10,
+                        fontfamilly: montHeavy,
+                        color: btnbgColor,
+                      ),
                     ),
                   ],
                 ),
-
               ],
             ),
           ),
@@ -272,54 +295,62 @@ class _ClosestScreenState extends State<ClosestScreen> {
                 Image.network(
                   item.profileImage ?? food_image,
                   fit: BoxFit.contain,
-
                 ),
                 Positioned(
                   right: -4,
                   child: GestureDetector(
                     onTap: () async {
-
                       bool? ratingStatus = item.favourite;
 
                       print('ratingStatus:$ratingStatus');
 
                       try {
-
                         if (ratingStatus == false) {
                           // Only hit the API if item.favourite is true
                           var formData = {
                             'favourite': 1,
                           };
 
-                          FavAddedResponse favData = await Provider.of<FavoriteOperationProvider>(context, listen: false)
-                              .AddToFavoriteStore(item.id?? 0,formData);
+                          FavAddedResponse favData =
+                              await Provider.of<FavoriteOperationProvider>(
+                                      context,
+                                      listen: false)
+                                  .AddToFavoriteStore(item.id ?? 0, formData);
 
-                          if (favData.status == true && favData.message == "Store Added in favourite successfully.") {
+                          if (favData.status == true &&
+                              favData.message ==
+                                  "Store Added in favourite successfully.") {
                             // Print data to console
                             print(favData);
 
                             final snackBar = SnackBar(
-                              content:  Text('${favData.message}'),
+                              content: Text('${favData.message}'),
                             );
 
                             // Show the SnackBar
-                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
 
                             // Automatically hide the SnackBar after 1 second
                             Future.delayed(Duration(milliseconds: 1000), () {
-                              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                              ScaffoldMessenger.of(context)
+                                  .hideCurrentSnackBar();
                             });
 
                             setState(() async {
                               try {
-                                final refreshedData = await restaurantsProvider.getRestaurantsList(page: 1);
+                                final refreshedData = await restaurantsProvider
+                                    .getRestaurantsList(page: 1);
 
-                                if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
+                                if (refreshedData.data != null &&
+                                    refreshedData.data!.isNotEmpty) {
                                   setState(() {
                                     item.favourite == true;
                                     restaurantData = refreshedData.data!;
-                                    currentPage = 1; // Reset the page to 2 as you loaded the first page.
-                                    hasMoreData = true; // Reset the flag for more data.
+                                    currentPage =
+                                        1; // Reset the page to 2 as you loaded the first page.
+                                    hasMoreData =
+                                        true; // Reset the flag for more data.
                                   });
                                 }
                               } catch (error) {
@@ -331,48 +362,61 @@ class _ClosestScreenState extends State<ClosestScreen> {
                             print("Something went wrong: ${favData.message}");
 
                             final snackBar = SnackBar(
-                              content:  Text('${favData.message}'),
+                              content: Text('${favData.message}'),
                             );
 
                             // Show the SnackBar
-                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
 
                             // Automatically hide the SnackBar after 1 second
                             Future.delayed(Duration(milliseconds: 1000), () {
-                              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                              ScaffoldMessenger.of(context)
+                                  .hideCurrentSnackBar();
                             });
                           }
-                        } else if (item.favourite == true){
+                        } else if (item.favourite == true) {
                           // If item.favourite is false, print its value
-                          FavDeleteResponse delData = await Provider.of<FavoriteOperationProvider>(context, listen: false)
-                              .RemoveFromFavoriteStore(item.id?? 0);
+                          FavDeleteResponse delData =
+                              await Provider.of<FavoriteOperationProvider>(
+                                      context,
+                                      listen: false)
+                                  .RemoveFromFavoriteStore(item.id ?? 0);
 
-                          if (delData.status == true && delData.message == "Favourite Store deleted successfully") {
+                          if (delData.status == true &&
+                              delData.message ==
+                                  "Favourite Store deleted successfully") {
                             // Print data to console
                             print(delData);
 
                             final snackBar = SnackBar(
-                              content:  Text('${delData.message}'),
+                              content: Text('${delData.message}'),
                             );
 
                             // Show the SnackBar
-                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
 
                             // Automatically hide the SnackBar after 1 second
                             Future.delayed(Duration(milliseconds: 1000), () {
-                              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                              ScaffoldMessenger.of(context)
+                                  .hideCurrentSnackBar();
                             });
 
                             setState(() async {
                               try {
-                                final refreshedData = await restaurantsProvider.getRestaurantsList(page: 1);
+                                final refreshedData = await restaurantsProvider
+                                    .getRestaurantsList(page: 1);
 
-                                if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
+                                if (refreshedData.data != null &&
+                                    refreshedData.data!.isNotEmpty) {
                                   setState(() {
                                     item.favourite == false;
                                     restaurantData = refreshedData.data!;
-                                    currentPage = 1; // Reset the page to 2 as you loaded the first page.
-                                    hasMoreData = true; // Reset the flag for more data.
+                                    currentPage =
+                                        1; // Reset the page to 2 as you loaded the first page.
+                                    hasMoreData =
+                                        true; // Reset the flag for more data.
                                   });
                                 }
                               } catch (error) {
@@ -384,15 +428,17 @@ class _ClosestScreenState extends State<ClosestScreen> {
                             print("Something went wrong: ${delData.message}");
 
                             final snackBar = SnackBar(
-                              content:  Text('${delData.message}'),
+                              content: Text('${delData.message}'),
                             );
 
                             // Show the SnackBar
-                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
 
                             // Automatically hide the SnackBar after 1 second
                             Future.delayed(Duration(milliseconds: 1000), () {
-                              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                              ScaffoldMessenger.of(context)
+                                  .hideCurrentSnackBar();
                             });
                           }
                         }
@@ -402,15 +448,12 @@ class _ClosestScreenState extends State<ClosestScreen> {
                       }
                     },
                     child: Image.asset(
-
                       height: 15,
                       width: 18,
-                      item.favourite == true  ? save_icon_red : save_icon,
-
+                      item.favourite == true ? save_icon_red : save_icon,
                     ),
                   ),
                 ),
-
               ],
             ),
           ),
@@ -419,4 +462,3 @@ class _ClosestScreenState extends State<ClosestScreen> {
     );
   }
 }
-

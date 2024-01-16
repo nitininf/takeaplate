@@ -7,8 +7,7 @@ import 'package:takeaplate/UTILS/app_strings.dart';
 class CreateOrLogInScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    double screenHeight = MediaQuery.of(context).size.height;
-    double screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       body: Stack(
         fit: StackFit.expand,
@@ -45,11 +44,12 @@ class CreateOrLogInScreen extends StatelessWidget {
                child: Column(
                  children: [
                    CommonButton(btnBgColor: btnbgColor, btnText: login,sizeOfFont: 18, onClick: (){
-                     Navigator.pushNamed(context, '/Login');
+                     Navigator.of(context).pushNamedAndRemoveUntil('/Login', (Route route) => false);
                    }),
                    SizedBox(height: 20,),
                    CommonButton(btnBgColor: btnbgColor, sizeOfFont:17,btnText: createAnaccount, onClick: (){
-                     Navigator.pushNamed(context, '/SignupScreen');
+                     Navigator.of(context).pushNamedAndRemoveUntil('/SignupScreen', (Route route) => false);
+
                    }),
                  ],
                ),

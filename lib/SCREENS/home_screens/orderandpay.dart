@@ -22,7 +22,7 @@ class OrderAndPayScreen extends StatelessWidget {
     var commonProvider = Provider.of<CommonCounter>(context, listen: false);
     var orderAndPayProvider = Provider.of<OrderAndPayProvider>(context, listen: false);
 
-    final dealData data = ModalRoute.of(context)!.settings.arguments as dealData;
+    final DealData data = ModalRoute.of(context)!.settings.arguments as DealData;
 
 
     return Scaffold(
@@ -79,7 +79,7 @@ class OrderAndPayScreen extends StatelessWidget {
     );
   }
 
-  Widget getCards(BuildContext context, OrderAndPayProvider orderAndPayProvider, CommonCounter commonProvider, dealData data) {
+  Widget getCards(BuildContext context, OrderAndPayProvider orderAndPayProvider, CommonCounter commonProvider, DealData data) {
     return Consumer<OrderAndPayProvider>(builder: ((context, orderAndPayProvider, child) {
       return Container(
         margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
@@ -93,10 +93,13 @@ class OrderAndPayScreen extends StatelessWidget {
           children: [
             Container(
 
-                child: Image.network(
-                  data.profileImage ?? restrorent_food,
-                  fit: BoxFit.contain,
-                ),),
+
+             child: data.profileImage != null ? Image.network(
+                data.profileImage!,
+                fit: BoxFit.contain,
+              ): Image.asset(restrorent_food),
+
+            ),
             SizedBox(height: 30,),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -174,7 +177,7 @@ class OrderAndPayScreen extends StatelessWidget {
     }));
   }
 
-  Widget viewMore(CommonCounter commonCounter, OrderAndPayProvider orderAndPayProvider, dealData data) {
+  Widget viewMore(CommonCounter commonCounter, OrderAndPayProvider orderAndPayProvider, DealData data) {
     return Consumer<CommonCounter>(builder: (context, commonCounter, child) {
       return commonCounter.isViewMore ? Column(
         crossAxisAlignment: CrossAxisAlignment.start,

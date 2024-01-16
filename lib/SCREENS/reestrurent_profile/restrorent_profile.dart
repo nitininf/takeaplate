@@ -30,18 +30,18 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
   final RestaurantsListProvider restaurantsProvider = RestaurantsListProvider();
   bool isFavorite = false;
   int currentPage = 1;
-  late final Data data;
+  late StoreData data;
 
   bool isLoading = false;
   bool hasMoreData = true;
-  List<dealData> dealListData = [];
-  List<dealData> favouriteDealListData = [];
+  List<DealData> dealListData = [];
+  List<DealData> favouriteDealListData = [];
 
   ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
-    data = ModalRoute.of(widget.context)!.settings.arguments as Data;
+    data = ModalRoute.of(widget.context)!.settings.arguments as StoreData;
 
     super.initState();
     _scrollController.addListener(_scrollListener);
@@ -74,7 +74,7 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
 
         if (nextPageData.data != null && nextPageData.data!.isNotEmpty) {
 
-          for (dealData deal in nextPageData.data!) {
+          for (DealData deal in nextPageData.data!) {
 
             if(deal.favourite==false){
 
@@ -132,7 +132,7 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
     );
   }
 
-  Widget getView(Data data, int? restaurantId) {
+  Widget getView(StoreData data, int? restaurantId) {
     return Consumer<CommonCounter>(builder: (context, commonProvider, child) {
       return Expanded(
         child: Column(
@@ -173,7 +173,7 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
     );
   }
 
-  Widget getCards(CommonCounter commonCounter, Data data) {
+  Widget getCards(CommonCounter commonCounter, StoreData data) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -181,11 +181,11 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
         Stack(
           clipBehavior: Clip.none,
           children: [
-            Image.network(
-              data.bannerImage ?? restrorent_food,
+            data.bannerImage != null ? Image.network(
+              data.bannerImage!,
               fit: BoxFit.contain,
               height: 200,
-            ),
+            ): Image.asset(restrorent_food),
             Positioned(
               bottom: -60,
               right: 10,
@@ -387,7 +387,7 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
   }
 
   Widget buildVerticalCards(CommonCounter commonCounter) {
-    List<dealData> currentList =
+    List<DealData> currentList =
     commonCounter.isDeal ? dealListData : favouriteDealListData;
 
     return Expanded(
@@ -413,12 +413,15 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
                 },
                 child: getFavCards(index, currentList[index]),
               );
-            } else {
+            }else {
               // Display loading indicator while fetching more data
-              return Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Center(child: CircularProgressIndicator()),
-              );
+              return FutureBuilder(future: Future.delayed(Duration(seconds: 3)),
+                  builder: (context, snapshot) =>
+                  snapshot.connectionState == ConnectionState.done
+                      ? SizedBox()
+                      : Padding(padding: const EdgeInsets.all(8.0),
+                    child: Center(child: CircularProgressIndicator()),
+                  ));
             }
           },
         ),
@@ -436,12 +439,12 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
       if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
 
 
-          for (dealData deal in refreshedData.data!) {
+          for (DealData deal in refreshedData.data!) {
 
             if(deal.favourite==false){
 
               setState(() {
-                dealListData = refreshedData as List<dealData>;
+                dealListData = refreshedData as List<DealData>;
                 currentPage = 1; // Reset the page to 2 as you loaded the first page.
                 hasMoreData = true; // Reset the flag for more data.
               });
@@ -450,7 +453,7 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
 
 
                 setState(() {
-                  favouriteDealListData = refreshedData as List<dealData>;
+                  favouriteDealListData = refreshedData as List<DealData>;
 
                   currentPage = 1; // Reset the page to 2 as you loaded the first page.
                   hasMoreData = true; // Reset the flag for more data.
@@ -470,7 +473,7 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
     }
   }
 
-  Widget getFavCards(int index, dealData data) {
+  Widget getFavCards(int index, DealData data) {
     var startTiming = data.customTime?.startTime;
     var endTiming = data.customTime?.endTime;
 
@@ -617,12 +620,12 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
                                 final refreshedData = await restaurantsProvider.getRestaurantsDealsList(storeId, page: 1);
 
                                 if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
-                                  for (dealData deal in refreshedData.data!) {
+                                  for (DealData deal in refreshedData.data!) {
 
                                     if(deal.favourite==false){
 
                                       setState(() {
-                                        dealListData = refreshedData as List<dealData>;
+                                        dealListData = refreshedData as List<DealData>;
                                         currentPage = 1; // Reset the page to 2 as you loaded the first page.
                                         hasMoreData = true; // Reset the flag for more data.
                                       });
@@ -632,7 +635,7 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
 
                                       setState(() {
 
-                                        favouriteDealListData = refreshedData as List<dealData>;
+                                        favouriteDealListData = refreshedData as List<DealData>;
 
                                         currentPage = 1; // Reset the page to 2 as you loaded the first page.
                                         hasMoreData = true; // Reset the flag for more data.
@@ -696,12 +699,12 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
                                 final refreshedData = await restaurantsProvider.getRestaurantsDealsList(storeId, page: 1);
 
                                 if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
-                                  for (dealData deal in refreshedData.data!) {
+                                  for (DealData deal in refreshedData.data!) {
 
                                     if(deal.favourite==false){
 
                                       setState(() {
-                                        dealListData = refreshedData as List<dealData>;
+                                        dealListData = refreshedData as List<DealData>;
                                         currentPage = 1; // Reset the page to 2 as you loaded the first page.
                                         hasMoreData = true; // Reset the flag for more data.
                                       });
@@ -711,7 +714,7 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
 
                                       setState(() {
 
-                                        favouriteDealListData = refreshedData as List<dealData>;
+                                        favouriteDealListData = refreshedData as List<DealData>;
 
                                         currentPage = 1; // Reset the page to 2 as you loaded the first page.
                                         hasMoreData = true; // Reset the flag for more data.

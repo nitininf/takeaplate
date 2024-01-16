@@ -24,4 +24,10 @@ class DateProvider extends ChangeNotifier {
     _selectedDate = date;
     notifyListeners();
   }
+
+  void resetState() {
+    // Reset the state to its initial values
+    _selectedDate = DateTime.now();
+    notifyListeners();
+  }
 }

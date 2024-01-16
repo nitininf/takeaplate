@@ -45,7 +45,7 @@ class ProfileScreen extends StatelessWidget{
                 emailController.text = data["email"]!;
                 phoneNumberController.text = data["phoneNumber"]!;
                 dobController.text = data["dob"]!;
-                selectedImagePathController.text = data["selectedImagePath"]!.toUpperCase();
+                selectedImagePathController.text = data["selectedImagePath"]!;
 
                 return Column(
                   children: [
@@ -185,7 +185,18 @@ class ProfileScreen extends StatelessWidget{
             Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Image.asset(profile,height: 94,width: 95,),
+
+
+        selectedImagePathController.text !=''
+        ? ClipRRect(
+            borderRadius: BorderRadius.circular(15.0),
+          child: Image.network(
+            selectedImagePathController.text,
+            fit: BoxFit.cover,
+            height: 94,width: 95,
+          )
+      ): Image.asset(profile,height: 94,width: 95,),
+
                 SizedBox(width: 20,),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

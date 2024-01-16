@@ -31,8 +31,7 @@ TextEditingController fullNameController = TextEditingController();
 TextEditingController emailController = TextEditingController();
 TextEditingController phoneNumberController = TextEditingController();
 TextEditingController dobController = TextEditingController();
-TextEditingController genderController =
-TextEditingController(text: genders[0]);
+TextEditingController genderController = TextEditingController();
 TextEditingController selectedImagePathController = TextEditingController();
 TextEditingController receivedImageUrl = TextEditingController();
 bool isInitialized = false; // Add a flag to check if the controllers are already initialized
@@ -55,7 +54,7 @@ class EditProfileScreen extends StatelessWidget {
         emailController.text = data["email"]!;
         phoneNumberController.text = data["phoneNumber"]!;
         dobController.text = data["dob"]!;
-        genderController.text = data["gender"]!.toUpperCase();
+        genderController.text = data["gender"]!;
         selectedImagePathController.text = data["selectedImagePath"]!;
         isInitialized = true; // Set the flag to true after initializing controllers
 
@@ -108,15 +107,17 @@ class EditProfileScreen extends StatelessWidget {
                   height: 300,
                   width: 300,
                   margin: const EdgeInsets.only(bottom: 20),
-                  decoration: BoxDecoration(
-                    image: selectedImagePathController.text.isNotEmpty
+                  decoration:
+                  BoxDecoration(
+                    image:
+                      Provider.of<SelectImageProvider>(context).selectedImage.isNotEmpty
                         ? DecorationImage(
-                      image: NetworkImage(selectedImagePathController.text),
+                      image: FileImage(File(Provider.of<SelectImageProvider>(context).selectedImage)),
                       fit: BoxFit.cover,
                     )
-                        : Provider.of<SelectImageProvider>(context).selectedImage.isNotEmpty
+                        : selectedImagePathController.text.isNotEmpty
                         ? DecorationImage(
-                      image: NetworkImage(Provider.of<SelectImageProvider>(context).selectedImage),
+                      image: NetworkImage(selectedImagePathController.text),
                       fit: BoxFit.cover,
                     )
                         : const DecorationImage(
@@ -124,39 +125,85 @@ class EditProfileScreen extends StatelessWidget {
                       fit: BoxFit.contain,
                     ),
                   ),
-                  child: Visibility(
-                    visible: selectedImagePathController.text == null || selectedImagePathController.text.isEmpty,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        // Display the selected image or a default one
-                        // You can use a provider to manage the selected image state
-                        Consumer<SelectImageProvider>(
-                          builder: (context, provider, child) {
-                            return selectedImagePathController.text.isNotEmpty
-                                ? Image.file(
-                              File(selectedImagePathController.text),
-                              width: 146,
-                              height: 79,
-                              fit: BoxFit.cover,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                        onTap: () async {
+                          final image = await _getImage(context);
+                          if (image != null) {
+                            // Update the selected image in the provider or state
+                            Provider.of<SelectImageProvider>(
+                              context,
+                              listen: false,
+                            ).setSelectedImage(image);
+
+                            try {
+                              var data = await Provider.of<AuthenticationProvider>(
+                                context,
+                                listen: false,
+                              ).uploadMultipartImage(
+                                File(selectedImagePathController.text),
+                                "profile",
+                              );
+
+                              print(data);
+
+                              if (data.message == "Image uploaded successfully") {
+                                receivedImageUrl.text = data.url ?? '';
+                                selectedImagePathController.text = data.url ?? '';
+                                // Print data to console
+                                print(data);
+
+                                // Navigate to the next screen or perform other actions after login
+                              } else {
+                                // Login failed
+                                print("Something went wrong: ${data.message}");
+
+                                final snackBar = SnackBar(
+                                  content: Text('${data.message}'),
+                                );
+
+                                // Show the SnackBar
+                                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                                // Automatically hide the SnackBar after 1 second
+                                Future.delayed(Duration(milliseconds: 1000), () {
+                                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                });
+                              }
+                            } catch (e) {
+                              // Display error message
+                              print("Error: $e");
+                            }
+                          }
+                        },
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            // Display the selected image or a default one
+                            // You can use a provider to manage the selected image state
+                            Consumer<SelectImageProvider>(
+                              builder: (context, provider, child) {
+                                return Image.asset(
+                                  appLogo,
+                                  width: 146,
+                                  height: 79,
+                                  fit: BoxFit.contain,
+                                );
+                              },
+                            ),
+                            SizedBox(height: 16),
+                            CustomText(
+                              text: "Change Photo",
+                              sizeOfFont: 20,
+                              fontfamilly: montBook,
+                              color: hintColor,
                             )
-                                : Image.asset(
-                              appLogo,
-                              width: 146,
-                              height: 79,
-                              fit: BoxFit.contain,
-                            );
-                          },
+                          ],
                         ),
-                        SizedBox(height: 16),
-                        CustomText(
-                          text: "Change Photo",
-                          sizeOfFont: 20,
-                          fontfamilly: montBook,
-                          color: hintColor,
-                        )
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
 
@@ -243,8 +290,7 @@ class EditProfileScreen extends StatelessWidget {
                           emailController.text.isNotEmpty &&
                           phoneNumberController.text.isNotEmpty &&
                           dobController.text.isNotEmpty &&
-                          genderController.text.isNotEmpty &&
-                          selectedImagePathController.text.isNotEmpty) {
+                          genderController.text.isNotEmpty) {
                         // Check password length
                         final DateProvider dateProvider =
                         Provider.of<DateProvider>(context, listen: false);
@@ -272,7 +318,7 @@ class EditProfileScreen extends StatelessWidget {
                               .editProfile(formData);
 
                           if (data.status == true &&
-                              data.message == "Profile updamted successfully") {
+                              data.message == "Profile updated successfully") {
                             // Registration successful
 
                             int? id = data.data?.id;
@@ -301,8 +347,9 @@ class EditProfileScreen extends StatelessWidget {
                                 RequestString.USER_IMAGE, userPhoto!);
 
                             print(data);
-                            Navigator.pushNamed(
-                                context, '/NotificationTurnOnScreen');
+
+                            Navigator.of(context).pushNamedAndRemoveUntil('/BaseHome', (Route route) => false);
+
                           } else {
                             // Registration failed
                             print(

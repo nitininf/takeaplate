@@ -147,7 +147,7 @@ class SetYourPasswordScreen extends StatelessWidget {
                                 String? email = data.data?.email;
                                 String? phoneNo = data.data?.phoneNo;
                                 String? dataOfBirth = data.data?.dOB;
-                                String? userImage = data.data?.userImage;
+                                String? userImage = data.data?.userImage ?? '';
                                 String? gender = data.data?.gender;
 
                                 // Save user data to SharedPreferences

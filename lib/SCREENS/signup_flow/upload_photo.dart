@@ -1,4 +1,3 @@
-
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -20,26 +19,18 @@ import '../../UTILS/request_string.dart';
 import '../../UTILS/utils.dart';
 
 class UploadPhoto extends StatelessWidget {
-
   TextEditingController selectedImagePathController = TextEditingController();
-
-
 
   @override
   Widget build(BuildContext context) {
-
     var getUserBasicDetails = Provider.of<SignUp_StepOne>(context);
 
     // // Access the user's information
     // var userInformation = SignUp_StepOne();
 
-
-
-
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-
       body: Stack(
         fit: StackFit.expand,
         children: [
@@ -47,69 +38,82 @@ class UploadPhoto extends StatelessWidget {
             appBackground,
             fit: BoxFit.cover,
           ),
-
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Padding(
-                padding: const EdgeInsets.only(left: 40.0,right: 40),
+                padding: const EdgeInsets.only(left: 40.0, right: 40),
                 child: Column(
                   children: [
-                    SizedBox(height: screenHeight*0.04,),
+                    SizedBox(
+                      height: screenHeight * 0.04,
+                    ),
                     Image.asset(
                       appLogo, // Replace with your first small image path
                       height: 80,
                       width: 80,
                     ),
-                    SizedBox(height: screenHeight*0.03,),
-                     Padding(
-                      padding: EdgeInsets.only(left: 18,top: 25),
+                    SizedBox(
+                      height: screenHeight * 0.03,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 18, top: 25),
                       child: Column(
                         children: [
                           Align(
                               alignment: Alignment.topLeft,
-                              child: CustomText(text: profilePicture,color: Colors.white,fontfamilly: montHeavy,sizeOfFont: 20,)),
-Align(
-                              alignment: Alignment.topLeft,
-                              child: RichText(
-                                text: TextSpan(
-                                    text: 'Optional',
-                                    style: TextStyle(
-                                        color: Colors.white, fontFamily: montLight, fontSize: 18),
-                                    children: [
-                                      TextSpan(
-                                          text: ' *',
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                            ))
-                                    ]),
-
-                              ),),
+                              child: CustomText(
+                                text: profilePicture,
+                                color: Colors.white,
+                                fontfamilly: montHeavy,
+                                sizeOfFont: 20,
+                              )),
+                          Align(
+                            alignment: Alignment.topLeft,
+                            child: RichText(
+                              text: TextSpan(
+                                  text: 'Optional',
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontFamily: montLight,
+                                      fontSize: 18),
+                                  children: [
+                                    TextSpan(
+                                        text: ' *',
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                        ))
+                                  ]),
+                            ),
+                          ),
                         ],
                       ),
                     ),
-                    SizedBox(height: screenHeight*0.04,),
-
+                    SizedBox(
+                      height: screenHeight * 0.04,
+                    ),
                     Container(
                       height: screenHeight * 0.350,
                       width: screenWidth * 0.760,
-                      margin: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 18, vertical: 10),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 12),
                       decoration: BoxDecoration(
-                        image: selectedImagePathController.text.isNotEmpty
-                            ? DecorationImage(
-                          image: FileImage(File(selectedImagePathController.text)),
-                          fit: BoxFit.cover,
-                        )
-                            : Provider.of<SelectImageProvider>(context).selectedImage.isNotEmpty
-                            ? DecorationImage(
-                          image: FileImage(File(Provider.of<SelectImageProvider>(context).selectedImage)),
-                          fit: BoxFit.cover,
-                        )
-                            : const DecorationImage(
-                          image: AssetImage(edit_photo),
-                          fit: BoxFit.contain,
-                        ),
+                        image: Provider.of<SelectImageProvider>(context)
+                                    .selectedImage
+                                    .isNotEmpty
+                                ? DecorationImage(
+                                    image: FileImage(File(
+                                        Provider.of<SelectImageProvider>(
+                                                context)
+                                            .selectedImage)),
+                                    fit: BoxFit.cover,
+                                  )
+                                : const DecorationImage(
+                                    image: AssetImage(edit_photo),
+                                    fit: BoxFit.contain,
+                                  ),
                       ),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -119,7 +123,9 @@ Align(
                               final image = await _getImage(context);
                               if (image != null) {
                                 // Update the selected image in the provider or state
-                                Provider.of<SelectImageProvider>(context, listen: false).setSelectedImage(image);
+                                Provider.of<SelectImageProvider>(context,
+                                        listen: false)
+                                    .setSelectedImage(image);
                               }
                             },
                             child: Visibility(
@@ -137,7 +143,9 @@ Align(
                                       );
                                     },
                                   ),
-                                  SizedBox(height: 16,),
+                                  SizedBox(
+                                    height: 16,
+                                  ),
                                   const CustomText(
                                     text: uploadphoto,
                                     color: Colors.white,
@@ -151,113 +159,97 @@ Align(
                         ],
                       ),
                     ),
-
-
-
                   ],
                 ),
               ),
-
-
               Padding(
                 padding: const EdgeInsets.all(59.0),
-                child: CommonButton(btnBgColor: btnbgColor, btnText: next, onClick: () async {
-                  String selectedImagePath = selectedImagePathController.text;
+                child: CommonButton(
+                  btnBgColor: btnbgColor,
+                  btnText: next,
+                  onClick: () async {
+                    String selectedImagePath = selectedImagePathController.text;
 
-                  if (selectedImagePath.isNotEmpty) {
-                    try {
+                    if (selectedImagePath.isNotEmpty) {
+                      try {
+                        var data = await Provider.of<AuthenticationProvider>(
+                                context,
+                                listen: false)
+                            .uploadMultipartImage(
+                                File(selectedImagePath), "registration");
 
-
-                      var data = await Provider.of<AuthenticationProvider>(context, listen: false)
-                          .uploadMultipartImage(File(selectedImagePath),"registration");
-
-                      print(data);
-
-                      if (data.message == "Image uploaded successfully") {
-
-                        await Utility.getSharedPreferences();
-                        await Utility.setStringValue(RequestString.USER_IMAGE, data.url ?? '');
-
-
-                        // Perform the navigation here
-
-                        var saveUserImage = Provider.of<SignUp_StepTwo>(context, listen: false);
-
-                        // Set user information in the provider
-                        saveUserImage.saveSignUpStepTwoData(
-                          fullName: getUserBasicDetails.fullName,
-                          email: getUserBasicDetails.email,
-                          phoneNumber: getUserBasicDetails.phoneNumber,
-                          dob: getUserBasicDetails.dob,
-                          gender: getUserBasicDetails.gender,
-                          user_image: data.url ?? '',
-
-                        );
-
-
-                        Navigator.pushNamed(context, '/SetYourPasswordScreen');
-                        // Print data to console
                         print(data);
 
-                        // Navigate to the next screen or perform other actions after login
-                      }
+                        if (data.message == "Image uploaded successfully") {
+                          await Utility.getSharedPreferences();
+                          await Utility.setStringValue(
+                              RequestString.USER_IMAGE, data.url ?? '');
 
-                      else {
-                        // Login failed
-                        print("Something went wrong: ${data.message}");
+                          // Perform the navigation here
 
-                        final snackBar = SnackBar(
-                          content:  Text('${data.message}'),
+                          var saveUserImage = Provider.of<SignUp_StepTwo>(
+                              context,
+                              listen: false);
 
-                        );
+                          // Set user information in the provider
+                          saveUserImage.saveSignUpStepTwoData(
+                            fullName: getUserBasicDetails.fullName,
+                            email: getUserBasicDetails.email,
+                            phoneNumber: getUserBasicDetails.phoneNumber,
+                            dob: getUserBasicDetails.dob,
+                            gender: getUserBasicDetails.gender,
+                            user_image: data.url ?? '',
+                          );
+
+                          Navigator.pushNamed(
+                              context, '/SetYourPasswordScreen');
+                          // Print data to console
+                          print(data);
+
+                          // Navigate to the next screen or perform other actions after login
+                        } else {
+                          // Login failed
+                          print("Something went wrong: ${data.message}");
+
+                          final snackBar = SnackBar(
+                            content: Text('${data.message}'),
+                          );
 
 // Show the SnackBar
-                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
 // Automatically hide the SnackBar after 1 second
-                        Future.delayed(Duration(milliseconds: 1000), () {
-                          ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                        });
-
+                          Future.delayed(Duration(milliseconds: 1000), () {
+                            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                          });
+                        }
+                      } catch (e) {
+                        // Display error message
+                        print("Error: $e");
                       }
+                    } else {
+                      var saveUserImage =
+                          Provider.of<SignUp_StepTwo>(context, listen: false);
 
+                      // Set user information in the provider
+                      saveUserImage.saveSignUpStepTwoData(
+                        fullName: getUserBasicDetails.fullName,
+                        email: getUserBasicDetails.email,
+                        phoneNumber: getUserBasicDetails.phoneNumber,
+                        dob: getUserBasicDetails.dob,
+                        gender: getUserBasicDetails.gender,
+                        user_image: '',
+                      );
 
-                    } catch (e) {
-                      // Display error message
-                      print("Error: $e");
+                      Navigator.pushNamed(context, '/SetYourPasswordScreen');
                     }
-                  }
-
-                  else {
-                    var saveUserImage = Provider.of<SignUp_StepTwo>(context, listen: false);
-
-                    // Set user information in the provider
-                    saveUserImage.saveSignUpStepTwoData(
-                      fullName: getUserBasicDetails.fullName,
-                      email: getUserBasicDetails.email,
-                      phoneNumber: getUserBasicDetails.phoneNumber,
-                      dob: getUserBasicDetails.dob,
-                      gender: getUserBasicDetails.gender,
-                      user_image: '',
-
-                    );
-
-
-                    Navigator.pushNamed(context, '/SetYourPasswordScreen');
-
-                  }
-
-
-
-
-                                },),
+                  },
+                ),
               )
-
             ],
           ),
         ],
       ),
-
     );
   }
 
@@ -336,6 +328,4 @@ Align(
       return "";
     }
   }
-
-
 }

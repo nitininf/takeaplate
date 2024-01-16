@@ -1,7 +1,7 @@
 class RestaurentDealResponse {
   bool? status;
   String? message;
-  List<dealData>? data;
+  List<DealData>? data;
   int? currentPage;
   int? perPage;
   int? total;
@@ -24,9 +24,9 @@ class RestaurentDealResponse {
     status = json['status'];
     message = json['message'];
     if (json['data'] != null) {
-      data = <dealData>[];
+      data = <DealData>[];
       json['data'].forEach((v) {
-        data!.add(new dealData.fromJson(v));
+        data!.add(new DealData.fromJson(v));
       });
     }
     currentPage = json['currentPage'];
@@ -54,7 +54,7 @@ class RestaurentDealResponse {
   }
 }
 
-class dealData {
+class DealData {
   int? id;
   int? storeId;
   String? name;
@@ -75,7 +75,7 @@ class dealData {
   CustomTime? customTime;
   Store? store;
 
-  dealData(
+  DealData(
       {this.id,
         this.storeId,
         this.name,
@@ -96,7 +96,7 @@ class dealData {
         this.customTime,
         this.store});
 
-  dealData.fromJson(Map<String, dynamic> json) {
+  DealData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     storeId = json['store_id'];
     name = json['name'];

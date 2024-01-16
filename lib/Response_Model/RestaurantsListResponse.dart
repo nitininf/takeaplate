@@ -1,6 +1,6 @@
 class RestaurantsListResponse {
   String? message;
-  List<Data>? data;
+  List<StoreData>? data;
   bool? status;
   int? currentPage;
   int? perPage;
@@ -23,9 +23,9 @@ class RestaurantsListResponse {
   RestaurantsListResponse.fromJson(Map<String, dynamic> json) {
     message = json['message'];
     if (json['data'] != null) {
-      data = <Data>[];
+      data = <StoreData>[];
       json['data'].forEach((v) {
-        data!.add(new Data.fromJson(v));
+        data!.add(new StoreData.fromJson(v));
       });
     }
     status = json['status'];
@@ -54,7 +54,7 @@ class RestaurantsListResponse {
   }
 }
 
-class Data {
+class StoreData {
   int? id;
   String? name;
   String? address;
@@ -70,9 +70,9 @@ class Data {
   String? deletedAt;
   String? createdAt;
   String? updatedAt;
-  bool? favourite;
+  var favourite;
 
-  Data(
+  StoreData(
       {this.id,
         this.name,
         this.address,
@@ -90,7 +90,7 @@ class Data {
         this.updatedAt,
         this.favourite});
 
-  Data.fromJson(Map<String, dynamic> json) {
+  StoreData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     address = json['address'];

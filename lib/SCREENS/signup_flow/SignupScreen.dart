@@ -18,8 +18,10 @@ TextEditingController fullNameController = TextEditingController();
 TextEditingController emailController = TextEditingController();
 TextEditingController phoneNumberController = TextEditingController();
 TextEditingController dobController = TextEditingController();
-TextEditingController genderController =
-    TextEditingController(text: genders[0]);
+TextEditingController genderController = TextEditingController(text: genders[0]);
+
+final DateProvider dateProvider = DateProvider();
+
 
 class SignUpScreen extends StatelessWidget {
   @override
@@ -33,6 +35,10 @@ class SignUpScreen extends StatelessWidget {
         emailController.clear();
         phoneNumberController.clear();
         dobController.clear();
+
+        dateProvider.resetState();
+
+        Navigator.of(context).pushNamedAndRemoveUntil('/Create_Login', (Route route) => false);
 
         // Allow the back button action
         return true;
@@ -170,8 +176,7 @@ class SignUpScreen extends StatelessWidget {
                           print(
                               "Full Name: ${fullNameController.text} ,\n Email: ${emailController.text},\n Phone Number: ${phoneNumberController.text},\n Date Of Birth: ${dobController.text},\n Gender: ${genderController.text}");
 
-                          final DateProvider dateProvider =
-                              Provider.of<DateProvider>(context, listen: false);
+
 
                           var date = dateProvider
                               .formattedDate(DateTime.parse(dobController.text));
@@ -215,8 +220,7 @@ class SignUpScreen extends StatelessWidget {
 
   Future<void> _selectDate(BuildContext context) async {
     print("Selecting date...");
-    final DateProvider dateProvider =
-        Provider.of<DateProvider>(context, listen: false);
+
     DateTime? picked = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
