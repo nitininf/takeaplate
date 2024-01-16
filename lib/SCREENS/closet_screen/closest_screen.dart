@@ -292,10 +292,15 @@ class _ClosestScreenState extends State<ClosestScreen> {
               alignment: Alignment.topRight,
               clipBehavior: Clip.none,
               children: [
-                Image.network(
-                  item.profileImage ?? food_image,
-                  fit: BoxFit.contain,
-                ),
+                item.profileImage != null ? ClipRRect(
+                    borderRadius: BorderRadius.circular(15.0),
+                    child: Image.network(
+                      item.profileImage!,
+                      fit: BoxFit.cover,
+                      height: 100, width: 140,
+                    )
+                ): Image.asset(food_image,height: 100, width: 140,),
+
                 Positioned(
                   right: -4,
                   child: GestureDetector(

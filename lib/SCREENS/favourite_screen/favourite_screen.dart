@@ -451,11 +451,15 @@ print(dealListingData);
               clipBehavior: Clip.none,
               children: [
 
+                storeData.profileImage != null ? ClipRRect(
+                    borderRadius: BorderRadius.circular(15.0),
+                    child: Image.network(
+                      storeData.profileImage!,
+                      fit: BoxFit.cover,
+                      height: 100, width: 140,
+                    )
+                ): Image.asset(food_image,height: 100, width: 140,),
 
-                storeData.profileImage != null ? Image.network(
-                  storeData.profileImage!,
-                  fit: BoxFit.contain,
-                ) : Image.asset(food_image),
                 Positioned(
                   right: -4,
                   child: GestureDetector(
