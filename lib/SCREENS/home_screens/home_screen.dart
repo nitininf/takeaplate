@@ -438,7 +438,17 @@ class _HomeScreenState extends State<HomeScreen> {
               alignment: Alignment.topRight,
               clipBehavior: Clip.none,
               children: [
-                Image.asset(food_image, height: 100, width: 100, fit: BoxFit.cover),
+                // lastMinuteDeal.profileImage != null ? ClipRRect(
+                //     borderRadius: BorderRadius.circular(15.0),
+                //     child: Image.network(
+                //       lastMinuteDeal.profileImage!,
+                //       fit: BoxFit.cover,
+                //       height: 120, width: 100,
+                //     )
+                // ): Image.asset(food_image,height: 100, width: 100,),
+
+                Image.asset(food_image,height: 110, width: 100,fit: BoxFit.cover,),
+
                 Positioned(
                   right: -4,
                   child: Image.asset(
@@ -462,30 +472,32 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: List.generate(
-          closedRestaurants!.length,
+          lastMinuteDeals!.length,
               (index) => GestureDetector(
               onTap: () {
                 Navigator.pushNamed(
                   navigatorKey.currentContext!,
-                  '/RestaurantsProfileScreen',
-                  arguments: closedRestaurants![index], // Pass the data as arguments
+                  '/OrderAndPayScreen',
+                  arguments: lastMinuteDeals![index], // Pass the data as arguments
                 );
               },
-              child: getCollectTomorrowData(index, closedRestaurants![index])),
+              child: getCollectTomorrowData(index, lastMinuteDeals![index])),
         ),
       ),
     );
   }
 
 
-  Widget getCollectTomorrowData(int index, StoreData data) {
+  Widget getCollectTomorrowData(int index, DealData lastMinuteDeal) {
 
+    var startTiming = lastMinuteDeal.customTime?.startTime;
+    var endTiming = lastMinuteDeal.customTime?.endTime;
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(width: 0, color: editbgColor.withOpacity(0.25)),
+        border: Border.all(width: 0,   color: editbgColor.withOpacity(0.25),),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -493,25 +505,12 @@ class _HomeScreenState extends State<HomeScreen> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CustomText(
-                text: data.name ?? '',
-                color: btntxtColor,
-                fontfamilly: montBold,
-                sizeOfFont: 24,
-              ),
-              CustomText(
-                text: data.category ?? '',
-                color: btntxtColor,
-                fontfamilly: montRegular,
-                sizeOfFont: 14,
-              ),
-              CustomText(
-                text: '3 Offers available',
-                color: offerColor,
-                sizeOfFont: 9,
-                fontfamilly: montBook,
-              ),
-              SizedBox(height: 1),
+              CustomText(text: lastMinuteDeal.name ?? '', color: btntxtColor, fontfamilly: montBold,sizeOfFont: 18,),
+
+              CustomText(text: lastMinuteDeal.store?.name ?? '', color: btntxtColor, fontfamilly: montRegular,sizeOfFont: 13,),
+
+              CustomText(text: '${startTiming ?? ""} - ${endTiming ?? ""}', color: graysColor,sizeOfFont: 8, fontfamilly: montRegular),
+              SizedBox(height: 5,),
               Row(
                 children: [
                   RatingBar.readOnly(
@@ -521,51 +520,49 @@ class _HomeScreenState extends State<HomeScreen> {
                     isHalfAllowed: true,
                     halfFilledColor: btnbgColor,
                     filledColor: btnbgColor,
-                    initialRating: 4,
-                    size: 18,
+                    size: 20,
+                    initialRating: double.parse(lastMinuteDeal.averageRating ?? '0'),
                     maxRating: 5,
                   ),
-                  SizedBox(width: 10),
-
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 3),
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                    decoration: BoxDecoration(
-                      color: editbgColor,
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: const CustomText(text: "4 km",maxLin:1,sizeOfFont: 10,fontfamilly:montHeavy,color: btnbgColor,),
-                  ),
+                  SizedBox(width: 10,),
+                  CustomText(text: '8KM', color: graysColor,sizeOfFont: 12, fontfamilly: montSemiBold),
                 ],
+
               ),
+              SizedBox(height: 5,),
+              CustomText(text: '\$ ${lastMinuteDeal.price ?? "NA"}', color: dolorColor,sizeOfFont: 24, fontfamilly: montHeavy,),
+
             ],
           ),
-          const SizedBox(width: 18),
-          Stack(
-            alignment: Alignment.topRight,
-            clipBehavior: Clip.none,
-            children: [
-              data.profileImage != null ? ClipRRect(
-                  borderRadius: BorderRadius.circular(15.0),
-                  child: Image.network(
-                    data.profileImage!,
-                    fit: BoxFit.cover,
-                    height: 100, width: 100,
-                  )
-              ): Image.asset(food_image,height: 100, width: 100,),
+          const SizedBox(width: 18,),
+          Align(
+            alignment: Alignment.centerRight,
+            child: Stack(
+              alignment: Alignment.topRight,
+              clipBehavior: Clip.none,
+              children: [
+                // lastMinuteDeal.profileImage != null ? ClipRRect(
+                //     borderRadius: BorderRadius.circular(15.0),
+                //     child: Image.network(
+                //       lastMinuteDeal.profileImage!,
+                //       fit: BoxFit.cover,
+                //       height: 120, width: 100,
+                //     )
+                // ): Image.asset(food_image,height: 100, width: 100,),
 
-              Positioned(
-                right: -4,
-                child: Image.asset(
-                  save_icon,
-                  height: 15,
-                  width: 18,
+                Image.asset(food_image,height: 110, width: 100,fit: BoxFit.cover,),
+
+                Positioned(
+                  right: -4,
+                  child: Image.asset(
+                    save_icon,
+                    height: 15,
+                    width: 18,
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-
-
         ],
       ),
     );
