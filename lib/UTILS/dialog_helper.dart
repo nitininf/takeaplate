@@ -307,13 +307,7 @@ class DialogHelper {
     );
   }
 
-  static Future<void> showPermissionDialog(
-    BuildContext context, {
-    String title = 'Permission',
-    String? description =
-        'You have permanently denied all permissions. Please give permission in app settings.',
-  })
-  async {
+  static Future<void> showPermissionDialog(BuildContext context, {String title = 'Permission', String? description = 'You have permanently denied all permissions. Please give permission in app settings.',}) async {
     return
       showDialog<void>(
       context: context!,
@@ -343,6 +337,67 @@ class DialogHelper {
                   },
                   child: const Text('Open Settings'),
                 ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+   Future<void> showDeleteAccountDialog(BuildContext context, {String title = 'Delete Account? ', String? description = 'Are you sure you want to proceed?',}) async {
+    return showDialog<void>(
+      context: context!,
+      barrierDismissible: false, // Prevent dismissing by tapping outside
+      builder: (BuildContext context) {
+        return Dialog(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  title,
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  description ?? '',
+                  style: TextStyle(fontSize: 16),
+                  textAlign: TextAlign.center, // Use textAlign property
+                ),
+                SizedBox(height: 10,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Flexible(
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 10),
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            Navigator.of(context).pop();
+                          },
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.deepOrangeAccent, // Customize the color as needed
+                          ),
+                          child: const Text('NO'),
+                        ),
+                      ),
+                    ),
+                    Flexible(
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          Navigator.of(context).pop();
+                        },
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.green, // Customize the color as needed
+                        ),
+                        child: const Text('YES'),
+                      ),
+                    ),
+                  ],
+                ),
+
               ],
             ),
           ),

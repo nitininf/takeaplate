@@ -1368,13 +1368,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 right: -4,
                 child: GestureDetector(
                   onTap: () async {
-                    int? ratingStatus = favoriteStores.favourite;
+                    bool? ratingStatus = favoriteStores.favourite;
 
                     print('ratingStatus:$ratingStatus');
                     print('StoreId: ${favoriteStores.id}');
 
                     try {
-                      if (ratingStatus == 0) {
+                      if (ratingStatus == false) {
                         // Only hit the API if storeData.favourite is true
                         var formData = {
                           'favourite': 1,
@@ -1406,7 +1406,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           });
 
                           setState(() {
-                            favoriteStores.favourite = 1;
+                            favoriteStores.favourite = true;
                           });
                           try {
                             final refreshedData =
@@ -1441,7 +1441,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ScaffoldMessenger.of(context).hideCurrentSnackBar();
                           });
                         }
-                      } else if (favoriteStores.favourite == 1) {
+                      } else if (favoriteStores.favourite == true) {
                         // If storeData.favourite is false, print its value
                         FavDeleteResponse delData = await Provider.of<
                                     FavoriteOperationProvider>(context,
@@ -1467,7 +1467,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           });
 
                           setState(() {
-                            favoriteStores.favourite = 0;
+                            favoriteStores.favourite = false;
                           });
 
                           try {
@@ -1510,7 +1510,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Image.asset(
                     height: 15,
                     width: 18,
-                    favoriteStores.favourite == 1 ? save_icon_red : save_icon,
+                    favoriteStores.favourite == true ? save_icon_red : save_icon,
                   ),
                 ),
               ),
