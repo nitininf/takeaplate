@@ -42,14 +42,14 @@ class OrderAndPayScreen extends StatelessWidget {
                   child: Column(
                     children: [
                       const SizedBox(height: 30,),
-                      buildSection(lastminute, "",orderAndPayProvider,commonProvider),
+                      buildSection(lastMinute, "",orderAndPayProvider,commonProvider),
                       getCards(context,orderAndPayProvider,commonProvider,data),
                       const SizedBox(height: 10,),
                       Padding(
                         padding: EdgeInsets.only(left: 30, right: 30),
                         child: CommonButton(
                           btnBgColor: btnbgColor,
-                          btnText: orderandpay,
+                          btnText: orderAndPay,
                           onClick: () {
                             Navigator.pushNamed(context, '/PaymentDetailsScreen');
                           },

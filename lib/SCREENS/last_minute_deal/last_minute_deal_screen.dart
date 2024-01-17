@@ -106,7 +106,7 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
               const Padding(
                 padding: EdgeInsets.only(left: 13.0, top: 20),
                 child: CustomText(
-                    text: lastminute,
+                    text: lastMinute,
                     color: btnbgColor,
                     fontfamilly: montHeavy,
                     sizeOfFont: 20),

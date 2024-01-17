@@ -35,19 +35,22 @@ const String confirm = "NEW MEAL PURCHASE CONFIIRMATION";
 const String dealAgain = "NEVER MISS A DEAL AGAIN!";
 const String choose = "PERSONALISE AND CHOOSE \n WHAT YOU WANT TO KNOW";
 const String closet = "CLOSEST TO YOU";
-const String lastminute = "LAST MINUTE DEALS";
+const String lastMinute = "LAST MINUTE DEALS";
 const String collectTomorrow = "COLLECT TOMORROW";
-const String viewall = "View all";
-const String myfav = "MY FAVOURITES";
-const String orderandpay = "ORDER & PAY";
+const String viewAll = "View all";
+const String myFav = "MY FAVOURITES";
+const String orderAndPay = "ORDER & PAY";
 const String total = "Total";
 const String cardName = "Name on card";
 const String cardNum = "Card Number";
 const String expiry = "Expiry";
 const String cvv = "CVV";
-const String paymentdetails = "Payment Details";
+const String paymentDetail = "Payment Details";
 const String name = "Name";
 const String submit = "SUBMIT";
+const String logout = "LOG OUT!";
+const String deleteAccount = "DELETE ACCOUNT!";
+const String proceed = "Are you sure you want to proceed?";
 
 
 

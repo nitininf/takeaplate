@@ -16,6 +16,7 @@ import '../../CUSTOM_WIDGETS/custom_text_style.dart';
 import '../../MULTI-PROVIDER/AuthenticationProvider.dart';
 import '../../MULTI-PROVIDER/common_counter.dart';
 import '../../Response_Model/DeleteAccountResponse.dart';
+import '../../UTILS/app_strings.dart';
 import '../../UTILS/dialog_helper.dart';
 import '../../UTILS/request_string.dart';
 import '../../UTILS/utils.dart';
@@ -47,17 +48,16 @@ class SettingScreen extends StatelessWidget {
                       btnBgColor: btnbgColor,
                       btnText: "LOG OUT",
                       onClick: () {
-                        showAccountOperationDialog(context, "Logout",
-                            "Are you sure you want to logout?");
-
+                        showAccountOperationDialog(context, logout,
+                            proceed);
                       }),
                   SizedBox(
                     height: 10,
                   ),
                   GestureDetector(
                     onTap: () async {
-                      showAccountOperationDialog(context, "Delete Account",
-                          "Are you sure you want to proceed?");
+                      showAccountOperationDialog(context, deleteAccount,
+                          proceed);
                     },
                     child: CustomText(
                       text: "DELETE ACCOUNT",
@@ -209,7 +209,7 @@ class SettingScreen extends StatelessWidget {
                     Flexible(
                       child: ElevatedButton(
                         onPressed: () async {
-                          if (title == "Delete Account") {
+                          if (title == deleteAccount) {
                             try {
                               DeleteAccountResponse data =
                                   await Provider.of<AuthenticationProvider>(
@@ -256,9 +256,7 @@ class SettingScreen extends StatelessWidget {
                               // Display error message
                               print("Error: $e");
                             }
-                          }
-
-                          else if (title == "Logout"){
+                          } else if (title == logout) {
 
                             SharedPreferences.getInstance().then((prefs) {
                               prefs.clear();
@@ -268,21 +266,23 @@ class SettingScreen extends StatelessWidget {
 
                             Navigator.of(context).pushAndRemoveUntil(
                                 MaterialPageRoute(
-                                    builder: (context) => CreateOrLogInScreen()),
-                                    (Route route) => false);
+                                    builder: (context) =>
+                                        CreateOrLogInScreen()),
+                                (Route route) => false);
 
                             final snackBar = SnackBar(
                               content: const Text('Logged out successfully.'),
                             );
 
 // Show the SnackBar
-                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
 
 // Automatically hide the SnackBar after 1 second
                             Future.delayed(Duration(milliseconds: 500), () {
-                              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                              ScaffoldMessenger.of(context)
+                                  .hideCurrentSnackBar();
                             });
-
                           }
                         },
                         style: ElevatedButton.styleFrom(

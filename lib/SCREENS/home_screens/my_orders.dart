@@ -23,7 +23,7 @@ class MyOrdersScreen extends StatelessWidget{
               children: [
                 const CustomAppBar(),
                 SizedBox(height: 10,),
-                GestureDetector(child: buildSection("CURRENT ORDERS", viewall),
+                GestureDetector(child: buildSection("CURRENT ORDERS", viewAll),
                   onTap: (){
                 
                  // Navigator.pushNamed(context, '/PrivacyPolicyScreen');
@@ -37,7 +37,7 @@ class MyOrdersScreen extends StatelessWidget{
                   padding: EdgeInsets.only(left: 25.0,right: 25,top:25),
                   child: Divider(height: 0, color: grayColor),
                 ),
-                buildSection("PREVIOUS ORDERS", viewall),
+                buildSection("PREVIOUS ORDERS", viewAll),
                 buildVerticalCards(),
                 buildVerticalCards(),
                 

@@ -107,10 +107,10 @@ class UploadPhoto extends StatelessWidget {
                         child: Container(
                           height: screenHeight * 0.350,
                           width: screenWidth * 0.760,
-                          margin: const EdgeInsets.symmetric(
-                              horizontal: 18, vertical: 10),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 12),
+                          // margin: const EdgeInsets.symmetric(
+                          //     horizontal: 18, vertical: 10),
+                          // padding: const EdgeInsets.symmetric(
+                          //     horizontal: 16, vertical: 12),
                           decoration: BoxDecoration(
                             image: Provider.of<SelectImageProvider>(context)
                                         .selectedImage

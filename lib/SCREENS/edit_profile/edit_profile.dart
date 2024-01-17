@@ -91,11 +91,10 @@ class EditProfileScreen extends StatelessWidget {
             ),
             ClipRRect(
               borderRadius: BorderRadius.circular(15.0),
-
               child: Container(
                 height: 300,
                 width: 300,
-                margin: const EdgeInsets.only(bottom: 20),
+                padding: EdgeInsets.all(20),
                 decoration: BoxDecoration(
                   image: Provider.of<SelectImageProvider>(context)
                           .selectedImage
@@ -108,13 +107,14 @@ class EditProfileScreen extends StatelessWidget {
                         )
                       : selectedImagePathController.text.isNotEmpty
                           ? DecorationImage(
-                              image:
-                                  NetworkImage(selectedImagePathController.text,),
+                              image: NetworkImage(
+                                selectedImagePathController.text,
+                              ),
                               fit: BoxFit.cover,
                             )
                           : const DecorationImage(
                               image: AssetImage(edit_photo),
-                              fit: BoxFit.contain,
+                              fit: BoxFit.cover,
                             ),
                 ),
                 child: Column(
@@ -131,7 +131,8 @@ class EditProfileScreen extends StatelessWidget {
                           ).setSelectedImage(image);
 
                           try {
-                            var data = await Provider.of<AuthenticationProvider>(
+                            var data =
+                                await Provider.of<AuthenticationProvider>(
                               context,
                               listen: false,
                             ).uploadMultipartImage(
@@ -180,7 +181,8 @@ class EditProfileScreen extends StatelessWidget {
                           Consumer<SelectImageProvider>(
                             builder: (context, provider, child) {
                               return Visibility(
-                                visible: selectedImagePathController.text.isEmpty,
+                                visible:
+                                    selectedImagePathController.text.isEmpty,
                                 child: Image.asset(
                                   appLogo,
                                   width: 146,

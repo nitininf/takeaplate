@@ -148,7 +148,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Column(
                   children: [
                     buildHorizontalList(items),
-                    buildSection(closet, viewall),
+                    buildSection(closet, viewAll),
                     buildClosestDealCards(),
                     const Padding(
                       padding: EdgeInsets.only(
@@ -158,7 +158,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         thickness: 0,
                       ),
                     ),
-                    buildSection(lastminute, viewall),
+                    buildSection(lastMinute, viewAll),
                     buildLastMinuteDealCards(),
                     const Padding(
                       padding: EdgeInsets.only(
@@ -168,7 +168,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         thickness: 0,
                       ),
                     ),
-                    buildSection(collectTomorrow, viewall),
+                    buildSection(collectTomorrow, viewAll),
                     buildCollectTomorrowCards(),
                     const Padding(
                       padding: EdgeInsets.only(
@@ -178,7 +178,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         thickness: 0,
                       ),
                     ),
-                    buildSection(myfav, viewall),
+                    buildSection(myFav, viewAll),
                     buildMyFavoriteCards(),
                   ],
                 ),
@@ -236,13 +236,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 if (title == closet) {
                   Navigator.pushNamed(
                       navigatorKey.currentContext!, '/ClosestScreen');
-                } else if (title == lastminute) {
+                } else if (title == lastMinute) {
                   Navigator.pushNamed(
                       navigatorKey.currentContext!, '/LastMinuteDealScreen');
                 } else if (title == collectTomorrow) {
                   Navigator.pushNamed(
                       navigatorKey.currentContext!, '/CollectTomorrowScreen');
-                } else if (title == myfav) {
+                } else if (title == myFav) {
                   Navigator.pushNamed(
                       navigatorKey.currentContext!, '/FavouriteScreen');
                 }

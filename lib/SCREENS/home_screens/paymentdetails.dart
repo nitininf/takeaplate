@@ -42,7 +42,7 @@ class PaymentDetailsScreen extends StatelessWidget {
                       paymentDetails(),
                       Padding(
                         padding: const EdgeInsets.only(left: 30.0,right: 30,bottom: 20),
-                        child: CommonButton(btnBgColor: btnbgColor, btnText: orderandpay, onClick: (){
+                        child: CommonButton(btnBgColor: btnbgColor, btnText: orderAndPay, onClick: (){
                           Navigator.pushNamed(context, '/BaseHome');
                         }),
                       )
@@ -95,7 +95,7 @@ class PaymentDetailsScreen extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-          CustomText(text: paymentdetails,color: viewallColor,fontfamilly: montBold,sizeOfFont: 19,),
+          CustomText(text: paymentDetail,color: viewallColor,fontfamilly: montBold,sizeOfFont: 19,),
             SizedBox(height: 25,),
            // CommonEditText(hintText: cardName,isbgColor: true,),
             Container(
