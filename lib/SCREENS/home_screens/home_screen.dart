@@ -1,7 +1,5 @@
 import 'package:custom_rating_bar/custom_rating_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/custom_text_style.dart';
 import 'package:takeaplate/UTILS/app_color.dart';
@@ -10,18 +8,15 @@ import 'package:takeaplate/UTILS/app_strings.dart';
 import 'package:takeaplate/UTILS/fontfaimlly_string.dart';
 import 'package:takeaplate/main.dart';
 import '../../CUSTOM_WIDGETS/custom_search_field.dart';
-import '../../MULTI-PROVIDER/FavCardsProvider.dart';
-
+import '../../MULTI-PROVIDER/FavoriteOperationProvider.dart';
 import '../../MULTI-PROVIDER/HomeDataListProvider.dart';
-import '../../Response_Model/HomeItemsListingResponse.dart';
+import '../../MULTI-PROVIDER/RestaurantsListProvider.dart';
+import '../../Response_Model/FavAddedResponse.dart';
+import '../../Response_Model/FavDeleteResponse.dart';
 import '../../Response_Model/RestaurantDealResponse.dart';
 import '../../Response_Model/RestaurantsListResponse.dart';
 
-
-
-
 class HomeScreen extends StatefulWidget {
-
   const HomeScreen({super.key});
 
   @override
@@ -29,19 +24,24 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
-  final List<String> items = ['Healthy', 'Sushi', 'Desserts', 'Sugar', 'Sweets'];
-  final HomeDataListProvider restaurantsProvider = HomeDataListProvider();
+  final List<String> items = [
+    'Healthy',
+    'Sushi',
+    'Desserts',
+    'Sugar',
+    'Sweets'
+  ];
+  final HomeDataListProvider homeProvider = HomeDataListProvider();
   bool isFavorite = false;
   int currentPage = 1;
   bool isLoading = false;
   bool hasMoreData = true;
+  final RestaurantsListProvider restaurantsProvider = RestaurantsListProvider();
 
-  List<StoreData>? closedRestaurants = [];
+  List<StoreData>? closestRestaurants = [];
   List<DealData>? lastMinuteDeals = [];
   List<StoreData>? favoriteStoresAndDeals = [];
-  List<StoreData>? collectTomorrowList = [];
-
+  List<DealData>? collectTomorrowList = [];
 
   @override
   void initState() {
@@ -56,63 +56,19 @@ class _HomeScreenState extends State<HomeScreen> {
           isLoading = true;
         });
 
-        final nextPageData = await restaurantsProvider.getHomePageList(
+        final nextPageData = await homeProvider.getHomePageList(
           page: currentPage,
         );
 
+        if (nextPageData.data != null && nextPageData.data!.isNotEmpty) {
+          currentPage++;
 
-
-
-          if (nextPageData.data != null && nextPageData.data!.isNotEmpty) {
-            currentPage++;
-
-            setState(() {
-              if (mounted) {
-                closedRestaurants?.addAll(nextPageData.data!);
-
-              }
-            });
-          }
-
-          else {
-            setState(() {
-              if (mounted) {
-                hasMoreData = false;
-              }
-            });
-          }
-
-
-          if (nextPageData.dealData != null && nextPageData.dealData!.isNotEmpty) {
-            setState(() {
-              if (mounted) {
-                lastMinuteDeals?.addAll(nextPageData.dealData!);
-
-
-              }
-            });
-          }
-
-          else {
-            setState(() {
-              if (mounted) {
-                hasMoreData = false;
-              }
-            });
-          }
-
-
-
-
-        if (nextPageData.favoriteStores != null && nextPageData.favoriteStores!.isNotEmpty) {
           setState(() {
             if (mounted) {
-              favoriteStoresAndDeals?.addAll(nextPageData.favoriteStores!);
+              closestRestaurants?.addAll(nextPageData.data!);
             }
           });
-        }
-
-        else {
+        } else {
           setState(() {
             if (mounted) {
               hasMoreData = false;
@@ -120,9 +76,50 @@ class _HomeScreenState extends State<HomeScreen> {
           });
         }
 
+        if (nextPageData.dealData != null &&
+            nextPageData.dealData!.isNotEmpty) {
+          setState(() {
+            if (mounted) {
+              lastMinuteDeals?.addAll(nextPageData.dealData!);
+            }
+          });
+        } else {
+          setState(() {
+            if (mounted) {
+              hasMoreData = false;
+            }
+          });
+        }
 
+        if (nextPageData.favoriteStores != null &&
+            nextPageData.favoriteStores!.isNotEmpty) {
+          setState(() {
+            if (mounted) {
+              favoriteStoresAndDeals?.addAll(nextPageData.favoriteStores!);
+            }
+          });
+        } else {
+          setState(() {
+            if (mounted) {
+              hasMoreData = false;
+            }
+          });
+        }
 
-
+        if (nextPageData.collectTomorrow != null &&
+            nextPageData.collectTomorrow!.isNotEmpty) {
+          setState(() {
+            if (mounted) {
+              collectTomorrowList?.addAll(nextPageData.collectTomorrow!);
+            }
+          });
+        } else {
+          setState(() {
+            if (mounted) {
+              hasMoreData = false;
+            }
+          });
+        }
       } catch (error) {
         print('Error loading more data: $error');
       } finally {
@@ -133,40 +130,39 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-
-
   @override
   Widget build(BuildContext context) {
-
-
     return Scaffold(
       backgroundColor: bgColor,
       body: Padding(
-        padding: const EdgeInsets.only(top: 9.0,right:20,left: 20 ,bottom: 10),
+        padding:
+            const EdgeInsets.only(top: 9.0, right: 20, left: 20, bottom: 10),
         child: Column(
           // crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             const SizedBox(height: 20),
-            CustomSearchField(hintText: "Search"),
+            const CustomSearchField(hintText: "Search"),
             Expanded(
               child: SingleChildScrollView(
                 scrollDirection: Axis.vertical,
                 child: Column(
                   children: [
-
                     buildHorizontalList(items),
                     buildSection(closet, viewall),
                     buildClosestDealCards(),
                     const Padding(
-                      padding: EdgeInsets.only(top: 10.0,left: 20,right: 20,bottom: 15),
+                      padding: EdgeInsets.only(
+                          top: 10.0, left: 20, right: 20, bottom: 15),
                       child: Divider(
                         color: Colors.grey,
-                        thickness: 0,),),
+                        thickness: 0,
+                      ),
+                    ),
                     buildSection(lastminute, viewall),
                     buildLastMinuteDealCards(),
-
                     const Padding(
-                      padding: EdgeInsets.only(top: 10.0,left: 15,right: 15,bottom: 15),
+                      padding: EdgeInsets.only(
+                          top: 10.0, left: 15, right: 15, bottom: 15),
                       child: Divider(
                         color: Colors.grey,
                         thickness: 0,
@@ -174,9 +170,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     buildSection(collectTomorrow, viewall),
                     buildCollectTomorrowCards(),
-
                     const Padding(
-                      padding: EdgeInsets.only(top: 10.0,left: 15,right: 15,bottom: 15),
+                      padding: EdgeInsets.only(
+                          top: 10.0, left: 15, right: 15, bottom: 15),
                       child: Divider(
                         color: Colors.grey,
                         thickness: 0,
@@ -192,7 +188,6 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
-
   }
 
   Widget buildHorizontalList(List<String> items) {
@@ -202,9 +197,8 @@ class _HomeScreenState extends State<HomeScreen> {
         mainAxisSize: MainAxisSize.min,
         children: List.generate(
           items.length,
-              (index) => GestureDetector(
-            onTap: (){
-            },
+          (index) => GestureDetector(
+            onTap: () {},
             child: Container(
               margin: const EdgeInsets.symmetric(horizontal: 3, vertical: 36),
               padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 10),
@@ -213,7 +207,12 @@ class _HomeScreenState extends State<HomeScreen> {
                 borderRadius: BorderRadius.circular(30),
                 border: Border.all(width: 1, color: Colors.white),
               ),
-              child: CustomText(text: items[index], color: hintColor, fontfamilly: montBook,sizeOfFont: 19,),
+              child: CustomText(
+                text: items[index],
+                color: hintColor,
+                fontfamilly: montBook,
+                sizeOfFont: 19,
+              ),
             ),
           ),
         ),
@@ -223,55 +222,65 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget buildSection(String title, String viewAllText) {
     return Padding(
-      padding: const EdgeInsets.only(left: 20.0,right: 13.0,top: 8.0),
+      padding: const EdgeInsets.only(left: 20.0, right: 13.0, top: 8.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          CustomText(text: title, color: btnbgColor, fontfamilly: montHeavy,  sizeOfFont: 20),
+          CustomText(
+              text: title,
+              color: btnbgColor,
+              fontfamilly: montHeavy,
+              sizeOfFont: 20),
           GestureDetector(
-              onTap: (){
-                if(title==closet) {
+              onTap: () {
+                if (title == closet) {
                   Navigator.pushNamed(
                       navigatorKey.currentContext!, '/ClosestScreen');
-                }
-                else if(title==lastminute){
-                  Navigator.pushNamed(navigatorKey.currentContext!, '/LastMinuteDealScreen');
-                }
-                else if(title==myfav){
-                  Navigator.pushNamed(navigatorKey.currentContext!, '/FavouriteScreen');
+                } else if (title == lastminute) {
+                  Navigator.pushNamed(
+                      navigatorKey.currentContext!, '/LastMinuteDealScreen');
+                } else if (title == collectTomorrow) {
+                  Navigator.pushNamed(
+                      navigatorKey.currentContext!, '/CollectTomorrowScreen');
+                } else if (title == myfav) {
+                  Navigator.pushNamed(
+                      navigatorKey.currentContext!, '/FavouriteScreen');
                 }
               },
-
-              child: CustomText(text: viewAllText, color: viewallColor, fontfamilly: montRegular,sizeOfFont: 12,)),
+              child: CustomText(
+                text: viewAllText,
+                color: viewallColor,
+                fontfamilly: montRegular,
+                sizeOfFont: 12,
+              )),
         ],
       ),
     );
   }
 
   Widget buildClosestDealCards() {
-
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: List.generate(
-          closedRestaurants!.length,
-              (index) => GestureDetector(
+          closestRestaurants!.length,
+          (index) => GestureDetector(
               onTap: () {
                 Navigator.pushNamed(
                   navigatorKey.currentContext!,
                   '/RestaurantsProfileScreen',
-                  arguments: closedRestaurants![index], // Pass the data as arguments
+                  arguments:
+                      closestRestaurants![index], // Pass the data as arguments
                 );
               },
-              child: getClosestDealData(index, closedRestaurants![index])),
+              child: getClosestDealData(index, closestRestaurants![index])),
         ),
       ),
     );
   }
 
   Widget getClosestDealData(int index, StoreData storeData) {
-
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
@@ -318,15 +327,22 @@ class _HomeScreenState extends State<HomeScreen> {
                     maxRating: 5,
                   ),
                   SizedBox(width: 10),
-
                   Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 3),
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    margin:
+                        const EdgeInsets.symmetric(horizontal: 0, vertical: 3),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     decoration: BoxDecoration(
                       color: editbgColor,
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    child: const CustomText(text: "4 km",maxLin:1,sizeOfFont: 10,fontfamilly:montHeavy,color: btnbgColor,),
+                    child: const CustomText(
+                      text: "4 km",
+                      maxLin: 1,
+                      sizeOfFont: 10,
+                      fontfamilly: montHeavy,
+                      color: btnbgColor,
+                    ),
                   ),
                 ],
               ),
@@ -337,47 +353,209 @@ class _HomeScreenState extends State<HomeScreen> {
             alignment: Alignment.topRight,
             clipBehavior: Clip.none,
             children: [
-
-              storeData.profileImage != null ? ClipRRect(
-                  borderRadius: BorderRadius.circular(15.0),
-                  child: Image.network(
-                    storeData.profileImage!,
-                    fit: BoxFit.cover,
-                    height: 100, width: 100,
-                  )
-              ): Image.asset(food_image,height: 100, width: 100,),
-
+              ClipRRect(
+                borderRadius: BorderRadius.circular(15.0),
+                child: Container(
+                  padding: EdgeInsets.all(8.0),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15.0),
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        Colors.white,
+                        Colors.grey
+                      ], // Adjust colors as needed
+                    ),
+                  ),
+                  child: storeData.profileImage != null
+                      ? ClipRRect(
+                          borderRadius: BorderRadius.circular(15.0),
+                          child: Image.network(
+                            storeData.profileImage!,
+                            fit: BoxFit.cover,
+                            height: 90,
+                            width: 100,
+                          ))
+                      : Image.asset(
+                          food_image,
+                          height: 100,
+                          width: 100,
+                        ),
+                ),
+              ),
               Positioned(
                 right: -4,
-                child: Image.asset(
-                  save_icon,
-                  height: 15,
-                  width: 18,
+                child: GestureDetector(
+                  onTap: () async {
+                    bool? ratingStatus = storeData.favourite;
+
+                    print('ratingStatus:$ratingStatus');
+                    print('StoreId: ${storeData.id}');
+
+                    try {
+                      if (ratingStatus == false) {
+                        // Only hit the API if storeData.favourite is true
+                        var formData = {
+                          'favourite': 1,
+                        };
+
+                        FavAddedResponse favData =
+                            await Provider.of<FavoriteOperationProvider>(
+                                    context,
+                                    listen: false)
+                                .AddToFavoriteStore(
+                                    storeData.id ?? 0, formData);
+
+                        if (favData.status == true &&
+                            favData.message ==
+                                "Store Added in favourite successfully.") {
+                          // Print data to console
+                          print(favData);
+
+                          final snackBar = SnackBar(
+                            content: Text('${favData.message}'),
+                          );
+
+                          // Show the SnackBar
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                          // Automatically hide the SnackBar after 1 second
+                          Future.delayed(Duration(milliseconds: 1000), () {
+                            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                          });
+
+                          setState(() {
+                            storeData.favourite = true;
+                          });
+                          try {
+                            final refreshedData =
+                                await homeProvider.getHomePageList(page: 1);
+
+                            if (refreshedData.data != null &&
+                                refreshedData.data!.isNotEmpty) {
+                              setState(() {
+                                closestRestaurants = refreshedData.data!;
+                                currentPage =
+                                    1; // Reset the page to 2 as you loaded the first page.
+                                hasMoreData =
+                                    true; // Reset the flag for more data.
+                              });
+                            }
+                          } catch (error) {
+                            print('Error refreshing data: $error');
+                          }
+                        } else {
+                          // API call failed
+                          print("Something went wrong: ${favData.message}");
+
+                          final snackBar = SnackBar(
+                            content: Text('${favData.message}'),
+                          );
+
+                          // Show the SnackBar
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                          // Automatically hide the SnackBar after 1 second
+                          Future.delayed(Duration(milliseconds: 1000), () {
+                            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                          });
+                        }
+                      } else if (storeData.favourite == true) {
+                        // If storeData.favourite is false, print its value
+                        FavDeleteResponse delData =
+                            await Provider.of<FavoriteOperationProvider>(
+                                    context,
+                                    listen: false)
+                                .RemoveFromFavoriteStore(storeData.id ?? 0);
+
+                        if (delData.status == true &&
+                            delData.message ==
+                                "Favourite Store deleted successfully") {
+                          // Print data to console
+                          print(delData);
+
+                          final snackBar = SnackBar(
+                            content: Text('${delData.message}'),
+                          );
+
+                          // Show the SnackBar
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                          // Automatically hide the SnackBar after 1 second
+                          Future.delayed(Duration(milliseconds: 1000), () {
+                            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                          });
+
+                          setState(() {
+                            storeData.favourite = false;
+                          });
+
+                          try {
+                            final refreshedData =
+                                await homeProvider.getHomePageList(page: 1);
+
+                            if (refreshedData.data != null &&
+                                refreshedData.data!.isNotEmpty) {
+                              closestRestaurants = refreshedData.data!;
+                              currentPage =
+                                  1; // Reset the page to 2 as you loaded the first page.
+                              hasMoreData =
+                                  true; // Reset the flag for more data.
+                            }
+                          } catch (error) {
+                            print('Error refreshing data: $error');
+                          }
+                        } else {
+                          // API call failed
+                          print("Something went wrong: ${delData.message}");
+
+                          final snackBar = SnackBar(
+                            content: Text('${delData.message}'),
+                          );
+
+                          // Show the SnackBar
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                          // Automatically hide the SnackBar after 1 second
+                          Future.delayed(Duration(milliseconds: 1000), () {
+                            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                          });
+                        }
+                      }
+                    } catch (e) {
+                      // Display error message
+                      print("Error: $e");
+                    }
+                  },
+                  child: Image.asset(
+                    height: 15,
+                    width: 18,
+                    storeData.favourite == true ? save_icon_red : save_icon,
+                  ),
                 ),
               ),
             ],
           ),
-
-
         ],
       ),
     );
   }
 
   Widget buildLastMinuteDealCards() {
-
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: List.generate(
           lastMinuteDeals!.length,
-              (index) => GestureDetector(
+          (index) => GestureDetector(
               onTap: () {
                 Navigator.pushNamed(
                   navigatorKey.currentContext!,
                   '/OrderAndPayScreen',
-                  arguments: lastMinuteDeals![index], // Pass the data as arguments
+                  arguments:
+                      lastMinuteDeals![index], // Pass the data as arguments
                 );
               },
               child: getLastMinuteDealsData(index, lastMinuteDeals![index])),
@@ -387,14 +565,42 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget getLastMinuteDealsData(int index, DealData lastMinuteDeal) {
-    var startTiming = lastMinuteDeal.customTime?.startTime;
-    var endTiming = lastMinuteDeal.customTime?.endTime;
+    var currentDay = DateTime.now().weekday;
+    var startTiming = '';
+    var endTiming = '';
+
+    if (currentDay == 1) {
+      startTiming = lastMinuteDeal.store?.openingHour?.monday?.start ?? '';
+      endTiming = lastMinuteDeal.store?.openingHour?.monday?.end ?? '';
+    } else if (currentDay == 2) {
+      startTiming = lastMinuteDeal.store?.openingHour?.tuesday?.start ?? '';
+      endTiming = lastMinuteDeal.store?.openingHour?.tuesday?.end ?? '';
+    } else if (currentDay == 3) {
+      startTiming = lastMinuteDeal.store?.openingHour?.wednesday?.start ?? '';
+      endTiming = lastMinuteDeal.store?.openingHour?.wednesday?.end ?? '';
+    } else if (currentDay == 4) {
+      startTiming = lastMinuteDeal.store?.openingHour?.thursday?.start ?? '';
+      endTiming = lastMinuteDeal.store?.openingHour?.thursday?.end ?? '';
+    } else if (currentDay == 5) {
+      startTiming = lastMinuteDeal.store?.openingHour?.friday?.start ?? '';
+      endTiming = lastMinuteDeal.store?.openingHour?.friday?.end ?? '';
+    } else if (currentDay == 6) {
+      startTiming = lastMinuteDeal.store?.openingHour?.saturday?.start ?? '';
+      endTiming = lastMinuteDeal.store?.openingHour?.saturday?.end ?? '';
+    } else if (currentDay == 7) {
+      startTiming = lastMinuteDeal.store?.openingHour?.sunday?.start ?? '';
+      endTiming = lastMinuteDeal.store?.openingHour?.sunday?.end ?? '';
+    }
+
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(width: 0,   color: editbgColor.withOpacity(0.25),),
+        border: Border.all(
+          width: 0,
+          color: editbgColor.withOpacity(0.25),
+        ),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -402,12 +608,26 @@ class _HomeScreenState extends State<HomeScreen> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CustomText(text: lastMinuteDeal.name ?? '', color: btntxtColor, fontfamilly: montBold,sizeOfFont: 18,),
-
-              CustomText(text: lastMinuteDeal.store?.name ?? '', color: btntxtColor, fontfamilly: montRegular,sizeOfFont: 13,),
-
-              CustomText(text: '${startTiming ?? ""} - ${endTiming ?? ""}', color: graysColor,sizeOfFont: 8, fontfamilly: montRegular),
-              SizedBox(height: 5,),
+              CustomText(
+                text: lastMinuteDeal.name ?? '',
+                color: btntxtColor,
+                fontfamilly: montBold,
+                sizeOfFont: 18,
+              ),
+              CustomText(
+                text: lastMinuteDeal.store?.name ?? '',
+                color: btntxtColor,
+                fontfamilly: montRegular,
+                sizeOfFont: 13,
+              ),
+              CustomText(
+                  text: '${startTiming ?? ""} - ${endTiming ?? ""}',
+                  color: graysColor,
+                  sizeOfFont: 12,
+                  fontfamilly: montRegular),
+              SizedBox(
+                height: 5,
+              ),
               Row(
                 children: [
                   RatingBar.readOnly(
@@ -418,20 +638,34 @@ class _HomeScreenState extends State<HomeScreen> {
                     halfFilledColor: btnbgColor,
                     filledColor: btnbgColor,
                     size: 20,
-                    initialRating: double.parse(lastMinuteDeal.averageRating ?? '0'),
+                    initialRating:
+                        double.parse(lastMinuteDeal.averageRating ?? '0'),
                     maxRating: 5,
                   ),
-                  SizedBox(width: 10,),
-                  CustomText(text: '8KM', color: graysColor,sizeOfFont: 12, fontfamilly: montSemiBold),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  CustomText(
+                      text: '8KM',
+                      color: graysColor,
+                      sizeOfFont: 12,
+                      fontfamilly: montSemiBold),
                 ],
-
               ),
-              SizedBox(height: 5,),
-              CustomText(text: '\$ ${lastMinuteDeal.price ?? "NA"}', color: dolorColor,sizeOfFont: 24, fontfamilly: montHeavy,),
-
+              SizedBox(
+                height: 5,
+              ),
+              CustomText(
+                text: '\$ ${lastMinuteDeal.price ?? "NA"}',
+                color: dolorColor,
+                sizeOfFont: 24,
+                fontfamilly: montHeavy,
+              ),
             ],
           ),
-          const SizedBox(width: 18,),
+          const SizedBox(
+            width: 18,
+          ),
           Align(
             alignment: Alignment.centerRight,
             child: Stack(
@@ -447,14 +681,202 @@ class _HomeScreenState extends State<HomeScreen> {
                 //     )
                 // ): Image.asset(food_image,height: 100, width: 100,),
 
-                Image.asset(food_image,height: 110, width: 100,fit: BoxFit.cover,),
-
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(15.0),
+                  child: Container(
+                    padding: EdgeInsets.all(8.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15.0),
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          Colors.white,
+                          Colors.grey
+                        ], // Adjust colors as needed
+                      ),
+                    ),
+                    child: lastMinuteDeal.profileImage != null
+                        ? ClipRRect(
+                            borderRadius: BorderRadius.circular(15.0),
+                            child: Image.network(
+                              lastMinuteDeal.profileImage!,
+                              fit: BoxFit.cover,
+                              height: 100,
+                              width: 100,
+                            ))
+                        : Image.asset(
+                            food_image,
+                            height: 100,
+                            width: 100,
+                          ),
+                  ),
+                ),
                 Positioned(
                   right: -4,
-                  child: Image.asset(
-                    save_icon,
-                    height: 15,
-                    width: 18,
+                  child: GestureDetector(
+                    onTap: () async {
+                      var ratingStatus = lastMinuteDeal.favourite as bool;
+                      int? dealId = lastMinuteDeal.id;
+                      int? storeId = lastMinuteDeal.storeId;
+
+                      print('ratingStatus:$ratingStatus');
+
+                      try {
+                        if (lastMinuteDeal.favourite == false) {
+                          // Only hit the API if data.favourite is true
+                          var formData = {
+                            'favourite': 1,
+                          };
+
+                          FavAddedResponse favData =
+                              await Provider.of<FavoriteOperationProvider>(
+                                      context,
+                                      listen: false)
+                                  .AddToFavoriteDeal(dealId ?? 0, formData);
+
+                          if (favData.status == true &&
+                              favData.message ==
+                                  "Deal Added in favourite successfully.") {
+                            // Print data to console
+                            print(favData);
+
+                            final snackBar = SnackBar(
+                              content: Text('${favData.message}'),
+                            );
+
+                            // Show the SnackBar
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
+
+                            // Automatically hide the SnackBar after 1 second
+                            Future.delayed(Duration(milliseconds: 1000), () {
+                              ScaffoldMessenger.of(context)
+                                  .hideCurrentSnackBar();
+                            });
+
+                            setState(() {
+                              lastMinuteDeal.favourite = true;
+                            });
+
+                            try {
+                              final refreshedData =
+                                  await homeProvider.getHomePageList(page: 1);
+
+                              if (refreshedData.data != null &&
+                                  refreshedData.data!.isNotEmpty) {
+                                setState(() {
+                                  lastMinuteDeals =
+                                      refreshedData as List<DealData>;
+
+                                  currentPage =
+                                      1; // Reset the page to 2 as you loaded the first page.
+                                  hasMoreData =
+                                      true; // Reset the flag for more data.
+                                });
+                              }
+                            } catch (error) {
+                              print('Error refreshing data: $error');
+                            }
+                          } else {
+                            // API call failed
+                            print("Something went wrong: ${favData.message}");
+
+                            final snackBar = SnackBar(
+                              content: Text('${favData.message}'),
+                            );
+
+                            // Show the SnackBar
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
+
+                            // Automatically hide the SnackBar after 1 second
+                            Future.delayed(Duration(milliseconds: 1000), () {
+                              ScaffoldMessenger.of(context)
+                                  .hideCurrentSnackBar();
+                            });
+                          }
+                        } else if (lastMinuteDeal.favourite == true) {
+                          // If data.favourite is false, print its value
+                          FavDeleteResponse delData = await Provider.of<
+                                      FavoriteOperationProvider>(context,
+                                  listen: false)
+                              .RemoveFromFavoriteDeal(lastMinuteDeal.id ?? 0);
+
+                          if (delData.status == true &&
+                              delData.message ==
+                                  "Favourite Deal deleted successfully.") {
+                            // Print data to console
+                            print(delData);
+
+                            final snackBar = SnackBar(
+                              content: Text('${delData.message}'),
+                            );
+
+                            // Show the SnackBar
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
+
+                            // Automatically hide the SnackBar after 1 second
+                            Future.delayed(Duration(milliseconds: 1000), () {
+                              ScaffoldMessenger.of(context)
+                                  .hideCurrentSnackBar();
+                            });
+
+                            setState(() {
+                              lastMinuteDeal.favourite = false;
+                            });
+
+                            try {
+                              final refreshedData =
+                                  await homeProvider.getHomePageList(page: 1);
+
+                              if (refreshedData.data != null &&
+                                  refreshedData.data!.isNotEmpty) {
+                                setState(() {
+                                  lastMinuteDeals =
+                                      refreshedData as List<DealData>;
+
+                                  currentPage =
+                                      1; // Reset the page to 2 as you loaded the first page.
+                                  hasMoreData =
+                                      true; // Reset the flag for more data.
+                                });
+                              }
+                            } catch (error) {
+                              print('Error refreshing data: $error');
+                            }
+                          } else {
+                            // API call failed
+                            print("Something went wrong: ${delData.message}");
+
+                            final snackBar = SnackBar(
+                              content: Text('${delData.message}'),
+                            );
+
+                            // Show the SnackBar
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
+
+                            // Automatically hide the SnackBar after 1 second
+                            Future.delayed(Duration(milliseconds: 1000), () {
+                              ScaffoldMessenger.of(context)
+                                  .hideCurrentSnackBar();
+                            });
+                          }
+                        }
+                      } catch (e) {
+                        // Display error message
+                        print("Error: $e");
+                      }
+                    },
+                    child: Image.asset(
+                      height: 15,
+                      width: 18,
+                      lastMinuteDeal.favourite == true
+                          ? save_icon_red
+                          : save_icon,
+                    ),
                   ),
                 ),
               ],
@@ -466,38 +888,68 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget buildCollectTomorrowCards() {
-
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: List.generate(
-          lastMinuteDeals!.length,
-              (index) => GestureDetector(
+          collectTomorrowList!.length,
+          (index) => GestureDetector(
               onTap: () {
                 Navigator.pushNamed(
                   navigatorKey.currentContext!,
                   '/OrderAndPayScreen',
-                  arguments: lastMinuteDeals![index], // Pass the data as arguments
+                  arguments:
+                      collectTomorrowList![index], // Pass the data as arguments
                 );
               },
-              child: getCollectTomorrowData(index, lastMinuteDeals![index])),
+              child:
+                  getCollectTomorrowData(index, collectTomorrowList![index])),
         ),
       ),
     );
   }
 
+  Widget getCollectTomorrowData(int index, DealData collectTomorrowData) {
+    var currentDay = DateTime.now().weekday;
+    var startTiming = '';
+    var endTiming = '';
 
-  Widget getCollectTomorrowData(int index, DealData lastMinuteDeal) {
-
-    var startTiming = lastMinuteDeal.customTime?.startTime;
-    var endTiming = lastMinuteDeal.customTime?.endTime;
+    if (currentDay == 1) {
+      startTiming = collectTomorrowData.store?.openingHour?.monday?.start ?? '';
+      endTiming = collectTomorrowData.store?.openingHour?.monday?.end ?? '';
+    } else if (currentDay == 2) {
+      startTiming =
+          collectTomorrowData.store?.openingHour?.tuesday?.start ?? '';
+      endTiming = collectTomorrowData.store?.openingHour?.tuesday?.end ?? '';
+    } else if (currentDay == 3) {
+      startTiming =
+          collectTomorrowData.store?.openingHour?.wednesday?.start ?? '';
+      endTiming = collectTomorrowData.store?.openingHour?.wednesday?.end ?? '';
+    } else if (currentDay == 4) {
+      startTiming =
+          collectTomorrowData.store?.openingHour?.thursday?.start ?? '';
+      endTiming = collectTomorrowData.store?.openingHour?.thursday?.end ?? '';
+    } else if (currentDay == 5) {
+      startTiming = collectTomorrowData.store?.openingHour?.friday?.start ?? '';
+      endTiming = collectTomorrowData.store?.openingHour?.friday?.end ?? '';
+    } else if (currentDay == 6) {
+      startTiming =
+          collectTomorrowData.store?.openingHour?.saturday?.start ?? '';
+      endTiming = collectTomorrowData.store?.openingHour?.saturday?.end ?? '';
+    } else if (currentDay == 7) {
+      startTiming = collectTomorrowData.store?.openingHour?.sunday?.start ?? '';
+      endTiming = collectTomorrowData.store?.openingHour?.sunday?.end ?? '';
+    }
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(width: 0,   color: editbgColor.withOpacity(0.25),),
+        border: Border.all(
+          width: 0,
+          color: editbgColor.withOpacity(0.25),
+        ),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -505,12 +957,26 @@ class _HomeScreenState extends State<HomeScreen> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CustomText(text: lastMinuteDeal.name ?? '', color: btntxtColor, fontfamilly: montBold,sizeOfFont: 18,),
-
-              CustomText(text: lastMinuteDeal.store?.name ?? '', color: btntxtColor, fontfamilly: montRegular,sizeOfFont: 13,),
-
-              CustomText(text: '${startTiming ?? ""} - ${endTiming ?? ""}', color: graysColor,sizeOfFont: 8, fontfamilly: montRegular),
-              SizedBox(height: 5,),
+              CustomText(
+                text: collectTomorrowData.name ?? '',
+                color: btntxtColor,
+                fontfamilly: montBold,
+                sizeOfFont: 18,
+              ),
+              CustomText(
+                text: collectTomorrowData.store?.name ?? '',
+                color: btntxtColor,
+                fontfamilly: montRegular,
+                sizeOfFont: 13,
+              ),
+              CustomText(
+                  text: '${startTiming ?? ""} - ${endTiming ?? ""}',
+                  color: graysColor,
+                  sizeOfFont: 12,
+                  fontfamilly: montRegular),
+              SizedBox(
+                height: 5,
+              ),
               Row(
                 children: [
                   RatingBar.readOnly(
@@ -521,20 +987,34 @@ class _HomeScreenState extends State<HomeScreen> {
                     halfFilledColor: btnbgColor,
                     filledColor: btnbgColor,
                     size: 20,
-                    initialRating: double.parse(lastMinuteDeal.averageRating ?? '0'),
+                    initialRating:
+                        double.parse(collectTomorrowData.averageRating ?? '0'),
                     maxRating: 5,
                   ),
-                  SizedBox(width: 10,),
-                  CustomText(text: '8KM', color: graysColor,sizeOfFont: 12, fontfamilly: montSemiBold),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  CustomText(
+                      text: '8KM',
+                      color: graysColor,
+                      sizeOfFont: 12,
+                      fontfamilly: montSemiBold),
                 ],
-
               ),
-              SizedBox(height: 5,),
-              CustomText(text: '\$ ${lastMinuteDeal.price ?? "NA"}', color: dolorColor,sizeOfFont: 24, fontfamilly: montHeavy,),
-
+              SizedBox(
+                height: 5,
+              ),
+              CustomText(
+                text: '\$ ${collectTomorrowData.price ?? "NA"}',
+                color: dolorColor,
+                sizeOfFont: 24,
+                fontfamilly: montHeavy,
+              ),
             ],
           ),
-          const SizedBox(width: 18,),
+          const SizedBox(
+            width: 18,
+          ),
           Align(
             alignment: Alignment.centerRight,
             child: Stack(
@@ -550,14 +1030,204 @@ class _HomeScreenState extends State<HomeScreen> {
                 //     )
                 // ): Image.asset(food_image,height: 100, width: 100,),
 
-                Image.asset(food_image,height: 110, width: 100,fit: BoxFit.cover,),
-
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(15.0),
+                  child: Container(
+                    padding: EdgeInsets.all(8.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15.0),
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [
+                          Colors.white,
+                          Colors.grey
+                        ], // Adjust colors as needed
+                      ),
+                    ),
+                    child: collectTomorrowData.profileImage != null
+                        ? ClipRRect(
+                            borderRadius: BorderRadius.circular(15.0),
+                            child: Image.network(
+                              collectTomorrowData.profileImage!,
+                              fit: BoxFit.cover,
+                              height: 100,
+                              width: 100,
+                            ))
+                        : Image.asset(
+                            food_image,
+                            height: 100,
+                            width: 100,
+                          ),
+                  ),
+                ),
                 Positioned(
                   right: -4,
-                  child: Image.asset(
-                    save_icon,
-                    height: 15,
-                    width: 18,
+                  child: GestureDetector(
+                    onTap: () async {
+                      var ratingStatus = collectTomorrowData.favourite as bool;
+                      int? dealId = collectTomorrowData.id;
+                      int? storeId = collectTomorrowData.storeId;
+
+                      print('ratingStatus:$ratingStatus');
+
+                      try {
+                        if (collectTomorrowData.favourite == false) {
+                          // Only hit the API if data.favourite is true
+                          var formData = {
+                            'favourite': 1,
+                          };
+
+                          FavAddedResponse favData =
+                              await Provider.of<FavoriteOperationProvider>(
+                                      context,
+                                      listen: false)
+                                  .AddToFavoriteDeal(dealId ?? 0, formData);
+
+                          if (favData.status == true &&
+                              favData.message ==
+                                  "Deal Added in favourite successfully.") {
+                            // Print data to console
+                            print(favData);
+
+                            final snackBar = SnackBar(
+                              content: Text('${favData.message}'),
+                            );
+
+                            // Show the SnackBar
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
+
+                            // Automatically hide the SnackBar after 1 second
+                            Future.delayed(Duration(milliseconds: 1000), () {
+                              ScaffoldMessenger.of(context)
+                                  .hideCurrentSnackBar();
+                            });
+
+                            setState(() {
+                              collectTomorrowData.favourite = true;
+                            });
+
+                            try {
+                              final refreshedData =
+                                  await homeProvider.getHomePageList(page: 1);
+
+                              if (refreshedData.data != null &&
+                                  refreshedData.data!.isNotEmpty) {
+                                setState(() {
+                                  lastMinuteDeals =
+                                      refreshedData as List<DealData>;
+
+                                  currentPage =
+                                      1; // Reset the page to 2 as you loaded the first page.
+                                  hasMoreData =
+                                      true; // Reset the flag for more data.
+                                });
+                              }
+                            } catch (error) {
+                              print('Error refreshing data: $error');
+                            }
+                          } else {
+                            // API call failed
+                            print("Something went wrong: ${favData.message}");
+
+                            final snackBar = SnackBar(
+                              content: Text('${favData.message}'),
+                            );
+
+                            // Show the SnackBar
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
+
+                            // Automatically hide the SnackBar after 1 second
+                            Future.delayed(Duration(milliseconds: 1000), () {
+                              ScaffoldMessenger.of(context)
+                                  .hideCurrentSnackBar();
+                            });
+                          }
+                        } else if (collectTomorrowData.favourite == true) {
+                          // If data.favourite is false, print its value
+                          FavDeleteResponse delData =
+                              await Provider.of<FavoriteOperationProvider>(
+                                      context,
+                                      listen: false)
+                                  .RemoveFromFavoriteDeal(
+                                      collectTomorrowData.id ?? 0);
+
+                          if (delData.status == true &&
+                              delData.message ==
+                                  "Favourite Deal deleted successfully.") {
+                            // Print data to console
+                            print(delData);
+
+                            final snackBar = SnackBar(
+                              content: Text('${delData.message}'),
+                            );
+
+                            // Show the SnackBar
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
+
+                            // Automatically hide the SnackBar after 1 second
+                            Future.delayed(Duration(milliseconds: 1000), () {
+                              ScaffoldMessenger.of(context)
+                                  .hideCurrentSnackBar();
+                            });
+
+                            setState(() {
+                              collectTomorrowData.favourite = false;
+                            });
+
+                            try {
+                              final refreshedData =
+                                  await homeProvider.getHomePageList(page: 1);
+
+                              if (refreshedData.data != null &&
+                                  refreshedData.data!.isNotEmpty) {
+                                setState(() {
+                                  lastMinuteDeals =
+                                      refreshedData as List<DealData>;
+
+                                  currentPage =
+                                      1; // Reset the page to 2 as you loaded the first page.
+                                  hasMoreData =
+                                      true; // Reset the flag for more data.
+                                });
+                              }
+                            } catch (error) {
+                              print('Error refreshing data: $error');
+                            }
+                          } else {
+                            // API call failed
+                            print("Something went wrong: ${delData.message}");
+
+                            final snackBar = SnackBar(
+                              content: Text('${delData.message}'),
+                            );
+
+                            // Show the SnackBar
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
+
+                            // Automatically hide the SnackBar after 1 second
+                            Future.delayed(Duration(milliseconds: 1000), () {
+                              ScaffoldMessenger.of(context)
+                                  .hideCurrentSnackBar();
+                            });
+                          }
+                        }
+                      } catch (e) {
+                        // Display error message
+                        print("Error: $e");
+                      }
+                    },
+                    child: Image.asset(
+                      height: 15,
+                      width: 18,
+                      collectTomorrowData.favourite == true
+                          ? save_icon_red
+                          : save_icon,
+                    ),
                   ),
                 ),
               ],
@@ -568,21 +1238,20 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-
   Widget buildMyFavoriteCards() {
-
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: List.generate(
           favoriteStoresAndDeals!.length,
-              (index) => GestureDetector(
+          (index) => GestureDetector(
               onTap: () {
                 Navigator.pushNamed(
                   navigatorKey.currentContext!,
                   '/RestaurantsProfileScreen',
-                  arguments: favoriteStoresAndDeals![index], // Pass the data as arguments
+                  arguments: favoriteStoresAndDeals![
+                      index], // Pass the data as arguments
                 );
               },
               child: getFavCardsData(index, favoriteStoresAndDeals![index])),
@@ -592,7 +1261,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget getFavCardsData(int index, StoreData favoriteStores) {
-
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
@@ -639,15 +1307,22 @@ class _HomeScreenState extends State<HomeScreen> {
                     maxRating: 5,
                   ),
                   SizedBox(width: 10),
-
                   Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 3),
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    margin:
+                        const EdgeInsets.symmetric(horizontal: 0, vertical: 3),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     decoration: BoxDecoration(
                       color: editbgColor,
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    child: const CustomText(text: "4 km",maxLin:1,sizeOfFont: 10,fontfamilly:montHeavy,color: btnbgColor,),
+                    child: const CustomText(
+                      text: "4 km",
+                      maxLin: 1,
+                      sizeOfFont: 10,
+                      fontfamilly: montHeavy,
+                      color: btnbgColor,
+                    ),
                   ),
                 ],
               ),
@@ -658,34 +1333,191 @@ class _HomeScreenState extends State<HomeScreen> {
             alignment: Alignment.topRight,
             clipBehavior: Clip.none,
             children: [
-
-              favoriteStores.profileImage != null ? ClipRRect(
-                  borderRadius: BorderRadius.circular(15.0),
-                  child: Image.network(
-                    favoriteStores.profileImage!,
-                    fit: BoxFit.cover,
-                    height: 100, width: 100,
-                  )
-              ): Image.asset(food_image,height: 100, width: 100,),
-
-
+              ClipRRect(
+                borderRadius: BorderRadius.circular(15.0),
+                child: Container(
+                  padding: EdgeInsets.all(8.0),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15.0),
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        Colors.white,
+                        Colors.grey
+                      ], // Adjust colors as needed
+                    ),
+                  ),
+                  child: favoriteStores.profileImage != null
+                      ? ClipRRect(
+                          borderRadius: BorderRadius.circular(15.0),
+                          child: Image.network(
+                            favoriteStores.profileImage!,
+                            fit: BoxFit.cover,
+                            height: 90,
+                            width: 100,
+                          ))
+                      : Image.asset(
+                          food_image,
+                          height: 90,
+                          width: 100,
+                        ),
+                ),
+              ),
               Positioned(
                 right: -4,
-                child: Image.asset(
-                 save_icon_red,
-                  height: 15,
-                  width: 18,
+                child: GestureDetector(
+                  onTap: () async {
+                    int? ratingStatus = favoriteStores.favourite;
+
+                    print('ratingStatus:$ratingStatus');
+                    print('StoreId: ${favoriteStores.id}');
+
+                    try {
+                      if (ratingStatus == 0) {
+                        // Only hit the API if storeData.favourite is true
+                        var formData = {
+                          'favourite': 1,
+                        };
+
+                        FavAddedResponse favData =
+                            await Provider.of<FavoriteOperationProvider>(
+                                    context,
+                                    listen: false)
+                                .AddToFavoriteStore(
+                                    favoriteStores.id ?? 0, formData);
+
+                        if (favData.status == true &&
+                            favData.message ==
+                                "Store Added in favourite successfully.") {
+                          // Print data to console
+                          print(favData);
+
+                          final snackBar = SnackBar(
+                            content: Text('${favData.message}'),
+                          );
+
+                          // Show the SnackBar
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                          // Automatically hide the SnackBar after 1 second
+                          Future.delayed(Duration(milliseconds: 1000), () {
+                            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                          });
+
+                          setState(() {
+                            favoriteStores.favourite = 1;
+                          });
+                          try {
+                            final refreshedData =
+                                await homeProvider.getHomePageList(page: 1);
+
+                            if (refreshedData.data != null &&
+                                refreshedData.data!.isNotEmpty) {
+                              setState(() {
+                                favoriteStoresAndDeals = refreshedData.data!;
+                                currentPage =
+                                    1; // Reset the page to 2 as you loaded the first page.
+                                hasMoreData =
+                                    true; // Reset the flag for more data.
+                              });
+                            }
+                          } catch (error) {
+                            print('Error refreshing data: $error');
+                          }
+                        } else {
+                          // API call failed
+                          print("Something went wrong: ${favData.message}");
+
+                          final snackBar = SnackBar(
+                            content: Text('${favData.message}'),
+                          );
+
+                          // Show the SnackBar
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                          // Automatically hide the SnackBar after 1 second
+                          Future.delayed(Duration(milliseconds: 1000), () {
+                            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                          });
+                        }
+                      } else if (favoriteStores.favourite == 1) {
+                        // If storeData.favourite is false, print its value
+                        FavDeleteResponse delData = await Provider.of<
+                                    FavoriteOperationProvider>(context,
+                                listen: false)
+                            .RemoveFromFavoriteStore(favoriteStores.id ?? 0);
+
+                        if (delData.status == true &&
+                            delData.message ==
+                                "Favourite Store deleted successfully") {
+                          // Print data to console
+                          print(delData);
+
+                          final snackBar = SnackBar(
+                            content: Text('${delData.message}'),
+                          );
+
+                          // Show the SnackBar
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                          // Automatically hide the SnackBar after 1 second
+                          Future.delayed(Duration(milliseconds: 1000), () {
+                            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                          });
+
+                          setState(() {
+                            favoriteStores.favourite = 0;
+                          });
+
+                          try {
+                            final refreshedData =
+                                await homeProvider.getHomePageList(page: 1);
+
+                            if (refreshedData.data != null &&
+                                refreshedData.data!.isNotEmpty) {
+                              favoriteStoresAndDeals = refreshedData.data!;
+                              currentPage =
+                                  1; // Reset the page to 2 as you loaded the first page.
+                              hasMoreData =
+                                  true; // Reset the flag for more data.
+                            }
+                          } catch (error) {
+                            print('Error refreshing data: $error');
+                          }
+                        } else {
+                          // API call failed
+                          print("Something went wrong: ${delData.message}");
+
+                          final snackBar = SnackBar(
+                            content: Text('${delData.message}'),
+                          );
+
+                          // Show the SnackBar
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                          // Automatically hide the SnackBar after 1 second
+                          Future.delayed(Duration(milliseconds: 1000), () {
+                            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                          });
+                        }
+                      }
+                    } catch (e) {
+                      // Display error message
+                      print("Error: $e");
+                    }
+                  },
+                  child: Image.asset(
+                    height: 15,
+                    width: 18,
+                    favoriteStores.favourite == 1 ? save_icon_red : save_icon,
+                  ),
                 ),
               ),
             ],
           ),
-
-
         ],
       ),
     );
   }
-
 }
-
-

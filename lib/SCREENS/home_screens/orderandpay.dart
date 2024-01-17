@@ -54,7 +54,13 @@ class OrderAndPayScreen extends StatelessWidget {
                             Navigator.pushNamed(context, '/PaymentDetailsScreen');
                           },
                         ),
-                      )
+                      ),
+                      const SizedBox(height: 10,),
+
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10.0, left: 30, right: 30, bottom: 20),
+                        child: CommonButton(btnBgColor: onboardingBtn.withOpacity(1), sizeOfFont: 18, btnTextColor: offerColor.withOpacity(0.5), btnText: "ADD TO CART", onClick: () {}),
+                      ),
                     ],
                   ),
                 ),
@@ -94,10 +100,14 @@ class OrderAndPayScreen extends StatelessWidget {
             Container(
 
 
-             child: data.profileImage != null ? Image.network(
-                data.profileImage!,
-                fit: BoxFit.contain,
-              ): Image.asset(restrorent_food),
+             child: data.profileImage != null ? ClipRRect(
+               borderRadius: BorderRadius.circular(15.0),
+
+               child: Image.network(
+                  data.profileImage!,
+                  fit: BoxFit.contain,
+                ),
+             ): Image.asset(restrorent_food),
 
             ),
             SizedBox(height: 30,),
@@ -131,7 +141,7 @@ class OrderAndPayScreen extends StatelessWidget {
                 CustomText(text: data.category?? "", color: viewallColor, sizeOfFont: 16, fontfamilly: montLight),
                 Padding(
                   padding: EdgeInsets.only(top: 10.0),
-                  child: CustomText(text: '${data.customTime?.startTime ?? ""} - ${data.customTime?.endTime ?? ""}', sizeOfFont: 11, color: viewallColor, fontfamilly: montLight),
+                  child: CustomText(text: 'Pickup time - ${data.store?.pickupTime?.startTime ?? ""}', sizeOfFont: 11, color: viewallColor, fontfamilly: montLight),
                 ),
               ],
             ),

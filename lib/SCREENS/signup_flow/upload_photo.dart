@@ -102,71 +102,74 @@ class UploadPhoto extends StatelessWidget {
                       SizedBox(
                         height: screenHeight * 0.04,
                       ),
-                      Container(
-                        height: screenHeight * 0.350,
-                        width: screenWidth * 0.760,
-                        margin: const EdgeInsets.symmetric(
-                            horizontal: 18, vertical: 10),
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 12),
-                        decoration: BoxDecoration(
-                          image: Provider.of<SelectImageProvider>(context)
-                                      .selectedImage
-                                      .isNotEmpty
-                                  ? DecorationImage(
-                                      image: FileImage(File(
-                                          Provider.of<SelectImageProvider>(
-                                                  context)
-                                              .selectedImage)),
-                                      fit: BoxFit.cover,
-                                    )
-                                  : const DecorationImage(
-                                      image: AssetImage(edit_photo),
-                                      fit: BoxFit.contain,
-                                    ),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            GestureDetector(
-                              onTap: () async {
-                                final image = await _getImage(context);
-                                if (image != null) {
-                                  // Update the selected image in the provider or state
-                                  Provider.of<SelectImageProvider>(context,
-                                          listen: false)
-                                      .setSelectedImage(image);
-                                }
-                              },
-                              child: Visibility(
-                                visible: selectedImagePathController.text.isEmpty,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Consumer<SelectImageProvider>(
-                                      builder: (context, provider, child) {
-                                        return Image.asset(
-                                          appLogo,
-                                          height: 42,
-                                          width: 40,
-                                          fit: BoxFit.contain,
-                                        );
-                                      },
-                                    ),
-                                    SizedBox(
-                                      height: 16,
-                                    ),
-                                    const CustomText(
-                                      text: uploadphoto,
-                                      color: Colors.white,
-                                      fontfamilly: montBook,
-                                      sizeOfFont: 20,
-                                    )
-                                  ],
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(40.0),
+                        child: Container(
+                          height: screenHeight * 0.350,
+                          width: screenWidth * 0.760,
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 18, vertical: 10),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 12),
+                          decoration: BoxDecoration(
+                            image: Provider.of<SelectImageProvider>(context)
+                                        .selectedImage
+                                        .isNotEmpty
+                                    ? DecorationImage(
+                                        image: FileImage(File(
+                                            Provider.of<SelectImageProvider>(
+                                                    context)
+                                                .selectedImage)),
+                                        fit: BoxFit.cover,
+                                      )
+                                    : const DecorationImage(
+                                        image: AssetImage(edit_photo),
+                                        fit: BoxFit.contain,
+                                      ),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              GestureDetector(
+                                onTap: () async {
+                                  final image = await _getImage(context);
+                                  if (image != null) {
+                                    // Update the selected image in the provider or state
+                                    Provider.of<SelectImageProvider>(context,
+                                            listen: false)
+                                        .setSelectedImage(image);
+                                  }
+                                },
+                                child: Visibility(
+                                  visible: selectedImagePathController.text.isEmpty,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Consumer<SelectImageProvider>(
+                                        builder: (context, provider, child) {
+                                          return Image.asset(
+                                            appLogo,
+                                            height: 42,
+                                            width: 40,
+                                            fit: BoxFit.contain,
+                                          );
+                                        },
+                                      ),
+                                      SizedBox(
+                                        height: 16,
+                                      ),
+                                      const CustomText(
+                                        text: uploadphoto,
+                                        color: Colors.white,
+                                        fontfamilly: montBook,
+                                        sizeOfFont: 20,
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ],

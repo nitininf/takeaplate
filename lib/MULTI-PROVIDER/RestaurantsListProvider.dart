@@ -132,6 +132,31 @@ class RestaurantsListProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
+  Future<RestaurentDealResponse> getCollectTomorrowList({int page = 1}) async {
+
+    try {
+      final response = await _network.getRequest(
+        endPoint: '/tomorrow-deal-data/$page', // Replace with your actual API endpoint
+
+      );
+
+      print("Collect Tomorrow's Deal response : ${response}");
+
+      if (response != null && response.data is Map<String, dynamic>) {
+        final Map<String, dynamic> responseData = response.data;
+
+        return RestaurentDealResponse.fromJson(responseData);
+      } else {
+        throw Exception('Failed to parse API response');
+      }
+    } catch (error) {
+      // Handle network errors or any other exceptions
+      print('Error: $error');
+      rethrow; // Re-throw the error to the caller
+    } finally {
+      notifyListeners();
+    }
+  }
 
 
   Future<HomeItemsListingResponse> getHomePageList({int page = 1}) async {

@@ -1,6 +1,7 @@
 import 'package:custom_rating_bar/custom_rating_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/custom_app_bar.dart';
 import 'package:takeaplate/main.dart';
@@ -181,10 +182,13 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
         Stack(
           clipBehavior: Clip.none,
           children: [
-            data.bannerImage != null ? Image.network(
-              data.bannerImage!,
-              fit: BoxFit.contain,
-              height: 200,
+            data.bannerImage != null ? ClipRRect(
+              borderRadius: BorderRadius.circular(15.0),
+              child: Image.network(
+                data.bannerImage!,
+                fit: BoxFit.contain,
+                height: 200,
+              ),
             ): Image.asset(restrorent_food),
             Positioned(
               bottom: -60,
@@ -474,8 +478,41 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
   }
 
   Widget getFavCards(int index, DealData data) {
-    var startTiming = data.customTime?.startTime;
-    var endTiming = data.customTime?.endTime;
+    var  currentDay = DateTime.now().weekday;
+    var  startTiming = '';
+    var endTiming = '';
+
+    if(currentDay == 1){
+     startTiming = data.store?.openingHour?.monday?.start ?? '';
+     endTiming = data.store?.openingHour?.monday?.end ?? '';
+
+    }else if(currentDay == 2){
+
+      startTiming = data.store?.openingHour?.tuesday?.start ?? '';
+      endTiming = data.store?.openingHour?.tuesday?.end ?? '';
+    }else if(currentDay == 3){
+
+      startTiming = data.store?.openingHour?.wednesday?.start ?? '';
+      endTiming = data.store?.openingHour?.wednesday?.end ?? '';
+    }else if(currentDay == 4){
+
+      startTiming = data.store?.openingHour?.thursday?.start ?? '';
+      endTiming = data.store?.openingHour?.thursday?.end ?? '';
+    }else if(currentDay == 5){
+
+      startTiming = data.store?.openingHour?.friday?.start ?? '';
+      endTiming = data.store?.openingHour?.friday?.end ?? '';
+    }else if(currentDay == 6){
+
+      startTiming = data.store?.openingHour?.saturday?.start ?? '';
+      endTiming = data.store?.openingHour?.saturday?.end ?? '';
+    }else if(currentDay == 7){
+
+      startTiming = data.store?.openingHour?.sunday?.start ?? '';
+      endTiming = data.store?.openingHour?.sunday?.end ?? '';
+    }
+
+
 
     return GestureDetector(
       onTap: () {
@@ -568,8 +605,29 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
                 alignment: Alignment.topRight,
                 clipBehavior: Clip.none,
                 children: [
-                  Image.asset(food_image,
-                      height: 130, width: 130, fit: BoxFit.cover),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(15.0),
+                    child: Container(
+                      padding: EdgeInsets.all(8.0),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15.0),
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [Colors.white, Colors.grey], // Adjust colors as needed
+                        ),
+                      ),
+                      child: data.profileImage != null ? ClipRRect(
+                          borderRadius: BorderRadius.circular(15.0),
+                          child: Image.network(
+                            data.profileImage!,
+                            fit: BoxFit.cover,
+                            height: 110, width: 118,
+                          )
+                      ): Image.asset(food_image,height: 100, width: 118,),
+                    ),
+                  ),
+
                   Positioned(
                     right: -4,
                     child: GestureDetector(

@@ -95,7 +95,7 @@ class YourCardScreen extends StatelessWidget{
                   print("Total Price: \$${totalPrice.toStringAsFixed(2)}");
 
 
-                // Navigator.pushNamed(navigatorKey.currentContext!, '/OrderSummeryScreen');
+                Navigator.pushNamed(navigatorKey.currentContext!, '/OrderSummeryScreen');
               }),
             ),
             Padding(

@@ -8,6 +8,7 @@ import 'package:takeaplate/MULTI-PROVIDER/SignUp_StepOne.dart';
 import 'package:takeaplate/MULTI-PROVIDER/selectImageProvider.dart';
 import 'package:takeaplate/SCREENS/last_minute_deal/last_minute_deal_screen.dart';
 import '../SCREENS/closet_screen/closest_screen.dart';
+import '../SCREENS/collect_tomorrow/collect_tomorrow_screen.dart';
 import '../SCREENS/contact_us/contacctus_settings.dart';
 import '../SCREENS/contact_us/contact_us.dart';
 import '../SCREENS/edit_profile/edit_profile.dart';
@@ -112,6 +113,7 @@ MultiProvider getProviders() {
         '/OrderSummeryScreen': (context) => OrderSummeryScreen(),
         '/PaymentMethodScreen': (context) => PaymentMethodScreen(),
         '/RestaurantsProfileScreen': (context) => RestaurantsProfileScreen(context: context),
+        '/CollectTomorrowScreen': (context) => CollectTomorrowScreen(),
       },
       theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: btnbgColor),

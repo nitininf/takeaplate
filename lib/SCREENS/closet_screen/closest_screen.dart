@@ -234,6 +234,7 @@ class _ClosestScreenState extends State<ClosestScreen> {
                   // Assuming 'title' is a key in your data
                   color: btntxtColor,
                   fontfamilly: montBold,
+                  maxLin: 1,
                   sizeOfFont: 24,
                 ),
                 CustomText(
@@ -287,180 +288,192 @@ class _ClosestScreenState extends State<ClosestScreen> {
             ),
           ),
           const SizedBox(width: 18),
-          Expanded(
-            child: Stack(
-              alignment: Alignment.topRight,
-              clipBehavior: Clip.none,
-              children: [
-                item.profileImage != null ? ClipRRect(
+          Stack(
+            alignment: Alignment.topRight,
+            clipBehavior: Clip.none,
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.circular(15.0),
+                child: Container(
+                  padding: EdgeInsets.all(8.0),
+                  decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15.0),
-                    child: Image.network(
-                      item.profileImage!,
-                      fit: BoxFit.cover,
-                      height: 100, width: 140,
-                    )
-                ): Image.asset(food_image,height: 100, width: 140,),
-
-                Positioned(
-                  right: -4,
-                  child: GestureDetector(
-                    onTap: () async {
-                      bool? ratingStatus = item.favourite;
-
-                      print('ratingStatus:$ratingStatus');
-
-                      try {
-                        if (ratingStatus == false) {
-                          // Only hit the API if item.favourite is true
-                          var formData = {
-                            'favourite': 1,
-                          };
-
-                          FavAddedResponse favData =
-                              await Provider.of<FavoriteOperationProvider>(
-                                      context,
-                                      listen: false)
-                                  .AddToFavoriteStore(item.id ?? 0, formData);
-
-                          if (favData.status == true &&
-                              favData.message ==
-                                  "Store Added in favourite successfully.") {
-                            // Print data to console
-                            print(favData);
-
-                            final snackBar = SnackBar(
-                              content: Text('${favData.message}'),
-                            );
-
-                            // Show the SnackBar
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(snackBar);
-
-                            // Automatically hide the SnackBar after 1 second
-                            Future.delayed(Duration(milliseconds: 1000), () {
-                              ScaffoldMessenger.of(context)
-                                  .hideCurrentSnackBar();
-                            });
-
-                            setState(() async {
-                              try {
-                                final refreshedData = await restaurantsProvider
-                                    .getRestaurantsList(page: 1);
-
-                                if (refreshedData.data != null &&
-                                    refreshedData.data!.isNotEmpty) {
-                                  setState(() {
-                                    item.favourite == true;
-                                    restaurantData = refreshedData.data!;
-                                    currentPage =
-                                        1; // Reset the page to 2 as you loaded the first page.
-                                    hasMoreData =
-                                        true; // Reset the flag for more data.
-                                  });
-                                }
-                              } catch (error) {
-                                print('Error refreshing data: $error');
-                              }
-                            });
-                          } else {
-                            // API call failed
-                            print("Something went wrong: ${favData.message}");
-
-                            final snackBar = SnackBar(
-                              content: Text('${favData.message}'),
-                            );
-
-                            // Show the SnackBar
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(snackBar);
-
-                            // Automatically hide the SnackBar after 1 second
-                            Future.delayed(Duration(milliseconds: 1000), () {
-                              ScaffoldMessenger.of(context)
-                                  .hideCurrentSnackBar();
-                            });
-                          }
-                        } else if (item.favourite == true) {
-                          // If item.favourite is false, print its value
-                          FavDeleteResponse delData =
-                              await Provider.of<FavoriteOperationProvider>(
-                                      context,
-                                      listen: false)
-                                  .RemoveFromFavoriteStore(item.id ?? 0);
-
-                          if (delData.status == true &&
-                              delData.message ==
-                                  "Favourite Store deleted successfully") {
-                            // Print data to console
-                            print(delData);
-
-                            final snackBar = SnackBar(
-                              content: Text('${delData.message}'),
-                            );
-
-                            // Show the SnackBar
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(snackBar);
-
-                            // Automatically hide the SnackBar after 1 second
-                            Future.delayed(Duration(milliseconds: 1000), () {
-                              ScaffoldMessenger.of(context)
-                                  .hideCurrentSnackBar();
-                            });
-
-                            setState(() async {
-                              try {
-                                final refreshedData = await restaurantsProvider
-                                    .getRestaurantsList(page: 1);
-
-                                if (refreshedData.data != null &&
-                                    refreshedData.data!.isNotEmpty) {
-                                  setState(() {
-                                    item.favourite == false;
-                                    restaurantData = refreshedData.data!;
-                                    currentPage =
-                                        1; // Reset the page to 2 as you loaded the first page.
-                                    hasMoreData =
-                                        true; // Reset the flag for more data.
-                                  });
-                                }
-                              } catch (error) {
-                                print('Error refreshing data: $error');
-                              }
-                            });
-                          } else {
-                            // API call failed
-                            print("Something went wrong: ${delData.message}");
-
-                            final snackBar = SnackBar(
-                              content: Text('${delData.message}'),
-                            );
-
-                            // Show the SnackBar
-                            ScaffoldMessenger.of(context)
-                                .showSnackBar(snackBar);
-
-                            // Automatically hide the SnackBar after 1 second
-                            Future.delayed(Duration(milliseconds: 1000), () {
-                              ScaffoldMessenger.of(context)
-                                  .hideCurrentSnackBar();
-                            });
-                          }
-                        }
-                      } catch (e) {
-                        // Display error message
-                        print("Error: $e");
-                      }
-                    },
-                    child: Image.asset(
-                      height: 15,
-                      width: 18,
-                      item.favourite == true ? save_icon_red : save_icon,
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [Colors.white, Colors.grey], // Adjust colors as needed
                     ),
                   ),
+                  child: item.profileImage != null ? ClipRRect(
+                      borderRadius: BorderRadius.circular(15.0),
+                      child: Image.network(
+                        item.profileImage!,
+                        fit: BoxFit.cover,
+                        height: 100, width: 108,
+                      )
+                  ): Image.asset(food_image,height: 100, width: 108,),
                 ),
-              ],
-            ),
+              ),
+
+              Positioned(
+                right: -4,
+                child: GestureDetector(
+                  onTap: () async {
+                    bool? ratingStatus = item.favourite;
+
+                    print('ratingStatus:$ratingStatus');
+
+                    try {
+                      if (ratingStatus == false) {
+                        // Only hit the API if item.favourite is true
+                        var formData = {
+                          'favourite': 1,
+                        };
+
+                        FavAddedResponse favData =
+                            await Provider.of<FavoriteOperationProvider>(
+                                    context,
+                                    listen: false)
+                                .AddToFavoriteStore(item.id ?? 0, formData);
+
+                        if (favData.status == true &&
+                            favData.message ==
+                                "Store Added in favourite successfully.") {
+                          // Print data to console
+                          print(favData);
+
+                          final snackBar = SnackBar(
+                            content: Text('${favData.message}'),
+                          );
+
+                          // Show the SnackBar
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(snackBar);
+
+                          // Automatically hide the SnackBar after 1 second
+                          Future.delayed(Duration(milliseconds: 1000), () {
+                            ScaffoldMessenger.of(context)
+                                .hideCurrentSnackBar();
+                          });
+
+                          setState(() async {
+                            try {
+                              final refreshedData = await restaurantsProvider
+                                  .getRestaurantsList(page: 1);
+
+                              if (refreshedData.data != null &&
+                                  refreshedData.data!.isNotEmpty) {
+                                setState(() {
+                                  item.favourite == true;
+                                  restaurantData = refreshedData.data!;
+                                  currentPage =
+                                      1; // Reset the page to 2 as you loaded the first page.
+                                  hasMoreData =
+                                      true; // Reset the flag for more data.
+                                });
+                              }
+                            } catch (error) {
+                              print('Error refreshing data: $error');
+                            }
+                          });
+                        } else {
+                          // API call failed
+                          print("Something went wrong: ${favData.message}");
+
+                          final snackBar = SnackBar(
+                            content: Text('${favData.message}'),
+                          );
+
+                          // Show the SnackBar
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(snackBar);
+
+                          // Automatically hide the SnackBar after 1 second
+                          Future.delayed(Duration(milliseconds: 1000), () {
+                            ScaffoldMessenger.of(context)
+                                .hideCurrentSnackBar();
+                          });
+                        }
+                      } else if (item.favourite == true) {
+                        // If item.favourite is false, print its value
+                        FavDeleteResponse delData =
+                            await Provider.of<FavoriteOperationProvider>(
+                                    context,
+                                    listen: false)
+                                .RemoveFromFavoriteStore(item.id ?? 0);
+
+                        if (delData.status == true &&
+                            delData.message ==
+                                "Favourite Store deleted successfully") {
+                          // Print data to console
+                          print(delData);
+
+                          final snackBar = SnackBar(
+                            content: Text('${delData.message}'),
+                          );
+
+                          // Show the SnackBar
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(snackBar);
+
+                          // Automatically hide the SnackBar after 1 second
+                          Future.delayed(Duration(milliseconds: 1000), () {
+                            ScaffoldMessenger.of(context)
+                                .hideCurrentSnackBar();
+                          });
+
+                          setState(() async {
+                            try {
+                              final refreshedData = await restaurantsProvider
+                                  .getRestaurantsList(page: 1);
+
+                              if (refreshedData.data != null &&
+                                  refreshedData.data!.isNotEmpty) {
+                                setState(() {
+                                  item.favourite == false;
+                                  restaurantData = refreshedData.data!;
+                                  currentPage =
+                                      1; // Reset the page to 2 as you loaded the first page.
+                                  hasMoreData =
+                                      true; // Reset the flag for more data.
+                                });
+                              }
+                            } catch (error) {
+                              print('Error refreshing data: $error');
+                            }
+                          });
+                        } else {
+                          // API call failed
+                          print("Something went wrong: ${delData.message}");
+
+                          final snackBar = SnackBar(
+                            content: Text('${delData.message}'),
+                          );
+
+                          // Show the SnackBar
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(snackBar);
+
+                          // Automatically hide the SnackBar after 1 second
+                          Future.delayed(Duration(milliseconds: 1000), () {
+                            ScaffoldMessenger.of(context)
+                                .hideCurrentSnackBar();
+                          });
+                        }
+                      }
+                    } catch (e) {
+                      // Display error message
+                      print("Error: $e");
+                    }
+                  },
+                  child: Image.asset(
+                    height: 15,
+                    width: 18,
+                    item.favourite == true ? save_icon_red : save_icon,
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),

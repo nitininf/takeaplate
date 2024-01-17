@@ -18,10 +18,10 @@ TextEditingController fullNameController = TextEditingController();
 TextEditingController emailController = TextEditingController();
 TextEditingController phoneNumberController = TextEditingController();
 TextEditingController dobController = TextEditingController();
-TextEditingController genderController = TextEditingController(text: genders[0]);
+TextEditingController genderController =
+    TextEditingController(text: genders[0]);
 
 final DateProvider dateProvider = DateProvider();
-
 
 class SignUpScreen extends StatelessWidget {
   @override
@@ -30,15 +30,13 @@ class SignUpScreen extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
     return WillPopScope(
       onWillPop: () async {
-        // Clear the text fields when the user presses the back button
         fullNameController.clear();
         emailController.clear();
         phoneNumberController.clear();
         dobController.clear();
-
         dateProvider.resetState();
-
-        Navigator.of(context).pushNamedAndRemoveUntil('/Create_Login', (Route route) => false);
+        Navigator.of(context)
+            .pushNamedAndRemoveUntil('/Create_Login', (Route route) => false);
 
         // Allow the back button action
         return true;
@@ -152,10 +150,10 @@ class SignUpScreen extends StatelessWidget {
                             content: Text('Please fill in all fields'),
                           );
 
-      // Show the SnackBar
+                          // Show the SnackBar
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
-      // Automatically hide the SnackBar after 1 second
+                          // Automatically hide the SnackBar after 1 second
                           Future.delayed(Duration(milliseconds: 1000), () {
                             ScaffoldMessenger.of(context).hideCurrentSnackBar();
                           });
@@ -164,10 +162,10 @@ class SignUpScreen extends StatelessWidget {
                             content: Text('Please enter valid email id'),
                           );
 
-      // Show the SnackBar
+                          // Show the SnackBar
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
-      // Automatically hide the SnackBar after 1 second
+                          // Automatically hide the SnackBar after 1 second
                           Future.delayed(Duration(milliseconds: 1000), () {
                             ScaffoldMessenger.of(context).hideCurrentSnackBar();
                           });
@@ -176,13 +174,12 @@ class SignUpScreen extends StatelessWidget {
                           print(
                               "Full Name: ${fullNameController.text} ,\n Email: ${emailController.text},\n Phone Number: ${phoneNumberController.text},\n Date Of Birth: ${dobController.text},\n Gender: ${genderController.text}");
 
+                          var date = dateProvider.formattedDate(
+                              DateTime.parse(dobController.text));
 
-
-                          var date = dateProvider
-                              .formattedDate(DateTime.parse(dobController.text));
-
-                          var saveUserBasicDetail =
-                              Provider.of<SignUp_StepOne>(context, listen: false);
+                          var saveUserBasicDetail = Provider.of<SignUp_StepOne>(
+                              context,
+                              listen: false);
 
                           // Set user information in the provider
                           saveUserBasicDetail.saveSignUpStepOneData(

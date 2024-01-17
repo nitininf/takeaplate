@@ -146,7 +146,11 @@ class DialogHelper {
                             filledIcon: Icons.star,
                             emptyIcon: Icons.star_border,
                             onRatingChanged: (value) => print('$value'),
-                            initialRating: 0,
+                            initialRating: 4,
+                          halfFilledIcon: Icons.star_half,
+                          isHalfAllowed: true,
+                          halfFilledColor: btnbgColor,
+
                             alignment: Alignment.center,
                             emptyColor: btnbgColor,
                             filledColor: btnbgColor,
@@ -155,17 +159,6 @@ class DialogHelper {
                           ),
 
 
-                       /* const Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.star_border,size: 35,color: btnbgColor,),
-                            Icon(Icons.star_border,size: 35,color: btnbgColor,),
-                            Icon(Icons.star_border,size: 35,color: btnbgColor,),
-                            Icon(Icons.star_border,size: 35,color: btnbgColor,),
-                            Icon(Icons.star_border,size: 35,color: btnbgColor,),
-                          ],
-                        ),*/
                         SizedBox(
                           height: screenHeight * 0.05,
                         ),

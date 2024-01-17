@@ -70,7 +70,7 @@ class DealData {
   String? createdAt;
   String? updatedAt;
   int? collectTomorrow;
-  bool? favourite;
+  var favourite;
   String? averageRating;
   CustomTime? customTime;
   Store? store;

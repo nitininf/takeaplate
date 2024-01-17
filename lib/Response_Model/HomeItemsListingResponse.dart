@@ -9,7 +9,7 @@ class HomeItemsListingResponse {
   List<DealData>? dealData;
   List<StoreData>? favoriteStores;
   // List<DealData>? favoriteDeals;
-  // List<StoreData>? collectTomorrow;
+  List<DealData>? collectTomorrow;
   bool? status;
 
   HomeItemsListingResponse(
@@ -18,7 +18,7 @@ class HomeItemsListingResponse {
         this.dealData,
         this.favoriteStores,
         // this.favoriteDeals,
-        // this.collectTomorrow,
+        this.collectTomorrow,
         this.status});
 
   HomeItemsListingResponse.fromJson(Map<String, dynamic> json) {
@@ -47,12 +47,12 @@ class HomeItemsListingResponse {
     //     favoriteDeals!.add(new DealData.fromJson(v));
     //   });
     // }
-    // if (json['collectTomorrow'] != null) {
-    //   collectTomorrow = <StoreData>[];
-    //   json['collectTomorrow'].forEach((v) {
-    //     collectTomorrow!.add(new StoreData.fromJson(v));
-    //   });
-    // }
+    if (json['collectTomorrow'] != null) {
+      collectTomorrow = <DealData>[];
+      json['collectTomorrow'].forEach((v) {
+        collectTomorrow!.add(new DealData.fromJson(v));
+      });
+    }
     status = json['status'];
   }
 
@@ -73,10 +73,10 @@ class HomeItemsListingResponse {
     //   data['favoriteDeals'] =
     //       this.favoriteDeals!.map((v) => v.toJson()).toList();
     // }
-    // if (this.collectTomorrow != null) {
-    //   data['collectTomorrow'] =
-    //       this.collectTomorrow!.map((v) => v.toJson()).toList();
-    // }
+    if (this.collectTomorrow != null) {
+      data['collectTomorrow'] =
+          this.collectTomorrow!.map((v) => v.toJson()).toList();
+    }
     data['status'] = this.status;
     return data;
   }

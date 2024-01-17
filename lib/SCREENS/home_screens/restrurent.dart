@@ -232,7 +232,7 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
                   text: storeData.name ?? "",
                   color: btntxtColor,
                   fontfamilly: montBold,
-                  sizeOfFont: 27,
+                  sizeOfFont: 24,
                   maxLin: 1,
                 ),
                 CustomText(
@@ -259,7 +259,7 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
                       emptyIcon: Icons.star_border,
                       filledColor: btnbgColor,
                       initialRating: 4,
-                      size: 20,
+                      size: 18,
                       maxRating: 5,
                     ),
                     SizedBox(
@@ -278,22 +278,34 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
               ],
             ),
           ),
-          const SizedBox(
-            width: 8,
-          ),
+
           Expanded(
             child: Stack(
               alignment: Alignment.topRight,
               clipBehavior: Clip.none,
               children: [
-                storeData.profileImage != null ? ClipRRect(
-                    borderRadius: BorderRadius.circular(15.0),
-                    child: Image.network(
-                      storeData.profileImage!,
-                      fit: BoxFit.cover,
-                      height: 100, width: 140,
-                    )
-                ): Image.asset(food_image,height: 100, width: 140,),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(15.0),
+                  child: Container(
+                    padding: EdgeInsets.all(8.0),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15.0),
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        colors: [Colors.white, Colors.grey], // Adjust colors as needed
+                      ),
+                    ),
+                    child: storeData.profileImage != null ? ClipRRect(
+                        borderRadius: BorderRadius.circular(15.0),
+                        child: Image.network(
+                          storeData.profileImage!,
+                          fit: BoxFit.cover,
+                          height: 90, width: 90,
+                        )
+                    ): Image.asset(food_image,height: 90, width: 90,),
+                  ),
+                ),
 
                 Positioned(
                   right: -4,

@@ -16,26 +16,21 @@ import '../../UTILS/app_images.dart';
 import '../../UTILS/fontfaimlly_string.dart';
 import '../../main.dart';
 
-class LastMinuteDealScreen extends StatefulWidget {
-  const LastMinuteDealScreen({super.key});
+class CollectTomorrowScreen extends StatefulWidget {
+  const CollectTomorrowScreen({super.key});
 
   @override
-  _LastMinuteDealScreenState createState() => _LastMinuteDealScreenState();
+  _CollectTomorrowScreenState createState() => _CollectTomorrowScreenState();
 }
 
-class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
-  final List<String> items = [
-    'Healthy',
-    'Sushi',
-    'Desserts',
-    'Sugar',
-    'Sweets'
-  ];
+class _CollectTomorrowScreenState extends State<CollectTomorrowScreen> {
+
+  final List<String> items = ['Healthy', 'Sushi', 'Desserts', 'Sugar', 'Sweets'];
   final RestaurantsListProvider restaurantsProvider = RestaurantsListProvider();
   int currentPage = 1;
   bool isLoading = false;
   bool hasMoreData = true;
-  List<DealData> dealListData = [];
+  List<DealData> collectTomorrowData = [];
 
   ScrollController _scrollController = ScrollController();
 
@@ -46,12 +41,11 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
     _loadData();
   }
 
-  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
-      GlobalKey<RefreshIndicatorState>();
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey<RefreshIndicatorState>();
+
 
   void _scrollListener() {
-    if (_scrollController.position.pixels ==
-        _scrollController.position.maxScrollExtent) {
+    if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
       // Reached the end of the list, load more data
       _loadData();
     }
@@ -64,13 +58,13 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
           isLoading = true;
         });
 
-        final nextPageData = await restaurantsProvider.getLastMinuteDealsList(
+        final nextPageData = await restaurantsProvider.getCollectTomorrowList(
           page: currentPage,
         );
 
         if (nextPageData.data != null && nextPageData.data!.isNotEmpty) {
           setState(() {
-            dealListData.addAll(nextPageData.data!);
+            collectTomorrowData.addAll(nextPageData.data!);
             currentPage++;
           });
         } else {
@@ -91,25 +85,21 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+
+    return  Scaffold(
       backgroundColor: bgColor,
       body: SafeArea(
-        child: Padding(
-          padding:
-              const EdgeInsets.only(top: 0.0, bottom: 20, left: 25, right: 25),
+        child: Padding(padding: const EdgeInsets.only(top: 0.0,bottom: 20,left: 25,right: 25),
+
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const CustomAppBar(),
               const SizedBox(height: 20),
-              const CustomSearchField(hintText: "Search"),
+              const CustomSearchField(hintText:"Search"),
               const Padding(
-                padding: EdgeInsets.only(left: 13.0, top: 20),
-                child: CustomText(
-                    text: lastminute,
-                    color: btnbgColor,
-                    fontfamilly: montHeavy,
-                    sizeOfFont: 20),
+                padding: EdgeInsets.only(left: 13.0,top: 20),
+                child: CustomText(text: collectTomorrow, color: btnbgColor, fontfamilly: montHeavy, sizeOfFont: 20),
               ),
               buildHorizontalList(items),
               buildVerticalCards()
@@ -118,7 +108,8 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
         ),
       ),
     );
-  }
+
+}
 
   Widget buildHorizontalList(List<String> items) {
     return SingleChildScrollView(
@@ -127,8 +118,9 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
         mainAxisSize: MainAxisSize.min,
         children: List.generate(
           items.length,
-          (index) => GestureDetector(
-            onTap: () {},
+              (index) => GestureDetector(
+            onTap: (){
+            },
             child: Container(
               margin: const EdgeInsets.symmetric(horizontal: 3, vertical: 10),
               padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 10),
@@ -137,12 +129,7 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
                 borderRadius: BorderRadius.circular(30),
                 border: Border.all(width: 1, color: Colors.white),
               ),
-              child: CustomText(
-                text: items[index],
-                color: hintColor,
-                fontfamilly: montBook,
-                sizeOfFont: 19,
-              ),
+              child: CustomText(text: items[index], color: hintColor, fontfamilly: montBook,sizeOfFont: 19,),
             ),
           ),
         ),
@@ -160,31 +147,29 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
         onRefresh: _refreshData,
         child: ListView.builder(
           controller: _scrollController,
-          itemCount: dealListData.length + (hasMoreData ? 1 : 0),
+          itemCount: collectTomorrowData.length + (hasMoreData ? 1 : 0),
           itemBuilder: (context, index) {
-            if (index < dealListData.length) {
+            if (index < collectTomorrowData.length) {
               // Display restaurant card
               return GestureDetector(
                 onTap: () {
                   Navigator.pushNamed(
                     navigatorKey.currentContext!,
                     '/OrderAndPayScreen',
-                    arguments: dealListData[index],
+                    arguments: collectTomorrowData[index],
                   );
                 },
-                child: getFavCards(index, dealListData[index]),
+                child: getFavCards(index, collectTomorrowData[index]),
               );
             } else {
               // Display loading indicator while fetching more data
               return FutureBuilder(
                 future: Future.delayed(Duration(seconds: 3)),
-                builder: (context, snapshot) =>
-                    snapshot.connectionState == ConnectionState.done
-                        ? SizedBox()
-                        : Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Center(child: CircularProgressIndicator()),
-                          ),
+                builder: (context, snapshot) => snapshot.connectionState == ConnectionState.done ?
+                SizedBox(): Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Center(child: CircularProgressIndicator()),
+                ),
               );
             }
           },
@@ -196,12 +181,11 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
   Future<void> _refreshData() async {
     // Call your API here to refresh the data
     try {
-      final refreshedData =
-          await restaurantsProvider.getLastMinuteDealsList(page: 1);
+      final refreshedData = await restaurantsProvider.getCollectTomorrowList(page: 1);
 
       if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
         setState(() {
-          dealListData = refreshedData.data!;
+          collectTomorrowData = refreshedData.data!;
           currentPage = 1; // Reset the page to 2 as you loaded the first page.
           hasMoreData = true; // Reset the flag for more data.
         });
@@ -211,14 +195,48 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
     }
   }
 
+
+
+
   Widget getFavCards(int index, DealData data) {
+
+    var  currentDay = DateTime.now().weekday;
+    var  startTiming = '';
+    var endTiming = '';
+
+    if(currentDay == 1){
+      startTiming = data.store?.openingHour?.monday?.start ?? '';
+      endTiming = data.store?.openingHour?.monday?.end ?? '';
+
+    }else if(currentDay == 2){
+
+      startTiming = data.store?.openingHour?.tuesday?.start ?? '';
+      endTiming = data.store?.openingHour?.tuesday?.end ?? '';
+    }else if(currentDay == 3){
+
+      startTiming = data.store?.openingHour?.wednesday?.start ?? '';
+      endTiming = data.store?.openingHour?.wednesday?.end ?? '';
+    }else if(currentDay == 4){
+
+      startTiming = data.store?.openingHour?.thursday?.start ?? '';
+      endTiming = data.store?.openingHour?.thursday?.end ?? '';
+    }else if(currentDay == 5){
+
+      startTiming = data.store?.openingHour?.friday?.start ?? '';
+      endTiming = data.store?.openingHour?.friday?.end ?? '';
+    }else if(currentDay == 6){
+
+      startTiming = data.store?.openingHour?.saturday?.start ?? '';
+      endTiming = data.store?.openingHour?.saturday?.end ?? '';
+    }else if(currentDay == 7){
+
+      startTiming = data.store?.openingHour?.sunday?.start ?? '';
+      endTiming = data.store?.openingHour?.sunday?.end ?? '';
+    }
+
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(
-          navigatorKey.currentContext!,
-          '/OrderAndPayScreen',
-          arguments: data,
-        );
+        Navigator.pushNamed(navigatorKey.currentContext!, '/OrderAndPayScreen', arguments: data,);
       },
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
@@ -249,11 +267,10 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
                     sizeOfFont: 16,
                   ),
                   CustomText(
-                      text:
-                          '${data.customTime?.startTime ?? ""} - ${data.customTime?.startTime ?? ""}',
+                      text: '${startTiming ?? ""} - ${endTiming ?? ""}',
                       maxLin: 1,
                       color: graysColor,
-                      sizeOfFont: 11,
+                      sizeOfFont: 13,
                       fontfamilly: montRegular),
                   SizedBox(
                     height: 5,
@@ -312,32 +329,25 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
                         gradient: LinearGradient(
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
-                          colors: [
-                            Colors.white,
-                            Colors.grey
-                          ], // Adjust colors as needed
+                          colors: [Colors.white, Colors.grey], // Adjust colors as needed
                         ),
                       ),
-                      child: data.profileImage != null
-                          ? ClipRRect(
-                              borderRadius: BorderRadius.circular(15.0),
-                              child: Image.network(
-                                data.profileImage!,
-                                fit: BoxFit.cover,
-                                height: 120,
-                                width: 118,
-                              ))
-                          : Image.asset(
-                              food_image,
-                              height: 100,
-                              width: 118,
-                            ),
+                      child: data.profileImage != null ? ClipRRect(
+                          borderRadius: BorderRadius.circular(15.0),
+                          child: Image.network(
+                            data.profileImage!,
+                            fit: BoxFit.cover,
+                            height: 120, width: 118,
+                          )
+                      ): Image.asset(food_image,height: 100, width: 118,),
                     ),
                   ),
+
                   Positioned(
                     right: -4,
                     child: GestureDetector(
                       onTap: () async {
+
                         bool? ratingStatus = data.favourite;
                         int? dealId = data.id;
                         int? storeId = data.storeId;
@@ -345,56 +355,43 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
                         print('ratingStatus:$ratingStatus');
 
                         try {
+
                           if (data.favourite == false) {
                             // Only hit the API if data.favourite is true
                             var formData = {
                               'favourite': 1,
                             };
 
-                            FavAddedResponse favData =
-                                await Provider.of<FavoriteOperationProvider>(
-                                        context,
-                                        listen: false)
-                                    .AddToFavoriteDeal(dealId ?? 0, formData);
+                            FavAddedResponse favData = await Provider.of<FavoriteOperationProvider>(context, listen: false)
+                                .AddToFavoriteDeal(dealId??0,formData);
 
-                            if (favData.status == true &&
-                                favData.message ==
-                                    "Deal Added in favourite successfully.") {
+                            if (favData.status == true && favData.message == "Deal Added in favourite successfully.") {
                               // Print data to console
                               print(favData);
 
                               final snackBar = SnackBar(
-                                content: Text('${favData.message}'),
+                                content:  Text('${favData.message}'),
                               );
 
                               // Show the SnackBar
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(snackBar);
+                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
                               // Automatically hide the SnackBar after 1 second
                               Future.delayed(Duration(milliseconds: 1000), () {
-                                ScaffoldMessenger.of(context)
-                                    .hideCurrentSnackBar();
+                                ScaffoldMessenger.of(context).hideCurrentSnackBar();
                               });
 
                               setState(() async {
                                 try {
-                                  final refreshedData =
-                                      await restaurantsProvider
-                                          .getRestaurantsDealsList(storeId,
-                                              page: 1);
+                                  final refreshedData = await restaurantsProvider.getCollectTomorrowList( page: 1);
 
-                                  if (refreshedData.data != null &&
-                                      refreshedData.data!.isNotEmpty) {
+                                  if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
                                     setState(() {
                                       data.favourite = true;
 
-                                      dealListData =
-                                          refreshedData.data!.cast<DealData>();
-                                      currentPage =
-                                          1; // Reset the page to 2 as you loaded the first page.
-                                      hasMoreData =
-                                          true; // Reset the flag for more data.
+                                      collectTomorrowData = refreshedData.data!.cast<DealData>();
+                                      currentPage = 1; // Reset the page to 2 as you loaded the first page.
+                                      hasMoreData = true; // Reset the flag for more data.
                                     });
                                   }
                                 } catch (error) {
@@ -406,64 +403,49 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
                               print("Something went wrong: ${favData.message}");
 
                               final snackBar = SnackBar(
-                                content: Text('${favData.message}'),
+                                content:  Text('${favData.message}'),
                               );
 
                               // Show the SnackBar
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(snackBar);
+                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
                               // Automatically hide the SnackBar after 1 second
                               Future.delayed(Duration(milliseconds: 1000), () {
-                                ScaffoldMessenger.of(context)
-                                    .hideCurrentSnackBar();
+                                ScaffoldMessenger.of(context).hideCurrentSnackBar();
                               });
                             }
-                          } else if (data.favourite == true) {
+                          } else if (data.favourite == true){
                             // If data.favourite is false, print its value
-                            FavDeleteResponse delData =
-                                await Provider.of<FavoriteOperationProvider>(
-                                        context,
-                                        listen: false)
-                                    .RemoveFromFavoriteDeal(data.id ?? 0);
+                            FavDeleteResponse delData = await Provider.of<FavoriteOperationProvider>(context, listen: false)
+                                .RemoveFromFavoriteDeal(data.id ?? 0);
 
-                            if (delData.status == true &&
-                                delData.message ==
-                                    "Favourite Deal deleted successfully.") {
+                            if (delData.status == true && delData.message == "Favourite Deal deleted successfully.") {
                               // Print data to console
                               print(delData);
 
                               final snackBar = SnackBar(
-                                content: Text('${delData.message}'),
+                                content:  Text('${delData.message}'),
                               );
 
                               // Show the SnackBar
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(snackBar);
+                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
                               // Automatically hide the SnackBar after 1 second
                               Future.delayed(Duration(milliseconds: 1000), () {
-                                ScaffoldMessenger.of(context)
-                                    .hideCurrentSnackBar();
+                                ScaffoldMessenger.of(context).hideCurrentSnackBar();
                               });
 
                               setState(() async {
-                                try {
-                                  final refreshedData =
-                                      await restaurantsProvider
-                                          .getRestaurantsDealsList(storeId,
-                                              page: 1);
 
-                                  if (refreshedData.data != null &&
-                                      refreshedData.data!.isNotEmpty) {
+                                try {
+                                  final refreshedData = await restaurantsProvider.getCollectTomorrowList( page: 1);
+
+                                  if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
                                     setState(() {
                                       data.favourite = false;
-                                      dealListData =
-                                          refreshedData.data!.cast<DealData>();
-                                      currentPage =
-                                          1; // Reset the page to 2 as you loaded the first page.
-                                      hasMoreData =
-                                          true; // Reset the flag for more data.
+                                      collectTomorrowData = refreshedData.data!.cast<DealData>();
+                                      currentPage = 1; // Reset the page to 2 as you loaded the first page.
+                                      hasMoreData = true; // Reset the flag for more data.
                                     });
                                   }
                                 } catch (error) {
@@ -475,17 +457,15 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
                               print("Something went wrong: ${delData.message}");
 
                               final snackBar = SnackBar(
-                                content: Text('${delData.message}'),
+                                content:  Text('${delData.message}'),
                               );
 
                               // Show the SnackBar
-                              ScaffoldMessenger.of(context)
-                                  .showSnackBar(snackBar);
+                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
                               // Automatically hide the SnackBar after 1 second
                               Future.delayed(Duration(milliseconds: 1000), () {
-                                ScaffoldMessenger.of(context)
-                                    .hideCurrentSnackBar();
+                                ScaffoldMessenger.of(context).hideCurrentSnackBar();
                               });
                             }
                           }
@@ -495,12 +475,14 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
                         }
                       },
                       child: Image.asset(
+
                         height: 15,
                         width: 18,
-                        data.favourite == true ? save_icon_red : save_icon,
+                        data.favourite == true  ? save_icon_red : save_icon,
                       ),
                     ),
                   ),
+
                 ],
               ),
             ),
@@ -510,3 +492,4 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
     );
   }
 }
+
