@@ -18,8 +18,19 @@ import '../../MULTI-PROVIDER/SignUp_StepTwo.dart';
 import '../../UTILS/request_string.dart';
 import '../../UTILS/utils.dart';
 
-class UploadPhoto extends StatelessWidget {
+
+class UploadPhoto extends StatefulWidget {
+  const UploadPhoto({super.key});
+
+  @override
+  _UploadPhotoState createState() => _UploadPhotoState();
+}
+
+class _UploadPhotoState extends State<UploadPhoto> {
+
   TextEditingController selectedImagePathController = TextEditingController();
+  final SelectImageProvider selectImageProvider = SelectImageProvider();
+
 
   @override
   Widget build(BuildContext context) {
@@ -33,9 +44,11 @@ class UploadPhoto extends StatelessWidget {
     return WillPopScope(
       onWillPop: () async {
         // Clear the text fields when the user presses the back button
-        selectedImagePathController.clear();
+        selectedImagePathController.text = '';
+        selectImageProvider.resetState();
 
-        Navigator.of(context).pop();
+        Navigator.of(context).pushNamedAndRemoveUntil('/SignupScreen', (Route route) => false);
+
 
         // Allow the back button action
         return true;
@@ -58,10 +71,47 @@ class UploadPhoto extends StatelessWidget {
                       SizedBox(
                         height: screenHeight * 0.04,
                       ),
-                      Image.asset(
-                        appLogo, // Replace with your first small image path
-                        height: 80,
-                        width: 80,
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: Center(
+                              child: Image.asset(
+                                appLogo,
+                                // Replace with your first small image path
+                                height: 80,
+                                width: 80,
+                              ),
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: GestureDetector(
+                              onTap: (){
+                                var saveUserImage = Provider.of<SignUp_StepTwo>(context, listen: false);
+
+                                // Set user information in the provider
+                                saveUserImage.saveSignUpStepTwoData(
+                                  fullName: getUserBasicDetails.fullName,
+                                  email: getUserBasicDetails.email,
+                                  phoneNumber: getUserBasicDetails.phoneNumber,
+                                  dob: getUserBasicDetails.dob,
+                                  gender: getUserBasicDetails.gender,
+                                  user_image: '',
+                                );
+
+                                Navigator.pushNamed(context, '/SetYourPasswordScreen');
+                              },
+                              child: CustomText(
+                                text: skip,
+                                sizeOfFont: 13,
+                                color: Colors.white,
+                                fontfamilly: montBold,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                       SizedBox(
                         height: screenHeight * 0.03,
@@ -112,20 +162,19 @@ class UploadPhoto extends StatelessWidget {
                           // padding: const EdgeInsets.symmetric(
                           //     horizontal: 16, vertical: 12),
                           decoration: BoxDecoration(
-                            image: Provider.of<SelectImageProvider>(context)
-                                    .selectedImage
-                                    .isNotEmpty
+                            image: selectedImagePathController.text.isNotEmpty
                                 ? DecorationImage(
-                                    image: FileImage(File(
-                                        Provider.of<SelectImageProvider>(
-                                                context)
-                                            .selectedImage)),
-                                    fit: BoxFit.cover,
-                                  )
+                                image: FileImage(File(
+
+                                    selectedImagePathController.text
+
+                                ),
+
+                                ))
                                 : const DecorationImage(
-                                    image: AssetImage(edit_photo),
-                                    fit: BoxFit.contain,
-                                  ),
+                              image: AssetImage(edit_photo),
+                              fit: BoxFit.contain,
+                            ),
                           ),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -136,13 +185,13 @@ class UploadPhoto extends StatelessWidget {
                                   if (image != null) {
                                     // Update the selected image in the provider or state
                                     Provider.of<SelectImageProvider>(context,
-                                            listen: false)
+                                        listen: false)
                                         .setSelectedImage(image);
                                   }
                                 },
                                 child: Visibility(
                                   visible:
-                                      selectedImagePathController.text.isEmpty,
+                                  selectedImagePathController.text.isEmpty,
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
@@ -188,10 +237,10 @@ class UploadPhoto extends StatelessWidget {
                       if (selectedImagePath.isNotEmpty) {
                         try {
                           var data = await Provider.of<AuthenticationProvider>(
-                                  context,
-                                  listen: false)
+                              context,
+                              listen: false)
                               .uploadMultipartImage(
-                                  File(selectedImagePath), "registration");
+                              File(selectedImagePath), "registration");
 
                           print(data);
 
@@ -215,6 +264,20 @@ class UploadPhoto extends StatelessWidget {
                               gender: getUserBasicDetails.gender,
                               user_image: data.url ?? '',
                             );
+
+                            final snackBar = SnackBar(
+                              content: Text('${data.message}'),
+                            );
+
+                            // Show the SnackBar
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
+
+                            // Automatically hide the SnackBar after 1 second
+                            Future.delayed(Duration(milliseconds: 1000), () {
+                              ScaffoldMessenger.of(context)
+                                  .hideCurrentSnackBar();
+                            });
 
                             Navigator.pushNamed(
                                 context, '/SetYourPasswordScreen');
@@ -245,8 +308,7 @@ class UploadPhoto extends StatelessWidget {
                           print("Error: $e");
                         }
                       } else {
-                        var saveUserImage =
-                            Provider.of<SignUp_StepTwo>(context, listen: false);
+                        var saveUserImage = Provider.of<SignUp_StepTwo>(context, listen: false);
 
                         // Set user information in the provider
                         saveUserImage.saveSignUpStepTwoData(
@@ -339,7 +401,10 @@ class UploadPhoto extends StatelessWidget {
     print("croppedFile: ${croppedFile?.path}");
 
     if (croppedFile != null) {
-      selectedImagePathController.text = croppedFile.path;
+      setState(() {
+        selectedImagePathController.text = croppedFile.path;
+
+      });
       return croppedFile.path;
     } else {
       selectedImagePathController.text = "";
@@ -347,3 +412,5 @@ class UploadPhoto extends StatelessWidget {
     }
   }
 }
+
+

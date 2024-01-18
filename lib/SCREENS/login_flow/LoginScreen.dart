@@ -111,7 +111,7 @@ class LogInScreen extends StatelessWidget {
                                 String? email = data.data?.email;
                                 String? phoneNo = data.data?.phoneNo.toString();
                                 String? dataOfBirth = data.data?.dOB;
-                                String? userImage = data.data?.userImage;
+                                String? userImage = data.data?.userImage ?? '';
                                 String? gender = data.data?.gender;
 
                                 // Save user data to SharedPreferences
@@ -125,12 +125,14 @@ class LogInScreen extends StatelessWidget {
                                 await Utility.setStringValue(RequestString.EMAIL, email!);
                                 await Utility.setStringValue(RequestString.PHONE_NO, phoneNo!);
                                 await Utility.setStringValue(RequestString.DOB, dataOfBirth!);
-                                await Utility.setStringValue(RequestString.USER_IMAGE, userImage!);
+                                await Utility.setStringValue(RequestString.USER_IMAGE, userImage);
                                 await Utility.setStringValue(RequestString.GENDER, gender!);
 
 
 
-                                Navigator.pushNamed(context, '/BaseHome');
+
+                                Navigator.of(context).pushNamedAndRemoveUntil('/BaseHome', (Route route) => false);
+
 
                                 // Print data to console
                                 print(data);
@@ -203,7 +205,8 @@ class LogInScreen extends StatelessWidget {
                         GestureDetector(child: const CustomText(text: createyouraccount,color: btnbgColor,sizeOfFont: 18,fontfamilly: montBold,)
                         ,
                           onTap: (){
-                          Navigator.pushNamed(context, '/SignupScreen');
+                          Navigator.of(context).pushNamedAndRemoveUntil('/SignupScreen', (Route route) => false);
+
                           },
                         ),
 

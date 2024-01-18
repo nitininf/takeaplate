@@ -52,7 +52,7 @@ class CommonEditText extends StatelessWidget {
           style:  TextStyle(
             decoration: TextDecoration.none,
             decorationThickness: 0,
-            fontSize: isnewCard ? 16 : 20,
+            fontSize: isnewCard ? 16 : 18,
             fontFamily: fontfamilly ?? montBook,
             color: isbgColor ? editbgColor :isnewCard ? onboardingBtn : readybgColor, // Make sure to define your colors properly
           ),
@@ -77,7 +77,7 @@ class CommonEditText extends StatelessWidget {
             contentPadding: isbgColor ?const EdgeInsets.symmetric(horizontal: 20, vertical: 16)  : isnewCard ?const EdgeInsets.symmetric(horizontal: 20, vertical: 10):const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
             hintStyle:  TextStyle(
               fontFamily: fontfamilly ?? montBook,
-              fontSize: isnewCard ? 16 : 20,
+              fontSize: isnewCard ? 16 : 18,
               color: isbgColor ? editbgColor :isnewCard ? onboardingBtn : readybgColor, // Define your hint color properly
             ),
             hintText: hintText,

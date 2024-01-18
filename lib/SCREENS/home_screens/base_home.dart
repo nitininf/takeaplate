@@ -26,8 +26,11 @@ class BaseHome extends StatefulWidget {
 }
 
 class _BaseHomeScreen extends State<BaseHome> {
-  static int _selectedIndex = 2;
+   int _selectedIndex = 2;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+
+
 
   static final List<Widget> _widgetOptions = <Widget>[
     SearchScreen(),
@@ -48,6 +51,8 @@ class _BaseHomeScreen extends State<BaseHome> {
 
   @override
   Widget build(BuildContext context) {
+
+    print('selected Index - $_selectedIndex');
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     var counterProvider=Provider.of<CommonCounter>(navigatorKey.currentContext!, listen: false);

@@ -101,5 +101,29 @@ class CartOperationProvider extends ChangeNotifier {
   }
 
 
+  Future<AddToCartResponse> decreaseItemQuantity(var cartId) async {
+
+
+    var formData = {
+      RequestString.QUANTITY: 1,
+
+    };
+
+    // Make network request with pagination parameters
+    // You might need to update your API endpoint to support pagination
+    final response = await _network.postRequest(
+      endPoint: '/cart-quantity-decrement/$cartId',
+      formData: formData
+    );
+
+    if (response != null && response.data is Map<String, dynamic>) {
+      final Map<String, dynamic> responseData = response.data;
+      return AddToCartResponse.fromJson(responseData);
+    } else {
+      throw Exception('Failed to parse API response');
+    }
+  }
+
+
 
 }

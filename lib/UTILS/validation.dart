@@ -43,6 +43,22 @@ class FormValidator {
     return null;
   }
 
+  static String? validateAlphabets(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'This field is required';
+    }
+
+    // Use a regular expression to check if the string contains only alphabets
+    RegExp regex = RegExp(r'^[a-z A-Z ]+$');
+
+    if (!regex.hasMatch(value)) {
+      return 'Please enter only alphabets';
+    }
+
+    return null; // Validation passed
+  }
+
+
   static String? validatePhoneNumber(String? value) {
     // Ensure that the phone number is not empty
     if (value == null || value.isEmpty) {
@@ -53,7 +69,7 @@ class FormValidator {
     RegExp phoneRegExp = RegExp(r'^[0-9]{10}$');
 
     // Check if the phone number matches the expected format
-    if (!phoneRegExp.hasMatch(value)) {
+    if (!phoneRegExp.hasMatch(value) && value.length < 10) {
       return 'Invalid phone number';
     }
 

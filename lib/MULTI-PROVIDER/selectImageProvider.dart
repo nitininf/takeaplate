@@ -9,4 +9,10 @@ class SelectImageProvider extends ChangeNotifier {
     _selectedImage = image;
     notifyListeners();
   }
+
+  void resetState() {
+    // Reset the state to its initial values
+    _selectedImage = '';
+    notifyListeners();
+  }
 }

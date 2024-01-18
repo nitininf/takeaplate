@@ -71,8 +71,8 @@ class NotificationTurnOnScreen extends StatelessWidget {
                               Expanded(
                                   child: Image.asset(
                                 appLogo,
-                                height: 33,
-                                width: 33,
+                                height: 30,
+                                width: 30,
                               )),
                               Expanded(
                                   flex: 3,
@@ -87,7 +87,7 @@ class NotificationTurnOnScreen extends StatelessWidget {
                                           text: favRes!,
                                           fontfamilly: montBold,
                                           color: hintColor,
-                                          sizeOfFont: 12,
+                                          sizeOfFont: 10,
                                           isAlign: false,
                                         ),
                                         alignment: Alignment.topLeft,
@@ -99,7 +99,7 @@ class NotificationTurnOnScreen extends StatelessWidget {
                                           text: "",
                                           fontfamilly: montLight,
                                           color: hintColor,
-                                          sizeOfFont: 12,
+                                          sizeOfFont: 10,
                                           isAlign: false,
                                         ),
                                       ),
@@ -146,8 +146,8 @@ class NotificationTurnOnScreen extends StatelessWidget {
                               Expanded(
                                   child: Image.asset(
                                 appLogo,
-                                height: 33,
-                                width: 33,
+                                height: 30,
+                                width: 30,
                               )),
                               Expanded(
                                   flex: 3,
@@ -162,7 +162,7 @@ class NotificationTurnOnScreen extends StatelessWidget {
                                           text: nearby,
                                           fontfamilly: montBold,
                                           color: hintColor,
-                                          sizeOfFont: 12,
+                                          sizeOfFont: 10,
                                           isAlign: false,
                                         ),
                                         alignment: Alignment.topLeft,
@@ -174,7 +174,7 @@ class NotificationTurnOnScreen extends StatelessWidget {
                                           text: miss!,
                                           fontfamilly: montLight,
                                           color: hintColor,
-                                          sizeOfFont: 12,
+                                          sizeOfFont: 10,
                                           isAlign: false,
                                         ),
                                       ),
@@ -221,8 +221,8 @@ class NotificationTurnOnScreen extends StatelessWidget {
                               Expanded(
                                   child: Image.asset(
                                 appLogo,
-                                height: 33,
-                                width: 33,
+                                height: 30,
+                                width: 30,
                               )),
                               Expanded(
                                   flex: 3,
@@ -237,7 +237,7 @@ class NotificationTurnOnScreen extends StatelessWidget {
                                           text: confirm!,
                                           fontfamilly: montBold,
                                           color: hintColor,
-                                          sizeOfFont: 12,
+                                          sizeOfFont: 10,
                                           isAlign: false,
                                         ),
                                         alignment: Alignment.topLeft,
@@ -249,7 +249,7 @@ class NotificationTurnOnScreen extends StatelessWidget {
                                           text: ""!,
                                           fontfamilly: montLight,
                                           color: hintColor,
-                                          sizeOfFont: 12,
+                                          sizeOfFont: 10,
                                           isAlign: false,
                                         ),
                                       ),
@@ -297,7 +297,6 @@ class NotificationTurnOnScreen extends StatelessWidget {
                           isAlign: false,
                         ),
                       ),
-                      const SizedBox(height: 10),
                       Align(
                         alignment: Alignment.center,
                         child: CustomText(
@@ -350,7 +349,7 @@ class NotificationTurnOnScreen extends StatelessWidget {
             border: Border.all(width: 1, color: editbgColor)),
         child: Row(
           children: [
-        Expanded(child: Image.asset(appLogo, height: 33, width: 33,)),
+        Expanded(child: Image.asset(appLogo, height: 30, width: 30,)),
     Expanded(
     flex: 3,
     child: Column(
@@ -358,7 +357,7 @@ class NotificationTurnOnScreen extends StatelessWidget {
     children: [
     const SizedBox(height: 10,),
     Align(
-    child: CustomText(text:title! ,fontfamilly: montBold,color: hintColor,sizeOfFont: 12,
+    child: CustomText(text:title! ,fontfamilly: montBold,color: hintColor,sizeOfFont: 10,
     isAlign: false,
     ),
     alignment: Alignment.topLeft,
@@ -366,7 +365,7 @@ class NotificationTurnOnScreen extends StatelessWidget {
     //SizedBox(height: 5,),
     Align(
     alignment: Alignment.topLeft,
-    child: CustomText(text:subtitle! ,fontfamilly: montLight,color: hintColor,sizeOfFont: 12,
+    child: CustomText(text:subtitle! ,fontfamilly: montLight,color: hintColor,sizeOfFont: 10,
     isAlign: false,
     ),
     ),

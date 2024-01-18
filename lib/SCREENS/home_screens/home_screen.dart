@@ -65,7 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
           setState(() {
             if (mounted) {
-              closestRestaurants?.addAll(nextPageData.data!);
+              closestRestaurants=nextPageData.data!;
             }
           });
         } else {
@@ -80,7 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
             nextPageData.dealData!.isNotEmpty) {
           setState(() {
             if (mounted) {
-              lastMinuteDeals?.addAll(nextPageData.dealData!);
+              lastMinuteDeals=nextPageData.dealData!;
             }
           });
         } else {
@@ -95,7 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
             nextPageData.favoriteStores!.isNotEmpty) {
           setState(() {
             if (mounted) {
-              favoriteStoresAndDeals?.addAll(nextPageData.favoriteStores!);
+              favoriteStoresAndDeals=nextPageData.favoriteStores!;
             }
           });
         } else {
@@ -110,7 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
             nextPageData.collectTomorrow!.isNotEmpty) {
           setState(() {
             if (mounted) {
-              collectTomorrowList?.addAll(nextPageData.collectTomorrow!);
+              collectTomorrowList=nextPageData.collectTomorrow!;
             }
           });
         } else {
@@ -298,7 +298,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 text: storeData.name ?? '',
                 color: btntxtColor,
                 fontfamilly: montBold,
-                sizeOfFont: 24,
+                sizeOfFont: 22,
               ),
               CustomText(
                 text: storeData.category ?? '',
@@ -309,7 +309,7 @@ class _HomeScreenState extends State<HomeScreen> {
               CustomText(
                 text: '3 Offers available',
                 color: offerColor,
-                sizeOfFont: 9,
+                sizeOfFont: 12,
                 fontfamilly: montBook,
               ),
               SizedBox(height: 1),
@@ -427,24 +427,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
                           setState(() {
                             storeData.favourite = true;
-                          });
-                          try {
-                            final refreshedData =
-                                await homeProvider.getHomePageList(page: 1);
 
-                            if (refreshedData.data != null &&
-                                refreshedData.data!.isNotEmpty) {
-                              setState(() {
-                                closestRestaurants = refreshedData.data!;
-                                currentPage =
-                                    1; // Reset the page to 2 as you loaded the first page.
-                                hasMoreData =
-                                    true; // Reset the flag for more data.
-                              });
-                            }
-                          } catch (error) {
-                            print('Error refreshing data: $error');
-                          }
+                          });
+
+                          await refreshData();
+
+
                         } else {
                           // API call failed
                           print("Something went wrong: ${favData.message}");
@@ -489,23 +477,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
                           setState(() {
                             storeData.favourite = false;
+
                           });
 
-                          try {
-                            final refreshedData =
-                                await homeProvider.getHomePageList(page: 1);
+                          await refreshData();
 
-                            if (refreshedData.data != null &&
-                                refreshedData.data!.isNotEmpty) {
-                              closestRestaurants = refreshedData.data!;
-                              currentPage =
-                                  1; // Reset the page to 2 as you loaded the first page.
-                              hasMoreData =
-                                  true; // Reset the flag for more data.
-                            }
-                          } catch (error) {
-                            print('Error refreshing data: $error');
-                          }
+
                         } else {
                           // API call failed
                           print("Something went wrong: ${delData.message}");
@@ -759,25 +736,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               lastMinuteDeal.favourite = true;
                             });
 
-                            try {
-                              final refreshedData =
-                                  await homeProvider.getHomePageList(page: 1);
+                            await refreshData();
 
-                              if (refreshedData.data != null &&
-                                  refreshedData.data!.isNotEmpty) {
-                                setState(() {
-                                  lastMinuteDeals =
-                                      refreshedData as List<DealData>;
-
-                                  currentPage =
-                                      1; // Reset the page to 2 as you loaded the first page.
-                                  hasMoreData =
-                                      true; // Reset the flag for more data.
-                                });
-                              }
-                            } catch (error) {
-                              print('Error refreshing data: $error');
-                            }
                           } else {
                             // API call failed
                             print("Something went wrong: ${favData.message}");
@@ -827,25 +787,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               lastMinuteDeal.favourite = false;
                             });
 
-                            try {
-                              final refreshedData =
-                                  await homeProvider.getHomePageList(page: 1);
+                            await refreshData();
 
-                              if (refreshedData.data != null &&
-                                  refreshedData.data!.isNotEmpty) {
-                                setState(() {
-                                  lastMinuteDeals =
-                                      refreshedData as List<DealData>;
-
-                                  currentPage =
-                                      1; // Reset the page to 2 as you loaded the first page.
-                                  hasMoreData =
-                                      true; // Reset the flag for more data.
-                                });
-                              }
-                            } catch (error) {
-                              print('Error refreshing data: $error');
-                            }
                           } else {
                             // API call failed
                             print("Something went wrong: ${delData.message}");
@@ -1108,25 +1051,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               collectTomorrowData.favourite = true;
                             });
 
-                            try {
-                              final refreshedData =
-                                  await homeProvider.getHomePageList(page: 1);
+                            await refreshData();
 
-                              if (refreshedData.data != null &&
-                                  refreshedData.data!.isNotEmpty) {
-                                setState(() {
-                                  lastMinuteDeals =
-                                      refreshedData as List<DealData>;
-
-                                  currentPage =
-                                      1; // Reset the page to 2 as you loaded the first page.
-                                  hasMoreData =
-                                      true; // Reset the flag for more data.
-                                });
-                              }
-                            } catch (error) {
-                              print('Error refreshing data: $error');
-                            }
                           } else {
                             // API call failed
                             print("Something went wrong: ${favData.message}");
@@ -1178,25 +1104,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               collectTomorrowData.favourite = false;
                             });
 
-                            try {
-                              final refreshedData =
-                                  await homeProvider.getHomePageList(page: 1);
+                            await refreshData();
 
-                              if (refreshedData.data != null &&
-                                  refreshedData.data!.isNotEmpty) {
-                                setState(() {
-                                  lastMinuteDeals =
-                                      refreshedData as List<DealData>;
-
-                                  currentPage =
-                                      1; // Reset the page to 2 as you loaded the first page.
-                                  hasMoreData =
-                                      true; // Reset the flag for more data.
-                                });
-                              }
-                            } catch (error) {
-                              print('Error refreshing data: $error');
-                            }
                           } else {
                             // API call failed
                             print("Something went wrong: ${delData.message}");
@@ -1278,7 +1187,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 text: favoriteStores.name ?? '',
                 color: btntxtColor,
                 fontfamilly: montBold,
-                sizeOfFont: 24,
+                sizeOfFont: 22,
               ),
               CustomText(
                 text: favoriteStores.category ?? '',
@@ -1289,7 +1198,7 @@ class _HomeScreenState extends State<HomeScreen> {
               CustomText(
                 text: '3 Offers available',
                 color: offerColor,
-                sizeOfFont: 9,
+                sizeOfFont: 12,
                 fontfamilly: montBook,
               ),
               SizedBox(height: 1),
@@ -1408,23 +1317,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           setState(() {
                             favoriteStores.favourite = true;
                           });
-                          try {
-                            final refreshedData =
-                                await homeProvider.getHomePageList(page: 1);
 
-                            if (refreshedData.data != null &&
-                                refreshedData.data!.isNotEmpty) {
-                              setState(() {
-                                favoriteStoresAndDeals = refreshedData.data!;
-                                currentPage =
-                                    1; // Reset the page to 2 as you loaded the first page.
-                                hasMoreData =
-                                    true; // Reset the flag for more data.
-                              });
-                            }
-                          } catch (error) {
-                            print('Error refreshing data: $error');
-                          }
+                          await refreshData();
+
                         } else {
                           // API call failed
                           print("Something went wrong: ${favData.message}");
@@ -1470,21 +1365,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             favoriteStores.favourite = false;
                           });
 
-                          try {
-                            final refreshedData =
-                                await homeProvider.getHomePageList(page: 1);
+                          await refreshData();
 
-                            if (refreshedData.data != null &&
-                                refreshedData.data!.isNotEmpty) {
-                              favoriteStoresAndDeals = refreshedData.data!;
-                              currentPage =
-                                  1; // Reset the page to 2 as you loaded the first page.
-                              hasMoreData =
-                                  true; // Reset the flag for more data.
-                            }
-                          } catch (error) {
-                            print('Error refreshing data: $error');
-                          }
                         } else {
                           // API call failed
                           print("Something went wrong: ${delData.message}");
@@ -1520,4 +1402,76 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+
+
+
+  Future<void> refreshData() async {
+
+    final nextPageData = await homeProvider.getHomePageList(
+      page: 1,
+    );
+
+    if (nextPageData.data != null && nextPageData.data!.isNotEmpty) {
+
+
+      setState(() {
+        if (mounted) {
+          closestRestaurants=nextPageData.data!;
+        }
+      });
+    } else {
+      setState(() {
+        if (mounted) {
+          hasMoreData = false;
+        }
+      });
+    }
+
+    if (nextPageData.dealData != null &&
+        nextPageData.dealData!.isNotEmpty) {
+      setState(() {
+        if (mounted) {
+          lastMinuteDeals=nextPageData.dealData!;
+        }
+      });
+    } else {
+      setState(() {
+        if (mounted) {
+          hasMoreData = false;
+        }
+      });
+    }
+
+    if (nextPageData.favoriteStores != null &&
+        nextPageData.favoriteStores!.isNotEmpty) {
+      setState(() {
+        if (mounted) {
+          favoriteStoresAndDeals=nextPageData.favoriteStores!;
+        }
+      });
+    } else {
+      setState(() {
+        if (mounted) {
+          hasMoreData = false;
+        }
+      });
+    }
+
+    if (nextPageData.collectTomorrow != null &&
+        nextPageData.collectTomorrow!.isNotEmpty) {
+      setState(() {
+        if (mounted) {
+          collectTomorrowList=nextPageData.collectTomorrow!;
+        }
+      });
+    } else {
+      setState(() {
+        if (mounted) {
+          hasMoreData = false;
+        }
+      });
+    }
+  }
+
+
 }

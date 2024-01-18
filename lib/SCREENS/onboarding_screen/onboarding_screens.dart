@@ -239,11 +239,12 @@ class SliderWidget extends StatelessWidget {
             height: 20,
           ),
           Text(
-            title,
+            title.toUpperCase(),
             style: TextStyle(
               fontFamily: montHeavy,
               fontSize: 20,
               color: headingColor,
+
             ),
             textAlign: TextAlign.center,
           ),

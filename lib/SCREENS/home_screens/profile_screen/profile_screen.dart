@@ -117,11 +117,11 @@ class ProfileScreen extends StatelessWidget{
                  child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const CustomText(text: "Surprise Pack",maxLin: 1, color: btntxtColor, fontfamilly: montBold,sizeOfFont: 21,),
+                    const CustomText(text: "Surprise Pack",maxLin: 1, color: btntxtColor, fontfamilly: montBold,sizeOfFont: 18,),
 
-                    const CustomText(text: "Salad & Co.", maxLin:1,color: viewallColor, fontfamilly: montRegular,sizeOfFont: 16,),
+                    const CustomText(text: "Salad & Co.", maxLin:1,color: viewallColor, fontfamilly: montRegular,sizeOfFont: 14,),
 
-                    const CustomText(text: "Tomorrow-7:35-8:40 Am",maxLin: 1, color: graysColor,sizeOfFont: 11, fontfamilly: montRegular),
+                    const CustomText(text: "Tomorrow-7:35-8:40 Am",maxLin: 1, color: graysColor,sizeOfFont: 12, fontfamilly: montRegular),
                     SizedBox(height: 5,),
                     Row(
                       children: [
@@ -138,12 +138,12 @@ class ProfileScreen extends StatelessWidget{
                           ),
                         ),
                         SizedBox(width: 10,),
-                        CustomText(text: "84 Km", color: graysColor,sizeOfFont: 15, fontfamilly: montSemiBold,),
+                        CustomText(text: "84 Km", color: graysColor,sizeOfFont: 13, fontfamilly: montSemiBold,),
                       ],
 
                     ),
                     SizedBox(height: 0,),
-                    CustomText(text: "\$"+"9.99", color: dolorColor,sizeOfFont: 26, fontfamilly: montHeavy,),
+                    CustomText(text: "\$"+"9.99", color: dolorColor,sizeOfFont: 20, fontfamilly: montHeavy,),
 
                   ],
                                ),
@@ -155,7 +155,7 @@ class ProfileScreen extends StatelessWidget{
                   alignment: Alignment.topRight,
                   clipBehavior: Clip.none,
                   children: [
-                    Image.asset(food_image, height: 130, width: 127, fit: BoxFit.cover),
+                    Image.asset(food_image, height: 90, width: 90, fit: BoxFit.cover),
                     Positioned(
                       right: -4,
                       child: Image.asset(
@@ -202,8 +202,8 @@ class ProfileScreen extends StatelessWidget{
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                     CustomText(text: fullNameController.text,color: viewallColor,sizeOfFont: 25,fontfamilly: montBold,),
-                     CustomText(text: emailController.text,sizeOfFont: 15,fontfamilly:montRegular,color: viewallColor,),
+                     CustomText(text: fullNameController.text,color: viewallColor,sizeOfFont: 20,fontfamilly: montBold,),
+                     CustomText(text: emailController.text,maxLin:1,sizeOfFont: 13,fontfamilly:montRegular,color: viewallColor,),
                     Container(
                       margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 3),
                       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -292,11 +292,11 @@ class ProfileScreen extends StatelessWidget{
           const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CustomText(text: "Surprise Pack",maxLin: 1, color: btntxtColor, fontfamilly: montBold,sizeOfFont: 21,),
+              CustomText(text: "Surprise Pack",maxLin: 1, color: btntxtColor, fontfamilly: montBold,sizeOfFont: 18,),
 
               CustomText(text: "Salad & Co.", maxLin:1,color: viewallColor, fontfamilly: montRegular,sizeOfFont: 16,),
 
-              CustomText(text: "Tomorrow-7:35-8:40 Am", maxLin:1,color: graysColor,sizeOfFont: 11, fontfamilly: montRegular),
+              CustomText(text: "Tomorrow-7:35-8:40 Am", maxLin:1,color: graysColor,sizeOfFont: 12, fontfamilly: montRegular),
               SizedBox(height: 5,),
               Row(
                 children: [
@@ -306,12 +306,12 @@ class ProfileScreen extends StatelessWidget{
                   Icon(Icons.star_border,size: 20,color: Colors.grey,),
                   Icon(Icons.star_border,size: 20,color: Colors.grey,),
                   SizedBox(width: 10,),
-                  CustomText(text: "84 Km", color: graysColor,sizeOfFont: 15, fontfamilly: montSemiBold,),
+                  CustomText(text: "84 Km", color: graysColor,sizeOfFont: 13, fontfamilly: montSemiBold,),
                 ],
 
               ),
               SizedBox(height: 5,),
-              CustomText(text: "\$"+"9.99", color: dolorColor,sizeOfFont: 24, fontfamilly: montBold,weight: FontWeight.w900,),
+              CustomText(text: "\$"+"9.99", color: dolorColor,sizeOfFont: 20, fontfamilly: montBold,weight: FontWeight.w900,),
 
             ],
           ),
@@ -320,7 +320,7 @@ class ProfileScreen extends StatelessWidget{
             alignment: Alignment.topRight,
             clipBehavior: Clip.none,
             children: [
-              Image.asset(food_image, height: 130, width: 120, fit: BoxFit.contain),
+              Image.asset(food_image, height: 110, width: 90, fit: BoxFit.contain),
               Positioned(
                 right: 0,
                 top: 3,

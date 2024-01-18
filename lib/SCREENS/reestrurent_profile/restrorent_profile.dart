@@ -226,19 +226,19 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
                   children: [
                     CustomText(
                       text: data.name ?? 'NA',
-                      sizeOfFont: 20,
+                      sizeOfFont: 18,
                       color: viewallColor,
                       fontfamilly: montBold,
                     ),
                     CustomText(
                         text: data.category ?? 'NA',
                         color: viewallColor,
-                        sizeOfFont: 16,
+                        sizeOfFont: 14,
                         fontfamilly: montRegular),
                     CustomText(
                         text: data.address ?? 'NA',
                         weight: FontWeight.w300,
-                        sizeOfFont: 11,
+                        sizeOfFont: 12,
                         color: viewallColor,
                         fontfamilly: montLight),
                   ],
@@ -542,20 +542,20 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
                     maxLin: 1,
                     color: btntxtColor,
                     fontfamilly: montBold,
-                    sizeOfFont: 21,
+                    sizeOfFont: 18,
                   ),
                   CustomText(
                     text: data.store?.name ?? "",
                     maxLin: 1,
                     color: btntxtColor,
                     fontfamilly: montRegular,
-                    sizeOfFont: 16,
+                    sizeOfFont: 14,
                   ),
                   CustomText(
                       text: '${startTiming ?? ""} - ${endTiming ?? ""}',
                       maxLin: 1,
                       color: graysColor,
-                      sizeOfFont: 11,
+                      sizeOfFont: 12,
                       fontfamilly: montRegular),
                   SizedBox(
                     height: 5,
@@ -591,7 +591,7 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
                   CustomText(
                     text: '\$ ${data.price ?? ""}',
                     color: dolorColor,
-                    sizeOfFont: 27,
+                    sizeOfFont: 20,
                     fontfamilly: montHeavy,
                   ),
                 ],
@@ -622,7 +622,7 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
                           child: Image.network(
                             data.profileImage!,
                             fit: BoxFit.cover,
-                            height: 110, width: 118,
+                            height: 100, width: 108,
                           )
                       ): Image.asset(food_image,height: 100, width: 118,),
                     ),

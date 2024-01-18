@@ -48,16 +48,15 @@ class SettingScreen extends StatelessWidget {
                       btnBgColor: btnbgColor,
                       btnText: "LOG OUT",
                       onClick: () {
-                        showAccountOperationDialog(context, logout,
-                            proceed);
+                        showAccountOperationDialog(context, logout, proceed);
                       }),
                   SizedBox(
                     height: 10,
                   ),
                   GestureDetector(
                     onTap: () async {
-                      showAccountOperationDialog(context, deleteAccount,
-                          proceed);
+                      showAccountOperationDialog(
+                          context, deleteAccount, proceed);
                     },
                     child: CustomText(
                       text: "DELETE ACCOUNT",
@@ -257,18 +256,18 @@ class SettingScreen extends StatelessWidget {
                               print("Error: $e");
                             }
                           } else if (title == logout) {
-
                             SharedPreferences.getInstance().then((prefs) {
                               prefs.clear();
                             });
 
                             // Navigate to the desired screen, e.g., login screen
 
-                            Navigator.of(context).pushAndRemoveUntil(
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        CreateOrLogInScreen()),
-                                (Route route) => false);
+                            Navigator.pushNamedAndRemoveUntil(
+                              context,
+                              '/Create_Login',
+                                  (Route<dynamic> route) =>
+                              false, // Clear all routes in the stack
+                            );
 
                             final snackBar = SnackBar(
                               content: const Text('Logged out successfully.'),

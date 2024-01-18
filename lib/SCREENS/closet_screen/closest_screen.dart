@@ -235,7 +235,7 @@ class _ClosestScreenState extends State<ClosestScreen> {
                   color: btntxtColor,
                   fontfamilly: montBold,
                   maxLin: 1,
-                  sizeOfFont: 24,
+                  sizeOfFont: 20,
                 ),
                 CustomText(
                   text: item.category ?? '',
@@ -245,7 +245,7 @@ class _ClosestScreenState extends State<ClosestScreen> {
                   sizeOfFont: 14,
                 ),
                 CustomText(
-                  text: 'offer', // Assuming 'offers' is a key in your data
+                  text: '3 offer available', // Assuming 'offers' is a key in your data
                   color: offerColor,
                   sizeOfFont: 9,
                   fontfamilly: montBook,
@@ -287,7 +287,7 @@ class _ClosestScreenState extends State<ClosestScreen> {
               ],
             ),
           ),
-          const SizedBox(width: 18),
+          const SizedBox(width: 10),
           Stack(
             alignment: Alignment.topRight,
             clipBehavior: Clip.none,
@@ -309,9 +309,9 @@ class _ClosestScreenState extends State<ClosestScreen> {
                       child: Image.network(
                         item.profileImage!,
                         fit: BoxFit.cover,
-                        height: 100, width: 108,
+                        height: 80, width: 80,
                       )
-                  ): Image.asset(food_image,height: 100, width: 108,),
+                  ): Image.asset(food_image,height: 80, width: 80,),
                 ),
               ),
 

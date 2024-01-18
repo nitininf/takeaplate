@@ -212,6 +212,34 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
   }
 
   Widget getFavCards(int index, DealData data) {
+
+    var currentDay = DateTime.now().weekday;
+    var startTiming = '';
+    var endTiming = '';
+
+    if (currentDay == 1) {
+      startTiming = data.store?.openingHour?.monday?.start ?? '';
+      endTiming = data.store?.openingHour?.monday?.end ?? '';
+    } else if (currentDay == 2) {
+      startTiming = data.store?.openingHour?.tuesday?.start ?? '';
+      endTiming = data.store?.openingHour?.tuesday?.end ?? '';
+    } else if (currentDay == 3) {
+      startTiming = data.store?.openingHour?.wednesday?.start ?? '';
+      endTiming = data.store?.openingHour?.wednesday?.end ?? '';
+    } else if (currentDay == 4) {
+      startTiming = data.store?.openingHour?.thursday?.start ?? '';
+      endTiming = data.store?.openingHour?.thursday?.end ?? '';
+    } else if (currentDay == 5) {
+      startTiming = data.store?.openingHour?.friday?.start ?? '';
+      endTiming = data.store?.openingHour?.friday?.end ?? '';
+    } else if (currentDay == 6) {
+      startTiming = data.store?.openingHour?.saturday?.start ?? '';
+      endTiming = data.store?.openingHour?.saturday?.end ?? '';
+    } else if (currentDay == 7) {
+      startTiming = data.store?.openingHour?.sunday?.start ?? '';
+      endTiming = data.store?.openingHour?.sunday?.end ?? '';
+    }
+
     return GestureDetector(
       onTap: () {
         Navigator.pushNamed(
@@ -239,21 +267,21 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
                     maxLin: 1,
                     color: btntxtColor,
                     fontfamilly: montBold,
-                    sizeOfFont: 21,
+                    sizeOfFont: 18,
                   ),
                   CustomText(
                     text: data.store?.name ?? "",
                     maxLin: 1,
                     color: btntxtColor,
                     fontfamilly: montRegular,
-                    sizeOfFont: 16,
+                    sizeOfFont: 14,
                   ),
                   CustomText(
                       text:
-                          '${data.customTime?.startTime ?? ""} - ${data.customTime?.startTime ?? ""}',
+                          '${startTiming ?? ""} - ${endTiming ?? ""}',
                       maxLin: 1,
                       color: graysColor,
-                      sizeOfFont: 11,
+                      sizeOfFont: 12,
                       fontfamilly: montRegular),
                   SizedBox(
                     height: 5,
@@ -268,7 +296,7 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
                         halfFilledColor: btnbgColor,
                         filledColor: btnbgColor,
                         initialRating: double.parse(data.averageRating ?? '0'),
-                        size: 20,
+                        size: 16,
                         maxRating: 5,
                       ),
                       SizedBox(
@@ -279,7 +307,7 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
                               text: "84 Km",
                               maxLin: 1,
                               color: graysColor,
-                              sizeOfFont: 15,
+                              sizeOfFont: 12,
                               fontfamilly: montSemiBold)),
                     ],
                   ),
@@ -289,15 +317,13 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
                   CustomText(
                     text: '\$ ${data.price ?? ""}',
                     color: dolorColor,
-                    sizeOfFont: 27,
+                    sizeOfFont: 20,
                     fontfamilly: montHeavy,
                   ),
                 ],
               ),
             ),
-            const SizedBox(
-              width: 18,
-            ),
+
             Expanded(
               child: Stack(
                 alignment: Alignment.topRight,
@@ -324,13 +350,13 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
                               child: Image.network(
                                 data.profileImage!,
                                 fit: BoxFit.cover,
-                                height: 120,
-                                width: 118,
+                                height: 90,
+                                width: 90,
                               ))
                           : Image.asset(
                               food_image,
-                              height: 100,
-                              width: 118,
+                              height: 90,
+                              width: 90,
                             ),
                     ),
                   ),

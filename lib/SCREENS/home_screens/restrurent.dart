@@ -232,14 +232,14 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
                   text: storeData.name ?? "",
                   color: btntxtColor,
                   fontfamilly: montBold,
-                  sizeOfFont: 24,
+                  sizeOfFont: 18,
                   maxLin: 1,
                 ),
                 CustomText(
                   text: storeData.category ?? "",
                   color: graysColor,
                   fontfamilly: montRegular,
-                  sizeOfFont: 16,
+                  sizeOfFont: 14,
                   maxLin: 1,
                 ),
                 CustomText(

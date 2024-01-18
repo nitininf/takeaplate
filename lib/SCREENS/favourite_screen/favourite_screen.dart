@@ -422,14 +422,14 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                   text: storeData.name ?? "",
                   color: btntxtColor,
                   fontfamilly: montBold,
-                  sizeOfFont: 24,
+                  sizeOfFont: 18,
                   maxLin: 1,
                 ),
                 CustomText(
                   text: storeData.category ?? "",
                   color: graysColor,
                   fontfamilly: montRegular,
-                  sizeOfFont: 16,
+                  sizeOfFont: 14,
                   maxLin: 1,
                 ),
                 CustomText(
@@ -728,20 +728,20 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                     maxLin: 1,
                     color: btntxtColor,
                     fontfamilly: montBold,
-                    sizeOfFont: 21,
+                    sizeOfFont: 18,
                   ),
                   CustomText(
                     text: data.store?.name ?? "",
                     maxLin: 1,
                     color: btntxtColor,
                     fontfamilly: montRegular,
-                    sizeOfFont: 16,
+                    sizeOfFont: 14,
                   ),
                   CustomText(
                       text: '${startTiming ?? ""} - ${endTiming ?? ""}',
                       maxLin: 1,
                       color: graysColor,
-                      sizeOfFont: 11,
+                      sizeOfFont: 12,
                       fontfamilly: montRegular),
                   SizedBox(
                     height: 5,
@@ -756,7 +756,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                         halfFilledColor: btnbgColor,
                         filledColor: btnbgColor,
                         initialRating: double.parse(data.averageRating ?? '2'),
-                        size: 20,
+                        size: 16,
                         maxRating: 5,
                       ),
                       SizedBox(
@@ -767,7 +767,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                               text: "84 Km",
                               maxLin: 1,
                               color: graysColor,
-                              sizeOfFont: 15,
+                              sizeOfFont: 13,
                               fontfamilly: montSemiBold)),
                     ],
                   ),
@@ -777,15 +777,13 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                   CustomText(
                     text: '\$ ${data.price ?? ""}',
                     color: dolorColor,
-                    sizeOfFont: 27,
+                    sizeOfFont: 20,
                     fontfamilly: montHeavy,
                   ),
                 ],
               ),
             ),
-            const SizedBox(
-              width: 18,
-            ),
+
             Expanded(
               child: Stack(
                 alignment: Alignment.topRight,
@@ -808,9 +806,9 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                           child: Image.network(
                             data.profileImage!,
                             fit: BoxFit.cover,
-                            height: 100, width: 108,
+                            height: 90, width: 90,
                           )
-                      ): Image.asset(food_image,height: 100, width: 108,),
+                      ): Image.asset(food_image,height: 90, width: 90,),
                     ),
                   ),
               
@@ -819,7 +817,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                     child: GestureDetector(
                       onTap: () async {
               
-                       var ratingStatus = data.favourite as int;
+                       var ratingStatus = data.favourite as bool;
                         int? dealId = data.id;
                         int? storeId = data.storeId;
               
@@ -827,7 +825,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
               
                         try {
               
-                          if (data.favourite == 0) {
+                          if (data.favourite == false) {
                             // Only hit the API if data.favourite is true
                             var formData = {
                               'favourite': 1,
@@ -854,7 +852,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
               
                               setState(() {
               
-                                data.favourite = 1;
+                                data.favourite = true;
               
               
                               });
@@ -899,7 +897,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                                 ScaffoldMessenger.of(context).hideCurrentSnackBar();
                               });
                             }
-                          } else if (data.favourite == 1){
+                          } else if (data.favourite == true){
                             // If data.favourite is false, print its value
                             FavDeleteResponse delData = await Provider.of<FavoriteOperationProvider>(context, listen: false)
                                 .RemoveFromFavoriteDeal(data.id ?? 0);
@@ -922,7 +920,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
               
                               setState(() {
               
-                                data.favourite = 0;
+                                data.favourite = false;
               
               
                               });
@@ -978,7 +976,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
               
                         height: 15,
                         width: 18,
-                        data.favourite == 1  ? save_icon_red : save_icon,
+                        data.favourite == true  ? save_icon_red : save_icon,
                       ),
                     ),
                   ),
