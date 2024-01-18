@@ -62,6 +62,8 @@ class RequestString{
   static const String CREATED_AT = "created_at";
   static const String UPDATED_AT = "updated_at";
   static const String COMMENTS = "comments";
+  static const String DEAL_ID = "deal_id";
+  static const String QUANTITY = "quantity";
 
 
 }

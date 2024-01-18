@@ -113,19 +113,19 @@ class UploadPhoto extends StatelessWidget {
                           //     horizontal: 16, vertical: 12),
                           decoration: BoxDecoration(
                             image: Provider.of<SelectImageProvider>(context)
-                                        .selectedImage
-                                        .isNotEmpty
-                                    ? DecorationImage(
-                                        image: FileImage(File(
-                                            Provider.of<SelectImageProvider>(
-                                                    context)
-                                                .selectedImage)),
-                                        fit: BoxFit.cover,
-                                      )
-                                    : const DecorationImage(
-                                        image: AssetImage(edit_photo),
-                                        fit: BoxFit.contain,
-                                      ),
+                                    .selectedImage
+                                    .isNotEmpty
+                                ? DecorationImage(
+                                    image: FileImage(File(
+                                        Provider.of<SelectImageProvider>(
+                                                context)
+                                            .selectedImage)),
+                                    fit: BoxFit.cover,
+                                  )
+                                : const DecorationImage(
+                                    image: AssetImage(edit_photo),
+                                    fit: BoxFit.contain,
+                                  ),
                           ),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -141,7 +141,8 @@ class UploadPhoto extends StatelessWidget {
                                   }
                                 },
                                 child: Visibility(
-                                  visible: selectedImagePathController.text.isEmpty,
+                                  visible:
+                                      selectedImagePathController.text.isEmpty,
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
@@ -181,7 +182,8 @@ class UploadPhoto extends StatelessWidget {
                     btnBgColor: btnbgColor,
                     btnText: next,
                     onClick: () async {
-                      String selectedImagePath = selectedImagePathController.text;
+                      String selectedImagePath =
+                          selectedImagePathController.text;
 
                       if (selectedImagePath.isNotEmpty) {
                         try {
@@ -228,12 +230,14 @@ class UploadPhoto extends StatelessWidget {
                               content: Text('${data.message}'),
                             );
 
-      // Show the SnackBar
-                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                            // Show the SnackBar
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
 
-      // Automatically hide the SnackBar after 1 second
+                            // Automatically hide the SnackBar after 1 second
                             Future.delayed(Duration(milliseconds: 1000), () {
-                              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                              ScaffoldMessenger.of(context)
+                                  .hideCurrentSnackBar();
                             });
                           }
                         } catch (e) {

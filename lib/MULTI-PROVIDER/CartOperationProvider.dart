@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
 
+import '../NETWORKS/network.dart';
+import '../Response_Model/AddToCartResponse.dart';
+import '../Response_Model/CartListingResponse.dart';
+import '../UTILS/request_string.dart';
+
 class CartOperationProvider extends ChangeNotifier {
+  final Network _network = Network();
+
   Map<int, int> itemCounts = {}; // Map to store item indices and their counts
 
   void incrementCount(int index) {
@@ -27,6 +34,72 @@ class CartOperationProvider extends ChangeNotifier {
     itemCounts[index] = 1;
     notifyListeners();
   }
+
+  Future<AddToCartResponse> addToCartItem(dynamic formData) async {
+
+    try {
+      final response = await _network.postRequest(
+        endPoint: '/add-cart', // Replace with your actual API endpoint
+        formData: formData,
+      );
+
+      print("my response : ${response}");
+
+      if (response != null && response.data is Map<String, dynamic>) {
+        final Map<String, dynamic> responseData = response.data;
+
+        return AddToCartResponse.fromJson(responseData);
+      } else {
+        throw Exception('Failed to parse API response');
+      }
+    } catch (error) {
+      // Handle network errors or any other exceptions
+      print('Error: $error');
+      rethrow; // Re-throw the error to the caller
+    } finally {
+      notifyListeners();
+    }
+  }
+
+
+  Future<CartListingResponse> getCartList() async {
+    // Make network request with pagination parameters
+    // You might need to update your API endpoint to support pagination
+    final response = await _network.getRequest(
+      endPoint: '/cart-list',
+    );
+
+    if (response != null && response.data is Map<String, dynamic>) {
+      final Map<String, dynamic> responseData = response.data;
+      return CartListingResponse.fromJson(responseData);
+    } else {
+      throw Exception('Failed to parse API response');
+    }
+  }
+
+  Future<AddToCartResponse> increaseItemQuantity(var cartId) async {
+
+
+    var formData = {
+      RequestString.QUANTITY: 1,
+
+    };
+
+    // Make network request with pagination parameters
+    // You might need to update your API endpoint to support pagination
+    final response = await _network.postRequest(
+      endPoint: '/cart-quantity-increment/$cartId',
+      formData: formData
+    );
+
+    if (response != null && response.data is Map<String, dynamic>) {
+      final Map<String, dynamic> responseData = response.data;
+      return AddToCartResponse.fromJson(responseData);
+    } else {
+      throw Exception('Failed to parse API response');
+    }
+  }
+
 
 
 }
