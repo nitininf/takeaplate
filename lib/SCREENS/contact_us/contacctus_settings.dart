@@ -135,8 +135,42 @@ class ContactUsSetting extends StatelessWidget{
             Padding(
               padding: const EdgeInsets.only(top: 8.0,left: 27,right: 27),
               child: CommonButton(btnBgColor: btnbgColor, btnText: submit, onClick: () async {
+                var validEmail = FormValidator.validateEmail(emailController.text);
 
-                if (nameController.text.isNotEmpty && emailController.text.isNotEmpty&& commentsController.text.isNotEmpty) {
+                if (nameController.text.isEmpty && emailController.text.isEmpty&& commentsController.text.isEmpty) {
+
+
+
+
+                  // Show an error message or handle empty fields
+                  final snackBar = SnackBar(
+                    content: const Text('Please enter all required parameters...'),
+                    action: SnackBarAction(
+                      label: 'Ok',
+                      onPressed: () {
+                        // Some code to undo the change.
+                      },
+                    ),
+                  );
+
+                  // Find the ScaffoldMessenger in the widget tree
+                  // and use it to show a SnackBar.
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                }
+                else if (validEmail != null) {
+                  final snackBar = SnackBar(
+                    content: Text('Please enter valid Email Id'),
+                  );
+
+                  // Show the SnackBar
+                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                  // Automatically hide the SnackBar after 1 second
+                  Future.delayed(Duration(milliseconds: 1000), () {
+                    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                  });
+                }
+                else {
                   try {
                     var formData = {
                       RequestString.NAME: nameController.text,
@@ -151,14 +185,32 @@ class ContactUsSetting extends StatelessWidget{
                     if (data.status == true && data.message == "Contact form submitted successfully") {
 
 
+                      final snackBar = SnackBar(
+                        content:  Text('${data.message}'),
 
-                      Navigator.pushNamed(context, '/BaseHome');
+                      );
+
+// Show the SnackBar
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+// Automatically hide the SnackBar after 1 second
+                      Future.delayed(Duration(milliseconds: 1000), () {
+                        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                      });
+
+                      nameController.text='';
+                      emailController.text='';
+                      commentsController.text='';
+                      Navigator.of(context).pushNamedAndRemoveUntil('/BaseHome', (Route route) => false);
+
 
                       // Print data to console
                       print(data);
 
                       // Navigate to the next screen or perform other actions after login
-                    } else {
+                    }
+
+                    else {
                       // Login failed
                       print("Something went wrong: ${data.message}");
 
@@ -176,27 +228,11 @@ class ContactUsSetting extends StatelessWidget{
                       });
 
                     }
+
                   } catch (e) {
                     // Display error message
                     print("Error: $e");
                   }
-                }
-
-                else {
-                  // Show an error message or handle empty fields
-                  final snackBar = SnackBar(
-                    content: const Text('Please enter all required parameters...'),
-                    action: SnackBarAction(
-                      label: 'Ok',
-                      onPressed: () {
-                        // Some code to undo the change.
-                      },
-                    ),
-                  );
-
-                  // Find the ScaffoldMessenger in the widget tree
-                  // and use it to show a SnackBar.
-                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
                 }
 
                 // Navigator.pushNamed(navigatorKey.currentContext!, '/YourOrderScreen');

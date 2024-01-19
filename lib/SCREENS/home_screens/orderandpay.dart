@@ -214,7 +214,7 @@ class OrderAndPayScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              child: data.profileImage != null
+              child: data.profileImage != null && !(data.profileImage)!.contains("SocketException")
                   ? ClipRRect(
                       borderRadius: BorderRadius.circular(15.0),
                       child: Image.network(
@@ -255,9 +255,10 @@ class OrderAndPayScreen extends StatelessWidget {
                               fontfamilly: montLight,
                               sizeOfFont: 11,
                             ))
-                        : Text(""),
+                        : Text(" "),
+                    SizedBox(width: 5,),
                     Padding(
-                      padding: EdgeInsets.only(left: 2.0, top: 18),
+                      padding: EdgeInsets.only(left: 2.0, top: 20),
                       child: Image.asset(
                         three_dot,
                         width: 14,
@@ -311,7 +312,7 @@ class OrderAndPayScreen extends StatelessWidget {
                 CustomText(
                   text: orderAndPayProvider.foodData[0]["distance"],
                   color: editbgColor,
-                  fontfamilly: montLight,
+                  fontfamilly: montMedium,
                   sizeOfFont: 17,
                 ),
               ],
@@ -345,9 +346,9 @@ class OrderAndPayScreen extends StatelessWidget {
               height: 10,
             ),
             viewMore(commonProvider, orderAndPayProvider, data),
-            SizedBox(
-              height: 10,
-            ),
+            // SizedBox(
+            //   height: 10,
+            // ),
           ],
         ),
       );
@@ -387,7 +388,7 @@ class OrderAndPayScreen extends StatelessWidget {
                   child: CustomText(
                     text: commonCounter.textName,
                     color: btnbgColor,
-                    fontfamilly: montLight,
+                    fontfamilly: montMedium,
                     sizeOfFont: 14,
                   ),
                 ),
@@ -403,7 +404,7 @@ class OrderAndPayScreen extends StatelessWidget {
                   child: CustomText(
                     text: commonCounter.textName,
                     color: btnbgColor,
-                    fontfamilly: montLight,
+                    fontfamilly: montMedium,
                     sizeOfFont: 14,
                   ),
                 )

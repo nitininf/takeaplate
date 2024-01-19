@@ -35,6 +35,8 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
   int currentPage = 1;
   bool isLoading = false;
   bool hasMoreData = true;
+  bool isRefresh = false;
+
   List<DealData> dealListData = [];
 
   ScrollController _scrollController = ScrollController();
@@ -70,8 +72,16 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
 
         if (nextPageData.data != null && nextPageData.data!.isNotEmpty) {
           setState(() {
-            dealListData.addAll(nextPageData.data!);
-            currentPage++;
+            if(isRefresh == true){
+
+              dealListData.clear();
+              dealListData.addAll(nextPageData.data!);
+              currentPage++;
+            }else{
+              dealListData.addAll(nextPageData.data!);
+              currentPage++;
+            }
+
           });
         } else {
           // No more data available
@@ -201,9 +211,12 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
 
       if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
         setState(() {
-          dealListData = refreshedData.data!;
-          currentPage = 1; // Reset the page to 2 as you loaded the first page.
+
+          currentPage = 1; // Reset the page to 1 as you loaded the first page.
           hasMoreData = true; // Reset the flag for more data.
+          isRefresh = true;
+          dealListData.clear(); // Clear existing data before adding new data.
+          dealListData.addAll(refreshedData.data!);
         });
       }
     } catch (error) {
@@ -296,7 +309,7 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
                         halfFilledColor: btnbgColor,
                         filledColor: btnbgColor,
                         initialRating: double.parse(data.averageRating ?? '0'),
-                        size: 16,
+                        size: 18,
                         maxRating: 5,
                       ),
                       SizedBox(
@@ -344,19 +357,19 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
                           ], // Adjust colors as needed
                         ),
                       ),
-                      child: data.profileImage != null
+                      child: data.profileImage != null  && !(data.profileImage)!.contains("SocketException")
                           ? ClipRRect(
                               borderRadius: BorderRadius.circular(15.0),
                               child: Image.network(
                                 data.profileImage!,
                                 fit: BoxFit.cover,
-                                height: 90,
-                                width: 90,
+                                height: 100,
+                                width: 100,
                               ))
                           : Image.asset(
                               food_image,
-                              height: 90,
-                              width: 90,
+                              height: 100,
+                              width: 100,
                             ),
                     ),
                   ),
@@ -407,7 +420,7 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
                                 try {
                                   final refreshedData =
                                       await restaurantsProvider
-                                          .getRestaurantsDealsList(storeId,
+                                          .getLastMinuteDealsList(
                                               page: 1);
 
                                   if (refreshedData.data != null &&
@@ -415,12 +428,11 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
                                     setState(() {
                                       data.favourite = true;
 
-                                      dealListData =
-                                          refreshedData.data!.cast<DealData>();
-                                      currentPage =
-                                          1; // Reset the page to 2 as you loaded the first page.
-                                      hasMoreData =
-                                          true; // Reset the flag for more data.
+                                      currentPage = 1; // Reset the page to 1 as you loaded the first page.
+                                      hasMoreData = true; // Reset the flag for more data.
+                                      isRefresh = true;
+                                      dealListData.clear(); // Clear existing data before adding new data.
+                                      dealListData.addAll(refreshedData.data!);
                                     });
                                   }
                                 } catch (error) {
@@ -477,19 +489,17 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
                                 try {
                                   final refreshedData =
                                       await restaurantsProvider
-                                          .getRestaurantsDealsList(storeId,
+                                          .getLastMinuteDealsList(
                                               page: 1);
 
                                   if (refreshedData.data != null &&
                                       refreshedData.data!.isNotEmpty) {
                                     setState(() {
-                                      data.favourite = false;
-                                      dealListData =
-                                          refreshedData.data!.cast<DealData>();
-                                      currentPage =
-                                          1; // Reset the page to 2 as you loaded the first page.
-                                      hasMoreData =
-                                          true; // Reset the flag for more data.
+                                      currentPage = 1; // Reset the page to 1 as you loaded the first page.
+                                      hasMoreData = true; // Reset the flag for more data.
+                                      isRefresh = true;
+                                      dealListData.clear(); // Clear existing data before adding new data.
+                                      dealListData.addAll(refreshedData.data!);
                                     });
                                   }
                                 } catch (error) {

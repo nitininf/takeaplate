@@ -46,7 +46,7 @@ class _YourCardScreenState extends State<YourCardScreen> {
 
         final nextPageData = await cartOperationProvider.getCartList();
 
-        totalPrice = nextPageData!.totalPrice ?? 0;
+        totalPrice = nextPageData.totalPrice ?? 0;
 
         if (nextPageData.cartItems != null &&
             nextPageData.cartItems!.isNotEmpty) {
@@ -55,13 +55,15 @@ class _YourCardScreenState extends State<YourCardScreen> {
               cartItemsData = nextPageData.cartItems!;
 
               // cartItemsData.addAll(nextPageData.cartItems!);
-              currentPage++;
+              // currentPage++;
             }
           });
         } else {
           setState(() {
             if (mounted) {
               hasMoreData = false;
+              cartItemsData.clear();
+
             }
           });
         }
@@ -82,16 +84,32 @@ class _YourCardScreenState extends State<YourCardScreen> {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
 
-    return Scaffold(
-        backgroundColor: bgColor,
-        body: Padding(
-          padding:
+    return Stack(
+      children: [
+        Scaffold(
+            backgroundColor: bgColor,
+            body: Padding(
+              padding:
               const EdgeInsets.only(right: 35.0, left: 35, bottom: 0, top: 5),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [getView(screenHeight, context)],
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [getView(screenHeight, context)],
+              ),
+            )),
+        Visibility(
+          visible: isLoading,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: Container(
+              color: Colors.black.withOpacity(0.1),
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            ),
           ),
-        ));
+        ),
+      ],
+    );
   }
 
   Widget getView(double screenHeight, BuildContext context) {
@@ -196,7 +214,7 @@ class _YourCardScreenState extends State<YourCardScreen> {
     return ListView.builder(
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
-      itemCount: cartItemsData.length + (hasMoreData ? 1 : 0),
+      itemCount: cartItemsData.length,
       itemBuilder: (context, index) {
         if (index < cartItemsData.length) {
           return getCardViews(index, cartItemsData[index]);
@@ -222,9 +240,9 @@ class _YourCardScreenState extends State<YourCardScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              itemData.dealImage != null
+              itemData.dealImage != null && !(itemData.dealImage)!.contains("SocketException")
                   ? ClipRRect(
-                      borderRadius: BorderRadius.circular(15.0),
+                      borderRadius: BorderRadius.circular(10.0),
                       child: Image.network(
                         itemData.dealImage!,
                         fit: BoxFit.cover,
@@ -299,19 +317,19 @@ class _YourCardScreenState extends State<YourCardScreen> {
                               // Print data to console
                               print(decrementStatus);
 
-                              try {
-                                final refreshedData =
-                                    await cartOperationProvider.getCartList();
-
-                                if (refreshedData.cartItems != null &&
-                                    refreshedData.cartItems!.isNotEmpty) {
-                                  setState(() {
-                                    cartItemsData = refreshedData.cartItems!;
-                                  });
-                                }
-                              } catch (error) {
-                                print('Error refreshing data: $error');
-                              }
+                              // try {
+                              //   final refreshedData =
+                              //       await cartOperationProvider.getCartList();
+                              //
+                              //   if (refreshedData.cartItems != null &&
+                              //       refreshedData.cartItems!.isNotEmpty) {
+                              //     setState(() {
+                              //       cartItemsData = refreshedData.cartItems!;
+                              //     });
+                              //   }
+                              // } catch (error) {
+                              //   print('Error refreshing data: $error');
+                              // }
 
                               _loadData();
                             } else {

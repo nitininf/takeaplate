@@ -132,14 +132,14 @@ class _UploadPhotoState extends State<UploadPhoto> {
                               alignment: Alignment.topLeft,
                               child: RichText(
                                 text: TextSpan(
-                                    text: 'Optional',
+                                    text: '*',
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontFamily: montLight,
                                         fontSize: 18),
                                     children: [
                                       TextSpan(
-                                          text: ' *',
+                                          text: 'Optional',
                                           style: TextStyle(
                                             color: Colors.white,
                                           ))
@@ -172,7 +172,7 @@ class _UploadPhotoState extends State<UploadPhoto> {
 
                                 ))
                                 : const DecorationImage(
-                              image: AssetImage(edit_photo),
+                              image: AssetImage(upload_photo),
                               fit: BoxFit.contain,
                             ),
                           ),

@@ -74,7 +74,9 @@ class LogInScreen extends StatelessWidget {
                       const SizedBox(height: 40,),
                       Image.asset(
                         textImage, // Replace with your second small image path,
-                        width: screenWidth*0.5,
+                        width: 270,
+                        height: 80,
+                        fit: BoxFit.contain,
                       ),
                     ],
                   ),
@@ -129,7 +131,8 @@ class LogInScreen extends StatelessWidget {
                                 await Utility.setStringValue(RequestString.GENDER, gender!);
 
 
-
+                                emailController.text = '';
+                                passwordController.text = '';
 
                                 Navigator.of(context).pushNamedAndRemoveUntil('/BaseHome', (Route route) => false);
 

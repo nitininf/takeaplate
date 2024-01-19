@@ -39,6 +39,8 @@ class _ClosestScreenState extends State<ClosestScreen> {
   bool hasMoreData = true;
   List<StoreData> restaurantData = [];
 
+  bool isRefresh=false;
+
   ScrollController _scrollController = ScrollController();
 
   @override
@@ -55,6 +57,7 @@ class _ClosestScreenState extends State<ClosestScreen> {
     if (_scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
       // Reached the end of the list, load more data
+
       _loadData();
     }
   }
@@ -73,8 +76,16 @@ class _ClosestScreenState extends State<ClosestScreen> {
 
         if (nextPageData.data != null && nextPageData.data!.isNotEmpty) {
           setState(() {
-            restaurantData.addAll(nextPageData.data!);
-            currentPage++;
+
+           if(isRefresh == true){
+             restaurantData.clear();
+             restaurantData.addAll(nextPageData.data!);
+             currentPage++;
+           }else{
+             restaurantData.addAll(nextPageData.data!);
+             currentPage++;
+           }
+
           });
         } else {
           // No more data available
@@ -196,16 +207,17 @@ class _ClosestScreenState extends State<ClosestScreen> {
   }
 
   Future<void> _refreshData() async {
-    // Call your API here to refresh the data
     try {
       final refreshedData =
-          await restaurantsProvider.getRestaurantsList(page: 1);
+      await restaurantsProvider.getClosestRestaurantsList(page: 1);
 
       if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
         setState(() {
-          restaurantData = refreshedData.data!;
-          currentPage = 1; // Reset the page to 2 as you loaded the first page.
+          currentPage = 1; // Reset the page to 1 as you loaded the first page.
           hasMoreData = true; // Reset the flag for more data.
+          isRefresh = true;
+          restaurantData.clear(); // Clear existing data before adding new data.
+          restaurantData.addAll(refreshedData.data!);
         });
       }
     } catch (error) {
@@ -304,7 +316,7 @@ class _ClosestScreenState extends State<ClosestScreen> {
                       colors: [Colors.white, Colors.grey], // Adjust colors as needed
                     ),
                   ),
-                  child: item.profileImage != null ? ClipRRect(
+                  child: item.profileImage != null  && !(item.profileImage)!.contains("SocketException")? ClipRRect(
                       borderRadius: BorderRadius.circular(15.0),
                       child: Image.network(
                         item.profileImage!,
@@ -359,7 +371,7 @@ class _ClosestScreenState extends State<ClosestScreen> {
                           setState(() async {
                             try {
                               final refreshedData = await restaurantsProvider
-                                  .getRestaurantsList(page: 1);
+                                  .getClosestRestaurantsList(page: 1);
 
                               if (refreshedData.data != null &&
                                   refreshedData.data!.isNotEmpty) {
@@ -425,7 +437,7 @@ class _ClosestScreenState extends State<ClosestScreen> {
                           setState(() async {
                             try {
                               final refreshedData = await restaurantsProvider
-                                  .getRestaurantsList(page: 1);
+                                  .getClosestRestaurantsList(page: 1);
 
                               if (refreshedData.data != null &&
                                   refreshedData.data!.isNotEmpty) {

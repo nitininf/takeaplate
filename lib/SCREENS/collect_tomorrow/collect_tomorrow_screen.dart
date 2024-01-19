@@ -30,6 +30,8 @@ class _CollectTomorrowScreenState extends State<CollectTomorrowScreen> {
   int currentPage = 1;
   bool isLoading = false;
   bool hasMoreData = true;
+  bool isRefresh = false;
+
   List<DealData> collectTomorrowData = [];
 
   ScrollController _scrollController = ScrollController();
@@ -64,8 +66,15 @@ class _CollectTomorrowScreenState extends State<CollectTomorrowScreen> {
 
         if (nextPageData.data != null && nextPageData.data!.isNotEmpty) {
           setState(() {
-            collectTomorrowData.addAll(nextPageData.data!);
-            currentPage++;
+            if(isRefresh == true){
+
+              collectTomorrowData.clear();
+              collectTomorrowData.addAll(nextPageData.data!);
+              currentPage++;
+            }else{
+              collectTomorrowData.addAll(nextPageData.data!);
+              currentPage++;
+            }
           });
         } else {
           // No more data available
@@ -185,9 +194,12 @@ class _CollectTomorrowScreenState extends State<CollectTomorrowScreen> {
 
       if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
         setState(() {
-          collectTomorrowData = refreshedData.data!;
-          currentPage = 1; // Reset the page to 2 as you loaded the first page.
+          currentPage = 1; // Reset the page to 1 as you loaded the first page.
           hasMoreData = true; // Reset the flag for more data.
+          isRefresh = true;
+          collectTomorrowData.clear(); // Clear existing data before adding new data.
+          collectTomorrowData.addAll(refreshedData.data!);
+
         });
       }
     } catch (error) {
@@ -257,20 +269,20 @@ class _CollectTomorrowScreenState extends State<CollectTomorrowScreen> {
                     maxLin: 1,
                     color: btntxtColor,
                     fontfamilly: montBold,
-                    sizeOfFont: 21,
+                    sizeOfFont: 18,
                   ),
                   CustomText(
                     text: data.store?.name ?? "",
                     maxLin: 1,
                     color: btntxtColor,
                     fontfamilly: montRegular,
-                    sizeOfFont: 16,
+                    sizeOfFont: 14,
                   ),
                   CustomText(
                       text: '${startTiming ?? ""} - ${endTiming ?? ""}',
                       maxLin: 1,
                       color: graysColor,
-                      sizeOfFont: 13,
+                      sizeOfFont: 12,
                       fontfamilly: montRegular),
                   SizedBox(
                     height: 5,
@@ -285,7 +297,7 @@ class _CollectTomorrowScreenState extends State<CollectTomorrowScreen> {
                         halfFilledColor: btnbgColor,
                         filledColor: btnbgColor,
                         initialRating: double.parse(data.averageRating ?? '0'),
-                        size: 20,
+                        size: 16,
                         maxRating: 5,
                       ),
                       SizedBox(
@@ -296,7 +308,7 @@ class _CollectTomorrowScreenState extends State<CollectTomorrowScreen> {
                               text: "84 Km",
                               maxLin: 1,
                               color: graysColor,
-                              sizeOfFont: 15,
+                              sizeOfFont: 12,
                               fontfamilly: montSemiBold)),
                     ],
                   ),
@@ -306,7 +318,7 @@ class _CollectTomorrowScreenState extends State<CollectTomorrowScreen> {
                   CustomText(
                     text: '\$ ${data.price ?? ""}',
                     color: dolorColor,
-                    sizeOfFont: 27,
+                    sizeOfFont: 20,
                     fontfamilly: montHeavy,
                   ),
                 ],
@@ -332,14 +344,14 @@ class _CollectTomorrowScreenState extends State<CollectTomorrowScreen> {
                           colors: [Colors.white, Colors.grey], // Adjust colors as needed
                         ),
                       ),
-                      child: data.profileImage != null ? ClipRRect(
+                      child: data.profileImage != null  && !(data.profileImage)!.contains("SocketException")? ClipRRect(
                           borderRadius: BorderRadius.circular(15.0),
                           child: Image.network(
                             data.profileImage!,
                             fit: BoxFit.cover,
-                            height: 120, width: 118,
+                            height: 90, width: 90,
                           )
-                      ): Image.asset(food_image,height: 100, width: 118,),
+                      ): Image.asset(food_image,height: 90, width: 90,),
                     ),
                   ),
 
@@ -387,11 +399,15 @@ class _CollectTomorrowScreenState extends State<CollectTomorrowScreen> {
 
                                   if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
                                     setState(() {
+
                                       data.favourite = true;
 
-                                      collectTomorrowData = refreshedData.data!.cast<DealData>();
-                                      currentPage = 1; // Reset the page to 2 as you loaded the first page.
+
+                                      currentPage = 1; // Reset the page to 1 as you loaded the first page.
                                       hasMoreData = true; // Reset the flag for more data.
+                                      isRefresh = true;
+                                      collectTomorrowData.clear(); // Clear existing data before adding new data.
+                                      collectTomorrowData.addAll(refreshedData.data!);
                                     });
                                   }
                                 } catch (error) {
@@ -443,9 +459,11 @@ class _CollectTomorrowScreenState extends State<CollectTomorrowScreen> {
                                   if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
                                     setState(() {
                                       data.favourite = false;
-                                      collectTomorrowData = refreshedData.data!.cast<DealData>();
-                                      currentPage = 1; // Reset the page to 2 as you loaded the first page.
+                                      currentPage = 1; // Reset the page to 1 as you loaded the first page.
                                       hasMoreData = true; // Reset the flag for more data.
+                                      isRefresh = true;
+                                      collectTomorrowData.clear(); // Clear existing data before adding new data.
+                                      collectTomorrowData.addAll(refreshedData.data!);
                                     });
                                   }
                                 } catch (error) {

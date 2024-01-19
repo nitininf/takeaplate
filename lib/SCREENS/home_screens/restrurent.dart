@@ -33,6 +33,7 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
   bool isFavorite = false;
   int currentPage = 1;
   bool isLoading = false;
+  bool isRefresh = false;
   bool hasMoreData = true;
   List<StoreData> restaurantData = [];
 
@@ -70,8 +71,17 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
         if (nextPageData.data != null && nextPageData.data!.isNotEmpty) {
           setState(() {
             if (mounted) {
-              restaurantData.addAll(nextPageData.data!);
-              currentPage++;
+
+              if(isRefresh == true){
+
+                restaurantData.clear();
+                restaurantData.addAll(nextPageData.data!);
+                currentPage++;
+              }else{
+                restaurantData.addAll(nextPageData.data!);
+                currentPage++;
+              }
+
             }
           });
         } else {
@@ -202,9 +212,11 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
 
       if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
         setState(() {
-          restaurantData = refreshedData.data!;
-          currentPage = 1; // Reset the page to 2 as you loaded the first page.
+          currentPage = 1; // Reset the page to 1 as you loaded the first page.
           hasMoreData = true; // Reset the flag for more data.
+          isRefresh = true;
+          restaurantData.clear(); // Clear existing data before adding new data.
+          restaurantData.addAll(refreshedData.data!);
         });
       }
     } catch (error) {
@@ -225,6 +237,7 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
+            flex: 2,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -263,7 +276,7 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
                       maxRating: 5,
                     ),
                     SizedBox(
-                      width: 10,
+                      width: 5,
                     ),
                     Expanded(
                         child: CustomText(
@@ -296,14 +309,14 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
                         colors: [Colors.white, Colors.grey], // Adjust colors as needed
                       ),
                     ),
-                    child: storeData.profileImage != null ? ClipRRect(
+                    child: storeData.profileImage != null && !(storeData.profileImage)!.contains("SocketException")? ClipRRect(
                         borderRadius: BorderRadius.circular(15.0),
                         child: Image.network(
                           storeData.profileImage!,
                           fit: BoxFit.cover,
-                          height: 90, width: 90,
+                          height: 80, width: 80,
                         )
-                    ): Image.asset(food_image,height: 90, width: 90,),
+                    ): Image.asset(food_image,height: 80, width: 80,),
                   ),
                 ),
 
@@ -360,11 +373,11 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
                               if (refreshedData.data != null &&
                                   refreshedData.data!.isNotEmpty) {
                                 setState(() {
-                                  restaurantData = refreshedData.data!;
-                                  currentPage =
-                                      1; // Reset the page to 2 as you loaded the first page.
-                                  hasMoreData =
-                                      true; // Reset the flag for more data.
+                                  currentPage = 1; // Reset the page to 1 as you loaded the first page.
+                                  hasMoreData = true; // Reset the flag for more data.
+                                  isRefresh = true;
+                                  restaurantData.clear(); // Clear existing data before adding new data.
+                                  restaurantData.addAll(refreshedData.data!);
                                 });
                               }
                             } catch (error) {
@@ -426,11 +439,11 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
 
                               if (refreshedData.data != null &&
                                   refreshedData.data!.isNotEmpty) {
-                                restaurantData = refreshedData.data!;
-                                currentPage =
-                                    1; // Reset the page to 2 as you loaded the first page.
-                                hasMoreData =
-                                    true; // Reset the flag for more data.
+                                currentPage = 1; // Reset the page to 1 as you loaded the first page.
+                                hasMoreData = true; // Reset the flag for more data.
+                                isRefresh = true;
+                                restaurantData.clear(); // Clear existing data before adding new data.
+                                restaurantData.addAll(refreshedData.data!);
                               }
                             } catch (error) {
                               print('Error refreshing data: $error');

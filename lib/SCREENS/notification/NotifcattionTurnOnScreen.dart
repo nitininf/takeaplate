@@ -68,6 +68,8 @@ class NotificationTurnOnScreen extends StatelessWidget {
                               border: Border.all(width: 1, color: editbgColor)),
                           child: Row(
                             children: [
+                              SizedBox(width: 20,),
+
                               Expanded(
                                   child: Image.asset(
                                 appLogo,
@@ -81,6 +83,7 @@ class NotificationTurnOnScreen extends StatelessWidget {
                                     children: [
                                       const SizedBox(
                                         height: 10,
+
                                       ),
                                       Align(
                                         child: CustomText(
@@ -108,6 +111,7 @@ class NotificationTurnOnScreen extends StatelessWidget {
                               Consumer<CommonCounter>(
                                   builder: (context, commonProvider, child) {
                                 return Expanded(
+                                  flex: 2,
                                     child: GestureDetector(
                                   onTap: () {
                                     commonProvider.isNotification
@@ -143,6 +147,8 @@ class NotificationTurnOnScreen extends StatelessWidget {
                               border: Border.all(width: 1, color: editbgColor)),
                           child: Row(
                             children: [
+                              SizedBox(width: 20,),
+
                               Expanded(
                                   child: Image.asset(
                                 appLogo,
@@ -183,6 +189,8 @@ class NotificationTurnOnScreen extends StatelessWidget {
                               Consumer<CommonCounter>(
                                   builder: (context, commonProvider, child) {
                                 return Expanded(
+                                    flex: 2,
+
                                     child: GestureDetector(
                                   onTap: () {
                                     commonProvider.isNotification_one
@@ -218,6 +226,7 @@ class NotificationTurnOnScreen extends StatelessWidget {
                               border: Border.all(width: 1, color: editbgColor)),
                           child: Row(
                             children: [
+SizedBox(width: 20,),
                               Expanded(
                                   child: Image.asset(
                                 appLogo,
@@ -258,6 +267,8 @@ class NotificationTurnOnScreen extends StatelessWidget {
                               Consumer<CommonCounter>(
                                   builder: (context, commonProvider, child) {
                                 return Expanded(
+                                    flex: 2,
+
                                     child: GestureDetector(
                                   onTap: () {
                                     commonProvider.isNotification_two

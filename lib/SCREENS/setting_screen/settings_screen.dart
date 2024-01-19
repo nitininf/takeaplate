@@ -264,7 +264,7 @@ class SettingScreen extends StatelessWidget {
 
                             Navigator.pushNamedAndRemoveUntil(
                               context,
-                              '/Create_Login',
+                              '/Login',
                                   (Route<dynamic> route) =>
                               false, // Clear all routes in the stack
                             );

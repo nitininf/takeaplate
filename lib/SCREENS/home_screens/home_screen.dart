@@ -38,10 +38,11 @@ class _HomeScreenState extends State<HomeScreen> {
   bool hasMoreData = true;
   final RestaurantsListProvider restaurantsProvider = RestaurantsListProvider();
 
-  List<StoreData>? closestRestaurants = [];
-  List<DealData>? lastMinuteDeals = [];
-  List<StoreData>? favoriteStoresAndDeals = [];
-  List<DealData>? collectTomorrowList = [];
+  List<StoreData> closestRestaurants = [];
+  List<DealData> lastMinuteDeals = [];
+  List<StoreData> favoriteStoresAndDeals = [];
+  List<DealData> collectTomorrowList = [];
+
 
   @override
   void initState() {
@@ -72,6 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
           setState(() {
             if (mounted) {
               hasMoreData = false;
+              closestRestaurants.clear();
             }
           });
         }
@@ -87,6 +89,7 @@ class _HomeScreenState extends State<HomeScreen> {
           setState(() {
             if (mounted) {
               hasMoreData = false;
+              lastMinuteDeals.clear();
             }
           });
         }
@@ -102,6 +105,7 @@ class _HomeScreenState extends State<HomeScreen> {
           setState(() {
             if (mounted) {
               hasMoreData = false;
+              favoriteStoresAndDeals.clear();
             }
           });
         }
@@ -117,6 +121,7 @@ class _HomeScreenState extends State<HomeScreen> {
           setState(() {
             if (mounted) {
               hasMoreData = false;
+              collectTomorrowList.clear();
             }
           });
         }
@@ -132,61 +137,83 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: bgColor,
-      body: Padding(
-        padding:
+
+
+    return Stack(
+      children: [
+        Scaffold(
+          backgroundColor: bgColor,
+          body: Padding(
+            padding:
             const EdgeInsets.only(top: 9.0, right: 20, left: 20, bottom: 10),
-        child: Column(
-          // crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            const SizedBox(height: 20),
-            const CustomSearchField(hintText: "Search"),
-            Expanded(
-              child: SingleChildScrollView(
-                scrollDirection: Axis.vertical,
-                child: Column(
-                  children: [
-                    buildHorizontalList(items),
-                    buildSection(closet, viewAll),
-                    buildClosestDealCards(),
-                    const Padding(
-                      padding: EdgeInsets.only(
-                          top: 10.0, left: 20, right: 20, bottom: 15),
-                      child: Divider(
-                        color: Colors.grey,
-                        thickness: 0,
-                      ),
+            child: Column(
+              // crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const SizedBox(height: 20),
+                const CustomSearchField(hintText: "Search"),
+                Expanded(
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    child: Column(
+                      children: [
+                        buildHorizontalList(items),
+                        buildSection(closet, viewAll),
+                        buildClosestDealCards(),
+                        const Padding(
+                          padding: EdgeInsets.only(
+                              top: 10.0, left: 20, right: 20, bottom: 15),
+                          child: Divider(
+                            color: Colors.grey,
+                            thickness: 0,
+                          ),
+                        ),
+                        buildSection(lastMinute, viewAll),
+                        buildLastMinuteDealCards(),
+                        const Padding(
+                          padding: EdgeInsets.only(
+                              top: 10.0, left: 15, right: 15, bottom: 15),
+                          child: Divider(
+                            color: Colors.grey,
+                            thickness: 0,
+                          ),
+                        ),
+                        buildSection(collectTomorrow, viewAll),
+                        buildCollectTomorrowCards(),
+                        const Padding(
+                          padding: EdgeInsets.only(
+                              top: 10.0, left: 15, right: 15, bottom: 15),
+                          child: Divider(
+                            color: Colors.grey,
+                            thickness: 0,
+                          ),
+                        ),
+                        buildSection(myFav, viewAll),
+                        buildMyFavoriteCards(),
+                      ],
                     ),
-                    buildSection(lastMinute, viewAll),
-                    buildLastMinuteDealCards(),
-                    const Padding(
-                      padding: EdgeInsets.only(
-                          top: 10.0, left: 15, right: 15, bottom: 15),
-                      child: Divider(
-                        color: Colors.grey,
-                        thickness: 0,
-                      ),
-                    ),
-                    buildSection(collectTomorrow, viewAll),
-                    buildCollectTomorrowCards(),
-                    const Padding(
-                      padding: EdgeInsets.only(
-                          top: 10.0, left: 15, right: 15, bottom: 15),
-                      child: Divider(
-                        color: Colors.grey,
-                        thickness: 0,
-                      ),
-                    ),
-                    buildSection(myFav, viewAll),
-                    buildMyFavoriteCards(),
-                  ],
+                  ),
                 ),
+              ],
+            ),
+          ),
+        ),
+
+        Visibility(
+          visible: isLoading,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: Container(
+              color: Colors.black.withOpacity(0.1),
+              child: Center(
+                child: CircularProgressIndicator(),
               ),
             ),
-          ],
+          ),
         ),
-      ),
+
+      ]
+
+
     );
   }
 
@@ -368,7 +395,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ], // Adjust colors as needed
                     ),
                   ),
-                  child: storeData.profileImage != null
+                  child: storeData.profileImage != null && !(storeData.profileImage)!.contains("SocketException")
                       ? ClipRRect(
                           borderRadius: BorderRadius.circular(15.0),
                           child: Image.network(
@@ -379,7 +406,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ))
                       : Image.asset(
                           food_image,
-                          height: 100,
+                          height: 90,
                           width: 100,
                         ),
                 ),
@@ -673,7 +700,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ], // Adjust colors as needed
                       ),
                     ),
-                    child: lastMinuteDeal.profileImage != null
+                    child: lastMinuteDeal.profileImage != null && !(lastMinuteDeal.profileImage)!.contains("SocketException")
                         ? ClipRRect(
                             borderRadius: BorderRadius.circular(15.0),
                             child: Image.network(
@@ -764,8 +791,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               .RemoveFromFavoriteDeal(lastMinuteDeal.id ?? 0);
 
                           if (delData.status == true &&
-                              delData.message ==
-                                  "Favourite Deal deleted successfully.") {
+                              delData.message == "Favourite Deal deleted successfully.") {
                             // Print data to console
                             print(delData);
 
@@ -988,7 +1014,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ], // Adjust colors as needed
                       ),
                     ),
-                    child: collectTomorrowData.profileImage != null
+                    child: collectTomorrowData.profileImage != null && !(collectTomorrowData.profileImage)!.contains("SocketException")
                         ? ClipRRect(
                             borderRadius: BorderRadius.circular(15.0),
                             child: Image.network(
@@ -1257,7 +1283,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ], // Adjust colors as needed
                     ),
                   ),
-                  child: favoriteStores.profileImage != null
+                  child: favoriteStores.profileImage != null && !(favoriteStores.profileImage)!.contains("SocketException")
                       ? ClipRRect(
                           borderRadius: BorderRadius.circular(15.0),
                           child: Image.network(
@@ -1403,16 +1429,14 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-
-
   Future<void> refreshData() async {
 
     final nextPageData = await homeProvider.getHomePageList(
-      page: 1,
+      page: currentPage,
     );
 
     if (nextPageData.data != null && nextPageData.data!.isNotEmpty) {
-
+      currentPage++;
 
       setState(() {
         if (mounted) {
@@ -1423,6 +1447,7 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {
         if (mounted) {
           hasMoreData = false;
+          closestRestaurants.clear();
         }
       });
     }
@@ -1438,6 +1463,7 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {
         if (mounted) {
           hasMoreData = false;
+          lastMinuteDeals.clear();
         }
       });
     }
@@ -1453,6 +1479,7 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {
         if (mounted) {
           hasMoreData = false;
+          favoriteStoresAndDeals.clear();
         }
       });
     }
@@ -1468,6 +1495,7 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {
         if (mounted) {
           hasMoreData = false;
+          collectTomorrowList.clear();
         }
       });
     }

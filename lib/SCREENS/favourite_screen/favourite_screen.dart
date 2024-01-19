@@ -36,6 +36,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
   int currentRestaurantPage = 1;
   int currentDealPage = 1;
   bool isRestaurantLoading = false;
+  bool isRefresh = false;
   bool isDealLoading = false;
   bool hasMoreData = true;
   List<StoreData> restaurantData = [];
@@ -76,8 +77,15 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
         if (nextPageRestaurantData.data != null &&
             nextPageRestaurantData.data!.isNotEmpty) {
           setState(() {
-            restaurantData.addAll(nextPageRestaurantData.data!);
-            currentRestaurantPage++;
+
+            if(isRefresh == true) {
+              restaurantData.clear();
+              restaurantData.addAll(nextPageRestaurantData.data!);
+              currentRestaurantPage++;
+            }else{
+              restaurantData.addAll(nextPageRestaurantData.data!);
+              currentRestaurantPage++;
+            }
           });
         }
 
@@ -104,8 +112,14 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
         if (nextPageDealData.data != null &&
             nextPageDealData.data!.isNotEmpty) {
           setState(() {
-            dealListingData.addAll(nextPageDealData.data!);
-            currentDealPage++;
+            if(isRefresh == true) {
+              dealListingData.clear();
+              dealListingData.addAll(nextPageDealData.data!);
+              currentDealPage++;
+            }else{
+              dealListingData.addAll(nextPageDealData.data!);
+              currentDealPage++;
+            }
           });
 
           print(dealListingData);
@@ -386,15 +400,24 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
 
       if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
         setState(() {
-          restaurantData = refreshedData.data!;
-          currentRestaurantPage = 1; // Reset the page to 2 as you loaded the first page.
+
+          currentRestaurantPage = 1; // Reset the page to 1 as you loaded the first page.
           hasMoreData = true; // Reset the flag for more data.
+          isRefresh = true;
+          restaurantData.clear(); // Clear existing data before adding new data.
+          restaurantData.addAll(refreshedData.data!);
+
+
         });
       }if (refreshedDealData.data != null && refreshedDealData.data!.isNotEmpty) {
         setState(() {
-          dealListingData = refreshedDealData.data!;
-          currentDealPage = 1; // Reset the page to 2 as you loaded the first page.
+
+          currentDealPage = 1; // Reset the page to 1 as you loaded the first page.
           hasMoreData = true; // Reset the flag for more data.
+          isRefresh = true;
+          dealListingData.clear(); // Clear existing data before adding new data.
+          dealListingData.addAll(refreshedDealData.data!);
+
         });
       }
     } catch (error) {
@@ -550,11 +573,11 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                               if (refreshedData.data != null &&
                                   refreshedData.data!.isNotEmpty) {
                                 setState(() {
-                                  restaurantData = refreshedData.data!;
-                                  currentRestaurantPage =
-                                      1; // Reset the page to 2 as you loaded the first page.
-                                  hasMoreData =
-                                      true; // Reset the flag for more data.
+                                  currentRestaurantPage = 1; // Reset the page to 1 as you loaded the first page.
+                                  hasMoreData = true; // Reset the flag for more data.
+                                  isRefresh = true;
+                                  restaurantData.clear(); // Clear existing data before adding new data.
+                                  restaurantData.addAll(refreshedData.data!);
                                 });
                               }
                             } catch (error) {
@@ -617,11 +640,11 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                               if (refreshedData.data != null &&
                                   refreshedData.data!.isNotEmpty) {
                                 setState(() {
-                                  restaurantData = refreshedData.data!;
-                                  currentRestaurantPage =
-                                      1; // Reset the page to 2 as you loaded the first page.
-                                  hasMoreData =
-                                      true; // Reset the flag for more data.
+                                  currentRestaurantPage = 1; // Reset the page to 1 as you loaded the first page.
+                                  hasMoreData = true; // Reset the flag for more data.
+                                  isRefresh = true;
+                                  restaurantData.clear(); // Clear existing data before adding new data.
+                                  restaurantData.addAll(refreshedData.data!);
                                 });
                               }
                             } catch (error) {
@@ -864,11 +887,12 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                                 if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
               
                                       setState(() {
-              
-                                        dealListingData = refreshedData as List<DealData>;
-              
-                                        currentDealPage = 1; // Reset the page to 2 as you loaded the first page.
+
+                                        currentDealPage = 1; // Reset the page to 1 as you loaded the first page.
                                         hasMoreData = true; // Reset the flag for more data.
+                                        isRefresh = true;
+                                        dealListingData.clear(); // Clear existing data before adding new data.
+                                        dealListingData.addAll(refreshedData.data!);
                                       });
               
               
@@ -934,11 +958,12 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
               
               
                                       setState(() {
-              
-                                        dealListingData = refreshedData as List<DealData>;
-              
-                                        currentDealPage = 1; // Reset the page to 2 as you loaded the first page.
+
+                                        currentDealPage = 1; // Reset the page to 1 as you loaded the first page.
                                         hasMoreData = true; // Reset the flag for more data.
+                                        isRefresh = true;
+                                        dealListingData.clear(); // Clear existing data before adding new data.
+                                        dealListingData.addAll(refreshedData.data!);
                                       });
               
               

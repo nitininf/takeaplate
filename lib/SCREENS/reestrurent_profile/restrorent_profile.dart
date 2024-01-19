@@ -104,6 +104,8 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
           // No more data available
           setState(() {
             hasMoreData = false;
+            dealListData.clear();
+            favouriteDealListData.clear();
           });
         }
       } catch (error) {
@@ -182,7 +184,7 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
         Stack(
           clipBehavior: Clip.none,
           children: [
-            data.bannerImage != null ? ClipRRect(
+            data.bannerImage != null && !(data.bannerImage)!.contains("SocketException")? ClipRRect(
               borderRadius: BorderRadius.circular(15.0),
               child: Image.network(
                 data.bannerImage!,
@@ -403,7 +405,7 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
         onRefresh: _refreshData,
         child: ListView.builder(
           controller: _scrollController,
-          itemCount: currentList.length + (hasMoreData ? 1 : 0),
+          itemCount: currentList.length,
           itemBuilder: (context, index) {
             if (index < currentList.length) {
               // Display restaurant card
@@ -469,7 +471,11 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
 
         } else {
 
-
+        setState(() {
+          hasMoreData = false;
+          dealListData.clear();
+          favouriteDealListData.clear();
+        });
 
       }
     } catch (error) {
@@ -533,6 +539,7 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
+              flex: 1,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -570,24 +577,22 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
                         halfFilledColor: btnbgColor,
                         filledColor: btnbgColor,
                         initialRating: double.parse(data.averageRating ?? '2'),
-                        size: 20,
+                        size: 18,
                         maxRating: 5,
                       ),
                       SizedBox(
-                        width: 10,
+                        width: 5,
                       ),
                       Expanded(
                           child: CustomText(
                               text: "84 Km",
                               maxLin: 1,
                               color: graysColor,
-                              sizeOfFont: 15,
+                              sizeOfFont: 12,
                               fontfamilly: montSemiBold)),
                     ],
                   ),
-                  SizedBox(
-                    height: 5,
-                  ),
+
                   CustomText(
                     text: '\$ ${data.price ?? ""}',
                     color: dolorColor,
@@ -617,14 +622,14 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
                           colors: [Colors.white, Colors.grey], // Adjust colors as needed
                         ),
                       ),
-                      child: data.profileImage != null ? ClipRRect(
+                      child: data.profileImage != null && !(data.profileImage)!.contains("SocketException") ? ClipRRect(
                           borderRadius: BorderRadius.circular(15.0),
                           child: Image.network(
                             data.profileImage!,
                             fit: BoxFit.cover,
-                            height: 100, width: 108,
+                            height: 100, width: 100,
                           )
-                      ): Image.asset(food_image,height: 100, width: 118,),
+                      ): Image.asset(food_image,height: 100, width: 100,),
                     ),
                   ),
 
@@ -703,6 +708,13 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
                                   }
 
 
+                                }else{
+
+                                  setState(() {
+                                    hasMoreData = false;
+                                    dealListData.clear();
+                                    favouriteDealListData.clear();
+                                  });
                                 }
                               } catch (error) {
                                 print('Error refreshing data: $error');
@@ -782,6 +794,12 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
                                   }
 
 
+                                } else{
+                                  setState(() {
+                                    hasMoreData = false;
+                                    dealListData.clear();
+                                    favouriteDealListData.clear();
+                                  });
                                 }
                               } catch (error) {
                                 print('Error refreshing data: $error');

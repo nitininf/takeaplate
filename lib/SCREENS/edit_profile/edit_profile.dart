@@ -274,17 +274,42 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       width: 10,
                     ),
                     Expanded(
-                        child: CommonEditText(
-                          hintText: gender,
-                          isSelection: true,
-                          isIconShow: true,
-                          isPassword: true,
-                          isbgColor: true,
+                        child: TextFormField(
+
+                          maxLength: 15,
                           controller: genderController,
-                          onTap: () {
-                            _showGenderDropdown(context);
-                          },
-                        )),
+                          readOnly: true,
+
+                          style:  TextStyle(
+                            decoration: TextDecoration.none,
+                            decorationThickness: 0,
+                            fontSize:  18,
+                            fontFamily: montBook,
+
+                            color: editbgColor , // Make sure to define your colors properly
+                          ),
+                          decoration: InputDecoration(
+                            counterText: '',
+                            filled: true,
+                            fillColor: hintColor,
+                            focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(20),borderSide: BorderSide(color:editbgColor,style:BorderStyle.solid )),
+
+                            enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(20),borderSide: BorderSide(color:editbgColor,style:BorderStyle.solid )),
+
+                            suffixIcon: IconButton(
+                              onPressed: () {
+                                _showGenderDropdown(context);
+                              },
+                              icon: Image.asset(down_arrow, height: 16, width: 12),
+                            ),
+                            contentPadding:EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+                            hintStyle:  TextStyle(
+                              fontFamily: montBook,
+                              fontSize: 20,
+                              color:readybgColor, // Define your hint color properly
+                            ),
+                          ),
+                        ),),
                   ],
                 ),
                 SizedBox(

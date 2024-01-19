@@ -1,32 +1,98 @@
+import 'package:custom_rating_bar/custom_rating_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
+import 'package:provider/provider.dart';
 import 'package:takeaplate/SCREENS/contact_us/contacctus_settings.dart';
 import 'package:takeaplate/UTILS/app_strings.dart';
 import '../../../CUSTOM_WIDGETS/custom_text_style.dart';
+import '../../../MULTI-PROVIDER/FavoriteOperationProvider.dart';
+import '../../../MULTI-PROVIDER/HomeDataListProvider.dart';
 import '../../../MULTI-PROVIDER/SharedPrefsUtils.dart';
+import '../../../Response_Model/FavAddedResponse.dart';
+import '../../../Response_Model/FavDeleteResponse.dart';
+import '../../../Response_Model/RestaurantsListResponse.dart';
 import '../../../UTILS/app_color.dart';
 import '../../../UTILS/app_images.dart';
 import '../../../UTILS/fontfaimlly_string.dart';
 import '../../../main.dart';
 
 
-TextEditingController fullNameController = TextEditingController();
-TextEditingController emailController = TextEditingController();
-TextEditingController phoneNumberController = TextEditingController();
-TextEditingController dobController = TextEditingController();
+class ProfileScreen extends StatefulWidget {
+  const ProfileScreen({super.key});
 
-TextEditingController selectedImagePathController = TextEditingController();
+  @override
+  _ProfileScreenState createState() => _ProfileScreenState();
+}
 
+class _ProfileScreenState extends State<ProfileScreen> {
 
-bool isDateSelected = false; // Add a flag to check if the date is already selected
+  TextEditingController fullNameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController phoneNumberController = TextEditingController();
+  TextEditingController dobController = TextEditingController();
+  final HomeDataListProvider homeProvider = HomeDataListProvider();
 
-class ProfileScreen extends StatelessWidget{
+  TextEditingController selectedImagePathController = TextEditingController();
   double screenHeight = MediaQuery.of(navigatorKey.currentContext!).size.height;
   double screenWidth = MediaQuery.of(navigatorKey.currentContext!).size.width;
+
+  bool isFavorite = false;
+  int currentPage = 1;
+  bool isLoading = false;
+  bool hasMoreData = true;
+
+  bool isDateSelected = false; // Add a flag to check if the date is already selected
+  List<StoreData> favoriteStoresAndDeals = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
+
+  void _loadData() async {
+    if (!isLoading && hasMoreData) {
+      try {
+        setState(() {
+          isLoading = true;
+        });
+
+        final nextPageData = await homeProvider.getHomePageList(
+          page: currentPage,
+        );
+
+
+
+        if (nextPageData.favoriteStores != null &&
+            nextPageData.favoriteStores!.isNotEmpty) {
+          setState(() {
+            if (mounted) {
+              favoriteStoresAndDeals=nextPageData.favoriteStores!;
+            }
+          });
+        } else {
+          setState(() {
+            if (mounted) {
+              hasMoreData = false;
+              favoriteStoresAndDeals.clear();
+            }
+          });
+        }
+
+
+      } catch (error) {
+        print('Error loading more data: $error');
+      } finally {
+        setState(() {
+          isLoading = false;
+        });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-
-
     return Scaffold(
       backgroundColor: bgColor,
       body: Padding(
@@ -50,7 +116,7 @@ class ProfileScreen extends StatelessWidget{
                 return Column(
                   children: [
                     SizedBox(height: 20),
-                    getView(),
+                    getView(context),
                   ],
                 );
               }
@@ -65,6 +131,7 @@ class ProfileScreen extends StatelessWidget{
 
   }
 
+
   Widget buildSection(String title, String viewAllText) {
     return Padding(
       padding: const EdgeInsets.only(left: 8.0,right: 15.0,top: 8.0),
@@ -74,20 +141,20 @@ class ProfileScreen extends StatelessWidget{
           CustomText(text: title, color: btnbgColor, fontfamilly: montHeavy, sizeOfFont: 20),
           GestureDetector(child: CustomText(text: viewAllText, color: viewallColor, fontfamilly: montRegular,sizeOfFont: 12, ),
 
-          onTap: (){
-            if(title=="CURRENT ORDERS") {
-              Navigator.pushNamed(
-                  navigatorKey.currentContext!, '/MyOrdersSccreen');
-            }
-            else if(title=="MY FAVOURITES"){
-              Navigator.pushNamed(
-                  navigatorKey.currentContext!, '/FavouriteScreen');
-            }
-            else{
-              Navigator.pushNamed(
-                  navigatorKey.currentContext!, '/PaymentMethodScreen');
-            }
-          },
+            onTap: (){
+              if(title=="CURRENT ORDERS") {
+                Navigator.pushNamed(
+                    navigatorKey.currentContext!, '/MyOrdersSccreen');
+              }
+              else if(title=="MY FAVOURITES"){
+                Navigator.pushNamed(
+                    navigatorKey.currentContext!, '/FavouriteScreen');
+              }
+              else{
+                Navigator.pushNamed(
+                    navigatorKey.currentContext!, '/PaymentMethodScreen');
+              }
+            },
           ),
         ],
       ),
@@ -105,16 +172,16 @@ class ProfileScreen extends StatelessWidget{
           margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(width: 0,   color: editbgColor.withOpacity(0.25),),
-            color: bclor?.withOpacity(0.40)
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(width: 0,   color: editbgColor.withOpacity(0.25),),
+              color: bclor?.withOpacity(0.40)
           ),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-               Expanded(
-                 flex: 2,
-                 child: Column(
+              Expanded(
+                flex: 2,
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const CustomText(text: "Surprise Pack",maxLin: 1, color: btntxtColor, fontfamilly: montBold,sizeOfFont: 18,),
@@ -146,8 +213,8 @@ class ProfileScreen extends StatelessWidget{
                     CustomText(text: "\$"+"9.99", color: dolorColor,sizeOfFont: 20, fontfamilly: montHeavy,),
 
                   ],
-                               ),
-               ),
+                ),
+              ),
               const SizedBox(width: 18,),
               Expanded(
                 flex: 0,
@@ -176,7 +243,7 @@ class ProfileScreen extends StatelessWidget{
         ),
       );
   }
-  Widget getView(){
+  Widget getView(BuildContext context){
     return Expanded(
       child: SingleChildScrollView(
         scrollDirection: Axis.vertical,
@@ -187,23 +254,23 @@ class ProfileScreen extends StatelessWidget{
               children: [
 
 
-        selectedImagePathController.text !=''
-        ? ClipRRect(
-            borderRadius: BorderRadius.circular(15.0),
-          child: Image.network(
-            selectedImagePathController.text,
-            fit: BoxFit.cover,
-            height: 94,width: 95,
-          )
-      ): Image.asset(profile,height: 94,width: 95,),
+                selectedImagePathController.text !=''
+                    ? ClipRRect(
+                    borderRadius: BorderRadius.circular(15.0),
+                    child: Image.network(
+                      selectedImagePathController.text,
+                      fit: BoxFit.cover,
+                      height: 94,width: 95,
+                    )
+                ): Image.asset(profile,height: 94,width: 95,),
 
                 SizedBox(width: 20,),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                     CustomText(text: fullNameController.text,color: viewallColor,sizeOfFont: 20,fontfamilly: montBold,),
-                     CustomText(text: emailController.text,maxLin:1,sizeOfFont: 13,fontfamilly:montRegular,color: viewallColor,),
+                    CustomText(text: fullNameController.text,color: viewallColor,sizeOfFont: 20,fontfamilly: montBold,),
+                    CustomText(text: emailController.text,maxLin:1,sizeOfFont: 13,fontfamilly:montRegular,color: viewallColor,),
                     Container(
                       margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 3),
                       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -219,7 +286,7 @@ class ProfileScreen extends StatelessWidget{
                     )
                   ],
                 ),
-               // profileSection()
+                // profileSection()
               ],
             ),
             const SizedBox(height: 30,),
@@ -233,29 +300,19 @@ class ProfileScreen extends StatelessWidget{
             ),
             buildSection("MY FAVOURITES", viewAll),
             const SizedBox(height: 5,),
-            buildHorizontalFavCards(),
+            buildMyFavoriteCards(context),
             const Padding(
               padding: EdgeInsets.only(left: 25.0,right: 25,top: 15,bottom: 15),
               child: Divider(height: 0,color: grayColor,thickness: 0,),
             ),
             buildSection("PAYMENT METHOD", viewAll),
             const SizedBox(height: 5,),
-             getMasterCard()
+            getMasterCard()
           ],
         ),
       ),
     );
   }
-  Widget buildHorizontalFavCards() {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: List.generate(8, (index) => getFavCards()),
-      ),
-    );
-  }
-
   Widget getMasterCard(){
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
@@ -275,59 +332,254 @@ class ProfileScreen extends StatelessWidget{
       ),
     );
   }
-  Widget getFavCards() {
-    return
-      Container(
-       // width: screenWidth*0.8,
+
+  Widget buildMyFavoriteCards(BuildContext context) {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: List.generate(
+          favoriteStoresAndDeals!.length,
+              (index) => GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(
+                  navigatorKey.currentContext!,
+                  '/RestaurantsProfileScreen',
+                  arguments: favoriteStoresAndDeals![
+                  index], // Pass the data as arguments
+                );
+              },
+              child: getFavCardsData(index, favoriteStoresAndDeals![index],context)),
+        ),
+      ),
+    );
+  }
+
+  Widget getFavCardsData(int index, StoreData favoriteStores, BuildContext context) {
+    return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(width: 0,   color: editbgColor.withOpacity(0.25),),
+        border: Border.all(width: 0, color: editbgColor.withOpacity(0.25)),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Column(
+          Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CustomText(text: "Surprise Pack",maxLin: 1, color: btntxtColor, fontfamilly: montBold,sizeOfFont: 18,),
-
-              CustomText(text: "Salad & Co.", maxLin:1,color: viewallColor, fontfamilly: montRegular,sizeOfFont: 16,),
-
-              CustomText(text: "Tomorrow-7:35-8:40 Am", maxLin:1,color: graysColor,sizeOfFont: 12, fontfamilly: montRegular),
-              SizedBox(height: 5,),
+              CustomText(
+                text: favoriteStores.name ?? '',
+                color: btntxtColor,
+                fontfamilly: montBold,
+                sizeOfFont: 22,
+              ),
+              CustomText(
+                text: favoriteStores.category ?? '',
+                color: btntxtColor,
+                fontfamilly: montRegular,
+                sizeOfFont: 14,
+              ),
+              CustomText(
+                text: '3 Offers available',
+                color: offerColor,
+                sizeOfFont: 12,
+                fontfamilly: montBook,
+              ),
+              SizedBox(height: 1),
               Row(
                 children: [
-                  Icon(Icons.star_border,size: 20,color: Colors.grey,),
-                  Icon(Icons.star_border,size: 20,color: Colors.grey,),
-                  Icon(Icons.star_border,size: 20,color: Colors.grey,),
-                  Icon(Icons.star_border,size: 20,color: Colors.grey,),
-                  Icon(Icons.star_border,size: 20,color: Colors.grey,),
-                  SizedBox(width: 10,),
-                  CustomText(text: "84 Km", color: graysColor,sizeOfFont: 13, fontfamilly: montSemiBold,),
+                  RatingBar.readOnly(
+                    filledIcon: Icons.star,
+                    emptyIcon: Icons.star_border,
+                    halfFilledIcon: Icons.star_half,
+                    isHalfAllowed: true,
+                    halfFilledColor: btnbgColor,
+                    filledColor: btnbgColor,
+                    initialRating: 4,
+                    size: 18,
+                    maxRating: 5,
+                  ),
+                  SizedBox(width: 10),
+                  Container(
+                    margin:
+                    const EdgeInsets.symmetric(horizontal: 0, vertical: 3),
+                    padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    decoration: BoxDecoration(
+                      color: editbgColor,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: const CustomText(
+                      text: "4 km",
+                      maxLin: 1,
+                      sizeOfFont: 10,
+                      fontfamilly: montHeavy,
+                      color: btnbgColor,
+                    ),
+                  ),
                 ],
-
               ),
-              SizedBox(height: 5,),
-              CustomText(text: "\$"+"9.99", color: dolorColor,sizeOfFont: 20, fontfamilly: montBold,weight: FontWeight.w900,),
-
             ],
           ),
-          const SizedBox(width: 18,),
+          const SizedBox(width: 18),
           Stack(
             alignment: Alignment.topRight,
             clipBehavior: Clip.none,
             children: [
-              Image.asset(food_image, height: 110, width: 90, fit: BoxFit.contain),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(15.0),
+                child: Container(
+                  padding: EdgeInsets.all(8.0),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15.0),
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: [
+                        Colors.white,
+                        Colors.grey
+                      ], // Adjust colors as needed
+                    ),
+                  ),
+                  child: favoriteStores.profileImage != null && !(favoriteStores.profileImage)!.contains("SocketException")
+                      ? ClipRRect(
+                      borderRadius: BorderRadius.circular(15.0),
+                      child: Image.network(
+                        favoriteStores.profileImage!,
+                        fit: BoxFit.cover,
+                        height: 90,
+                        width: 100,
+                      ))
+                      : Image.asset(
+                    food_image,
+                    height: 90,
+                    width: 100,
+                  ),
+                ),
+              ),
               Positioned(
-                right: 0,
-                top: 3,
-                child: Image.asset(
-                  save_icon,
-                  height: 15,
-                  width: 18,
+                right: -4,
+                child: GestureDetector(
+                  onTap: () async {
+                    bool? ratingStatus = favoriteStores.favourite;
+
+                    print('ratingStatus:$ratingStatus');
+                    print('StoreId: ${favoriteStores.id}');
+
+                    try {
+                      if (ratingStatus == false) {
+                        // Only hit the API if storeData.favourite is true
+                        var formData = {
+                          'favourite': 1,
+                        };
+
+                        FavAddedResponse favData =
+                        await Provider.of<FavoriteOperationProvider>(
+                            context,
+                            listen: false)
+                            .AddToFavoriteStore(
+                            favoriteStores.id ?? 0, formData);
+
+                        if (favData.status == true &&
+                            favData.message ==
+                                "Store Added in favourite successfully.") {
+                          // Print data to console
+                          print(favData);
+
+                          final snackBar = SnackBar(
+                            content: Text('${favData.message}'),
+                          );
+
+                          // Show the SnackBar
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                          // Automatically hide the SnackBar after 1 second
+                          Future.delayed(Duration(milliseconds: 1000), () {
+                            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                          });
+
+                          setState(() {
+                            favoriteStores.favourite = true;
+                          });
+
+                          await refreshData();
+
+                        } else {
+                          // API call failed
+                          print("Something went wrong: ${favData.message}");
+
+                          final snackBar = SnackBar(
+                            content: Text('${favData.message}'),
+                          );
+
+                          // Show the SnackBar
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                          // Automatically hide the SnackBar after 1 second
+                          Future.delayed(Duration(milliseconds: 1000), () {
+                            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                          });
+                        }
+                      } else if (favoriteStores.favourite == true) {
+                        // If storeData.favourite is false, print its value
+                        FavDeleteResponse delData = await Provider.of<
+                            FavoriteOperationProvider>(context,
+                            listen: false)
+                            .RemoveFromFavoriteStore(favoriteStores.id ?? 0);
+
+                        if (delData.status == true &&
+                            delData.message ==
+                                "Favourite Store deleted successfully") {
+                          // Print data to console
+                          print(delData);
+
+                          final snackBar = SnackBar(
+                            content: Text('${delData.message}'),
+                          );
+
+                          // Show the SnackBar
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                          // Automatically hide the SnackBar after 1 second
+                          Future.delayed(Duration(milliseconds: 1000), () {
+                            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                          });
+
+                          setState(() {
+                            favoriteStores.favourite = false;
+                          });
+
+                          await refreshData();
+
+                        } else {
+                          // API call failed
+                          print("Something went wrong: ${delData.message}");
+
+                          final snackBar = SnackBar(
+                            content: Text('${delData.message}'),
+                          );
+
+                          // Show the SnackBar
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                          // Automatically hide the SnackBar after 1 second
+                          Future.delayed(Duration(milliseconds: 1000), () {
+                            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                          });
+                        }
+                      }
+                    } catch (e) {
+                      // Display error message
+                      print("Error: $e");
+                    }
+                  },
+                  child: Image.asset(
+                    height: 15,
+                    width: 18,
+                    favoriteStores.favourite == true ? save_icon_red : save_icon,
+                  ),
                 ),
               ),
             ],
@@ -337,4 +589,28 @@ class ProfileScreen extends StatelessWidget{
     );
   }
 
+  Future<void> refreshData() async {
+    final nextPageData = await homeProvider.getHomePageList(
+      page: currentPage,
+    );
+
+
+    if (nextPageData.favoriteStores != null &&
+        nextPageData.favoriteStores!.isNotEmpty) {
+      setState(() {
+        if (mounted) {
+          favoriteStoresAndDeals = nextPageData.favoriteStores!;
+        }
+      });
+    } else {
+      setState(() {
+        if (mounted) {
+          hasMoreData = false;
+          favoriteStoresAndDeals.clear();
+        }
+      });
+    }
+  }
+
 }
+
