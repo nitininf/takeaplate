@@ -195,17 +195,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         Expanded(
                           flex: 3,
                           child: Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 3),
-                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
                             decoration: BoxDecoration(
                               color: readybgColor,
                               borderRadius: BorderRadius.circular(20),
                               border: Border.all(width: 1, color: Colors.white),
                             ),
-                            child: const CustomText(text: "READY FOR PICKUP",maxLin:1,sizeOfFont: 10,fontfamilly:montHeavy,color: readyColor,),
+                            child: const CustomText(text: "READY FOR PICKUP",maxLin:1,sizeOfFont: 11,fontfamilly:montHeavy,color: readyColor,),
                           ),
                         ),
-                        SizedBox(width: 10,),
+                        SizedBox(width: 5,),
                         Expanded(child: CustomText(text: "84 Km", color: graysColor,sizeOfFont: 13, fontfamilly: montSemiBold,)),
                       ],
 
@@ -223,7 +222,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   alignment: Alignment.topRight,
                   clipBehavior: Clip.none,
                   children: [
-                    Image.asset(food_image, height: 90, width: 90, fit: BoxFit.cover),
+                    Image.asset(food_image, height: 100, width: 100, fit: BoxFit.cover),
                     Positioned(
                       right: -4,
                       child: Image.asset(
