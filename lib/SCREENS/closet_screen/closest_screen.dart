@@ -105,12 +105,16 @@ class _ClosestScreenState extends State<ClosestScreen> {
 
   @override
   Widget build(BuildContext context) {
+
+    final double screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       backgroundColor: bgColor,
       body: SafeArea(
         child: Padding(
-          padding:
-              const EdgeInsets.only(top: 0.0, bottom: 20, left: 25, right: 25),
+        padding: EdgeInsets.symmetric(
+        horizontal: screenWidth * 0.05, // Adjust the horizontal padding based on the screen width
+        vertical: 20,),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

@@ -193,6 +193,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Row(
                       children: [
                         Expanded(
+                          flex: 3,
                           child: Container(
                             margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 3),
                             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -205,7 +206,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                         ),
                         SizedBox(width: 10,),
-                        CustomText(text: "84 Km", color: graysColor,sizeOfFont: 13, fontfamilly: montSemiBold,),
+                        Expanded(child: CustomText(text: "84 Km", color: graysColor,sizeOfFont: 13, fontfamilly: montSemiBold,)),
                       ],
 
                     ),
