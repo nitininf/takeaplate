@@ -249,56 +249,47 @@ class RightDrawerMenuWidget extends StatelessWidget {
               SizedBox(
                 height: screenHeight * 0.07,
               ),
-              Expanded(
-                child: ListView.builder(
-                  padding: EdgeInsets.zero,
-                  itemCount: listOfItems.length,
-                  itemBuilder: (context, index1) => ListTile(
-                    onTap: () {
-                      Navigator.pop(context);
-                      if (index1 == 2) {
-                        onClick(3);
-                      } else if (index1 == 0) {
-                        onClick(2);
-                      } else if (index1 == 1) {
-                        onClick(4);
-                      } else if (index1 == 3) {
-                        onClick(1);
-                      } else if (index1 == 4) {
-                        onClick(5);
-                        // Navigator.pushNamed(context, '/YourNotificationScreen');
-                      } else if (index1 == 5) {
-                        onClick(6);
-                        //Navigator.pushNamed(context, '/SettingScreen');
-                      } else if (index1 == 6) {
-                        onClick(7);
-                        //Navigator.pushNamed(context, '/ContactUs');
-                      }
-                    },
-                    // dense: true,
-                    title: Align(
-                      alignment: Alignment.topRight,
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 15.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                           index1==4 ? Image.asset(eclipse,height: 14,width: 14,) : Text(""),
-                            SizedBox(width: 5,),
-                            CustomText(
-                              text: listOfItems[index1],
-                              fontfamilly: montHeavy,
-                              sizeOfFont: 22,
-                              color: hintColor,
-                            ),
-                          ],
-                        ),
+              for (int index1 = 0; index1 < listOfItems.length; index1++)
+                ListTile(
+                  onTap: () {
+                    Navigator.pop(context);
+                    if (index1 == 2) {
+                      onClick(3);
+                    } else if (index1 == 0) {
+                      onClick(2);
+                    } else if (index1 == 1) {
+                      onClick(4);
+                    } else if (index1 == 3) {
+                      onClick(1);
+                    } else if (index1 == 4) {
+                      onClick(5);
+                    } else if (index1 == 5) {
+                      onClick(6);
+                    } else if (index1 == 6) {
+                      onClick(7);
+                    }
+                  },
+                  title: Align(
+                    alignment: Alignment.topRight,
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 15.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          index1 == 4 ? Image.asset(eclipse, height: 14, width: 14,) : Text(""),
+                          SizedBox(width: 5,),
+                          CustomText(
+                            text: listOfItems[index1],
+                            fontfamilly: montHeavy,
+                            sizeOfFont: 22,
+                            color: hintColor,
+                          ),
+                        ],
                       ),
                     ),
                   ),
                 ),
-              ),
-              const Spacer(),
+              Spacer(),
             ],
           ),
           Positioned(
