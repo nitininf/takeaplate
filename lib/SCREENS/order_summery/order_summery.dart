@@ -12,10 +12,14 @@ import '../../../UTILS/app_images.dart';
 import '../../../UTILS/fontfaimlly_string.dart';
 import '../../CUSTOM_WIDGETS/common_edit_text.dart';
 import '../../MULTI-PROVIDER/CartOperationProvider.dart';
+import '../../MULTI-PROVIDER/PaymentDetailsProvider.dart';
+import '../../Response_Model/AddPaymentCardResponse.dart';
 import '../../Response_Model/AddToCartResponse.dart';
+import '../../Response_Model/CardListResponse.dart';
 import '../../Response_Model/CartListingResponse.dart';
 import '../../UTILS/app_strings.dart';
 import '../../UTILS/dialog_helper.dart';
+import '../../UTILS/request_string.dart';
 
 TextEditingController nameController = TextEditingController();
 TextEditingController cardNumberController = TextEditingController();
@@ -23,7 +27,8 @@ TextEditingController expiryController = TextEditingController();
 TextEditingController cvvController = TextEditingController();
 
 
-
+final CartOperationProvider cartOperationProvider = CartOperationProvider();
+final PaymentDetailsProvider carDOperationProvider = PaymentDetailsProvider();
 class OrderSummeryScreen extends StatefulWidget {
   const OrderSummeryScreen({super.key});
 
@@ -33,11 +38,12 @@ class OrderSummeryScreen extends StatefulWidget {
 
 class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
 
-  final CartOperationProvider cartOperationProvider = CartOperationProvider();
+
   int currentPage = 1;
   bool isLoading = false;
   bool hasMoreData = true;
   List<CartItems> cartItemsData = [];
+  List<CardData> cardListData = [];
   var totalPrice = 0;
 
   @override
@@ -75,6 +81,28 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
             if (mounted) {
               hasMoreData = false;
               cartItemsData.clear();
+
+            }
+          });
+        }
+
+        final paymentCardData = await carDOperationProvider.getCardList();
+
+        if (paymentCardData.data != null &&
+            paymentCardData.data!.isNotEmpty) {
+          setState(() {
+            if (mounted) {
+              cardListData = paymentCardData.data!;
+
+              // cartItemsData.addAll(nextPageData.cartItems!);
+              // currentPage++;
+            }
+          });
+        } else {
+          setState(() {
+            if (mounted) {
+              hasMoreData = false;
+              cardListData.clear();
 
             }
           });
@@ -257,18 +285,23 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
             SizedBox(
               height: 10,
             ),
-            Container(
-                decoration: BoxDecoration(
-                  color: hintColor,
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(width: 0, color: grayColor),
-                ),
-                child: Column(
-                  children: [
-                    getMasterCard(mastercardColor, "-2211"),
-                    getMasterCard(hintColor, "-4251"),
-                  ],
-                )),
+            // Container(
+            //     decoration: BoxDecoration(
+            //       color: hintColor,
+            //       borderRadius: BorderRadius.circular(20),
+            //       border: Border.all(width: 0, color: grayColor),
+            //     ),
+            //     child: Column(
+            //       children: [
+            //         getMasterCard(mastercardColor, "-2211"),
+            //         getMasterCard(hintColor, "-4251"),
+            //       ],
+            //     )),
+
+            getPaymentCardList(),
+
+
+
             Padding(
               padding: const EdgeInsets.only(
                   top: 30.0, right: 33, left: 33, bottom: 20),
@@ -288,7 +321,32 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
     );
   }
 
-  Widget getMasterCard(Color colorbg, String payment) {
+  Widget getPaymentCardList() {
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      itemCount: cardListData.length,
+      itemBuilder: (context, index) {
+        if (index < cardListData.length) {
+          return Container(
+            margin: EdgeInsets.only(bottom: 10.0), // Adjust the bottom margin as needed
+            child: getMasterCard(hintColor, index, cardListData[index]),
+          );
+        } else {
+          return FutureBuilder(
+            future: Future.delayed(Duration(milliseconds: 500)),
+            builder: (context, snapshot) =>
+            snapshot.connectionState == ConnectionState.done
+                ? SizedBox()
+                : Center(child: CircularProgressIndicator()),
+          );
+        }
+      },
+    );
+  }
+
+
+  Widget getMasterCard(Color colorbg, int index, CardData cardListData) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 1, vertical: 0),
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
@@ -299,9 +357,31 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
       ),
       child: Row(
         children: [
-          Image.asset(
-            master_card,
-            fit: BoxFit.contain,
+          cardListData.imagePath != null  && !(cardListData.imagePath)!.contains("SocketException")
+              ? Container(
+        child: ClipRRect(
+          child: Container(
+            padding: EdgeInsets.all(2),
+            decoration: BoxDecoration(
+              shape: BoxShape.rectangle,
+              
+              border: Border.all(
+                color: Colors.black,
+                width: 1.0, // Adjust the width as needed
+              ),
+            ),
+            child: Image.network(
+              cardListData.imagePath!,
+              fit: BoxFit.cover,
+              height: 30,
+              width: 30,
+            ),
+          ),
+        ),
+      )
+
+      : Image.asset(
+            food_image,
             height: 40,
             width: 70,
           ),
@@ -310,13 +390,13 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
           ),
           Expanded(
               child: CustomText(
-                text: "MasterCard",
+                text: cardListData.cardType ?? "",
                 color: viewallColor,
                 sizeOfFont: 14,
                 fontfamilly: montBold,
               )),
           CustomText(
-            text: payment,
+            text:'- ${cardListData.cardNumber?.substring(cardListData.cardNumber!.length-4, cardListData.cardNumber!.length)}' ?? "",
             color: viewallColor,
             sizeOfFont: 14,
             fontfamilly: montRegular,
@@ -346,6 +426,9 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
       },
     );
   }
+
+
+
 
   Widget getCardViews(int index, CartItems itemData) {
     return Padding(
@@ -578,7 +661,7 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
     );
   }
 
-  static Future<void> addCardDialoge(BuildContext context) async {
+   Future<void> addCardDialoge(BuildContext context) async {
     showDialog(
       context: context,
       useSafeArea: false,
@@ -601,7 +684,7 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
     );
   }
 
-  static Widget paymentDetails(BuildContext context) {
+   Widget paymentDetails(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
 
     String validateCardType(String testCard) {
@@ -851,24 +934,116 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
                             border: Border.all(width: 1, color: btnbgColor),
                           ),
                           child: GestureDetector(
-                              onTap: () {
+                              onTap: () async {
 
                                 var cardNum = cardNumberController.text;
                                 var validatedCard = cardNum.replaceAll(" ", "");
                                 String cardType = validateCardType(validatedCard);
                                 print("Card Type: ${cardType}");
-                                print(nameController.text +
-                                    "\n" +
-                                    cardNumberController.text +
-                                    "\n" +
-                                    expiryController.text +
-                                    "\n" +
-                                    cvvController.text);
-                                nameController.text = "";
-                                cardNumberController.text = "";
-                                expiryController.text = "";
-                                cvvController.text = "";
 
+
+                                if(nameController.text.isNotEmpty && cardNumberController.text.isNotEmpty && expiryController.text.isNotEmpty && cvvController.text.isNotEmpty && cardType.isNotEmpty){
+
+                                  try {
+                                    var formData = {
+                                      RequestString.NAME_ON_CARD: nameController.text,
+                                      RequestString.CARD_NUMBER: cardNumberController.text.replaceAll(" ", ""),
+                                      RequestString.EXPIRY_DATE: expiryController.text,
+                                      RequestString.CVV: cvvController.text,
+                                      RequestString.CARD_TYPE: cardType,
+
+                                    };
+
+                                    AddPaymentCardResponse data = await Provider.of<PaymentDetailsProvider>(context, listen: false)
+                                        .addPaymentCard(formData);
+
+                                    if (data.status == true && data.message == "Payment card saved successfully") {
+
+
+                                      final paymentCardData = await carDOperationProvider.getCardList();
+
+                                      if (paymentCardData.data != null &&
+                                          paymentCardData.data!.isNotEmpty) {
+                                        setState(() {
+                                          if (mounted) {
+                                            cardListData = paymentCardData.data!;
+
+                                            // cartItemsData.addAll(nextPageData.cartItems!);
+                                            // currentPage++;
+                                          }
+                                        });
+                                      } else {
+                                        setState(() {
+                                          if (mounted) {
+                                            hasMoreData = false;
+                                            cardListData.clear();
+
+                                          }
+                                        });
+                                      }
+
+
+
+                                      final snackBar = SnackBar(
+                                        content:  Text('${data.message}'),
+
+                                      );
+
+                                      // Show the SnackBar
+                                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                                      // Automatically hide the SnackBar after 1 second
+                                      Future.delayed(Duration(milliseconds: 1000), () {
+                                        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                      });
+
+                                      nameController.text = "";
+                                      cardNumberController.text = "";
+                                      expiryController.text = "";
+                                      cvvController.text = "";
+
+                                      // Navigate to the next screen or perform other actions after login
+                                    } else {
+                                      // Login failed
+                                      print("Something went wrong: ${data.message}");
+
+                                      final snackBar = SnackBar(
+                                        content:  Text('${data.message}'),
+
+                                      );
+
+                                      // Show the SnackBar
+                                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                                      // Automatically hide the SnackBar after 1 second
+                                      Future.delayed(Duration(milliseconds: 1000), () {
+                                        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                      });
+
+                                    }
+                                  } catch (e) {
+                                    // Display error message
+                                    print("Error: $e");
+                                  }
+
+
+                                }else{
+
+                                  final snackBar = SnackBar(
+                                    content: const Text('Please enter valid Payment card details..'),
+                                    action: SnackBarAction(
+                                      label: 'Ok',
+                                      onPressed: () {
+                                        // Some code to undo the change.
+                                      },
+                                    ),
+                                  );
+
+                                  // Find the ScaffoldMessenger in the widget tree
+                                  // and use it to show a SnackBar.
+                                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                                }
 
                                 Navigator.pop(navigatorKey.currentContext!);
                               },

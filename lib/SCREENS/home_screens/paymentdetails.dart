@@ -13,9 +13,12 @@ import '../../CUSTOM_WIDGETS/common_email_field.dart';
 import '../../CUSTOM_WIDGETS/custom_app_bar.dart';
 import '../../CUSTOM_WIDGETS/custom_search_field.dart';
 import '../../MULTI-PROVIDER/FavoriteOperationProvider.dart';
+import '../../MULTI-PROVIDER/PaymentDetailsProvider.dart';
+import '../../Response_Model/AddPaymentCardResponse.dart';
 import '../../Response_Model/FavAddedResponse.dart';
 import '../../Response_Model/FavDeleteResponse.dart';
 import '../../Response_Model/RestaurantDealResponse.dart';
+import '../../UTILS/request_string.dart';
 import '../../UTILS/validation.dart';
 
 class PaymentDetailsScreen extends StatefulWidget {
@@ -307,22 +310,98 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
               Align(
                 alignment: Alignment.center,
                 child: GestureDetector(
-                  onTap: () {
+                  onTap: () async {
                     var cardNum = cardNumberController.text;
                     var validatedCard = cardNum.replaceAll(" ", "");
                     String cardType = validateCardType(validatedCard);
                     print("Card Type: ${cardType}");
-                    print(nameController.text +
-                        "\n" +
-                        cardNumberController.text +
-                        "\n" +
-                        expiryController.text +
-                        "\n" +
-                        cvvController.text);
-                    nameController.text = "";
-                    cardNumberController.text = "";
-                    expiryController.text = "";
-                    cvvController.text = "";
+
+
+if(nameController.text.isNotEmpty && cardNumberController.text.isNotEmpty && expiryController.text.isNotEmpty && cvvController.text.isNotEmpty && cardType.isNotEmpty){
+
+  try {
+    var formData = {
+      RequestString.NAME_ON_CARD: nameController.text,
+      RequestString.CARD_NUMBER: cardNumberController.text.replaceAll(" ", ""),
+      RequestString.EXPIRY_DATE: expiryController.text,
+      RequestString.CVV: cvvController.text,
+      RequestString.CARD_TYPE: cardType,
+
+    };
+
+    AddPaymentCardResponse data = await Provider.of<PaymentDetailsProvider>(context, listen: false)
+        .addPaymentCard(formData);
+
+    if (data.status == true && data.message == "Payment card saved successfully") {
+
+      final snackBar = SnackBar(
+        content:  Text('${data.message}'),
+
+      );
+
+      // Show the SnackBar
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+      // Automatically hide the SnackBar after 1 second
+      Future.delayed(Duration(milliseconds: 1000), () {
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      });
+
+      nameController.text = "";
+      cardNumberController.text = "";
+      expiryController.text = "";
+      cvvController.text = "";
+
+      // Navigate to the next screen or perform other actions after login
+    } else {
+      // Login failed
+      print("Something went wrong: ${data.message}");
+
+      final snackBar = SnackBar(
+        content:  Text('${data.message}'),
+
+      );
+
+      // Show the SnackBar
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+      // Automatically hide the SnackBar after 1 second
+      Future.delayed(Duration(milliseconds: 1000), () {
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      });
+
+    }
+  } catch (e) {
+    // Display error message
+    print("Error: $e");
+  }
+
+
+}else{
+
+  final snackBar = SnackBar(
+    content: const Text('Please enter valid Payment card details..'),
+    action: SnackBarAction(
+      label: 'Ok',
+      onPressed: () {
+        // Some code to undo the change.
+      },
+    ),
+  );
+
+  // Find the ScaffoldMessenger in the widget tree
+  // and use it to show a SnackBar.
+  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+}
+
+
+
+
+
+
+
+
                   },
                   child: Container(
                       margin: const EdgeInsets.symmetric(

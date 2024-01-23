@@ -45,6 +45,7 @@ import 'FavCardsProvider.dart';
 import 'FavoriteOperationProvider.dart';
 import 'HomeDataListProvider.dart';
 import 'OrderAndPayProvider.dart';
+import 'PaymentDetailsProvider.dart';
 import 'PlaceListProvider.dart';
 import 'PrivacyPolicyProvider.dart';
 import 'SignUp_StepTwo.dart';
@@ -74,6 +75,7 @@ MultiProvider getProviders() {
       ChangeNotifierProvider(create: (_) => TermsAndConditionsProvider()),
       ChangeNotifierProvider(create: (_) => FavoriteOperationProvider()),
       ChangeNotifierProvider(create: (_) => HomeDataListProvider()),
+      ChangeNotifierProvider(create: (_) => PaymentDetailsProvider()),
 
     ],
     child:

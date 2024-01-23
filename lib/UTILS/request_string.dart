@@ -65,5 +65,15 @@ class RequestString{
   static const String DEAL_ID = "deal_id";
   static const String QUANTITY = "quantity";
 
+  static const String NAME_ON_CARD = "card_name";
+  static const String CARD_NUMBER = "card_number";
+  static const String EXPIRY_DATE = "expiry_date";
+  static const String CVV = "cvv";
+  static const String CARD_TYPE = "card_type";
+
+
+
+
+
 
 }

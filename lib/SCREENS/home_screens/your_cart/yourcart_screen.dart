@@ -67,8 +67,6 @@ class _YourCardScreenState extends State<YourCardScreen> {
             }
           });
         }
-      } catch (error) {
-        print('Error loading more data: $error');
       } finally {
         setState(() {
           if (mounted) {
@@ -82,7 +80,6 @@ class _YourCardScreenState extends State<YourCardScreen> {
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
-    double screenWidth = MediaQuery.of(context).size.width;
 
     return Stack(
       children: [
@@ -102,7 +99,7 @@ class _YourCardScreenState extends State<YourCardScreen> {
             borderRadius: BorderRadius.circular(20),
             child: Container(
               color: Colors.black.withOpacity(0.1),
-              child: Center(
+              child: const Center(
                 child: CircularProgressIndicator(),
               ),
             ),
@@ -113,20 +110,19 @@ class _YourCardScreenState extends State<YourCardScreen> {
   }
 
   Widget getView(double screenHeight, BuildContext context) {
-    CartOperationProvider cartProvider =
-        Provider.of<CartOperationProvider>(context);
+    CartOperationProvider cartProvider = Provider.of<CartOperationProvider>(context);
 
     return Expanded(
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
+            const SizedBox(
               height: 18,
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 8.0),
-              child: const CustomText(
+            const Padding(
+              padding: EdgeInsets.only(left: 8.0),
+              child: CustomText(
                 text: "YOUR CART",
                 color: editbgColor,
                 sizeOfFont: 20,
@@ -140,7 +136,7 @@ class _YourCardScreenState extends State<YourCardScreen> {
                   border: Border.all(width: 1, color: grayColor)),
               child: Column(
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   getVerticalItemList(),
@@ -158,7 +154,7 @@ class _YourCardScreenState extends State<YourCardScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          CustomText(
+                          const CustomText(
                             text: "Total",
                             color: btntxtColor,
                             sizeOfFont: 21,
@@ -213,18 +209,18 @@ class _YourCardScreenState extends State<YourCardScreen> {
   Widget getVerticalItemList() {
     return ListView.builder(
       shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       itemCount: cartItemsData.length,
       itemBuilder: (context, index) {
         if (index < cartItemsData.length) {
           return getCardViews(index, cartItemsData[index]);
         } else {
           return FutureBuilder(
-            future: Future.delayed(Duration(milliseconds: 500)),
+            future: Future.delayed(const Duration(milliseconds: 500)),
             builder: (context, snapshot) =>
                 snapshot.connectionState == ConnectionState.done
-                    ? SizedBox()
-                    : Center(child: CircularProgressIndicator()),
+                    ? const SizedBox()
+                    : const Center(child: CircularProgressIndicator()),
           );
         }
       },
@@ -254,7 +250,7 @@ class _YourCardScreenState extends State<YourCardScreen> {
                       height: 40,
                       width: 40,
                     ),
-              SizedBox(
+              const SizedBox(
                 width: 8,
               ),
               Expanded(
@@ -302,7 +298,6 @@ class _YourCardScreenState extends State<YourCardScreen> {
                         onTap: () async {
                           var cartId = itemData.cartId ?? '';
 
-                          print('cartId:$cartId');
 
                           try {
                             AddToCartResponse decrementStatus =
@@ -314,28 +309,11 @@ class _YourCardScreenState extends State<YourCardScreen> {
                             if (decrementStatus.status == true &&
                                 decrementStatus.message ==
                                     "Quantity decremented successfully.") {
-                              // Print data to console
-                              print(decrementStatus);
 
-                              // try {
-                              //   final refreshedData =
-                              //       await cartOperationProvider.getCartList();
-                              //
-                              //   if (refreshedData.cartItems != null &&
-                              //       refreshedData.cartItems!.isNotEmpty) {
-                              //     setState(() {
-                              //       cartItemsData = refreshedData.cartItems!;
-                              //     });
-                              //   }
-                              // } catch (error) {
-                              //   print('Error refreshing data: $error');
-                              // }
 
                               _loadData();
                             } else {
                               // API call failed
-                              print(
-                                  "Something went wrong: ${decrementStatus.message}");
 
                               final snackBar = SnackBar(
                                 content: Text('${decrementStatus.message}'),
@@ -346,14 +324,13 @@ class _YourCardScreenState extends State<YourCardScreen> {
                                   .showSnackBar(snackBar);
 
                               // Automatically hide the SnackBar after 1 second
-                              Future.delayed(Duration(milliseconds: 1000), () {
+                              Future.delayed(const Duration(milliseconds: 1000), () {
                                 ScaffoldMessenger.of(context)
                                     .hideCurrentSnackBar();
                               });
                             }
                           } catch (e) {
                             // Display error message
-                            print("Error: $e");
                           }
                         },
                         child: Image.asset(
@@ -362,7 +339,7 @@ class _YourCardScreenState extends State<YourCardScreen> {
                           width: 9,
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 8,
                       ),
                       CustomText(
@@ -370,14 +347,13 @@ class _YourCardScreenState extends State<YourCardScreen> {
                         sizeOfFont: 12,
                         color: hintColor,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 8,
                       ),
                       GestureDetector(
                         onTap: () async {
                           var cartId = itemData.cartId ?? '';
 
-                          print('cartId:$cartId');
 
                           try {
                             AddToCartResponse incrementStatus =
@@ -390,7 +366,6 @@ class _YourCardScreenState extends State<YourCardScreen> {
                                 incrementStatus.message ==
                                     "Quantity incremented successfully.") {
                               // Print data to console
-                              print(incrementStatus);
 
                               try {
                                 final refreshedData =
@@ -403,14 +378,11 @@ class _YourCardScreenState extends State<YourCardScreen> {
                                   });
                                 }
                               } catch (error) {
-                                print('Error refreshing data: $error');
                               }
 
                               _loadData();
                             } else {
                               // API call failed
-                              print(
-                                  "Something went wrong: ${incrementStatus.message}");
 
                               final snackBar = SnackBar(
                                 content: Text('${incrementStatus.message}'),
@@ -421,17 +393,16 @@ class _YourCardScreenState extends State<YourCardScreen> {
                                   .showSnackBar(snackBar);
 
                               // Automatically hide the SnackBar after 1 second
-                              Future.delayed(Duration(milliseconds: 1000), () {
+                              Future.delayed(const Duration(milliseconds: 1000), () {
                                 ScaffoldMessenger.of(context)
                                     .hideCurrentSnackBar();
                               });
                             }
                           } catch (e) {
                             // Display error message
-                            print("Error: $e");
                           }
                         },
-                        child: Icon(
+                        child: const Icon(
                           Icons.add,
                           color: hintColor,
                           size: 12,
@@ -450,10 +421,10 @@ class _YourCardScreenState extends State<YourCardScreen> {
               ),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 5,
           ),
-          Divider(
+          const Divider(
             color: grayColor,
             thickness: 0,
           )
