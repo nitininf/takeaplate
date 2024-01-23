@@ -22,11 +22,10 @@ class OrderAndPayScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var commonProvider = Provider.of<CommonCounter>(context, listen: false);
-    var orderAndPayProvider =
-        Provider.of<OrderAndPayProvider>(context, listen: false);
+    var orderAndPayProvider = Provider.of<OrderAndPayProvider>(context, listen: false);
 
-    final DealData data =
-        ModalRoute.of(context)!.settings.arguments as DealData;
+    final DealData data = ModalRoute.of(context)!.settings.arguments as DealData;
+
     var dealId = data.id;
     return Scaffold(
       backgroundColor: bgColor,
@@ -62,6 +61,7 @@ class OrderAndPayScreen extends StatelessWidget {
                           btnText: orderAndPay,
                           onClick: () {
                             Navigator.pushNamed(
+                                arguments: data,
                                 context, '/PaymentDetailsScreen');
                           },
                         ),
@@ -125,8 +125,7 @@ class OrderAndPayScreen extends StatelessWidget {
                                     // Navigate to the next screen or perform other actions after login
                                   } else {
                                     // Login failed
-                                    print(
-                                        "Something went wrong: ${data.message}");
+                                    print("Something went wrong: ${data.message}");
 
                                     final snackBar = SnackBar(
                                       content: Text('${data.message}'),
@@ -199,8 +198,7 @@ class OrderAndPayScreen extends StatelessWidget {
     );
   }
 
-  Widget getCards(BuildContext context, OrderAndPayProvider orderAndPayProvider,
-      CommonCounter commonProvider, DealData data) {
+  Widget getCards(BuildContext context, OrderAndPayProvider orderAndPayProvider, CommonCounter commonProvider, DealData data) {
     return Consumer<OrderAndPayProvider>(
         builder: ((context, orderAndPayProvider, child) {
       return Container(
@@ -342,9 +340,7 @@ class OrderAndPayScreen extends StatelessWidget {
                     fontfamilly: montHeavy),
               ],
             ),
-            SizedBox(
-              height: 10,
-            ),
+
             viewMore(commonProvider, orderAndPayProvider, data),
             // SizedBox(
             //   height: 10,
@@ -371,9 +367,19 @@ class OrderAndPayScreen extends StatelessWidget {
                 SizedBox(
                   height: 10,
                 ),
-                Row(
+                Column(
                   children: [
-                    featureImage(data.allergens ?? "")
+
+                    featureImage(data.allergens ?? ""),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    CustomText(
+                      text: data.allergens ?? "",
+                      fontfamilly: montRegular,
+                      sizeOfFont: 10,
+                      color: cardTextColor,
+                    ),
                     // for (var feature in orderAndPayProvider.foodData[0]["features"])
                     //   featureImage(feature),
                   ],
@@ -414,6 +420,7 @@ class OrderAndPayScreen extends StatelessWidget {
   }
 
   Widget featureImage(String feature) {
+    print('feature = $feature');
     String imagePath = "";
 
     switch (feature) {
@@ -424,7 +431,28 @@ class OrderAndPayScreen extends StatelessWidget {
         imagePath = soy_free;
         break;
       case "Lactose Free":
-        imagePath = location_freee;
+        imagePath = lactose_freee;
+        break;
+      case "Eggs Free":
+        imagePath = egg_free;
+        break;
+      case "Sugar Free":
+        imagePath = sugar_freee;
+        break;
+      case "GMO Free":
+        imagePath = gmo_freee;
+        break;
+      case "Shellfish Free":
+        imagePath = shellfish_freee;
+        break;
+      case "Tree Nuts Free":
+        imagePath = treenuts_freee;
+        break;
+      case "Fish Free":
+        imagePath = fish_free;
+        break;
+      case "Peanuts Free":
+        imagePath = peanuts_freee;
         break;
       // Add more cases for other features if needed
     }

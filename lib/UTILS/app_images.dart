@@ -21,8 +21,17 @@ const String save_icon = "images/save_icon.png";
 const String save_icon_red = "images/heart.png";
 const String star_image = "images/star_image.png";
 const String gluten_free = "images/gluten_free.png";
+const String egg_free = "images/egg_free.png";
 const String soy_free = "images/soy_free.png";
-const String location_freee = "images/location_free.png";
+const String lactose_freee = "images/location_free.png";
+const String fish_free = "images/fish_free.png";
+const String gmo_freee = "images/gmo_free.png";
+const String peanuts_freee = "images/peanuts_free.png";
+const String shellfish_freee = "images/shellfish_free.png";
+const String sugar_freee = "images/sugar_free.png";
+const String treenuts_freee = "images/tree_nuts_free.png";
+
+
 const String radionicon = "images/radionicon.png";
 const String radiofficon = "images/radiooff_icon.png";
 const String profile = "images/profile.png";

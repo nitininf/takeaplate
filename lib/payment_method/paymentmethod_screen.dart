@@ -32,7 +32,7 @@ class PaymentMethodScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(20.0),
                 child: CommonButton(btnText: "ADD NEW",btnBgColor: btnbgColor,btnTextColor: btntxtColor,onClick: (){
                  // Navigator.pushNamed(context, '/RestrorentProfileScreen');
-                  DialogHelper.addCardDialoge(context);
+                  DialogHelper.addCardDialog(context);
                 },),
               ),
             

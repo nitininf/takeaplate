@@ -410,7 +410,7 @@ class DialogHelper {
     Navigator.of(context).pop();
   }
 
-  static Future<void> addCardDialoge(BuildContext context) async {
+  static Future<void> addCardDialog(BuildContext context) async {
     showDialog(
       context: context,
       useSafeArea: false,

@@ -1,9 +1,7 @@
 import 'package:custom_rating_bar/custom_rating_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
 import 'package:provider/provider.dart';
-import 'package:takeaplate/SCREENS/contact_us/contacctus_settings.dart';
 import 'package:takeaplate/UTILS/app_strings.dart';
 import '../../../CUSTOM_WIDGETS/custom_text_style.dart';
 import '../../../MULTI-PROVIDER/FavoriteOperationProvider.dart';
@@ -82,7 +80,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
 
       } catch (error) {
-        print('Error loading more data: $error');
       } finally {
         setState(() {
           isLoading = false;
@@ -115,14 +112,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                 return Column(
                   children: [
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     getView(context),
                   ],
                 );
               }
             } else {
               // Show a loading indicator while fetching data
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             }
           },
         ),
@@ -189,7 +186,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     const CustomText(text: "Salad & Co.", maxLin:1,color: viewallColor, fontfamilly: montRegular,sizeOfFont: 14,),
 
                     const CustomText(text: "Tomorrow-7:35-8:40 Am",maxLin: 1, color: graysColor,sizeOfFont: 12, fontfamilly: montRegular),
-                    SizedBox(height: 5,),
+                    const SizedBox(height: 5,),
                     Row(
                       children: [
                         Expanded(
@@ -204,13 +201,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             child: const CustomText(text: "READY FOR PICKUP",maxLin:1,sizeOfFont: 11,fontfamilly:montHeavy,color: readyColor,),
                           ),
                         ),
-                        SizedBox(width: 5,),
-                        Expanded(child: CustomText(text: "84 Km", color: graysColor,sizeOfFont: 13, fontfamilly: montSemiBold,)),
+                        const SizedBox(width: 5,),
+                        const Expanded(child: CustomText(text: "84 Km", color: graysColor,sizeOfFont: 13, fontfamilly: montSemiBold,)),
                       ],
 
                     ),
-                    SizedBox(height: 0,),
-                    CustomText(text: "\$"+"9.99", color: dolorColor,sizeOfFont: 20, fontfamilly: montHeavy,),
+                    const SizedBox(height: 0,),
+                    const CustomText(text: "\$"+"9.99", color: dolorColor,sizeOfFont: 20, fontfamilly: montHeavy,),
 
                   ],
                 ),
@@ -264,7 +261,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     )
                 ): Image.asset(profile,height: 94,width: 95,),
 
-                SizedBox(width: 20,),
+                const SizedBox(width: 20,),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -339,17 +336,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: List.generate(
-          favoriteStoresAndDeals!.length,
+          favoriteStoresAndDeals.length,
               (index) => GestureDetector(
               onTap: () {
                 Navigator.pushNamed(
                   navigatorKey.currentContext!,
                   '/RestaurantsProfileScreen',
-                  arguments: favoriteStoresAndDeals![
+                  arguments: favoriteStoresAndDeals[
                   index], // Pass the data as arguments
                 );
               },
-              child: getFavCardsData(index, favoriteStoresAndDeals![index],context)),
+              child: getFavCardsData(index, favoriteStoresAndDeals[index],context)),
         ),
       ),
     );
@@ -381,16 +378,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 fontfamilly: montRegular,
                 sizeOfFont: 14,
               ),
-              CustomText(
+              const CustomText(
                 text: '3 Offers available',
                 color: offerColor,
                 sizeOfFont: 12,
                 fontfamilly: montBook,
               ),
-              SizedBox(height: 1),
+              const SizedBox(height: 1),
               Row(
                 children: [
-                  RatingBar.readOnly(
+                  const RatingBar.readOnly(
                     filledIcon: Icons.star,
                     emptyIcon: Icons.star_border,
                     halfFilledIcon: Icons.star_half,
@@ -401,7 +398,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     size: 18,
                     maxRating: 5,
                   ),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   Container(
                     margin:
                     const EdgeInsets.symmetric(horizontal: 0, vertical: 3),
@@ -431,10 +428,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ClipRRect(
                 borderRadius: BorderRadius.circular(15.0),
                 child: Container(
-                  padding: EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(8.0),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15.0),
-                    gradient: LinearGradient(
+                    gradient: const LinearGradient(
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                       colors: [
@@ -465,8 +462,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   onTap: () async {
                     bool? ratingStatus = favoriteStores.favourite;
 
-                    print('ratingStatus:$ratingStatus');
-                    print('StoreId: ${favoriteStores.id}');
 
                     try {
                       if (ratingStatus == false) {
@@ -486,7 +481,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             favData.message ==
                                 "Store Added in favourite successfully.") {
                           // Print data to console
-                          print(favData);
 
                           final snackBar = SnackBar(
                             content: Text('${favData.message}'),
@@ -496,7 +490,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
                           // Automatically hide the SnackBar after 1 second
-                          Future.delayed(Duration(milliseconds: 1000), () {
+                          Future.delayed(const Duration(milliseconds: 1000), () {
                             ScaffoldMessenger.of(context).hideCurrentSnackBar();
                           });
 
@@ -508,7 +502,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                         } else {
                           // API call failed
-                          print("Something went wrong: ${favData.message}");
 
                           final snackBar = SnackBar(
                             content: Text('${favData.message}'),
@@ -518,7 +511,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
                           // Automatically hide the SnackBar after 1 second
-                          Future.delayed(Duration(milliseconds: 1000), () {
+                          Future.delayed(const Duration(milliseconds: 1000), () {
                             ScaffoldMessenger.of(context).hideCurrentSnackBar();
                           });
                         }
@@ -533,7 +526,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             delData.message ==
                                 "Favourite Store deleted successfully") {
                           // Print data to console
-                          print(delData);
 
                           final snackBar = SnackBar(
                             content: Text('${delData.message}'),
@@ -543,7 +535,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
                           // Automatically hide the SnackBar after 1 second
-                          Future.delayed(Duration(milliseconds: 1000), () {
+                          Future.delayed(const Duration(milliseconds: 1000), () {
                             ScaffoldMessenger.of(context).hideCurrentSnackBar();
                           });
 
@@ -555,7 +547,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                         } else {
                           // API call failed
-                          print("Something went wrong: ${delData.message}");
 
                           final snackBar = SnackBar(
                             content: Text('${delData.message}'),
@@ -565,14 +556,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
                           // Automatically hide the SnackBar after 1 second
-                          Future.delayed(Duration(milliseconds: 1000), () {
+                          Future.delayed(const Duration(milliseconds: 1000), () {
                             ScaffoldMessenger.of(context).hideCurrentSnackBar();
                           });
                         }
                       }
                     } catch (e) {
                       // Display error message
-                      print("Error: $e");
                     }
                   },
                   child: Image.asset(
