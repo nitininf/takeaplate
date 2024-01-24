@@ -14,12 +14,14 @@ import 'app_strings.dart';
 import 'fontfaimlly_string.dart';
 
 class DialogHelper {
+  static double screenHeight =
+      MediaQuery.of(navigatorKey.currentContext!).size.height;
+  static double screenWidth =
+      MediaQuery.of(navigatorKey.currentContext!).size.width;
 
-  static double  screenHeight = MediaQuery.of(navigatorKey.currentContext!).size.height;
-  static double screenWidth = MediaQuery.of(navigatorKey.currentContext!).size.width;
-
-
-  static Future<void> selectDate(BuildContext context, CommonCounter commonCounter, {TextEditingController? controller}) async {
+  static Future<void> selectDate(
+      BuildContext context, CommonCounter commonCounter,
+      {TextEditingController? controller}) async {
     DateTime currentDate = commonCounter.dateTtime;
 
     // Show date picker
@@ -32,199 +34,257 @@ class DialogHelper {
 
     if (selectedDate != null) {
       // Update the controller or perform any other actions with the selected date and time
-        if (controller != null) {
-          controller.text = DateFormat("yyyy-MM-dd").format(selectedDate);
-          print('Selected date and time: $selectedDate');
-        }
+      if (controller != null) {
+        controller.text = DateFormat("yyyy-MM-dd").format(selectedDate);
+        print('Selected date and time: $selectedDate');
+      }
     }
   }
+
 //show forget pass
-  static Future<void> showCommonPopup(BuildContext context,{String? title,String? subtitle,bool? isDelete}) async {
+  static Future<void> showCommonPopup(BuildContext context,
+      {String? title, String? subtitle, bool? isDelete}) async {
     showDialog(
       context: context,
-       useSafeArea: false,
+      useSafeArea: false,
       useRootNavigator: false,
-        barrierDismissible:false,
+      barrierDismissible: false,
       builder: (BuildContext context) {
         return Dialog.fullscreen(
-        /*  shape: RoundedRectangleBorder(
+          /*  shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16.0),
           ),*/
           backgroundColor: Colors.transparent,
-          child:
-          Stack(
+          child: Stack(
             children: [
               Container(
-               color: title==sentPss ? Colors.black.withOpacity(0.1) :dailogColor.withOpacity(0.75),
+                color: title == sentPss
+                    ? Colors.black.withOpacity(0.1)
+                    : dailogColor.withOpacity(0.75),
                 height: double.infinity,
                 width: double.infinity,
               ),
               Column(
                 children: <Widget>[
                   SizedBox(
-                    height: title==sentPss ?screenHeight * 0.08: screenHeight * 0.16,
+                    height: title == sentPss
+                        ? screenHeight * 0.08
+                        : screenHeight * 0.16,
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 0.0,right: 0.0,top: 30.0,bottom: 10),
-                    child:
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 40),
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    padding: const EdgeInsets.only(
+                        left: 0.0, right: 0.0, top: 30.0, bottom: 10),
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 40, vertical: 40),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 12),
                       decoration: BoxDecoration(
                           color: onboardingbgColor,
                           borderRadius: BorderRadius.circular(16),
                           border: Border.all(width: 1, color: hintColor)),
-                      child: subtitle != null ? 
-                      Column(children: [
-                        SizedBox(
-                          height: screenHeight * 0.03,
-                        ),
-                        Image.asset(appLogo,
-                          height: 100,
-                          width: 100,),
-                        const SizedBox(height: 20,),
-                         Align(
-                          alignment: Alignment.center,
-                          child: CustomText(text:title ?? "" ,
-                            sizeOfFont: 19,
-                            color: hintColor,
-                            fontfamilly: montHeavy,
-                            isAlign: true,),
-                        ),
-                        const SizedBox(height: 20,),
-                        Align(
-                           alignment: Alignment.center,
-                           child: CustomText(text: subtitle ?? "",
-                            sizeOfFont: 19,
-                            color: btnbgColor,
-                            fontfamilly: montRegular,
-                            isAlign: true,),
-                         ),
-                        SizedBox(
-                          height: screenHeight * 0.05,
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.only(left: 15.0,right: 15,top: 6,bottom: 20),
-                          child: CommonButton(btnBgColor:onboardingBtn, btnText: done, onClick: (){
-                            if (title == sentPss) {
-                              // Navigate to login screen
-                              Navigator.pushNamed(context, '/Create_Login');
-                            } else {
-                              // Perform the default behavior
-                              Navigator.pop(context);
-                            }
-                          }),
-                        ),
-                        SizedBox(height: 10,)
-                      ])
-                      :  !isDelete! ?
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                        SizedBox(
-                          height: screenHeight * 0.03,
-                        ),
-                        Image.asset(appLogo,
-                          height: 100,
-                          width: 100,),
-                        const SizedBox(height: 20,),
-                        Align(
-                          alignment: Alignment.center,
-                          child: CustomText(text:title ?? "" ,
-                            sizeOfFont: 21,
-                            color: hintColor,
-                            fontfamilly: montHeavy,
-                            isAlign: true,),
-                        ),
-                        const SizedBox(height: 20,),
-
-                       // Image.asset(star_box,height: 42,fit: BoxFit.contain,),
-
-                        RatingBar(
-                            filledIcon: Icons.star,
-                            emptyIcon: Icons.star_border,
-                            onRatingChanged: (value) => print('$value'),
-                            initialRating: 4,
-                          halfFilledIcon: Icons.star_half,
-                          isHalfAllowed: true,
-                          halfFilledColor: btnbgColor,
-
-                            alignment: Alignment.center,
-                            emptyColor: btnbgColor,
-                            filledColor: btnbgColor,
-
-                            maxRating: 5,
-                          ),
-
-
-                        SizedBox(
-                          height: screenHeight * 0.05,
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.only(left: 15.0,right: 15,top: 6,bottom: 20),
-                          child: CommonButton(btnBgColor:onboardingBtn, btnText: "RATE", onClick: (){
-                            Navigator.pop(context);
-                            showCommonPopup(context,title: "YOUR RATING HAS BEEN SUBMITTED",subtitle: "THANK YOU FOR GIVING US YOUR FEEDBACK");
-                          }),
-                        ),
-                        SizedBox(height: 10,)
-                      ]):
-                      Column(children: [
-                        SizedBox(
-                          height: screenHeight * 0.03,
-                        ),
-                        Image.asset(appLogo,
-                          height: 100,
-                          width: 100,),
-                        const SizedBox(height: 20,),
-                        Align(
-                          alignment: Alignment.center,
-                          child: CustomText(text:title ?? "" ,
-                            sizeOfFont: 17,
-                            color: hintColor,
-                            fontfamilly: montBold,
-                            isAlign: true,),
-                        ),
-                        SizedBox(
-                          height: screenHeight * 0.05,
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.only(left: 15.0,right: 15,top: 6,bottom: 20),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: CommonButton(btnBgColor:onboardingBtn, btnText: "YES", onClick: (){
-                                  Navigator.pop(context);
-                                }),
+                      child: subtitle != null
+                          ? Column(children: [
+                              SizedBox(
+                                height: screenHeight * 0.03,
                               ),
-                              SizedBox(width: 10,),
-                              Expanded(
-                                child: CommonButton(btnBgColor:onboardingBtn, btnText: "NO", onClick: (){
-                                  Navigator.pop(context);
-                                }),
-                              ),  
-                            ],
-                          ),
-                        ),
-                        SizedBox(height: 10,)
-                      ]),
+                              Image.asset(
+                                appLogo,
+                                height: 100,
+                                width: 100,
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              Align(
+                                alignment: Alignment.center,
+                                child: CustomText(
+                                  text: title ?? "",
+                                  sizeOfFont: 19,
+                                  color: hintColor,
+                                  fontfamilly: montHeavy,
+                                  isAlign: true,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              Align(
+                                alignment: Alignment.center,
+                                child: CustomText(
+                                  text: subtitle ?? "",
+                                  sizeOfFont: 19,
+                                  color: btnbgColor,
+                                  fontfamilly: montRegular,
+                                  isAlign: true,
+                                ),
+                              ),
+                              SizedBox(
+                                height: screenHeight * 0.05,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 15.0, right: 15, top: 6, bottom: 20),
+                                child: CommonButton(
+                                    btnBgColor: onboardingBtn,
+                                    btnText: done,
+                                    onClick: () {
+                                      if (title == sentPss) {
+                                        // Navigate to login screen
+                                        Navigator.pushNamed(
+                                            context, '/Create_Login');
+                                      } else {
+                                        // Perform the default behavior
+                                        Navigator.pop(context);
+                                      }
+                                    }),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              )
+                            ])
+                          : !isDelete!
+                              ? Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                      SizedBox(
+                                        height: screenHeight * 0.03,
+                                      ),
+                                      Image.asset(
+                                        appLogo,
+                                        height: 100,
+                                        width: 100,
+                                      ),
+                                      const SizedBox(
+                                        height: 20,
+                                      ),
+                                      Align(
+                                        alignment: Alignment.center,
+                                        child: CustomText(
+                                          text: title ?? "",
+                                          sizeOfFont: 21,
+                                          color: hintColor,
+                                          fontfamilly: montHeavy,
+                                          isAlign: true,
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        height: 20,
+                                      ),
+
+                                      // Image.asset(star_box,height: 42,fit: BoxFit.contain,),
+
+                                      RatingBar(
+                                        filledIcon: Icons.star,
+                                        emptyIcon: Icons.star_border,
+                                        onRatingChanged: (value) =>
+                                            print('$value'),
+                                        initialRating: 4,
+                                        halfFilledIcon: Icons.star_half,
+                                        isHalfAllowed: true,
+                                        halfFilledColor: btnbgColor,
+                                        alignment: Alignment.center,
+                                        emptyColor: btnbgColor,
+                                        filledColor: btnbgColor,
+                                        maxRating: 5,
+                                      ),
+
+                                      SizedBox(
+                                        height: screenHeight * 0.05,
+                                      ),
+
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 15.0,
+                                            right: 15,
+                                            top: 6,
+                                            bottom: 20),
+                                        child: CommonButton(
+                                            btnBgColor: onboardingBtn,
+                                            btnText: "RATE",
+                                            onClick: () {
+                                              Navigator.pop(context);
+                                              showCommonPopup(context,
+                                                  title:
+                                                      "YOUR RATING HAS BEEN SUBMITTED",
+                                                  subtitle:
+                                                      "THANK YOU FOR GIVING US YOUR FEEDBACK");
+                                            }),
+                                      ),
+                                      SizedBox(
+                                        height: 10,
+                                      )
+                                    ])
+                              : Column(children: [
+                                  SizedBox(
+                                    height: screenHeight * 0.03,
+                                  ),
+                                  Image.asset(
+                                    appLogo,
+                                    height: 100,
+                                    width: 100,
+                                  ),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  Align(
+                                    alignment: Alignment.center,
+                                    child: CustomText(
+                                      text: title ?? "",
+                                      sizeOfFont: 17,
+                                      color: hintColor,
+                                      fontfamilly: montBold,
+                                      isAlign: true,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: screenHeight * 0.05,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 15.0,
+                                        right: 15,
+                                        top: 6,
+                                        bottom: 20),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          child: CommonButton(
+                                              btnBgColor: onboardingBtn,
+                                              btnText: "YES",
+                                              onClick: () {
+                                                Navigator.pop(context);
+                                              }),
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        Expanded(
+                                          child: CommonButton(
+                                              btnBgColor: onboardingBtn,
+                                              btnText: "NO",
+                                              onClick: () {
+                                                Navigator.pop(context);
+                                              }),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  )
+                                ]),
                     ),
                   ),
                 ],
               ),
-            
             ],
-
           ),
         );
       },
     );
   }
-
 
   //show error dialog
   static Future<void> showErrorDialog(BuildContext context,
@@ -307,14 +367,17 @@ class DialogHelper {
     );
   }
 
-  static Future<void> showPermissionDialog(BuildContext context, {String title = 'Permission', String? description = 'You have permanently denied all permissions. Please give permission in app settings.',}) async {
-    return
-      showDialog<void>(
+  static Future<void> showPermissionDialog(
+    BuildContext context, {
+    String title = 'Permission',
+    String? description =
+        'You have permanently denied all permissions. Please give permission in app settings.',
+  }) async {
+    return showDialog<void>(
       context: context!,
       barrierDismissible: false, // Prevent dismissing by tapping outside
       builder: (BuildContext context) {
-        return
-          Dialog(
+        return Dialog(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
@@ -345,7 +408,11 @@ class DialogHelper {
     );
   }
 
-   Future<void> showDeleteAccountDialog(BuildContext context, {String title = 'Delete Account? ', String? description = 'Are you sure you want to proceed?',}) async {
+  Future<void> showDeleteAccountDialog(
+    BuildContext context, {
+    String title = 'Delete Account? ',
+    String? description = 'Are you sure you want to proceed?',
+  }) async {
     return showDialog<void>(
       context: context!,
       barrierDismissible: false, // Prevent dismissing by tapping outside
@@ -366,7 +433,9 @@ class DialogHelper {
                   style: TextStyle(fontSize: 16),
                   textAlign: TextAlign.center, // Use textAlign property
                 ),
-                SizedBox(height: 10,),
+                SizedBox(
+                  height: 10,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -378,7 +447,8 @@ class DialogHelper {
                             Navigator.of(context).pop();
                           },
                           style: ElevatedButton.styleFrom(
-                            primary: Colors.deepOrangeAccent, // Customize the color as needed
+                            primary: Colors
+                                .deepOrangeAccent, // Customize the color as needed
                           ),
                           child: const Text('NO'),
                         ),
@@ -390,14 +460,14 @@ class DialogHelper {
                           Navigator.of(context).pop();
                         },
                         style: ElevatedButton.styleFrom(
-                          primary: Colors.green, // Customize the color as needed
+                          primary:
+                              Colors.green, // Customize the color as needed
                         ),
                         child: const Text('YES'),
                       ),
                     ),
                   ],
                 ),
-
               ],
             ),
           ),
@@ -415,21 +485,20 @@ class DialogHelper {
       context: context,
       useSafeArea: false,
       useRootNavigator: false,
-      barrierDismissible:false,
+      barrierDismissible: false,
       builder: (BuildContext context) {
         return Dialog.fullscreen(
             backgroundColor: Colors.transparent,
-          child: Stack(
+            child: Stack(
               children: [
                 Container(
-                 color: dailogColor.withOpacity(0.75),
+                  color: dailogColor.withOpacity(0.75),
                   height: double.infinity,
                   width: double.infinity,
                 ),
-                 paymentDetails()
+                paymentDetails()
               ],
-             )
-        );
+            ));
       },
     );
   }
@@ -442,9 +511,9 @@ class DialogHelper {
             height: screenHeight * 0.16,
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 0.0,right: 0.0,top: 30.0,bottom: 10),
-            child:
-            Container(
+            padding: const EdgeInsets.only(
+                left: 0.0, right: 0.0, top: 30.0, bottom: 10),
+            child: Container(
               margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 40),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               decoration: BoxDecoration(
@@ -452,49 +521,79 @@ class DialogHelper {
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(width: 1, color: hintColor)),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                SizedBox(
-                  height: screenHeight * 0.03,
-                ),
-      
-                const CustomText(text: "ADD NEW CARD",color: btnbgColor,fontfamilly: montBold,sizeOfFont: 20,),
-                const SizedBox(height: 25,),
-                CommonEditText(hintText: cardName,isnewCard: true,),
-                const SizedBox(height: 20,),
-                CommonEditText(hintText: cardNum,isnewCard: true,),
-                const SizedBox(height: 20,),
-                Row(
-                  children: [
-                    Expanded(child: CommonEditText(hintText: expiry,isnewCard: true,)),
-                    const SizedBox(width: 10,),
-                    Expanded(child: CommonEditText(hintText: cvv,isnewCard: true,)),
-                  ],
-                ),
-                Align(
-                  alignment: Alignment.center,
-                  child: Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 20),
-                      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-                      decoration: BoxDecoration(
-                        color: btnbgColor,
-                        borderRadius: BorderRadius.circular(30),
-                        border: Border.all(width: 1, color: btnbgColor),
-                      ),
-                      child: GestureDetector(
-                        onTap: (){
-                          Navigator.pop(navigatorKey.currentContext!);
-                        },
-                          child: const CustomText(text: "SAVE", color: btntxtColor, fontfamilly: montHeavy,sizeOfFont: 20,))),
-                ),
-      
-              ]),
+                    SizedBox(
+                      height: screenHeight * 0.03,
+                    ),
+                    const CustomText(
+                      text: "ADD NEW CARD",
+                      color: btnbgColor,
+                      fontfamilly: montBold,
+                      sizeOfFont: 20,
+                    ),
+                    const SizedBox(
+                      height: 25,
+                    ),
+                    CommonEditText(
+                      hintText: cardName,
+                      isnewCard: true,
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    CommonEditText(
+                      hintText: cardNum,
+                      isnewCard: true,
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                            child: CommonEditText(
+                          hintText: expiry,
+                          isnewCard: true,
+                        )),
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                            child: CommonEditText(
+                          hintText: cvv,
+                          isnewCard: true,
+                        )),
+                      ],
+                    ),
+                    Align(
+                      alignment: Alignment.center,
+                      child: Container(
+                          margin: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 20),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 30, vertical: 10),
+                          decoration: BoxDecoration(
+                            color: btnbgColor,
+                            borderRadius: BorderRadius.circular(30),
+                            border: Border.all(width: 1, color: btnbgColor),
+                          ),
+                          child: GestureDetector(
+                              onTap: () {
+                                Navigator.pop(navigatorKey.currentContext!);
+                              },
+                              child: const CustomText(
+                                text: "SAVE",
+                                color: btntxtColor,
+                                fontfamilly: montHeavy,
+                                sizeOfFont: 20,
+                              ))),
+                    ),
+                  ]),
             ),
           ),
         ],
       ),
     );
-
   }
-
 }

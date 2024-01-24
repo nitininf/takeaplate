@@ -26,9 +26,9 @@ TextEditingController cardNumberController = TextEditingController();
 TextEditingController expiryController = TextEditingController();
 TextEditingController cvvController = TextEditingController();
 
-
 final CartOperationProvider cartOperationProvider = CartOperationProvider();
 final PaymentDetailsProvider carDOperationProvider = PaymentDetailsProvider();
+
 class OrderSummeryScreen extends StatefulWidget {
   const OrderSummeryScreen({super.key});
 
@@ -37,14 +37,14 @@ class OrderSummeryScreen extends StatefulWidget {
 }
 
 class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
-
-
   int currentPage = 1;
   bool isLoading = false;
   bool hasMoreData = true;
   List<CartItems> cartItemsData = [];
   List<CardData> cardListData = [];
   var totalPrice = 0;
+
+  int selectedCardIndex = -1;
 
   @override
   void initState() {
@@ -53,7 +53,7 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
   }
 
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
-  GlobalKey<RefreshIndicatorState>();
+      GlobalKey<RefreshIndicatorState>();
 
   void _loadData() async {
     if (!isLoading && hasMoreData) {
@@ -81,15 +81,13 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
             if (mounted) {
               hasMoreData = false;
               cartItemsData.clear();
-
             }
           });
         }
 
         final paymentCardData = await carDOperationProvider.getCardList();
 
-        if (paymentCardData.data != null &&
-            paymentCardData.data!.isNotEmpty) {
+        if (paymentCardData.data != null && paymentCardData.data!.isNotEmpty) {
           setState(() {
             if (mounted) {
               cardListData = paymentCardData.data!;
@@ -103,7 +101,6 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
             if (mounted) {
               hasMoreData = false;
               cardListData.clear();
-
             }
           });
         }
@@ -119,7 +116,6 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -128,23 +124,23 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
     return Stack(
       children: [
         Scaffold(
-        backgroundColor: bgColor,
-        body: SafeArea(
-          child: Padding(
-            padding:
-            const EdgeInsets.only(right: 25.0, left: 25, bottom: 0, top: 0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const CustomAppBar(),
-                SizedBox(
-                  height: 10,
+            backgroundColor: bgColor,
+            body: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.only(
+                    right: 25.0, left: 25, bottom: 0, top: 0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const CustomAppBar(),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    getView(screenHeight, context),
+                  ],
                 ),
-                getView(screenHeight,context),
-              ],
-            ),
-          ),
-        )),
+              ),
+            )),
         Visibility(
           visible: isLoading,
           child: ClipRRect(
@@ -160,6 +156,7 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
       ],
     );
   }
+
   Widget getView(double screenHeight, BuildContext context) {
     return Expanded(
       child: SingleChildScrollView(
@@ -181,9 +178,9 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
                 ),
                 Container(
                   margin:
-                  const EdgeInsets.symmetric(horizontal: 0, vertical: 3),
+                      const EdgeInsets.symmetric(horizontal: 0, vertical: 3),
                   padding:
-                  const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   decoration: BoxDecoration(
                     color: editprofilbgColor,
                     borderRadius: BorderRadius.circular(20),
@@ -202,12 +199,11 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
               height: 15,
             ),
 
-
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(16),
-                  border: Border.all(width: 1, color: grayColor)),
+                  border: Border.all(width: 0.5, color: editprofileColor)),
               child: Column(
                 children: [
                   const SizedBox(
@@ -217,12 +213,12 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
                   SizedBox(height: screenHeight * 0.040),
                   Container(
                     padding:
-                    const EdgeInsets.symmetric(horizontal: 5, vertical: 12),
+                        const EdgeInsets.symmetric(horizontal: 5, vertical: 12),
                     decoration: BoxDecoration(
                         color: onboardingBtn.withOpacity(0.15),
                         borderRadius: BorderRadius.circular(16),
                         border: Border.all(width: 0, color: grayColor)),
-                    child:  Padding(
+                    child: Padding(
                       padding: EdgeInsets.only(left: 8.0, right: 8),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -260,9 +256,9 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
                 ),
                 Container(
                   margin:
-                  const EdgeInsets.symmetric(horizontal: 0, vertical: 3),
+                      const EdgeInsets.symmetric(horizontal: 0, vertical: 3),
                   padding:
-                  const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   decoration: BoxDecoration(
                     color: editprofilbgColor,
                     borderRadius: BorderRadius.circular(20),
@@ -285,22 +281,7 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
             SizedBox(
               height: 10,
             ),
-            // Container(
-            //     decoration: BoxDecoration(
-            //       color: hintColor,
-            //       borderRadius: BorderRadius.circular(20),
-            //       border: Border.all(width: 0, color: grayColor),
-            //     ),
-            //     child: Column(
-            //       children: [
-            //         getMasterCard(mastercardColor, "-2211"),
-            //         getMasterCard(hintColor, "-4251"),
-            //       ],
-            //     )),
-
             getPaymentCardList(),
-
-
 
             Padding(
               padding: const EdgeInsets.only(
@@ -309,10 +290,43 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
                   btnBgColor: btnbgColor,
                   btnText: "ORDER & PAY",
                   onClick: () {
-                    DialogHelper.showCommonPopup(navigatorKey.currentContext!,
-                        title: "YOUR PAYMENT WAS SUCCESSFUL",
-                        subtitle:
-                        "YOU WILL GET A NOTIFICATION WHEN THE ORDER IS CONFIRMED");
+
+
+                    // Check if any item is selected
+                    if (selectedCardIndex != -1) {
+                      // Get the selected item details using selectedCardIndex
+                      CardData selectedCard = cardListData[selectedCardIndex];
+
+                      // Print the selected item details
+                      print("Selected Card Details:");
+                      print("Card Type: ${selectedCard.cardType}");
+                      print("Card Id: ${selectedCard.id}");
+                      print("Last 4 Digits: ${selectedCard.cardNumber?.substring(selectedCard.cardNumber!.length - 4, selectedCard.cardNumber!.length)}");
+
+
+
+                      // Show the success popup
+                      DialogHelper.showCommonPopup(navigatorKey.currentContext!,
+                          title: "YOUR PAYMENT WAS SUCCESSFUL",
+                          subtitle: "YOU WILL GET A NOTIFICATION WHEN THE ORDER IS CONFIRMED");
+                    } else {
+                      // No item selected, show an error message or handle as needed
+
+                      final snackBar = SnackBar(
+                        content:  Text('No card selected'),
+
+                      );
+
+                      // Show the SnackBar
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                      // Automatically hide the SnackBar after 1 second
+                      Future.delayed(Duration(milliseconds: 1000), () {
+                        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                      });
+
+                    }
+
                   }),
             ),
           ],
@@ -322,81 +336,104 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
   }
 
   Widget getPaymentCardList() {
-    return ListView.builder(
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      itemCount: cardListData.length,
-      itemBuilder: (context, index) {
-        if (index < cardListData.length) {
-          return Container(
-            margin: EdgeInsets.only(bottom: 10.0), // Adjust the bottom margin as needed
-            child: getMasterCard(hintColor, index, cardListData[index]),
-          );
-        } else {
-          return FutureBuilder(
-            future: Future.delayed(Duration(milliseconds: 500)),
-            builder: (context, snapshot) =>
-            snapshot.connectionState == ConnectionState.done
-                ? SizedBox()
-                : Center(child: CircularProgressIndicator()),
-          );
-        }
-      },
+    return
+
+      Container(
+      margin: EdgeInsets.all(15),
+      decoration: BoxDecoration(
+        
+        color: Colors.white,
+
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: editprofileColor,width: 0.5),
+
+      ),
+
+      child: ListView.builder(
+        shrinkWrap: true,
+        physics: NeverScrollableScrollPhysics(),
+        itemCount: cardListData.length,
+        itemBuilder: (context, index) {
+          if (index < cardListData.length) {
+            return GestureDetector(
+              onTap: () {
+                // Set the selected index when an item is clicked
+                setState(() {
+                  selectedCardIndex = index;
+                });
+              },
+              child: Container(
+                // Adjust the bottom margin as needed
+
+                child: getMasterCard(hintColor, index, cardListData[index]),
+              ),
+            );
+          } else {
+            return FutureBuilder(
+              future: Future.delayed(Duration(milliseconds: 500)),
+              builder: (context, snapshot) =>
+                  snapshot.connectionState == ConnectionState.done
+                      ? SizedBox()
+                      : Center(child: CircularProgressIndicator()),
+            );
+          }
+        },
+      ),
     );
   }
 
-
   Widget getMasterCard(Color colorbg, int index, CardData cardListData) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 1, vertical: 0),
+      // margin: const EdgeInsets.symmetric(horizontal: 1, vertical: 0),
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
       decoration: BoxDecoration(
-        color: colorbg,
+        color: selectedCardIndex == index ? editprofileColor : null,
         borderRadius: BorderRadius.circular(20),
         border: null,
       ),
       child: Row(
         children: [
-          cardListData.imagePath != null  && !(cardListData.imagePath)!.contains("SocketException")
+          cardListData.imagePath != null &&
+                  !(cardListData.imagePath)!.contains("SocketException")
               ? Container(
-        child: ClipRRect(
-          child: Container(
-            padding: EdgeInsets.all(2),
-            decoration: BoxDecoration(
-              shape: BoxShape.rectangle,
-              
-              border: Border.all(
-                color: Colors.black,
-                width: 1.0, // Adjust the width as needed
-              ),
-            ),
-            child: Image.network(
-              cardListData.imagePath!,
-              fit: BoxFit.cover,
-              height: 30,
-              width: 30,
-            ),
-          ),
-        ),
-      )
-
-      : Image.asset(
-            food_image,
-            height: 40,
-            width: 70,
-          ),
+                  child: ClipRRect(
+                    child: Container(
+                      padding: EdgeInsets.all(2),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.rectangle,
+                        border: Border.all(
+                          color: Colors.black,
+                          width: 1.0, // Adjust the width as needed
+                        ),
+                      ),
+                      child: Image.network(
+                        cardListData.imagePath!,
+                        fit: BoxFit.cover,
+                        height: 30,
+                        width: 30,
+                      ),
+                    ),
+                  ),
+                )
+              : Image.asset(
+                  food_image,
+                  height: 40,
+                  width: 70,
+                ),
           SizedBox(
             width: 10,
           ),
           Expanded(
               child: CustomText(
-                text: cardListData.cardType ?? "",
-                color: viewallColor,
-                sizeOfFont: 14,
-                fontfamilly: montBold,
-              )),
+            text: cardListData.cardType ?? "",
+            color: viewallColor,
+            sizeOfFont: 14,
+            fontfamilly: montBold,
+          )),
           CustomText(
-            text:'- ${cardListData.cardNumber?.substring(cardListData.cardNumber!.length-4, cardListData.cardNumber!.length)}' ?? "",
+            text:
+                '- ${cardListData.cardNumber?.substring(cardListData.cardNumber!.length - 4, cardListData.cardNumber!.length)}' ??
+                    "",
             color: viewallColor,
             sizeOfFont: 14,
             fontfamilly: montRegular,
@@ -418,17 +455,14 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
           return FutureBuilder(
             future: Future.delayed(Duration(milliseconds: 500)),
             builder: (context, snapshot) =>
-            snapshot.connectionState == ConnectionState.done
-                ? SizedBox()
-                : Center(child: CircularProgressIndicator()),
+                snapshot.connectionState == ConnectionState.done
+                    ? SizedBox()
+                    : Center(child: CircularProgressIndicator()),
           );
         }
       },
     );
   }
-
-
-
 
   Widget getCardViews(int index, CartItems itemData) {
     return Padding(
@@ -439,20 +473,21 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              itemData.dealImage != null && !(itemData.dealImage)!.contains("SocketException")
+              itemData.dealImage != null &&
+                      !(itemData.dealImage)!.contains("SocketException")
                   ? ClipRRect(
-                  borderRadius: BorderRadius.circular(10.0),
-                  child: Image.network(
-                    itemData.dealImage!,
-                    fit: BoxFit.cover,
-                    height: 40,
-                    width: 40,
-                  ))
+                      borderRadius: BorderRadius.circular(10.0),
+                      child: Image.network(
+                        itemData.dealImage!,
+                        fit: BoxFit.cover,
+                        height: 40,
+                        width: 40,
+                      ))
                   : Image.asset(
-                food_image,
-                height: 40,
-                width: 40,
-              ),
+                      food_image,
+                      height: 40,
+                      width: 40,
+                    ),
               SizedBox(
                 width: 8,
               ),
@@ -486,9 +521,9 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
                 flex: 0,
                 child: Container(
                   margin:
-                  const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
                   padding:
-                  const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+                      const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
                   decoration: BoxDecoration(
                     color: btnbgColor,
                     borderRadius: BorderRadius.circular(16),
@@ -505,10 +540,10 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
 
                           try {
                             AddToCartResponse decrementStatus =
-                            await Provider.of<CartOperationProvider>(
-                                context,
-                                listen: false)
-                                .decreaseItemQuantity(cartId);
+                                await Provider.of<CartOperationProvider>(
+                                        context,
+                                        listen: false)
+                                    .decreaseItemQuantity(cartId);
 
                             if (decrementStatus.status == true &&
                                 decrementStatus.message ==
@@ -580,10 +615,10 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
 
                           try {
                             AddToCartResponse incrementStatus =
-                            await Provider.of<CartOperationProvider>(
-                                context,
-                                listen: false)
-                                .increaseItemQuantity(cartId);
+                                await Provider.of<CartOperationProvider>(
+                                        context,
+                                        listen: false)
+                                    .increaseItemQuantity(cartId);
 
                             if (incrementStatus.status == true &&
                                 incrementStatus.message ==
@@ -593,7 +628,7 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
 
                               try {
                                 final refreshedData =
-                                await cartOperationProvider.getCartList();
+                                    await cartOperationProvider.getCartList();
 
                                 if (refreshedData.cartItems != null &&
                                     refreshedData.cartItems!.isNotEmpty) {
@@ -661,7 +696,7 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
     );
   }
 
-   Future<void> addCardDialoge(BuildContext context) async {
+  Future<void> addCardDialoge(BuildContext context) async {
     showDialog(
       context: context,
       useSafeArea: false,
@@ -684,7 +719,7 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
     );
   }
 
-   Widget paymentDetails(BuildContext context) {
+  Widget paymentDetails(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
 
     String validateCardType(String testCard) {
@@ -711,7 +746,6 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
 
       return "";
     }
-
 
     return SingleChildScrollView(
       child: Column(
@@ -753,9 +787,8 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
                         fontSize: 16,
                         fontFamily: montBook,
                         color:
-                        onboardingBtn, // Make sure to define your colors properly
+                            onboardingBtn, // Make sure to define your colors properly
                       ),
-
                       decoration: InputDecoration(
                         counterText: '',
                         filled: true,
@@ -774,12 +807,11 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
                           fontFamily: montBook,
                           fontSize: 16,
                           color:
-                          onboardingBtn, // Define your hint color properly
+                              onboardingBtn, // Define your hint color properly
                         ),
                         hintText: cardName,
                       ),
                     ),
-
                     const SizedBox(
                       height: 20,
                     ),
@@ -792,7 +824,7 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
                         fontSize: 16,
                         fontFamily: montBook,
                         color:
-                        onboardingBtn, // Make sure to define your colors properly
+                            onboardingBtn, // Make sure to define your colors properly
                       ),
                       inputFormatters: [
                         FilteringTextInputFormatter.digitsOnly,
@@ -818,7 +850,7 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
                           fontFamily: montBook,
                           fontSize: 16,
                           color:
-                          onboardingBtn, // Define your hint color properly
+                              onboardingBtn, // Define your hint color properly
                         ),
                         hintText: cardNum,
                       ),
@@ -829,9 +861,7 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
                     Row(
                       children: [
                         Expanded(
-                          child:
-
-                          TextFormField(
+                          child: TextFormField(
                             keyboardType: TextInputType.number,
                             controller: expiryController,
                             style: const TextStyle(
@@ -840,15 +870,15 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
                               fontSize: 16,
                               fontFamily: montBook,
                               color:
-                              onboardingBtn, // Make sure to define your colors properly
+                                  onboardingBtn, // Make sure to define your colors properly
                             ),
                             inputFormatters: [
                               FilteringTextInputFormatter.digitsOnly,
-                              LengthLimitingTextInputFormatter(4), // Limit to 4 characters (MMYY)
+                              LengthLimitingTextInputFormatter(4),
+                              // Limit to 4 characters (MMYY)
 
                               // Limit to 19 characters
                               ExpiryDateFormatter(),
-
                             ],
                             decoration: InputDecoration(
                               counterText: '',
@@ -857,18 +887,20 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
                               focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(20),
                                   borderSide: BorderSide(
-                                      color: editbgColor, style: BorderStyle.solid)),
+                                      color: editbgColor,
+                                      style: BorderStyle.solid)),
                               enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(20),
                                   borderSide: BorderSide(
-                                      color: editbgColor, style: BorderStyle.solid)),
+                                      color: editbgColor,
+                                      style: BorderStyle.solid)),
                               contentPadding: const EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 10),
                               hintStyle: TextStyle(
                                 fontFamily: montBook,
                                 fontSize: 16,
                                 color:
-                                onboardingBtn, // Define your hint color properly
+                                    onboardingBtn, // Define your hint color properly
                               ),
                               hintText: expiry,
                             ),
@@ -878,7 +910,7 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
                           width: 10,
                         ),
                         Expanded(
-                          child:TextFormField(
+                          child: TextFormField(
                             keyboardType: TextInputType.visiblePassword,
                             obscureText: true,
                             controller: cvvController,
@@ -888,12 +920,11 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
                               fontSize: 16,
                               fontFamily: montBook,
                               color:
-                              onboardingBtn, // Make sure to define your colors properly
+                                  onboardingBtn, // Make sure to define your colors properly
                             ),
                             inputFormatters: [
                               FilteringTextInputFormatter.digitsOnly,
                               LengthLimitingTextInputFormatter(3),
-
                             ],
                             decoration: InputDecoration(
                               counterText: '',
@@ -902,18 +933,20 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
                               focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(20),
                                   borderSide: BorderSide(
-                                      color: editbgColor, style: BorderStyle.solid)),
+                                      color: editbgColor,
+                                      style: BorderStyle.solid)),
                               enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(20),
                                   borderSide: BorderSide(
-                                      color: editbgColor, style: BorderStyle.solid)),
+                                      color: editbgColor,
+                                      style: BorderStyle.solid)),
                               contentPadding: const EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 10),
                               hintStyle: TextStyle(
                                 fontFamily: montBook,
                                 fontSize: 16,
                                 color:
-                                onboardingBtn, // Define your hint color properly
+                                    onboardingBtn, // Define your hint color properly
                               ),
                               hintText: cvv,
                             ),
@@ -935,38 +968,48 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
                           ),
                           child: GestureDetector(
                               onTap: () async {
-
                                 var cardNum = cardNumberController.text;
                                 var validatedCard = cardNum.replaceAll(" ", "");
-                                String cardType = validateCardType(validatedCard);
+                                String cardType =
+                                    validateCardType(validatedCard);
                                 print("Card Type: ${cardType}");
 
-
-                                if(nameController.text.isNotEmpty && cardNumberController.text.isNotEmpty && expiryController.text.isNotEmpty && cvvController.text.isNotEmpty && cardType.isNotEmpty){
-
+                                if (nameController.text.isNotEmpty &&
+                                    cardNumberController.text.isNotEmpty &&
+                                    expiryController.text.isNotEmpty &&
+                                    cvvController.text.isNotEmpty &&
+                                    cardType.isNotEmpty) {
                                   try {
                                     var formData = {
-                                      RequestString.NAME_ON_CARD: nameController.text,
-                                      RequestString.CARD_NUMBER: cardNumberController.text.replaceAll(" ", ""),
-                                      RequestString.EXPIRY_DATE: expiryController.text,
+                                      RequestString.NAME_ON_CARD:
+                                          nameController.text,
+                                      RequestString.CARD_NUMBER:
+                                          cardNumberController.text
+                                              .replaceAll(" ", ""),
+                                      RequestString.EXPIRY_DATE:
+                                          expiryController.text,
                                       RequestString.CVV: cvvController.text,
                                       RequestString.CARD_TYPE: cardType,
-
                                     };
 
-                                    AddPaymentCardResponse data = await Provider.of<PaymentDetailsProvider>(context, listen: false)
+                                    AddPaymentCardResponse data = await Provider
+                                            .of<PaymentDetailsProvider>(context,
+                                                listen: false)
                                         .addPaymentCard(formData);
 
-                                    if (data.status == true && data.message == "Payment card saved successfully") {
-
-
-                                      final paymentCardData = await carDOperationProvider.getCardList();
+                                    if (data.status == true &&
+                                        data.message ==
+                                            "Payment card saved successfully") {
+                                      final paymentCardData =
+                                          await carDOperationProvider
+                                              .getCardList();
 
                                       if (paymentCardData.data != null &&
                                           paymentCardData.data!.isNotEmpty) {
                                         setState(() {
                                           if (mounted) {
-                                            cardListData = paymentCardData.data!;
+                                            cardListData =
+                                                paymentCardData.data!;
 
                                             // cartItemsData.addAll(nextPageData.cartItems!);
                                             // currentPage++;
@@ -977,24 +1020,23 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
                                           if (mounted) {
                                             hasMoreData = false;
                                             cardListData.clear();
-
                                           }
                                         });
                                       }
 
-
-
                                       final snackBar = SnackBar(
-                                        content:  Text('${data.message}'),
-
+                                        content: Text('${data.message}'),
                                       );
 
                                       // Show the SnackBar
-                                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(snackBar);
 
                                       // Automatically hide the SnackBar after 1 second
-                                      Future.delayed(Duration(milliseconds: 1000), () {
-                                        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                      Future.delayed(
+                                          Duration(milliseconds: 1000), () {
+                                        ScaffoldMessenger.of(context)
+                                            .hideCurrentSnackBar();
                                       });
 
                                       nameController.text = "";
@@ -1005,32 +1047,32 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
                                       // Navigate to the next screen or perform other actions after login
                                     } else {
                                       // Login failed
-                                      print("Something went wrong: ${data.message}");
+                                      print(
+                                          "Something went wrong: ${data.message}");
 
                                       final snackBar = SnackBar(
-                                        content:  Text('${data.message}'),
-
+                                        content: Text('${data.message}'),
                                       );
 
                                       // Show the SnackBar
-                                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(snackBar);
 
                                       // Automatically hide the SnackBar after 1 second
-                                      Future.delayed(Duration(milliseconds: 1000), () {
-                                        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                      Future.delayed(
+                                          Duration(milliseconds: 1000), () {
+                                        ScaffoldMessenger.of(context)
+                                            .hideCurrentSnackBar();
                                       });
-
                                     }
                                   } catch (e) {
                                     // Display error message
                                     print("Error: $e");
                                   }
-
-
-                                }else{
-
+                                } else {
                                   final snackBar = SnackBar(
-                                    content: const Text('Please enter valid Payment card details..'),
+                                    content: const Text(
+                                        'Please enter valid Payment card details..'),
                                     action: SnackBarAction(
                                       label: 'Ok',
                                       onPressed: () {
@@ -1041,8 +1083,8 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
 
                                   // Find the ScaffoldMessenger in the widget tree
                                   // and use it to show a SnackBar.
-                                  ScaffoldMessenger.of(context).showSnackBar(snackBar);
-
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(snackBar);
                                 }
 
                                 Navigator.pop(navigatorKey.currentContext!);
@@ -1061,7 +1103,6 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
       ),
     );
   }
-
 }
 
 class CreditCardFormatter extends TextInputFormatter {
@@ -1069,7 +1110,7 @@ class CreditCardFormatter extends TextInputFormatter {
   TextEditingValue formatEditUpdate(
       TextEditingValue oldValue, TextEditingValue newValue) {
     final text =
-    newValue.text.replaceAll(RegExp(r'\s'), ''); // Remove existing spaces
+        newValue.text.replaceAll(RegExp(r'\s'), ''); // Remove existing spaces
     var formattedText = '';
 
     for (var i = 0; i < text.length; i++) {
@@ -1091,7 +1132,7 @@ class ExpiryDateFormatter extends TextInputFormatter {
   TextEditingValue formatEditUpdate(
       TextEditingValue oldValue, TextEditingValue newValue) {
     final text =
-    newValue.text.replaceAll(RegExp(r'\s'), ''); // Remove existing spaces
+        newValue.text.replaceAll(RegExp(r'\s'), ''); // Remove existing spaces
     var formattedText = '';
 
     for (var i = 0; i < text.length; i++) {
@@ -1107,6 +1148,3 @@ class ExpiryDateFormatter extends TextInputFormatter {
     );
   }
 }
-
-
-

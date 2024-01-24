@@ -76,6 +76,8 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
 
               dealListData.clear();
               dealListData.addAll(nextPageData.data!);
+              isRefresh = false;
+
               currentPage++;
             }else{
               dealListData.addAll(nextPageData.data!);

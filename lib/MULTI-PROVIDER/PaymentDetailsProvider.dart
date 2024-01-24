@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:takeaplate/Response_Model/CardDeleteResponse.dart';
 
 import '../NETWORKS/network.dart';
 import '../Response_Model/AddPaymentCardResponse.dart';
@@ -48,6 +49,34 @@ class PaymentDetailsProvider extends ChangeNotifier {
       return CardListResponse.fromJson(responseData);
     } else {
       throw Exception('Failed to parse API response');
+    }
+  }
+
+
+  Future<CardDeleteResponse> deletePaymentCard(int selectedCardIndex) async {
+
+
+
+    try {
+      final response = await _network.deleteRequest(
+        endPoint: '/delete-payment-card/$selectedCardIndex', // Replace with your actual API endpoint
+      );
+
+      print("my response : ${response}");
+
+      if (response != null && response.data is Map<String, dynamic>) {
+        final Map<String, dynamic> responseData = response.data;
+
+        return CardDeleteResponse.fromJson(responseData);
+      } else {
+        throw Exception('Failed to parse API response');
+      }
+    } catch (error) {
+      // Handle network errors or any other exceptions
+      print('Error: $error');
+      rethrow; // Re-throw the error to the caller
+    } finally {
+      notifyListeners();
     }
   }
 

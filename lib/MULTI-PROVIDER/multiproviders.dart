@@ -24,6 +24,7 @@ import '../SCREENS/notification/NotifcattionTurnOnScreen.dart';
 import '../SCREENS/notification/notification_center.dart';
 import '../SCREENS/notification/your_notifcation.dart';
 import '../SCREENS/order_summery/order_summery.dart';
+import '../SCREENS/previous_orders/previous_orders_screen.dart';
 import '../SCREENS/privacy_policy/privacypolicy_screen.dart';
 import '../SCREENS/reestrurent_profile/restrorent_profile.dart';
 import '../SCREENS/setting_screen/settings_screen.dart';
@@ -45,6 +46,7 @@ import 'FavCardsProvider.dart';
 import 'FavoriteOperationProvider.dart';
 import 'HomeDataListProvider.dart';
 import 'OrderAndPayProvider.dart';
+import 'OrderProvider.dart';
 import 'PaymentDetailsProvider.dart';
 import 'PlaceListProvider.dart';
 import 'PrivacyPolicyProvider.dart';
@@ -76,6 +78,7 @@ MultiProvider getProviders() {
       ChangeNotifierProvider(create: (_) => FavoriteOperationProvider()),
       ChangeNotifierProvider(create: (_) => HomeDataListProvider()),
       ChangeNotifierProvider(create: (_) => PaymentDetailsProvider()),
+      ChangeNotifierProvider(create: (_) => OrderProvider()),
 
     ],
     child:
@@ -116,6 +119,7 @@ MultiProvider getProviders() {
         '/PaymentMethodScreen': (context) => PaymentMethodScreen(),
         '/RestaurantsProfileScreen': (context) => RestaurantsProfileScreen(context: context),
         '/CollectTomorrowScreen': (context) => CollectTomorrowScreen(),
+        '/PreviousOrderScreen': (context) => PreviousOrderScreen(),
       },
       theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: btnbgColor),

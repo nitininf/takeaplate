@@ -140,8 +140,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
             onTap: (){
               if(title=="CURRENT ORDERS") {
+                Navigator.pushNamed(navigatorKey.currentContext!, '/MyOrdersScreen');
+
+              }else if(title=="PREVIOUS ORDERS") {
                 Navigator.pushNamed(
-                    navigatorKey.currentContext!, '/MyOrdersSccreen');
+                    navigatorKey.currentContext!, '/PreviousOrderScreen');
               }
               else if(title=="MY FAVOURITES"){
                 Navigator.pushNamed(
@@ -290,6 +293,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
             buildSection("CURRENT ORDERS", viewAll),
             const SizedBox(height: 5,),
             getCards(bclor: onboardingBtn),
+            // getCards(),
+            const Padding(
+              padding: EdgeInsets.only(left: 25.0,right: 25,top: 15,bottom: 15),
+              child: Divider(height: 0,color: grayColor,thickness: 0,),
+            ),
+            buildSection("PREVIOUS ORDERS", viewAll),
+            const SizedBox(height: 5,),
+
             getCards(),
             const Padding(
               padding: EdgeInsets.only(left: 25.0,right: 25,top: 15,bottom: 15),

@@ -37,6 +37,7 @@ const String choose = "PERSONALISE AND CHOOSE \n WHAT YOU WANT TO KNOW";
 const String closet = "CLOSEST TO YOU";
 const String lastMinute = "LAST MINUTE DEALS";
 const String collectTomorrow = "COLLECT TOMORROW";
+const String PREVIOUS_ORDERS = "PREVIOUS ORDERS";
 const String viewAll = "View all";
 const String myFav = "MY FAVOURITES";
 const String orderAndPay = "ORDER & PAY";

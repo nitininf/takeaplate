@@ -81,6 +81,8 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
             if(isRefresh == true) {
               restaurantData.clear();
               restaurantData.addAll(nextPageRestaurantData.data!);
+              isRefresh = false;
+
               currentRestaurantPage++;
             }else{
               restaurantData.addAll(nextPageRestaurantData.data!);

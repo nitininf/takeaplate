@@ -1,5 +1,6 @@
 import 'package:custom_rating_bar/custom_rating_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/common_button.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/custom_text_style.dart';
 import 'package:takeaplate/UTILS/app_color.dart';
@@ -10,10 +11,17 @@ import 'package:takeaplate/UTILS/fontfaimlly_string.dart';
 import 'package:takeaplate/main.dart';
 import '../../../CUSTOM_WIDGETS/custom_app_bar.dart';
 import '../../../CUSTOM_WIDGETS/custom_search_field.dart';
+import '../../MULTI-PROVIDER/common_counter.dart';
+import '../../Response_Model/CurrentOrderResponse.dart';
 class YourOrderScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final CurrentOrderData data = ModalRoute.of(context)!.settings.arguments as CurrentOrderData;
+    var commonProvider = Provider.of<CommonCounter>(context, listen: false);
+
+    
     return Scaffold(
       backgroundColor: bgColor,
       body: SafeArea(
@@ -29,8 +37,8 @@ class YourOrderScreen extends StatelessWidget {
                   scrollDirection: Axis.vertical,
                   child: Column(
                     children: [
-                      buildSection("YOUR ORDER", ""),
-                      getCards(),
+                      buildSection("YOUR ORDER", "",commonProvider),
+                      getCards(data,commonProvider),
                     ],
                   ),
                 ),
@@ -44,7 +52,7 @@ class YourOrderScreen extends StatelessWidget {
   }
 
 
-  Widget buildSection(String title, String viewAllText) {
+  Widget buildSection(String title, String viewAllText, CommonCounter commonProvider) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(
@@ -57,7 +65,7 @@ class YourOrderScreen extends StatelessWidget {
     );
   }
 
-  Widget getCards() {
+  Widget getCards(CurrentOrderData data, CommonCounter commonProvider) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
@@ -69,26 +77,33 @@ class YourOrderScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-              height: 280,
-              width: 280,
-              child: Image.asset(food_image, height: 275,width: 275, fit: BoxFit.fill)),
+            child: data.profileImage != null && !(data.profileImage)!.contains("SocketException")
+                ? ClipRRect(
+              borderRadius: BorderRadius.circular(15.0),
+              child: Image.network(
+                data.profileImage!,
+                fit: BoxFit.contain,
+              ),
+            )
+                : Image.asset(food_image),
+          ),
           const SizedBox(height: 20,),
            Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              CustomText(text: "Surprise Pack", sizeOfFont: 18, color: btntxtColor, fontfamilly: montBold,weight: FontWeight.w900,),
+              CustomText(text: data.name ?? "", sizeOfFont: 18, color: btntxtColor, fontfamilly: montBold,weight: FontWeight.w900,),
               //CustomText(text: "...",sizeOfFont: 18, color: btnbgColor, fontfamilly: montBold),
               Image.asset(three_dot,width: 14,height: 4,)
             ],
           ),
-          const Row(
+           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
             children: [
-              CustomText(text: "Health Foods", color: viewallColor, sizeOfFont:17,fontfamilly: montLight),
+              CustomText(text: data.category ?? "", color: viewallColor, sizeOfFont:17,fontfamilly: montLight),
               Padding(
                 padding: EdgeInsets.only(top: 10.0),
-                child: CustomText(text: "Pick up Time:11:00 am", sizeOfFont: 11,color: viewallColor, fontfamilly: montLight),
+                child: CustomText(text:  'Pickup time - ${data.store?.pickupTime?.startTime ?? ""}', sizeOfFont: 11,color: viewallColor, fontfamilly: montLight),
               ),
 
 
@@ -130,20 +145,130 @@ class YourOrderScreen extends StatelessWidget {
           }),
           SizedBox(height: 10,),
           CustomText(text: "Order N. #2134445`", color: viewallColor, sizeOfFont:16,fontfamilly: montLight),
-          const CustomText(text: "23 Dreamland Av.., Australia", sizeOfFont: 14, color: offerColor, fontfamilly: montBold),
+           CustomText(text: data.store?.address ?? '', sizeOfFont: 14, color: offerColor, fontfamilly: montBold),
           SizedBox(height: 10,),
-          const Row(
+           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               CustomText(text: "Description...", sizeOfFont: 12, color: graysColor, fontfamilly: montLight),
-              CustomText(text: "\$ 9.99", color: offerColor, sizeOfFont:24,fontfamilly: montHeavy),
+              CustomText(text: '\$ ${data.price ?? ""}', color: offerColor, sizeOfFont:24,fontfamilly: montHeavy),
             ],
           ),
-          SizedBox(height: 10,),
+          viewMore(commonProvider, data),
+
 
         ],
       ),
     );
+  }
+
+  Widget viewMore(CommonCounter commonCounter,
+      CurrentOrderData data) {
+    return Consumer<CommonCounter>(builder: (context, commonCounter, child) {
+      return commonCounter.isViewMore
+          ? Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          CustomText(
+            text: data.description ?? "",
+            fontfamilly: montRegular,
+            sizeOfFont: 12,
+            color: cardTextColor.withOpacity(0.47),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+          Column(
+            children: [
+
+              featureImage(data.allergens ?? ""),
+              SizedBox(
+                height: 5,
+              ),
+              CustomText(
+                text: data.allergens ?? "",
+                fontfamilly: montRegular,
+                sizeOfFont: 10,
+                color: cardTextColor,
+              ),
+              // for (var feature in orderAndPayProvider.foodData[0]["features"])
+              //   featureImage(feature),
+            ],
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          GestureDetector(
+            onTap: () {
+              commonCounter.viewMoreLess("VIEW MORE");
+            },
+            child: CustomText(
+              text: commonCounter.textName,
+              color: btnbgColor,
+              fontfamilly: montMedium,
+              sizeOfFont: 14,
+            ),
+          ),
+        ],
+      )
+          : Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          GestureDetector(
+            onTap: () {
+              commonCounter.viewMoreLess("VIEW LESS");
+            },
+            child: CustomText(
+              text: commonCounter.textName,
+              color: btnbgColor,
+              fontfamilly: montMedium,
+              sizeOfFont: 14,
+            ),
+          )
+        ],
+      );
+    });
+  }
+
+  Widget featureImage(String feature) {
+    print('feature = $feature');
+    String imagePath = "";
+
+    switch (feature) {
+      case "Gluten Free":
+        imagePath = gluten_free;
+        break;
+      case "Soy Free":
+        imagePath = soy_free;
+        break;
+      case "Lactose Free":
+        imagePath = lactose_freee;
+        break;
+      case "Eggs Free":
+        imagePath = egg_free;
+        break;
+      case "Sugar Free":
+        imagePath = sugar_freee;
+        break;
+      case "GMO Free":
+        imagePath = gmo_freee;
+        break;
+      case "Shellfish Free":
+        imagePath = shellfish_freee;
+        break;
+      case "Tree Nuts Free":
+        imagePath = treenuts_freee;
+        break;
+      case "Fish Free":
+        imagePath = fish_free;
+        break;
+      case "Peanuts Free":
+        imagePath = peanuts_freee;
+        break;
+    // Add more cases for other features if needed
+    }
+
+    return Image.asset(imagePath, height: 30, width: 30);
   }
 
 }

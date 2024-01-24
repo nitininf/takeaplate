@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/custom_app_bar.dart';
+import 'package:takeaplate/MULTI-PROVIDER/OrderProvider.dart';
 import 'package:takeaplate/UTILS/app_strings.dart';
 import '../../CUSTOM_WIDGETS/custom_search_field.dart';
 import '../../CUSTOM_WIDGETS/custom_text_style.dart';
@@ -16,23 +17,23 @@ import '../../UTILS/app_images.dart';
 import '../../UTILS/fontfaimlly_string.dart';
 import '../../main.dart';
 
-class CollectTomorrowScreen extends StatefulWidget {
-  const CollectTomorrowScreen({super.key});
+class PreviousOrderScreen extends StatefulWidget {
+  const PreviousOrderScreen({super.key});
 
   @override
-  _CollectTomorrowScreenState createState() => _CollectTomorrowScreenState();
+  _PreviousOrderScreenState createState() => _PreviousOrderScreenState();
 }
 
-class _CollectTomorrowScreenState extends State<CollectTomorrowScreen> {
+class _PreviousOrderScreenState extends State<PreviousOrderScreen> {
 
   final List<String> items = ['Healthy', 'Sushi', 'Desserts', 'Sugar', 'Sweets'];
-  final RestaurantsListProvider restaurantsProvider = RestaurantsListProvider();
+  final OrderProvider orderProvider = OrderProvider();
   int currentPage = 1;
   bool isLoading = false;
   bool hasMoreData = true;
   bool isRefresh = false;
 
-  List<DealData> collectTomorrowData = [];
+  List<DealData> previousOrderData = [];
 
   ScrollController _scrollController = ScrollController();
 
@@ -60,7 +61,7 @@ class _CollectTomorrowScreenState extends State<CollectTomorrowScreen> {
           isLoading = true;
         });
 
-        final nextPageData = await restaurantsProvider.getCollectTomorrowList(
+        final nextPageData = await orderProvider.getPreviousOrderList(
           page: currentPage,
         );
 
@@ -68,13 +69,11 @@ class _CollectTomorrowScreenState extends State<CollectTomorrowScreen> {
           setState(() {
             if(isRefresh == true){
 
-              collectTomorrowData.clear();
-              collectTomorrowData.addAll(nextPageData.data!);
-              isRefresh = false;
-
+              previousOrderData.clear();
+              previousOrderData.addAll(nextPageData.data!);
               currentPage++;
             }else{
-              collectTomorrowData.addAll(nextPageData.data!);
+              previousOrderData.addAll(nextPageData.data!);
               currentPage++;
             }
           });
@@ -110,7 +109,7 @@ class _CollectTomorrowScreenState extends State<CollectTomorrowScreen> {
               const CustomSearchField(hintText:"Search"),
               const Padding(
                 padding: EdgeInsets.only(left: 13.0,top: 20),
-                child: CustomText(text: collectTomorrow, color: btnbgColor, fontfamilly: montHeavy, sizeOfFont: 20),
+                child: CustomText(text: PREVIOUS_ORDERS, color: btnbgColor, fontfamilly: montHeavy, sizeOfFont: 20),
               ),
               buildHorizontalList(items),
               buildVerticalCards()
@@ -158,19 +157,19 @@ class _CollectTomorrowScreenState extends State<CollectTomorrowScreen> {
         onRefresh: _refreshData,
         child: ListView.builder(
           controller: _scrollController,
-          itemCount: collectTomorrowData.length + (hasMoreData ? 1 : 0),
+          itemCount: previousOrderData.length + (hasMoreData ? 1 : 0),
           itemBuilder: (context, index) {
-            if (index < collectTomorrowData.length) {
+            if (index < previousOrderData.length) {
               // Display restaurant card
               return GestureDetector(
                 onTap: () {
                   Navigator.pushNamed(
                     navigatorKey.currentContext!,
                     '/OrderAndPayScreen',
-                    arguments: collectTomorrowData[index],
+                    arguments: previousOrderData[index],
                   );
                 },
-                child: getFavCards(index, collectTomorrowData[index]),
+                child: getFavCards(index, previousOrderData[index]),
               );
             } else {
               // Display loading indicator while fetching more data
@@ -192,15 +191,15 @@ class _CollectTomorrowScreenState extends State<CollectTomorrowScreen> {
   Future<void> _refreshData() async {
     // Call your API here to refresh the data
     try {
-      final refreshedData = await restaurantsProvider.getCollectTomorrowList(page: 1);
+      final refreshedData = await orderProvider.getPreviousOrderList(page: 1);
 
       if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
         setState(() {
           currentPage = 1; // Reset the page to 1 as you loaded the first page.
           hasMoreData = true; // Reset the flag for more data.
           isRefresh = true;
-          collectTomorrowData.clear(); // Clear existing data before adding new data.
-          collectTomorrowData.addAll(refreshedData.data!);
+          previousOrderData.clear(); // Clear existing data before adding new data.
+          previousOrderData.addAll(refreshedData.data!);
 
         });
       }
@@ -397,7 +396,7 @@ class _CollectTomorrowScreenState extends State<CollectTomorrowScreen> {
 
                               setState(() async {
                                 try {
-                                  final refreshedData = await restaurantsProvider.getCollectTomorrowList( page: 1);
+                                  final refreshedData = await orderProvider.getPreviousOrderList( page: 1);
 
                                   if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
                                     setState(() {
@@ -408,8 +407,8 @@ class _CollectTomorrowScreenState extends State<CollectTomorrowScreen> {
                                       currentPage = 1; // Reset the page to 1 as you loaded the first page.
                                       hasMoreData = true; // Reset the flag for more data.
                                       isRefresh = true;
-                                      collectTomorrowData.clear(); // Clear existing data before adding new data.
-                                      collectTomorrowData.addAll(refreshedData.data!);
+                                      previousOrderData.clear(); // Clear existing data before adding new data.
+                                      previousOrderData.addAll(refreshedData.data!);
                                     });
                                   }
                                 } catch (error) {
@@ -456,7 +455,7 @@ class _CollectTomorrowScreenState extends State<CollectTomorrowScreen> {
                               setState(() async {
 
                                 try {
-                                  final refreshedData = await restaurantsProvider.getCollectTomorrowList( page: 1);
+                                  final refreshedData = await orderProvider.getPreviousOrderList( page: 1);
 
                                   if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
                                     setState(() {
@@ -464,8 +463,8 @@ class _CollectTomorrowScreenState extends State<CollectTomorrowScreen> {
                                       currentPage = 1; // Reset the page to 1 as you loaded the first page.
                                       hasMoreData = true; // Reset the flag for more data.
                                       isRefresh = true;
-                                      collectTomorrowData.clear(); // Clear existing data before adding new data.
-                                      collectTomorrowData.addAll(refreshedData.data!);
+                                      previousOrderData.clear(); // Clear existing data before adding new data.
+                                      previousOrderData.addAll(refreshedData.data!);
                                     });
                                   }
                                 } catch (error) {

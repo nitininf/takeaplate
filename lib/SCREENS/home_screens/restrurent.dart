@@ -76,6 +76,8 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
 
                 restaurantData.clear();
                 restaurantData.addAll(nextPageData.data!);
+                isRefresh = false;
+
                 currentPage++;
               }else{
                 restaurantData.addAll(nextPageData.data!);

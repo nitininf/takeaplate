@@ -80,6 +80,7 @@ class _ClosestScreenState extends State<ClosestScreen> {
            if(isRefresh == true){
              restaurantData.clear();
              restaurantData.addAll(nextPageData.data!);
+             isRefresh = false;
              currentPage++;
            }else{
              restaurantData.addAll(nextPageData.data!);
