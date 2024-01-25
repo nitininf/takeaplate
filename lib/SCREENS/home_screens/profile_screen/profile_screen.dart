@@ -145,7 +145,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       backgroundColor: bgColor,
       body: Padding(
-        padding: const EdgeInsets.only(top: 5.0, right: 25, left: 25, bottom: 10),
+        padding:
+            const EdgeInsets.only(top: 5.0, right: 25, left: 25, bottom: 10),
         child: FutureBuilder<Map<String, String>>(
           future: SharedPrefsUtils.getDefaultValuesFromPrefs(),
           builder: (context, snapshot) {
@@ -180,7 +181,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
-
 
   Widget buildSection(String title, String viewAllText) {
     return Padding(
@@ -425,8 +425,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         borderRadius: BorderRadius.circular(15),
                         border: Border.all(width: 1, color: Colors.white),
                       ),
-                      child:  CustomText(
-                        text: lastMinuteDeal.status == 0 ? "PENDING" : "READY FOR PICKUP",
+                      child: CustomText(
+                        text: lastMinuteDeal.status == 0
+                            ? "PENDING"
+                            : "READY FOR PICKUP",
                         maxLin: 1,
                         sizeOfFont: 9,
                         fontfamilly: montHeavy,
@@ -662,13 +664,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           // Limit the number of items to 2
           min(2, cardListData.length),
           (index) => GestureDetector(
-            onTap: () {
-              Navigator.pushNamed(
-                navigatorKey.currentContext!,
-                '/YourOrderScreen',
-                arguments: cardListData[index], // Pass the data as arguments
-              );
-            },
             child: getMasterCardData(index, cardListData[index]),
           ),
         ),

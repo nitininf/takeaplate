@@ -126,7 +126,6 @@ class _HomeScreenState extends State<HomeScreen> {
           });
         }
       } catch (error) {
-        print('Error loading more data: $error');
       } finally {
         setState(() {
           isLoading = false;
@@ -206,7 +205,7 @@ class _HomeScreenState extends State<HomeScreen> {
             borderRadius: BorderRadius.circular(20),
             child: Container(
               color: Colors.black.withOpacity(0.1),
-              child: Center(
+              child: const Center(
                 child: CircularProgressIndicator(),
               ),
             ),
@@ -293,17 +292,17 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: List.generate(
-          closestRestaurants!.length,
+          closestRestaurants.length,
           (index) => GestureDetector(
               onTap: () {
                 Navigator.pushNamed(
                   navigatorKey.currentContext!,
                   '/RestaurantsProfileScreen',
                   arguments:
-                      closestRestaurants![index], // Pass the data as arguments
+                      closestRestaurants[index], // Pass the data as arguments
                 );
               },
-              child: getClosestDealData(index, closestRestaurants![index])),
+              child: getClosestDealData(index, closestRestaurants[index])),
         ),
       ),
     );
@@ -335,16 +334,16 @@ class _HomeScreenState extends State<HomeScreen> {
                 fontfamilly: montRegular,
                 sizeOfFont: 14,
               ),
-              CustomText(
+              const CustomText(
                 text: '3 Offers available',
                 color: offerColor,
                 sizeOfFont: 12,
                 fontfamilly: montBook,
               ),
-              SizedBox(height: 1),
+              const SizedBox(height: 1),
               Row(
                 children: [
-                  RatingBar.readOnly(
+                  const RatingBar.readOnly(
                     filledIcon: Icons.star,
                     emptyIcon: Icons.star_border,
                     halfFilledIcon: Icons.star_half,
@@ -355,7 +354,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     size: 18,
                     maxRating: 5,
                   ),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   Container(
                     margin:
                         const EdgeInsets.symmetric(horizontal: 0, vertical: 3),
@@ -385,10 +384,10 @@ class _HomeScreenState extends State<HomeScreen> {
               ClipRRect(
                 borderRadius: BorderRadius.circular(15.0),
                 child: Container(
-                  padding: EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(8.0),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15.0),
-                    gradient: LinearGradient(
+                    gradient: const LinearGradient(
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                       colors: [
@@ -419,8 +418,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   onTap: () async {
                     bool? ratingStatus = storeData.favourite;
 
-                    print('ratingStatus:$ratingStatus');
-                    print('StoreId: ${storeData.id}');
 
                     try {
                       if (ratingStatus == false) {
@@ -440,7 +437,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             favData.message ==
                                 "Store Added in favourite successfully.") {
                           // Print data to console
-                          print(favData);
 
                           final snackBar = SnackBar(
                             content: Text('${favData.message}'),
@@ -450,7 +446,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
                           // Automatically hide the SnackBar after 1 second
-                          Future.delayed(Duration(milliseconds: 1000), () {
+                          Future.delayed(const Duration(milliseconds: 1000), () {
                             ScaffoldMessenger.of(context).hideCurrentSnackBar();
                           });
 
@@ -464,7 +460,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
                         } else {
                           // API call failed
-                          print("Something went wrong: ${favData.message}");
 
                           final snackBar = SnackBar(
                             content: Text('${favData.message}'),
@@ -474,7 +469,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
                           // Automatically hide the SnackBar after 1 second
-                          Future.delayed(Duration(milliseconds: 1000), () {
+                          Future.delayed(const Duration(milliseconds: 1000), () {
                             ScaffoldMessenger.of(context).hideCurrentSnackBar();
                           });
                         }
@@ -490,7 +485,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             delData.message ==
                                 "Favourite Store deleted successfully") {
                           // Print data to console
-                          print(delData);
 
                           final snackBar = SnackBar(
                             content: Text('${delData.message}'),
@@ -500,7 +494,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
                           // Automatically hide the SnackBar after 1 second
-                          Future.delayed(Duration(milliseconds: 1000), () {
+                          Future.delayed(const Duration(milliseconds: 1000), () {
                             ScaffoldMessenger.of(context).hideCurrentSnackBar();
                           });
 
@@ -514,7 +508,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
                         } else {
                           // API call failed
-                          print("Something went wrong: ${delData.message}");
 
                           final snackBar = SnackBar(
                             content: Text('${delData.message}'),
@@ -524,14 +517,13 @@ class _HomeScreenState extends State<HomeScreen> {
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
                           // Automatically hide the SnackBar after 1 second
-                          Future.delayed(Duration(milliseconds: 1000), () {
+                          Future.delayed(const Duration(milliseconds: 1000), () {
                             ScaffoldMessenger.of(context).hideCurrentSnackBar();
                           });
                         }
                       }
                     } catch (e) {
                       // Display error message
-                      print("Error: $e");
                     }
                   },
                   child: Image.asset(
@@ -554,17 +546,17 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: List.generate(
-          lastMinuteDeals!.length,
+          lastMinuteDeals.length,
           (index) => GestureDetector(
               onTap: () {
                 Navigator.pushNamed(
                   navigatorKey.currentContext!,
                   '/OrderAndPayScreen',
                   arguments:
-                      lastMinuteDeals![index], // Pass the data as arguments
+                      lastMinuteDeals[index], // Pass the data as arguments
                 );
               },
-              child: getLastMinuteDealsData(index, lastMinuteDeals![index])),
+              child: getLastMinuteDealsData(index, lastMinuteDeals[index])),
         ),
       ),
     );
@@ -627,11 +619,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 sizeOfFont: 13,
               ),
               CustomText(
-                  text: '${startTiming ?? ""} - ${endTiming ?? ""}',
+                  text: '$startTiming - $endTiming',
                   color: graysColor,
                   sizeOfFont: 12,
                   fontfamilly: montRegular),
-              SizedBox(
+              const SizedBox(
                 height: 5,
               ),
               Row(
@@ -648,17 +640,17 @@ class _HomeScreenState extends State<HomeScreen> {
                         double.parse(lastMinuteDeal.averageRating ?? '0'),
                     maxRating: 5,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
-                  CustomText(
+                  const CustomText(
                       text: '8KM',
                       color: graysColor,
                       sizeOfFont: 12,
                       fontfamilly: montSemiBold),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 5,
               ),
               CustomText(
@@ -690,10 +682,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(15.0),
                   child: Container(
-                    padding: EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(8.0),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15.0),
-                      gradient: LinearGradient(
+                      gradient: const LinearGradient(
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                         colors: [
@@ -722,11 +714,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   right: -4,
                   child: GestureDetector(
                     onTap: () async {
-                      var ratingStatus = lastMinuteDeal.favourite as bool;
                       int? dealId = lastMinuteDeal.id;
-                      int? storeId = lastMinuteDeal.storeId;
-
-                      print('ratingStatus:$ratingStatus');
 
                       try {
                         if (lastMinuteDeal.favourite == false) {
@@ -745,7 +733,6 @@ class _HomeScreenState extends State<HomeScreen> {
                               favData.message ==
                                   "Deal Added in favourite successfully.") {
                             // Print data to console
-                            print(favData);
 
                             final snackBar = SnackBar(
                               content: Text('${favData.message}'),
@@ -756,7 +743,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 .showSnackBar(snackBar);
 
                             // Automatically hide the SnackBar after 1 second
-                            Future.delayed(Duration(milliseconds: 1000), () {
+                            Future.delayed(const Duration(milliseconds: 1000), () {
                               ScaffoldMessenger.of(context)
                                   .hideCurrentSnackBar();
                             });
@@ -769,7 +756,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
                           } else {
                             // API call failed
-                            print("Something went wrong: ${favData.message}");
 
                             final snackBar = SnackBar(
                               content: Text('${favData.message}'),
@@ -780,7 +766,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 .showSnackBar(snackBar);
 
                             // Automatically hide the SnackBar after 1 second
-                            Future.delayed(Duration(milliseconds: 1000), () {
+                            Future.delayed(const Duration(milliseconds: 1000), () {
                               ScaffoldMessenger.of(context)
                                   .hideCurrentSnackBar();
                             });
@@ -795,7 +781,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           if (delData.status == true &&
                               delData.message == "Favourite Deal deleted successfully.") {
                             // Print data to console
-                            print(delData);
 
                             final snackBar = SnackBar(
                               content: Text('${delData.message}'),
@@ -806,7 +791,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 .showSnackBar(snackBar);
 
                             // Automatically hide the SnackBar after 1 second
-                            Future.delayed(Duration(milliseconds: 1000), () {
+                            Future.delayed(const Duration(milliseconds: 1000), () {
                               ScaffoldMessenger.of(context)
                                   .hideCurrentSnackBar();
                             });
@@ -819,7 +804,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
                           } else {
                             // API call failed
-                            print("Something went wrong: ${delData.message}");
 
                             final snackBar = SnackBar(
                               content: Text('${delData.message}'),
@@ -830,7 +814,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 .showSnackBar(snackBar);
 
                             // Automatically hide the SnackBar after 1 second
-                            Future.delayed(Duration(milliseconds: 1000), () {
+                            Future.delayed(const Duration(milliseconds: 1000), () {
                               ScaffoldMessenger.of(context)
                                   .hideCurrentSnackBar();
                             });
@@ -838,7 +822,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         }
                       } catch (e) {
                         // Display error message
-                        print("Error: $e");
                       }
                     },
                     child: Image.asset(
@@ -864,18 +847,18 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: List.generate(
-          collectTomorrowList!.length,
+          collectTomorrowList.length,
           (index) => GestureDetector(
               onTap: () {
                 Navigator.pushNamed(
                   navigatorKey.currentContext!,
                   '/OrderAndPayScreen',
                   arguments:
-                      collectTomorrowList![index], // Pass the data as arguments
+                      collectTomorrowList[index], // Pass the data as arguments
                 );
               },
               child:
-                  getCollectTomorrowData(index, collectTomorrowList![index])),
+                  getCollectTomorrowData(index, collectTomorrowList[index])),
         ),
       ),
     );
@@ -941,11 +924,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 sizeOfFont: 13,
               ),
               CustomText(
-                  text: '${startTiming ?? ""} - ${endTiming ?? ""}',
+                  text: '$startTiming - $endTiming',
                   color: graysColor,
                   sizeOfFont: 12,
                   fontfamilly: montRegular),
-              SizedBox(
+              const SizedBox(
                 height: 5,
               ),
               Row(
@@ -962,17 +945,17 @@ class _HomeScreenState extends State<HomeScreen> {
                         double.parse(collectTomorrowData.averageRating ?? '0'),
                     maxRating: 5,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
-                  CustomText(
+                  const CustomText(
                       text: '8KM',
                       color: graysColor,
                       sizeOfFont: 12,
                       fontfamilly: montSemiBold),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 5,
               ),
               CustomText(
@@ -1004,10 +987,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(15.0),
                   child: Container(
-                    padding: EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(8.0),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15.0),
-                      gradient: LinearGradient(
+                      gradient: const LinearGradient(
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                         colors: [
@@ -1036,11 +1019,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   right: -4,
                   child: GestureDetector(
                     onTap: () async {
-                      var ratingStatus = collectTomorrowData.favourite as bool;
                       int? dealId = collectTomorrowData.id;
-                      int? storeId = collectTomorrowData.storeId;
-
-                      print('ratingStatus:$ratingStatus');
 
                       try {
                         if (collectTomorrowData.favourite == false) {
@@ -1059,7 +1038,6 @@ class _HomeScreenState extends State<HomeScreen> {
                               favData.message ==
                                   "Deal Added in favourite successfully.") {
                             // Print data to console
-                            print(favData);
 
                             final snackBar = SnackBar(
                               content: Text('${favData.message}'),
@@ -1070,7 +1048,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 .showSnackBar(snackBar);
 
                             // Automatically hide the SnackBar after 1 second
-                            Future.delayed(Duration(milliseconds: 1000), () {
+                            Future.delayed(const Duration(milliseconds: 1000), () {
                               ScaffoldMessenger.of(context)
                                   .hideCurrentSnackBar();
                             });
@@ -1083,7 +1061,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
                           } else {
                             // API call failed
-                            print("Something went wrong: ${favData.message}");
 
                             final snackBar = SnackBar(
                               content: Text('${favData.message}'),
@@ -1094,7 +1071,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 .showSnackBar(snackBar);
 
                             // Automatically hide the SnackBar after 1 second
-                            Future.delayed(Duration(milliseconds: 1000), () {
+                            Future.delayed(const Duration(milliseconds: 1000), () {
                               ScaffoldMessenger.of(context)
                                   .hideCurrentSnackBar();
                             });
@@ -1112,7 +1089,6 @@ class _HomeScreenState extends State<HomeScreen> {
                               delData.message ==
                                   "Favourite Deal deleted successfully.") {
                             // Print data to console
-                            print(delData);
 
                             final snackBar = SnackBar(
                               content: Text('${delData.message}'),
@@ -1123,7 +1099,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 .showSnackBar(snackBar);
 
                             // Automatically hide the SnackBar after 1 second
-                            Future.delayed(Duration(milliseconds: 1000), () {
+                            Future.delayed(const Duration(milliseconds: 1000), () {
                               ScaffoldMessenger.of(context)
                                   .hideCurrentSnackBar();
                             });
@@ -1136,7 +1112,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
                           } else {
                             // API call failed
-                            print("Something went wrong: ${delData.message}");
 
                             final snackBar = SnackBar(
                               content: Text('${delData.message}'),
@@ -1147,7 +1122,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 .showSnackBar(snackBar);
 
                             // Automatically hide the SnackBar after 1 second
-                            Future.delayed(Duration(milliseconds: 1000), () {
+                            Future.delayed(const Duration(milliseconds: 1000), () {
                               ScaffoldMessenger.of(context)
                                   .hideCurrentSnackBar();
                             });
@@ -1155,7 +1130,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         }
                       } catch (e) {
                         // Display error message
-                        print("Error: $e");
                       }
                     },
                     child: Image.asset(
@@ -1181,17 +1155,17 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: List.generate(
-          favoriteStoresAndDeals!.length,
+          favoriteStoresAndDeals.length,
           (index) => GestureDetector(
               onTap: () {
                 Navigator.pushNamed(
                   navigatorKey.currentContext!,
                   '/RestaurantsProfileScreen',
-                  arguments: favoriteStoresAndDeals![
+                  arguments: favoriteStoresAndDeals[
                       index], // Pass the data as arguments
                 );
               },
-              child: getFavCardsData(index, favoriteStoresAndDeals![index])),
+              child: getFavCardsData(index, favoriteStoresAndDeals[index])),
         ),
       ),
     );
@@ -1223,16 +1197,16 @@ class _HomeScreenState extends State<HomeScreen> {
                 fontfamilly: montRegular,
                 sizeOfFont: 14,
               ),
-              CustomText(
+              const CustomText(
                 text: '3 Offers available',
                 color: offerColor,
                 sizeOfFont: 12,
                 fontfamilly: montBook,
               ),
-              SizedBox(height: 1),
+              const SizedBox(height: 1),
               Row(
                 children: [
-                  RatingBar.readOnly(
+                  const RatingBar.readOnly(
                     filledIcon: Icons.star,
                     emptyIcon: Icons.star_border,
                     halfFilledIcon: Icons.star_half,
@@ -1243,7 +1217,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     size: 18,
                     maxRating: 5,
                   ),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   Container(
                     margin:
                         const EdgeInsets.symmetric(horizontal: 0, vertical: 3),
@@ -1273,10 +1247,10 @@ class _HomeScreenState extends State<HomeScreen> {
               ClipRRect(
                 borderRadius: BorderRadius.circular(15.0),
                 child: Container(
-                  padding: EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(8.0),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15.0),
-                    gradient: LinearGradient(
+                    gradient: const LinearGradient(
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                       colors: [
@@ -1307,8 +1281,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   onTap: () async {
                     bool? ratingStatus = favoriteStores.favourite;
 
-                    print('ratingStatus:$ratingStatus');
-                    print('StoreId: ${favoriteStores.id}');
 
                     try {
                       if (ratingStatus == false) {
@@ -1328,7 +1300,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             favData.message ==
                                 "Store Added in favourite successfully.") {
                           // Print data to console
-                          print(favData);
 
                           final snackBar = SnackBar(
                             content: Text('${favData.message}'),
@@ -1338,7 +1309,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
                           // Automatically hide the SnackBar after 1 second
-                          Future.delayed(Duration(milliseconds: 1000), () {
+                          Future.delayed(const Duration(milliseconds: 1000), () {
                             ScaffoldMessenger.of(context).hideCurrentSnackBar();
                           });
 
@@ -1350,7 +1321,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
                         } else {
                           // API call failed
-                          print("Something went wrong: ${favData.message}");
 
                           final snackBar = SnackBar(
                             content: Text('${favData.message}'),
@@ -1360,7 +1330,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
                           // Automatically hide the SnackBar after 1 second
-                          Future.delayed(Duration(milliseconds: 1000), () {
+                          Future.delayed(const Duration(milliseconds: 1000), () {
                             ScaffoldMessenger.of(context).hideCurrentSnackBar();
                           });
                         }
@@ -1375,7 +1345,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             delData.message ==
                                 "Favourite Store deleted successfully") {
                           // Print data to console
-                          print(delData);
 
                           final snackBar = SnackBar(
                             content: Text('${delData.message}'),
@@ -1385,7 +1354,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
                           // Automatically hide the SnackBar after 1 second
-                          Future.delayed(Duration(milliseconds: 1000), () {
+                          Future.delayed(const Duration(milliseconds: 1000), () {
                             ScaffoldMessenger.of(context).hideCurrentSnackBar();
                           });
 
@@ -1397,7 +1366,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
                         } else {
                           // API call failed
-                          print("Something went wrong: ${delData.message}");
 
                           final snackBar = SnackBar(
                             content: Text('${delData.message}'),
@@ -1407,14 +1375,13 @@ class _HomeScreenState extends State<HomeScreen> {
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
                           // Automatically hide the SnackBar after 1 second
-                          Future.delayed(Duration(milliseconds: 1000), () {
+                          Future.delayed(const Duration(milliseconds: 1000), () {
                             ScaffoldMessenger.of(context).hideCurrentSnackBar();
                           });
                         }
                       }
                     } catch (e) {
                       // Display error message
-                      print("Error: $e");
                     }
                   },
                   child: Image.asset(
