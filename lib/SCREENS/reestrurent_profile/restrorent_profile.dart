@@ -47,7 +47,6 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
     super.initState();
     _scrollController.addListener(_scrollListener);
     _loadData();
-
   }
 
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
@@ -74,32 +73,21 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
         );
 
         if (nextPageData.data != null && nextPageData.data!.isNotEmpty) {
-
           for (DealData deal in nextPageData.data!) {
-
-            if(deal.favourite==false){
-
+            if (deal.favourite == false) {
               setState(() {
-
                 dealListData.add(deal);
-
 
                 currentPage++;
               });
-
-            }else if(deal.favourite==true){
-
+            } else if (deal.favourite == true) {
               setState(() {
-
                 favouriteDealListData.add(deal);
-
 
                 currentPage++;
               });
             }
           }
-
-
         } else {
           // No more data available
           setState(() {
@@ -184,14 +172,17 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
         Stack(
           clipBehavior: Clip.none,
           children: [
-            data.bannerImage != null && !(data.bannerImage)!.contains("SocketException")? ClipRRect(
-              borderRadius: BorderRadius.circular(15.0),
-              child: Image.network(
-                data.bannerImage!,
-                fit: BoxFit.contain,
-                height: 200,
-              ),
-            ): Image.asset(restrorent_food),
+            data.bannerImage != null &&
+                    !(data.bannerImage)!.contains("SocketException")
+                ? ClipRRect(
+                    borderRadius: BorderRadius.circular(15.0),
+                    child: Image.network(
+                      data.bannerImage!,
+                      fit: BoxFit.contain,
+                      height: 200,
+                    ),
+                  )
+                : Image.asset(restrorent_food),
             Positioned(
               bottom: -60,
               right: 10,
@@ -299,10 +290,10 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
           children: [
             commonCounter.isDeal
                 ? Container(
-                    margin: const EdgeInsets.symmetric(
-                        horizontal: 0, vertical: 3),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 5),
+                    margin:
+                        const EdgeInsets.symmetric(horizontal: 0, vertical: 3),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     decoration: BoxDecoration(
                       color: btnbgColor.withOpacity(0.3),
                       borderRadius: BorderRadius.circular(20),
@@ -320,10 +311,10 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
                         )),
                   )
                 : Container(
-                    margin: const EdgeInsets.symmetric(
-                        horizontal: 0, vertical: 3),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 5),
+                    margin:
+                        const EdgeInsets.symmetric(horizontal: 0, vertical: 3),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     decoration: BoxDecoration(
                       color: btnbgColor,
                       borderRadius: BorderRadius.circular(20),
@@ -345,10 +336,10 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
             ),
             !commonCounter.isDeal
                 ? Container(
-                    margin: const EdgeInsets.symmetric(
-                        horizontal: 0, vertical: 3),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 5),
+                    margin:
+                        const EdgeInsets.symmetric(horizontal: 0, vertical: 3),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     decoration: BoxDecoration(
                       color: btnbgColor.withOpacity(0.3),
                       borderRadius: BorderRadius.circular(20),
@@ -366,10 +357,10 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
                         )),
                   )
                 : Container(
-                    margin: const EdgeInsets.symmetric(
-                        horizontal: 0, vertical: 3),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 10, vertical: 5),
+                    margin:
+                        const EdgeInsets.symmetric(horizontal: 0, vertical: 3),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     decoration: BoxDecoration(
                       color: btnbgColor,
                       borderRadius: BorderRadius.circular(20),
@@ -394,7 +385,7 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
 
   Widget buildVerticalCards(CommonCounter commonCounter) {
     List<DealData> currentList =
-    commonCounter.isDeal ? dealListData : favouriteDealListData;
+        commonCounter.isDeal ? dealListData : favouriteDealListData;
 
     return Expanded(
       child: RefreshIndicator(
@@ -419,22 +410,23 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
                 },
                 child: getFavCards(index, currentList[index]),
               );
-            }else {
+            } else {
               // Display loading indicator while fetching more data
-              return FutureBuilder(future: Future.delayed(Duration(seconds: 3)),
+              return FutureBuilder(
+                  future: Future.delayed(Duration(seconds: 3)),
                   builder: (context, snapshot) =>
-                  snapshot.connectionState == ConnectionState.done
-                      ? SizedBox()
-                      : Padding(padding: const EdgeInsets.all(8.0),
-                    child: Center(child: CircularProgressIndicator()),
-                  ));
+                      snapshot.connectionState == ConnectionState.done
+                          ? SizedBox()
+                          : Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Center(child: CircularProgressIndicator()),
+                            ));
             }
           },
         ),
       ),
     );
   }
-
 
   Future<void> _refreshData() async {
     // Call your API here to refresh the data
@@ -443,40 +435,30 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
           await restaurantsProvider.getRestaurantsDealsList(data.id, page: 1);
 
       if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
+        for (DealData deal in refreshedData.data!) {
+          if (deal.favourite == false) {
+            setState(() {
+              dealListData = refreshedData as List<DealData>;
+              currentPage =
+                  1; // Reset the page to 2 as you loaded the first page.
+              hasMoreData = true; // Reset the flag for more data.
+            });
+          } else if (deal.favourite == true) {
+            setState(() {
+              favouriteDealListData = refreshedData as List<DealData>;
 
-
-          for (DealData deal in refreshedData.data!) {
-
-            if(deal.favourite==false){
-
-              setState(() {
-                dealListData = refreshedData as List<DealData>;
-                currentPage = 1; // Reset the page to 2 as you loaded the first page.
-                hasMoreData = true; // Reset the flag for more data.
-              });
-
-            } else if(deal.favourite==true){
-
-
-                setState(() {
-                  favouriteDealListData = refreshedData as List<DealData>;
-
-                  currentPage = 1; // Reset the page to 2 as you loaded the first page.
-                  hasMoreData = true; // Reset the flag for more data.
-                });
-
-            }
+              currentPage =
+                  1; // Reset the page to 2 as you loaded the first page.
+              hasMoreData = true; // Reset the flag for more data.
+            });
           }
-
-
-        } else {
-
+        }
+      } else {
         setState(() {
           hasMoreData = false;
           dealListData.clear();
           favouriteDealListData.clear();
         });
-
       }
     } catch (error) {
       print('Error refreshing data: $error');
@@ -484,41 +466,32 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
   }
 
   Widget getFavCards(int index, DealData data) {
-    var  currentDay = DateTime.now().weekday;
-    var  startTiming = '';
+    var currentDay = DateTime.now().weekday;
+    var startTiming = '';
     var endTiming = '';
 
-    if(currentDay == 1){
-     startTiming = data.store?.openingHour?.monday?.start ?? '';
-     endTiming = data.store?.openingHour?.monday?.end ?? '';
-
-    }else if(currentDay == 2){
-
+    if (currentDay == 1) {
+      startTiming = data.store?.openingHour?.monday?.start ?? '';
+      endTiming = data.store?.openingHour?.monday?.end ?? '';
+    } else if (currentDay == 2) {
       startTiming = data.store?.openingHour?.tuesday?.start ?? '';
       endTiming = data.store?.openingHour?.tuesday?.end ?? '';
-    }else if(currentDay == 3){
-
+    } else if (currentDay == 3) {
       startTiming = data.store?.openingHour?.wednesday?.start ?? '';
       endTiming = data.store?.openingHour?.wednesday?.end ?? '';
-    }else if(currentDay == 4){
-
+    } else if (currentDay == 4) {
       startTiming = data.store?.openingHour?.thursday?.start ?? '';
       endTiming = data.store?.openingHour?.thursday?.end ?? '';
-    }else if(currentDay == 5){
-
+    } else if (currentDay == 5) {
       startTiming = data.store?.openingHour?.friday?.start ?? '';
       endTiming = data.store?.openingHour?.friday?.end ?? '';
-    }else if(currentDay == 6){
-
+    } else if (currentDay == 6) {
       startTiming = data.store?.openingHour?.saturday?.start ?? '';
       endTiming = data.store?.openingHour?.saturday?.end ?? '';
-    }else if(currentDay == 7){
-
+    } else if (currentDay == 7) {
       startTiming = data.store?.openingHour?.sunday?.start ?? '';
       endTiming = data.store?.openingHour?.sunday?.end ?? '';
     }
-
-
 
     return GestureDetector(
       onTap: () {
@@ -592,7 +565,6 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
                               fontfamilly: montSemiBold)),
                     ],
                   ),
-
                   CustomText(
                     text: '\$ ${data.price ?? ""}',
                     color: dolorColor,
@@ -619,25 +591,33 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
                         gradient: LinearGradient(
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
-                          colors: [Colors.white, Colors.grey], // Adjust colors as needed
+                          colors: [
+                            Colors.white,
+                            Colors.grey
+                          ], // Adjust colors as needed
                         ),
                       ),
-                      child: data.profileImage != null && !(data.profileImage)!.contains("SocketException") ? ClipRRect(
-                          borderRadius: BorderRadius.circular(15.0),
-                          child: Image.network(
-                            data.profileImage!,
-                            fit: BoxFit.cover,
-                            height: 100, width: 100,
-                          )
-                      ): Image.asset(food_image,height: 100, width: 100,),
+                      child: data.profileImage != null &&
+                              !(data.profileImage)!.contains("SocketException")
+                          ? ClipRRect(
+                              borderRadius: BorderRadius.circular(15.0),
+                              child: Image.network(
+                                data.profileImage!,
+                                fit: BoxFit.cover,
+                                height: 100,
+                                width: 100,
+                              ))
+                          : Image.asset(
+                              food_image,
+                              height: 100,
+                              width: 100,
+                            ),
                     ),
                   ),
-
                   Positioned(
                     right: -4,
                     child: GestureDetector(
                       onTap: () async {
-
                         bool? ratingStatus = data.favourite;
                         int? dealId = data.id;
                         int? storeId = data.storeId;
@@ -645,71 +625,71 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
                         print('ratingStatus:$ratingStatus');
 
                         try {
-
                           if (data.favourite == false) {
                             // Only hit the API if data.favourite is true
                             var formData = {
                               'favourite': 1,
                             };
 
-                            FavAddedResponse favData = await Provider.of<FavoriteOperationProvider>(context, listen: false)
-                                .AddToFavoriteDeal(dealId??0,formData);
+                            FavAddedResponse favData =
+                                await Provider.of<FavoriteOperationProvider>(
+                                        context,
+                                        listen: false)
+                                    .AddToFavoriteDeal(dealId ?? 0, formData);
 
-                            if (favData.status == true && favData.message == "Deal Added in favourite successfully.") {
+                            if (favData.status == true &&
+                                favData.message ==
+                                    "Deal Added in favourite successfully.") {
                               // Print data to console
                               print(favData);
 
                               final snackBar = SnackBar(
-                                content:  Text('${favData.message}'),
+                                content: Text('${favData.message}'),
                               );
 
                               // Show the SnackBar
-                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
 
                               // Automatically hide the SnackBar after 1 second
                               Future.delayed(Duration(milliseconds: 1000), () {
-                                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                ScaffoldMessenger.of(context)
+                                    .hideCurrentSnackBar();
                               });
 
                               setState(() {
-
                                 data.favourite = true;
-
-
                               });
 
-
                               try {
-                                final refreshedData = await restaurantsProvider.getRestaurantsDealsList(storeId, page: 1);
+                                final refreshedData = await restaurantsProvider
+                                    .getRestaurantsDealsList(storeId, page: 1);
 
-                                if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
+                                if (refreshedData.data != null &&
+                                    refreshedData.data!.isNotEmpty) {
                                   for (DealData deal in refreshedData.data!) {
-
-                                    if(deal.favourite==false){
-
+                                    if (deal.favourite == false) {
                                       setState(() {
-                                        dealListData = refreshedData as List<DealData>;
-                                        currentPage = 1; // Reset the page to 2 as you loaded the first page.
-                                        hasMoreData = true; // Reset the flag for more data.
+                                        dealListData =
+                                            refreshedData as List<DealData>;
+                                        currentPage =
+                                            1; // Reset the page to 2 as you loaded the first page.
+                                        hasMoreData =
+                                            true; // Reset the flag for more data.
                                       });
-
-                                    } else if(deal.favourite==true){
-
-
+                                    } else if (deal.favourite == true) {
                                       setState(() {
+                                        favouriteDealListData =
+                                            refreshedData as List<DealData>;
 
-                                        favouriteDealListData = refreshedData as List<DealData>;
-
-                                        currentPage = 1; // Reset the page to 2 as you loaded the first page.
-                                        hasMoreData = true; // Reset the flag for more data.
+                                        currentPage =
+                                            1; // Reset the page to 2 as you loaded the first page.
+                                        hasMoreData =
+                                            true; // Reset the flag for more data.
                                       });
-
                                     }
                                   }
-
-
-                                }else{
-
+                                } else {
                                   setState(() {
                                     hasMoreData = false;
                                     dealListData.clear();
@@ -719,82 +699,85 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
                               } catch (error) {
                                 print('Error refreshing data: $error');
                               }
-
-
                             } else {
                               // API call failed
                               print("Something went wrong: ${favData.message}");
 
                               final snackBar = SnackBar(
-                                content:  Text('${favData.message}'),
+                                content: Text('${favData.message}'),
                               );
 
                               // Show the SnackBar
-                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
 
                               // Automatically hide the SnackBar after 1 second
                               Future.delayed(Duration(milliseconds: 1000), () {
-                                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                ScaffoldMessenger.of(context)
+                                    .hideCurrentSnackBar();
                               });
                             }
-                          } else if (data.favourite == true){
+                          } else if (data.favourite == true) {
                             // If data.favourite is false, print its value
-                            FavDeleteResponse delData = await Provider.of<FavoriteOperationProvider>(context, listen: false)
-                                .RemoveFromFavoriteDeal(data.id ?? 0);
+                            FavDeleteResponse delData =
+                                await Provider.of<FavoriteOperationProvider>(
+                                        context,
+                                        listen: false)
+                                    .RemoveFromFavoriteDeal(data.id ?? 0);
 
-                            if (delData.status == true && delData.message == "Favourite Deal deleted successfully.") {
+                            if (delData.status == true &&
+                                delData.message ==
+                                    "Favourite Deal deleted successfully.") {
                               // Print data to console
                               print(delData);
 
                               final snackBar = SnackBar(
-                                content:  Text('${delData.message}'),
+                                content: Text('${delData.message}'),
                               );
 
                               // Show the SnackBar
-                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
 
                               // Automatically hide the SnackBar after 1 second
                               Future.delayed(Duration(milliseconds: 1000), () {
-                                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                ScaffoldMessenger.of(context)
+                                    .hideCurrentSnackBar();
                               });
 
                               setState(() {
-
                                 data.favourite = false;
-
-
                               });
 
                               try {
-                                final refreshedData = await restaurantsProvider.getRestaurantsDealsList(storeId, page: 1);
+                                final refreshedData = await restaurantsProvider
+                                    .getRestaurantsDealsList(storeId, page: 1);
 
-                                if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
+                                if (refreshedData.data != null &&
+                                    refreshedData.data!.isNotEmpty) {
                                   for (DealData deal in refreshedData.data!) {
-
-                                    if(deal.favourite==false){
-
+                                    if (deal.favourite == false) {
                                       setState(() {
-                                        dealListData = refreshedData as List<DealData>;
-                                        currentPage = 1; // Reset the page to 2 as you loaded the first page.
-                                        hasMoreData = true; // Reset the flag for more data.
+                                        dealListData =
+                                            refreshedData as List<DealData>;
+                                        currentPage =
+                                            1; // Reset the page to 2 as you loaded the first page.
+                                        hasMoreData =
+                                            true; // Reset the flag for more data.
                                       });
-
-                                    } else if(deal.favourite==true){
-
-
+                                    } else if (deal.favourite == true) {
                                       setState(() {
+                                        favouriteDealListData =
+                                            refreshedData as List<DealData>;
 
-                                        favouriteDealListData = refreshedData as List<DealData>;
-
-                                        currentPage = 1; // Reset the page to 2 as you loaded the first page.
-                                        hasMoreData = true; // Reset the flag for more data.
+                                        currentPage =
+                                            1; // Reset the page to 2 as you loaded the first page.
+                                        hasMoreData =
+                                            true; // Reset the flag for more data.
                                       });
-
                                     }
                                   }
-
-
-                                } else{
+                                } else {
                                   setState(() {
                                     hasMoreData = false;
                                     dealListData.clear();
@@ -804,22 +787,22 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
                               } catch (error) {
                                 print('Error refreshing data: $error');
                               }
-
-
                             } else {
                               // API call failed
                               print("Something went wrong: ${delData.message}");
 
                               final snackBar = SnackBar(
-                                content:  Text('${delData.message}'),
+                                content: Text('${delData.message}'),
                               );
 
                               // Show the SnackBar
-                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
 
                               // Automatically hide the SnackBar after 1 second
                               Future.delayed(Duration(milliseconds: 1000), () {
-                                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                                ScaffoldMessenger.of(context)
+                                    .hideCurrentSnackBar();
                               });
                             }
                           }
@@ -829,14 +812,12 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
                         }
                       },
                       child: Image.asset(
-
                         height: 15,
                         width: 18,
-                        data.favourite == true  ? save_icon_red : save_icon,
+                        data.favourite == true ? save_icon_red : save_icon,
                       ),
                     ),
                   ),
-
                 ],
               ),
             ),

@@ -8,6 +8,7 @@ import '../../CUSTOM_WIDGETS/custom_search_field.dart';
 import '../../CUSTOM_WIDGETS/custom_text_style.dart';
 import '../../MULTI-PROVIDER/FavoriteOperationProvider.dart';
 import '../../MULTI-PROVIDER/RestaurantsListProvider.dart';
+import '../../MULTI-PROVIDER/SearchProvider.dart';
 import '../../Response_Model/FavAddedResponse.dart';
 import '../../Response_Model/FavDeleteResponse.dart';
 import '../../Response_Model/RestaurantDealResponse.dart';
@@ -107,7 +108,118 @@ class _CollectTomorrowScreenState extends State<CollectTomorrowScreen> {
             children: [
               const CustomAppBar(),
               const SizedBox(height: 20),
-              const CustomSearchField(hintText:"Search"),
+              Consumer<SearchProvider>(
+                builder: (context, searchProvider, child) {
+                  return  TextFormField(
+                    keyboardType: TextInputType.text,
+                    onChanged: (query) async {
+                      if (query.length >= 3) {
+                        // Trigger API call after 3 characters
+                        // You can call your API here using the search query
+                        // and update the UI with the response
+
+                        try {
+                          var formData = {
+                            "search_query": query,
+                            'search_type': 'Collect Tomorrow',
+
+                          };
+
+                          var data = await Provider.of<SearchProvider>(context, listen: false)
+                              .getSearchResult(formData);
+
+                          if (data.status == true && data.message == "Search successful") {
+                            // Login successful
+
+                            // Print data to console
+                            setState(() {
+                              collectTomorrowData = data.collectTomorrowDeals!;
+
+                            });
+
+
+                            // Navigate to the next screen or perform other actions after login
+                          } else {
+                            // Login failed
+                            print("Something went wrong: ${data.message}");
+
+                            final snackBar = SnackBar(
+                              content:  Text('${data.message}'),
+
+                            );
+
+                            // Show the SnackBar
+                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                            // Automatically hide the SnackBar after 1 second
+                            Future.delayed(Duration(milliseconds: 1000), () {
+                              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                            });
+
+                          }
+                        } catch (e) {
+                          // Display error message
+                          print("Error: $e");
+                        }
+
+
+                        // For simplicity, I'll just print the search query for now
+                        print("Search query: $query");
+                      }
+                      // Update the search query in the provider
+                      // searchProvider.setSearchQuery(query);
+                    },
+                    textAlign: TextAlign.start,
+                    //  focusNode: focusNode,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      color: hintColor,
+                      fontFamily: montBook,
+                    ),
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: editbgColor,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide.none,
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide.none,
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide.none,
+                      ),
+                      errorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide.none,
+                      ),
+                      focusedErrorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide.none,
+                      ),
+                      suffixIcon: const Padding(
+                        padding: EdgeInsets.only(right: 20.0, top: 10, bottom: 10),
+                        child: Icon(Icons.search, color: hintColor, size: 25),
+                      ),
+
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 30, vertical: 13),
+                      hintStyle: const TextStyle(
+                        color: hintColor,
+                        fontFamily: montBook,
+                        fontSize: 18,
+                      ),
+                      hintText: "Search",
+                    ),
+                  );
+
+
+
+
+                },
+              ),
+
               const Padding(
                 padding: EdgeInsets.only(left: 13.0,top: 20),
                 child: CustomText(text: collectTomorrow, color: btnbgColor, fontfamilly: montHeavy, sizeOfFont: 20),
@@ -175,7 +287,7 @@ class _CollectTomorrowScreenState extends State<CollectTomorrowScreen> {
             } else {
               // Display loading indicator while fetching more data
               return FutureBuilder(
-                future: Future.delayed(Duration(seconds: 3)),
+                future: Future.delayed(Duration(seconds: 1)),
                 builder: (context, snapshot) => snapshot.connectionState == ConnectionState.done ?
                 SizedBox(): Padding(
                   padding: const EdgeInsets.all(8.0),

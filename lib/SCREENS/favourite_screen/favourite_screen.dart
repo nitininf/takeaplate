@@ -149,7 +149,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
       backgroundColor: bgColor,
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.only(bottom: 20, right: 20, left: 20),
+          padding: const EdgeInsets.only(bottom: 20, right: 20, left: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -176,7 +176,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             getCards(commonProvider),
@@ -219,7 +219,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
       children: [
         // const SizedBox(height: 5,),
 
-        SizedBox(
+        const SizedBox(
           height: 10,
         ),
         Row(
@@ -239,7 +239,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                         onTap: () {
                           commonCounter.getFavStore(false);
                         },
-                        child: CustomText(
+                        child: const CustomText(
                           text: "Stores you loved",
                           sizeOfFont: 10,
                           fontfamilly: montBook,
@@ -260,14 +260,14 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                         onTap: () {
                           commonCounter.getFavStore(true);
                         },
-                        child: CustomText(
+                        child: const CustomText(
                           text: "Stores you loved",
                           sizeOfFont: 10,
                           fontfamilly: montBook,
                           color: hintColor,
                         )),
                   ),
-            SizedBox(
+            const SizedBox(
               width: 8,
             ),
             !commonCounter.isStore
@@ -379,12 +379,12 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
             } else {
               // Display loading indicator while fetching more data
               return FutureBuilder(
-                  future: Future.delayed(Duration(seconds: 3)),
+                  future: Future.delayed(const Duration(seconds: 3)),
                   builder: (context, snapshot) =>
                       snapshot.connectionState == ConnectionState.done
-                          ? SizedBox()
-                          : Padding(
-                              padding: const EdgeInsets.all(8.0),
+                          ? const SizedBox()
+                          : const Padding(
+                              padding: EdgeInsets.all(8.0),
                               child: Center(child: CircularProgressIndicator()),
                             ));
             }
@@ -464,31 +464,28 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                   fontfamilly: montLight,
                   maxLin: 1,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 5,
                 ),
-                Row(
-                  children: [
-                    RatingBar.readOnly(
-                      filledIcon: Icons.star,
-                      emptyIcon: Icons.star_border,
-                      filledColor: btnbgColor,
-                      initialRating: 4,
-                      size: 18,
-                      maxRating: 5,
-                    ),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    Expanded(
-                        child: CustomText(
-                      text: "3 offers available",
-                      color: offerColor,
-                      sizeOfFont: 10,
-                      fontfamilly: montRegular,
-                      maxLin: 1,
-                    )),
-                  ],
+
+                const CustomText(
+                  text: "3 offers available",
+                  color: offerColor,
+                  sizeOfFont: 10,
+                  fontfamilly: montRegular,
+                  maxLin: 1,
+                ),
+
+                const SizedBox(
+                  height: 5,
+                ),
+                const RatingBar.readOnly(
+                  filledIcon: Icons.star,
+                  emptyIcon: Icons.star_border,
+                  filledColor: btnbgColor,
+                  initialRating: 4,
+                  size: 18,
+                  maxRating: 5,
                 ),
               ],
             ),
@@ -503,10 +500,10 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(15.0),
                   child: Container(
-                    padding: EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(8.0),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15.0),
-                      gradient: LinearGradient(
+                      gradient: const LinearGradient(
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                         colors: [Colors.white, Colors.grey], // Adjust colors as needed
@@ -527,12 +524,12 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                   right: -4,
                   child: GestureDetector(
                     onTap: () async {
-                      int? ratingStatus = storeData.favourite as int;
+                    var ratingStatus = storeData.favourite as bool;
 
                       print('ratingStatus:$ratingStatus');
 
                       try {
-                        if (ratingStatus == 0) {
+                        if (ratingStatus == false) {
                           // Only hit the API if storeData.favourite is true
                           var formData = {
                             'favourite': 1,
@@ -560,13 +557,13 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                                 .showSnackBar(snackBar);
 
                             // Automatically hide the SnackBar after 1 second
-                            Future.delayed(Duration(milliseconds: 1000), () {
+                            Future.delayed(const Duration(milliseconds: 1000), () {
                               ScaffoldMessenger.of(context)
                                   .hideCurrentSnackBar();
                             });
 
                             setState(() {
-                              storeData.favourite = 1;
+                              storeData.favourite = true;
                             });
                             try {
                               final refreshedData = await restaurantsProvider
@@ -598,12 +595,12 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                                 .showSnackBar(snackBar);
 
                             // Automatically hide the SnackBar after 1 second
-                            Future.delayed(Duration(milliseconds: 1000), () {
+                            Future.delayed(const Duration(milliseconds: 1000), () {
                               ScaffoldMessenger.of(context)
                                   .hideCurrentSnackBar();
                             });
                           }
-                        } else if (storeData.favourite == 1) {
+                        } else if (storeData.favourite == true) {
                           // If storeData.favourite is false, print its value
                           FavDeleteResponse delData =
                               await Provider.of<FavoriteOperationProvider>(
@@ -626,13 +623,13 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                                 .showSnackBar(snackBar);
 
                             // Automatically hide the SnackBar after 1 second
-                            Future.delayed(Duration(milliseconds: 1000), () {
+                            Future.delayed(const Duration(milliseconds: 1000), () {
                               ScaffoldMessenger.of(context)
                                   .hideCurrentSnackBar();
                             });
 
                             setState(() {
-                              storeData.favourite = 0;
+                              storeData.favourite = false;
                             });
 
                             try {
@@ -665,7 +662,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                                 .showSnackBar(snackBar);
 
                             // Automatically hide the SnackBar after 1 second
-                            Future.delayed(Duration(milliseconds: 1000), () {
+                            Future.delayed(const Duration(milliseconds: 1000), () {
                               ScaffoldMessenger.of(context)
                                   .hideCurrentSnackBar();
                             });
@@ -679,7 +676,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                     child: Image.asset(
                       height: 15,
                       width: 18,
-                      storeData.favourite == 1 ? save_icon_red : save_icon,
+                      storeData.favourite == true ? save_icon_red : save_icon,
                     ),
                   ),
                 ),
@@ -768,7 +765,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                       color: graysColor,
                       sizeOfFont: 12,
                       fontfamilly: montRegular),
-                  SizedBox(
+                  const SizedBox(
                     height: 5,
                   ),
                   Row(
@@ -784,10 +781,10 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                         size: 16,
                         maxRating: 5,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 10,
                       ),
-                      Expanded(
+                      const Expanded(
                           child: CustomText(
                               text: "84 Km",
                               maxLin: 1,
@@ -796,7 +793,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                               fontfamilly: montSemiBold)),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 5,
                   ),
                   CustomText(
@@ -817,10 +814,10 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(15.0),
                     child: Container(
-                      padding: EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(8.0),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(15.0),
-                        gradient: LinearGradient(
+                        gradient: const LinearGradient(
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                           colors: [Colors.white, Colors.grey], // Adjust colors as needed
@@ -871,7 +868,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                               ScaffoldMessenger.of(context).showSnackBar(snackBar);
               
                               // Automatically hide the SnackBar after 1 second
-                              Future.delayed(Duration(milliseconds: 1000), () {
+                              Future.delayed(const Duration(milliseconds: 1000), () {
                                 ScaffoldMessenger.of(context).hideCurrentSnackBar();
                               });
               
@@ -919,7 +916,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                               ScaffoldMessenger.of(context).showSnackBar(snackBar);
               
                               // Automatically hide the SnackBar after 1 second
-                              Future.delayed(Duration(milliseconds: 1000), () {
+                              Future.delayed(const Duration(milliseconds: 1000), () {
                                 ScaffoldMessenger.of(context).hideCurrentSnackBar();
                               });
                             }
@@ -940,7 +937,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                               ScaffoldMessenger.of(context).showSnackBar(snackBar);
               
                               // Automatically hide the SnackBar after 1 second
-                              Future.delayed(Duration(milliseconds: 1000), () {
+                              Future.delayed(const Duration(milliseconds: 1000), () {
                                 ScaffoldMessenger.of(context).hideCurrentSnackBar();
                               });
               
@@ -989,7 +986,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                               ScaffoldMessenger.of(context).showSnackBar(snackBar);
               
                               // Automatically hide the SnackBar after 1 second
-                              Future.delayed(Duration(milliseconds: 1000), () {
+                              Future.delayed(const Duration(milliseconds: 1000), () {
                                 ScaffoldMessenger.of(context).hideCurrentSnackBar();
                               });
                             }

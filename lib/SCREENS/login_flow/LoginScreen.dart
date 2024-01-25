@@ -185,7 +185,8 @@ class LogInScreen extends StatelessWidget {
 
 
 
-                        }),
+                        }
+                        ),
                         const SizedBox(height: 20,),
                         GestureDetector(child: const CustomText(text: forgotpss,color: hintColor,fontfamilly: montBold,),
 

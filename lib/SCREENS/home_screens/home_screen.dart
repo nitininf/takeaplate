@@ -139,7 +139,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
 
 
-    return Stack(
+    return
+
+      Stack(
       children: [
         Scaffold(
           backgroundColor: bgColor,

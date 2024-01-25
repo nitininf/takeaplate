@@ -50,6 +50,7 @@ import 'OrderProvider.dart';
 import 'PaymentDetailsProvider.dart';
 import 'PlaceListProvider.dart';
 import 'PrivacyPolicyProvider.dart';
+import 'SearchProvider.dart';
 import 'SignUp_StepTwo.dart';
 import 'TermsAndConditionsProvider.dart';
 import 'common_counter.dart';
@@ -79,6 +80,7 @@ MultiProvider getProviders() {
       ChangeNotifierProvider(create: (_) => HomeDataListProvider()),
       ChangeNotifierProvider(create: (_) => PaymentDetailsProvider()),
       ChangeNotifierProvider(create: (_) => OrderProvider()),
+      ChangeNotifierProvider(create: (_) => SearchProvider()),
 
     ],
     child:

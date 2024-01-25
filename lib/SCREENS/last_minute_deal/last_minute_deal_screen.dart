@@ -8,6 +8,7 @@ import '../../CUSTOM_WIDGETS/custom_search_field.dart';
 import '../../CUSTOM_WIDGETS/custom_text_style.dart';
 import '../../MULTI-PROVIDER/FavoriteOperationProvider.dart';
 import '../../MULTI-PROVIDER/RestaurantsListProvider.dart';
+import '../../MULTI-PROVIDER/SearchProvider.dart';
 import '../../Response_Model/FavAddedResponse.dart';
 import '../../Response_Model/FavDeleteResponse.dart';
 import '../../Response_Model/RestaurantDealResponse.dart';
@@ -72,18 +73,16 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
 
         if (nextPageData.data != null && nextPageData.data!.isNotEmpty) {
           setState(() {
-            if(isRefresh == true){
-
+            if (isRefresh == true) {
               dealListData.clear();
               dealListData.addAll(nextPageData.data!);
               isRefresh = false;
 
               currentPage++;
-            }else{
+            } else {
               dealListData.addAll(nextPageData.data!);
               currentPage++;
             }
-
           });
         } else {
           // No more data available
@@ -114,7 +113,118 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
             children: [
               const CustomAppBar(),
               const SizedBox(height: 20),
-              const CustomSearchField(hintText: "Search"),
+              Consumer<SearchProvider>(
+                builder: (context, searchProvider, child) {
+                  return  TextFormField(
+                    keyboardType: TextInputType.text,
+                    onChanged: (query) async {
+                      if (query.length >= 3) {
+                        // Trigger API call after 3 characters
+                        // You can call your API here using the search query
+                        // and update the UI with the response
+
+                        try {
+                          var formData = {
+                            "search_query": query,
+                            'search_type': 'Last Minute Deal',
+
+                          };
+
+                          var data = await Provider.of<SearchProvider>(context, listen: false)
+                              .getSearchResult(formData);
+
+                          if (data.status == true && data.message == "Search successful") {
+                            // Login successful
+
+                            // Print data to console
+                            setState(() {
+                              dealListData = data.lastMinuteDeals!;
+
+                            });
+
+
+                            // Navigate to the next screen or perform other actions after login
+                          } else {
+                            // Login failed
+                            print("Something went wrong: ${data.message}");
+
+                            final snackBar = SnackBar(
+                              content:  Text('${data.message}'),
+
+                            );
+
+                            // Show the SnackBar
+                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                            // Automatically hide the SnackBar after 1 second
+                            Future.delayed(Duration(milliseconds: 1000), () {
+                              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                            });
+
+                          }
+                        } catch (e) {
+                          // Display error message
+                          print("Error: $e");
+                        }
+
+
+                        // For simplicity, I'll just print the search query for now
+                        print("Search query: $query");
+                      }
+                      // Update the search query in the provider
+                      // searchProvider.setSearchQuery(query);
+                    },
+                    textAlign: TextAlign.start,
+                    //  focusNode: focusNode,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      color: hintColor,
+                      fontFamily: montBook,
+                    ),
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: editbgColor,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide.none,
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide.none,
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide.none,
+                      ),
+                      errorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide.none,
+                      ),
+                      focusedErrorBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide.none,
+                      ),
+                      suffixIcon: const Padding(
+                        padding: EdgeInsets.only(right: 20.0, top: 10, bottom: 10),
+                        child: Icon(Icons.search, color: hintColor, size: 25),
+                      ),
+
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 30, vertical: 13),
+                      hintStyle: const TextStyle(
+                        color: hintColor,
+                        fontFamily: montBook,
+                        fontSize: 18,
+                      ),
+                      hintText: "Search",
+                    ),
+                  );
+
+
+
+
+                },
+              ),
+
               const Padding(
                 padding: EdgeInsets.only(left: 13.0, top: 20),
                 child: CustomText(
@@ -213,7 +323,6 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
 
       if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
         setState(() {
-
           currentPage = 1; // Reset the page to 1 as you loaded the first page.
           hasMoreData = true; // Reset the flag for more data.
           isRefresh = true;
@@ -227,7 +336,6 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
   }
 
   Widget getFavCards(int index, DealData data) {
-
     var currentDay = DateTime.now().weekday;
     var startTiming = '';
     var endTiming = '';
@@ -292,8 +400,7 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
                     sizeOfFont: 14,
                   ),
                   CustomText(
-                      text:
-                          '${startTiming ?? ""} - ${endTiming ?? ""}',
+                      text: '${startTiming ?? ""} - ${endTiming ?? ""}',
                       maxLin: 1,
                       color: graysColor,
                       sizeOfFont: 12,
@@ -338,7 +445,6 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
                 ],
               ),
             ),
-
             Expanded(
               child: Stack(
                 alignment: Alignment.topRight,
@@ -359,7 +465,8 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
                           ], // Adjust colors as needed
                         ),
                       ),
-                      child: data.profileImage != null  && !(data.profileImage)!.contains("SocketException")
+                      child: data.profileImage != null &&
+                              !(data.profileImage)!.contains("SocketException")
                           ? ClipRRect(
                               borderRadius: BorderRadius.circular(15.0),
                               child: Image.network(
@@ -422,18 +529,20 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
                                 try {
                                   final refreshedData =
                                       await restaurantsProvider
-                                          .getLastMinuteDealsList(
-                                              page: 1);
+                                          .getLastMinuteDealsList(page: 1);
 
                                   if (refreshedData.data != null &&
                                       refreshedData.data!.isNotEmpty) {
                                     setState(() {
                                       data.favourite = true;
 
-                                      currentPage = 1; // Reset the page to 1 as you loaded the first page.
-                                      hasMoreData = true; // Reset the flag for more data.
+                                      currentPage =
+                                          1; // Reset the page to 1 as you loaded the first page.
+                                      hasMoreData =
+                                          true; // Reset the flag for more data.
                                       isRefresh = true;
-                                      dealListData.clear(); // Clear existing data before adding new data.
+                                      dealListData
+                                          .clear(); // Clear existing data before adding new data.
                                       dealListData.addAll(refreshedData.data!);
                                     });
                                   }
@@ -491,16 +600,18 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
                                 try {
                                   final refreshedData =
                                       await restaurantsProvider
-                                          .getLastMinuteDealsList(
-                                              page: 1);
+                                          .getLastMinuteDealsList(page: 1);
 
                                   if (refreshedData.data != null &&
                                       refreshedData.data!.isNotEmpty) {
                                     setState(() {
-                                      currentPage = 1; // Reset the page to 1 as you loaded the first page.
-                                      hasMoreData = true; // Reset the flag for more data.
+                                      currentPage =
+                                          1; // Reset the page to 1 as you loaded the first page.
+                                      hasMoreData =
+                                          true; // Reset the flag for more data.
                                       isRefresh = true;
-                                      dealListData.clear(); // Clear existing data before adding new data.
+                                      dealListData
+                                          .clear(); // Clear existing data before adding new data.
                                       dealListData.addAll(refreshedData.data!);
                                     });
                                   }

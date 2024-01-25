@@ -198,7 +198,6 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
             const SizedBox(
               height: 15,
             ),
-
             Container(
               margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
               decoration: BoxDecoration(
@@ -282,7 +281,6 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
               height: 10,
             ),
             getPaymentCardList(),
-
             Padding(
               padding: const EdgeInsets.only(
                   top: 30.0, right: 33, left: 33, bottom: 20),
@@ -290,8 +288,6 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
                   btnBgColor: btnbgColor,
                   btnText: "ORDER & PAY",
                   onClick: () {
-
-
                     // Check if any item is selected
                     if (selectedCardIndex != -1) {
                       // Get the selected item details using selectedCardIndex
@@ -301,20 +297,19 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
                       print("Selected Card Details:");
                       print("Card Type: ${selectedCard.cardType}");
                       print("Card Id: ${selectedCard.id}");
-                      print("Last 4 Digits: ${selectedCard.cardNumber?.substring(selectedCard.cardNumber!.length - 4, selectedCard.cardNumber!.length)}");
-
-
+                      print(
+                          "Last 4 Digits: ${selectedCard.cardNumber?.substring(selectedCard.cardNumber!.length - 4, selectedCard.cardNumber!.length)}");
 
                       // Show the success popup
                       DialogHelper.showCommonPopup(navigatorKey.currentContext!,
                           title: "YOUR PAYMENT WAS SUCCESSFUL",
-                          subtitle: "YOU WILL GET A NOTIFICATION WHEN THE ORDER IS CONFIRMED");
+                          subtitle:
+                              "YOU WILL GET A NOTIFICATION WHEN THE ORDER IS CONFIRMED");
                     } else {
                       // No item selected, show an error message or handle as needed
 
                       final snackBar = SnackBar(
-                        content:  Text('No card selected'),
-
+                        content: Text('No card selected'),
                       );
 
                       // Show the SnackBar
@@ -324,9 +319,7 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
                       Future.delayed(Duration(milliseconds: 1000), () {
                         ScaffoldMessenger.of(context).hideCurrentSnackBar();
                       });
-
                     }
-
                   }),
             ),
           ],
@@ -336,19 +329,13 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
   }
 
   Widget getPaymentCardList() {
-    return
-
-      Container(
+    return Container(
       margin: EdgeInsets.all(15),
       decoration: BoxDecoration(
-        
         color: Colors.white,
-
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: editprofileColor,width: 0.5),
-
+        border: Border.all(color: editprofileColor, width: 0.5),
       ),
-
       child: ListView.builder(
         shrinkWrap: true,
         physics: NeverScrollableScrollPhysics(),

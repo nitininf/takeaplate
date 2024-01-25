@@ -8,6 +8,7 @@ import '../../CUSTOM_WIDGETS/custom_search_field.dart';
 import '../../CUSTOM_WIDGETS/custom_text_style.dart';
 import '../../MULTI-PROVIDER/FavoriteOperationProvider.dart';
 import '../../MULTI-PROVIDER/RestaurantsListProvider.dart';
+import '../../MULTI-PROVIDER/SearchProvider.dart';
 import '../../Response_Model/FavAddedResponse.dart';
 import '../../Response_Model/FavDeleteResponse.dart';
 import '../../Response_Model/RestaurantsListResponse.dart';
@@ -71,19 +72,16 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
         if (nextPageData.data != null && nextPageData.data!.isNotEmpty) {
           setState(() {
             if (mounted) {
-
-              if(isRefresh == true){
-
+              if (isRefresh == true) {
                 restaurantData.clear();
                 restaurantData.addAll(nextPageData.data!);
                 isRefresh = false;
 
                 currentPage++;
-              }else{
+              } else {
                 restaurantData.addAll(nextPageData.data!);
                 currentPage++;
               }
-
             }
           });
         } else {
@@ -116,7 +114,118 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 20),
-            const CustomSearchField(hintText: "Search"),
+            Consumer<SearchProvider>(
+              builder: (context, searchProvider, child) {
+                return  TextFormField(
+                  keyboardType: TextInputType.text,
+                  onChanged: (query) async {
+                    if (query.length >= 3) {
+                      // Trigger API call after 3 characters
+                      // You can call your API here using the search query
+                      // and update the UI with the response
+
+                      try {
+                        var formData = {
+                          "search_query": query,
+                          'search_type': 'Restaurant',
+
+                        };
+
+                        var data = await Provider.of<SearchProvider>(context, listen: false)
+                            .getSearchResult(formData);
+
+                        if (data.status == true && data.message == "Search successful") {
+                          // Login successful
+
+                          // Print data to console
+                          setState(() {
+                            restaurantData = data.restaurant!;
+
+                          });
+
+
+                          // Navigate to the next screen or perform other actions after login
+                        } else {
+                          // Login failed
+                          print("Something went wrong: ${data.message}");
+
+                          final snackBar = SnackBar(
+                            content:  Text('${data.message}'),
+
+                          );
+
+                          // Show the SnackBar
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                          // Automatically hide the SnackBar after 1 second
+                          Future.delayed(Duration(milliseconds: 1000), () {
+                            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                          });
+
+                        }
+                      } catch (e) {
+                        // Display error message
+                        print("Error: $e");
+                      }
+
+
+                      // For simplicity, I'll just print the search query for now
+                      print("Search query: $query");
+                    }
+                    // Update the search query in the provider
+                    // searchProvider.setSearchQuery(query);
+                  },
+                  textAlign: TextAlign.start,
+                  //  focusNode: focusNode,
+                  style: const TextStyle(
+                    fontSize: 18,
+                    color: hintColor,
+                    fontFamily: montBook,
+                  ),
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: editbgColor,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                      borderSide: BorderSide.none,
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                      borderSide: BorderSide.none,
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                      borderSide: BorderSide.none,
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                      borderSide: BorderSide.none,
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(20),
+                      borderSide: BorderSide.none,
+                    ),
+                    suffixIcon: const Padding(
+                      padding: EdgeInsets.only(right: 20.0, top: 10, bottom: 10),
+                      child: Icon(Icons.search, color: hintColor, size: 25),
+                    ),
+
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 30, vertical: 13),
+                    hintStyle: const TextStyle(
+                      color: hintColor,
+                      fontFamily: montBook,
+                      fontSize: 18,
+                    ),
+                    hintText: "Search",
+                  ),
+                );
+
+
+
+
+              },
+            ),
+
             const Padding(
               padding: EdgeInsets.only(left: 13.0, top: 30),
               child: CustomText(
@@ -190,7 +299,7 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
             } else {
               // Display loading indicator while fetching more data
               return FutureBuilder(
-                future: Future.delayed(Duration(seconds: 3)),
+                future: Future.delayed(Duration(seconds: 1)),
                 builder: (context, snapshot) =>
                     snapshot.connectionState == ConnectionState.done
                         ? SizedBox()
@@ -293,7 +402,6 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
               ],
             ),
           ),
-
           Expanded(
             child: Stack(
               alignment: Alignment.topRight,
@@ -308,20 +416,30 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
                       gradient: LinearGradient(
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
-                        colors: [Colors.white, Colors.grey], // Adjust colors as needed
+                        colors: [
+                          Colors.white,
+                          Colors.grey
+                        ], // Adjust colors as needed
                       ),
                     ),
-                    child: storeData.profileImage != null && !(storeData.profileImage)!.contains("SocketException")? ClipRRect(
-                        borderRadius: BorderRadius.circular(15.0),
-                        child: Image.network(
-                          storeData.profileImage!,
-                          fit: BoxFit.cover,
-                          height: 80, width: 80,
-                        )
-                    ): Image.asset(food_image,height: 80, width: 80,),
+                    child: storeData.profileImage != null &&
+                            !(storeData.profileImage)!
+                                .contains("SocketException")
+                        ? ClipRRect(
+                            borderRadius: BorderRadius.circular(15.0),
+                            child: Image.network(
+                              storeData.profileImage!,
+                              fit: BoxFit.cover,
+                              height: 80,
+                              width: 80,
+                            ))
+                        : Image.asset(
+                            food_image,
+                            height: 80,
+                            width: 80,
+                          ),
                   ),
                 ),
-
                 Positioned(
                   right: -4,
                   child: GestureDetector(
@@ -375,10 +493,13 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
                               if (refreshedData.data != null &&
                                   refreshedData.data!.isNotEmpty) {
                                 setState(() {
-                                  currentPage = 1; // Reset the page to 1 as you loaded the first page.
-                                  hasMoreData = true; // Reset the flag for more data.
+                                  currentPage =
+                                      1; // Reset the page to 1 as you loaded the first page.
+                                  hasMoreData =
+                                      true; // Reset the flag for more data.
                                   isRefresh = true;
-                                  restaurantData.clear(); // Clear existing data before adding new data.
+                                  restaurantData
+                                      .clear(); // Clear existing data before adding new data.
                                   restaurantData.addAll(refreshedData.data!);
                                 });
                               }
@@ -441,10 +562,13 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
 
                               if (refreshedData.data != null &&
                                   refreshedData.data!.isNotEmpty) {
-                                currentPage = 1; // Reset the page to 1 as you loaded the first page.
-                                hasMoreData = true; // Reset the flag for more data.
+                                currentPage =
+                                    1; // Reset the page to 1 as you loaded the first page.
+                                hasMoreData =
+                                    true; // Reset the flag for more data.
                                 isRefresh = true;
-                                restaurantData.clear(); // Clear existing data before adding new data.
+                                restaurantData
+                                    .clear(); // Clear existing data before adding new data.
                                 restaurantData.addAll(refreshedData.data!);
                               }
                             } catch (error) {
