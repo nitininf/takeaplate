@@ -82,8 +82,9 @@ class _ClosestScreenState extends State<ClosestScreen> {
            if(isRefresh == true){
              restaurantData.clear();
              restaurantData.addAll(nextPageData.data!);
-             isRefresh = false;
              currentPage++;
+             isRefresh = false;
+
            }else{
              restaurantData.addAll(nextPageData.data!);
              currentPage++;
@@ -325,22 +326,16 @@ class _ClosestScreenState extends State<ClosestScreen> {
   }
 
   Future<void> _refreshData() async {
-    try {
-      final refreshedData =
-      await restaurantsProvider.getClosestRestaurantsList(page: 1);
+    setState(() {
+      isRefresh = true;
 
-      if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
-        setState(() {
-          currentPage = 1; // Reset the page to 1 as you loaded the first page.
-          hasMoreData = true; // Reset the flag for more data.
-          isRefresh = true;
-          restaurantData.clear(); // Clear existing data before adding new data.
-          restaurantData.addAll(refreshedData.data!);
-        });
-      }
-    } catch (error) {
-      print('Error refreshing data: $error');
-    }
+      currentPage = 1; // Reset the page to 1 as you loaded the first page.
+      // hasMoreData = true; // Reset the flag for more data.
+      // restaurantData=refreshedData.data!;
+
+      _loadData();
+
+    });
   }
 
   Widget getFavCards(int index, StoreData item) {

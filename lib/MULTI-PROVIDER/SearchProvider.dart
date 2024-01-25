@@ -6,6 +6,7 @@ import '../NETWORKS/network.dart';
 import '../Response_Model/HomeItemsListingResponse.dart';
 import '../Response_Model/ProfilePageResponse.dart';
 import '../Response_Model/RestaurantsListResponse.dart';
+import '../Response_Model/SearchHistoryResponse.dart';
 import '../Response_Model/SearchResponse.dart';
 
 class SearchProvider extends ChangeNotifier {
@@ -34,6 +35,22 @@ class SearchProvider extends ChangeNotifier {
       rethrow; // Re-throw the error to the caller
     } finally {
       notifyListeners();
+    }
+  }
+
+
+  Future<SearchHistoryResponse> getSearchHistoryList({int page = 1}) async {
+    // Make network request with pagination parameters
+    // You might need to update your API endpoint to support pagination
+    final response = await _network.getRequest(
+      endPoint: '/get-search-history/$page',
+    );
+
+    if (response != null && response.data is Map<String, dynamic>) {
+      final Map<String, dynamic> responseData = response.data;
+      return SearchHistoryResponse.fromJson(responseData);
+    } else {
+      throw Exception('Failed to parse API response');
     }
   }
 

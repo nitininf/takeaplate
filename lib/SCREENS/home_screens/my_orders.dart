@@ -164,23 +164,16 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
   }
 
   Future<void> _refreshData() async {
-    // Call your API here to refresh the data
-    try {
-      final refreshedData = await orderProvider.getCurrentOrderList(page: 1);
+    setState(() {
+      isRefresh = true;
 
-      if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
-        setState(() {
-          currentPage = 1; // Reset the page to 1 as you loaded the first page.
-          hasMoreData = true; // Reset the flag for more data.
-          isRefresh = true;
-          currentOrderData.clear(); // Clear existing data before adding new data.
-          currentOrderData.addAll(refreshedData.data!);
+      currentPage = 1; // Reset the page to 1 as you loaded the first page.
+      // hasMoreData = true; // Reset the flag for more data.
+      // restaurantData=refreshedData.data!;
 
-        });
-      }
-    } catch (error) {
-      print('Error refreshing data: $error');
-    }
+      _loadData();
+
+    });
   }
 
 
@@ -270,7 +263,7 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                         borderRadius: BorderRadius.circular(15),
                         border: Border.all(width: 1, color: Colors.white),
                       ),
-                      child: const CustomText(text: "READY FOR PICKUP",maxLin:1,sizeOfFont: 9,fontfamilly:montHeavy,color: readyColor,),
+                      child:  CustomText(text: data.status == 0 ? "PENDING" : "READY FOR PICKUP",maxLin:1,sizeOfFont: 9,fontfamilly:montHeavy,color: readyColor,),
                     ),
                     SizedBox(
                       width: 5,

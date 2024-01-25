@@ -71,9 +71,10 @@ class _CollectTomorrowScreenState extends State<CollectTomorrowScreen> {
 
               collectTomorrowData.clear();
               collectTomorrowData.addAll(nextPageData.data!);
-              isRefresh = false;
 
               currentPage++;
+              isRefresh = false;
+
             }else{
               collectTomorrowData.addAll(nextPageData.data!);
               currentPage++;
@@ -302,23 +303,16 @@ class _CollectTomorrowScreenState extends State<CollectTomorrowScreen> {
   }
 
   Future<void> _refreshData() async {
-    // Call your API here to refresh the data
-    try {
-      final refreshedData = await restaurantsProvider.getCollectTomorrowList(page: 1);
+    setState(() {
+      isRefresh = true;
 
-      if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
-        setState(() {
-          currentPage = 1; // Reset the page to 1 as you loaded the first page.
-          hasMoreData = true; // Reset the flag for more data.
-          isRefresh = true;
-          collectTomorrowData.clear(); // Clear existing data before adding new data.
-          collectTomorrowData.addAll(refreshedData.data!);
+      currentPage = 1; // Reset the page to 1 as you loaded the first page.
+      // hasMoreData = true; // Reset the flag for more data.
+      // restaurantData=refreshedData.data!;
 
-        });
-      }
-    } catch (error) {
-      print('Error refreshing data: $error');
-    }
+      _loadData();
+
+    });
   }
 
 

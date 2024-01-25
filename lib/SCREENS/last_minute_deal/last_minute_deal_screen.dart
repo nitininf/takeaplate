@@ -76,9 +76,10 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
             if (isRefresh == true) {
               dealListData.clear();
               dealListData.addAll(nextPageData.data!);
-              isRefresh = false;
 
               currentPage++;
+              isRefresh = false;
+
             } else {
               dealListData.addAll(nextPageData.data!);
               currentPage++;
@@ -316,23 +317,16 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
   }
 
   Future<void> _refreshData() async {
-    // Call your API here to refresh the data
-    try {
-      final refreshedData =
-          await restaurantsProvider.getLastMinuteDealsList(page: 1);
+    setState(() {
+      isRefresh = true;
 
-      if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
-        setState(() {
-          currentPage = 1; // Reset the page to 1 as you loaded the first page.
-          hasMoreData = true; // Reset the flag for more data.
-          isRefresh = true;
-          dealListData.clear(); // Clear existing data before adding new data.
-          dealListData.addAll(refreshedData.data!);
-        });
-      }
-    } catch (error) {
-      print('Error refreshing data: $error');
-    }
+      currentPage = 1; // Reset the page to 1 as you loaded the first page.
+      // hasMoreData = true; // Reset the flag for more data.
+      // restaurantData=refreshedData.data!;
+
+      _loadData();
+
+    });
   }
 
   Widget getFavCards(int index, DealData data) {

@@ -75,9 +75,10 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
               if (isRefresh == true) {
                 restaurantData.clear();
                 restaurantData.addAll(nextPageData.data!);
+                currentPage++;
+
                 isRefresh = false;
 
-                currentPage++;
               } else {
                 restaurantData.addAll(nextPageData.data!);
                 currentPage++;
@@ -318,18 +319,23 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
   Future<void> _refreshData() async {
     // Call your API here to refresh the data
     try {
-      final refreshedData =
-          await restaurantsProvider.getRestaurantsList(page: 1);
 
-      if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
+      // final refreshedData =
+      //     await restaurantsProvider.getRestaurantsList(page: 1);
+      //
+      // if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
+
         setState(() {
-          currentPage = 1; // Reset the page to 1 as you loaded the first page.
-          hasMoreData = true; // Reset the flag for more data.
           isRefresh = true;
-          restaurantData.clear(); // Clear existing data before adding new data.
-          restaurantData.addAll(refreshedData.data!);
+
+          currentPage = 1; // Reset the page to 1 as you loaded the first page.
+          // hasMoreData = true; // Reset the flag for more data.
+          // restaurantData=refreshedData.data!;
+
+          _loadData();
+
         });
-      }
+
     } catch (error) {
       print('Error refreshing data: $error');
     }

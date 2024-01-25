@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:custom_rating_bar/custom_rating_bar.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:takeaplate/UTILS/app_strings.dart';
@@ -146,8 +145,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       backgroundColor: bgColor,
       body: Padding(
-        padding:
-            const EdgeInsets.only(top: 5.0, right: 25, left: 25, bottom: 10),
+        padding: const EdgeInsets.only(top: 5.0, right: 25, left: 25, bottom: 10),
         child: FutureBuilder<Map<String, String>>(
           future: SharedPrefsUtils.getDefaultValuesFromPrefs(),
           builder: (context, snapshot) {
@@ -171,15 +169,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ],
                 );
               }
-            } else {
+            } else if (snapshot.connectionState == ConnectionState.waiting) {
               // Show a loading indicator while fetching data
               return const Center(child: CircularProgressIndicator());
+            } else {
+              return Container(); // Handle other connection states if needed
             }
           },
         ),
       ),
     );
   }
+
 
   Widget buildSection(String title, String viewAllText) {
     return Padding(
@@ -424,8 +425,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         borderRadius: BorderRadius.circular(15),
                         border: Border.all(width: 1, color: Colors.white),
                       ),
-                      child: const CustomText(
-                        text: "READY FOR PICKUP",
+                      child:  CustomText(
+                        text: lastMinuteDeal.status == 0 ? "PENDING" : "READY FOR PICKUP",
                         maxLin: 1,
                         sizeOfFont: 9,
                         fontfamilly: montHeavy,

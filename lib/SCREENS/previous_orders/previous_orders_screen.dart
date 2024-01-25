@@ -72,6 +72,7 @@ class _PreviousOrderScreenState extends State<PreviousOrderScreen> {
               previousOrderData.clear();
               previousOrderData.addAll(nextPageData.data!);
               currentPage++;
+              isRefresh = false;
             }else{
               previousOrderData.addAll(nextPageData.data!);
               currentPage++;
@@ -189,23 +190,16 @@ class _PreviousOrderScreenState extends State<PreviousOrderScreen> {
   }
 
   Future<void> _refreshData() async {
-    // Call your API here to refresh the data
-    try {
-      final refreshedData = await orderProvider.getPreviousOrderList(page: 1);
+    setState(() {
+      isRefresh = true;
 
-      if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
-        setState(() {
-          currentPage = 1; // Reset the page to 1 as you loaded the first page.
-          hasMoreData = true; // Reset the flag for more data.
-          isRefresh = true;
-          previousOrderData.clear(); // Clear existing data before adding new data.
-          previousOrderData.addAll(refreshedData.data!);
+      currentPage = 1; // Reset the page to 1 as you loaded the first page.
+      // hasMoreData = true; // Reset the flag for more data.
+      // restaurantData=refreshedData.data!;
 
-        });
-      }
-    } catch (error) {
-      print('Error refreshing data: $error');
-    }
+      _loadData();
+
+    });
   }
 
 

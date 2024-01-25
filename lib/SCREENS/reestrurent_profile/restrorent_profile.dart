@@ -1,7 +1,6 @@
 import 'package:custom_rating_bar/custom_rating_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/custom_app_bar.dart';
 import 'package:takeaplate/main.dart';
@@ -32,11 +31,15 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
   bool isFavorite = false;
   int currentPage = 1;
   late StoreData data;
+  bool isRefresh = false;
 
   bool isLoading = false;
   bool hasMoreData = true;
   List<DealData> dealListData = [];
   List<DealData> favouriteDealListData = [];
+
+  List<DealData> dealList = [];
+  List<DealData> favouriteDealList = [];
 
   ScrollController _scrollController = ScrollController();
 
@@ -73,31 +76,45 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
         );
 
         if (nextPageData.data != null && nextPageData.data!.isNotEmpty) {
-          for (DealData deal in nextPageData.data!) {
-            if (deal.favourite == false) {
-              setState(() {
-                dealListData.add(deal);
 
-                currentPage++;
-              });
-            } else if (deal.favourite == true) {
-              setState(() {
-                favouriteDealListData.add(deal);
+          setState(() {
+            if (mounted) {
 
-                currentPage++;
-              });
+
+                for (DealData deal in nextPageData.data!) {
+                  if (deal.favourite == false) {
+                    setState(() {
+                      dealListData.add(deal);
+                    });
+                  } else if (deal.favourite == true) {
+                    setState(() {
+                      favouriteDealListData.add(deal);
+                    });
+                  }
+                }
+
+                if (isRefresh == true) {
+                  dealListData.clear();
+                  favouriteDealListData.clear();
+                  dealListData.addAll(dealList);
+                  isRefresh = false;
+                  favouriteDealListData.addAll(favouriteDealList);
+                  currentPage++;
+                } else {
+                  dealListData.addAll(dealList);
+                  favouriteDealListData.addAll(favouriteDealList);
+                  currentPage++;
+              }
             }
-          }
+          });
         } else {
           // No more data available
           setState(() {
             hasMoreData = false;
-            dealListData.clear();
-            favouriteDealListData.clear();
+
           });
         }
       } catch (error) {
-        print('Error loading more data: $error');
       } finally {
         setState(() {
           isLoading = false;
@@ -116,7 +133,7 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
               const EdgeInsets.only(top: 0.0, bottom: 20, left: 25, right: 25),
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            children: [CustomAppBar(), getView(data, data.id)],
+            children: [const CustomAppBar(), getView(data, data.id)],
           ),
         ),
       ),
@@ -129,7 +146,7 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             getCards(commonProvider, data),
@@ -242,10 +259,10 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
                   Navigator.pushNamed(
                       navigatorKey.currentContext!, '/OrderAndPayScreen');
                 },
-                child: Container(
+                child: SizedBox(
                   width: 120,
                   height: 60,
-                  child: Text(""),
+                  child: const Text(""),
                 ),
               ),
             ],
@@ -275,7 +292,7 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
             ),
           ],
         ),
-        SizedBox(
+        const SizedBox(
           height: 10,
         ),
         CustomText(
@@ -283,7 +300,7 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
             sizeOfFont: 10,
             color: onboardingbgColor,
             fontfamilly: montBook),
-        SizedBox(
+        const SizedBox(
           height: 10,
         ),
         Row(
@@ -303,7 +320,7 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
                         onTap: () {
                           commonCounter.gettodayDeal(false);
                         },
-                        child: CustomText(
+                        child: const CustomText(
                           text: "Deals",
                           sizeOfFont: 10,
                           fontfamilly: montBook,
@@ -324,14 +341,14 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
                         onTap: () {
                           commonCounter.gettodayDeal(true);
                         },
-                        child: CustomText(
+                        child: const CustomText(
                           text: "Deals",
                           sizeOfFont: 10,
                           fontfamilly: montBook,
                           color: hintColor,
                         )),
                   ),
-            SizedBox(
+            const SizedBox(
               width: 8,
             ),
             !commonCounter.isDeal
@@ -413,12 +430,12 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
             } else {
               // Display loading indicator while fetching more data
               return FutureBuilder(
-                  future: Future.delayed(Duration(seconds: 3)),
+                  future: Future.delayed(const Duration(seconds: 3)),
                   builder: (context, snapshot) =>
                       snapshot.connectionState == ConnectionState.done
-                          ? SizedBox()
-                          : Padding(
-                              padding: const EdgeInsets.all(8.0),
+                          ? const SizedBox()
+                          : const Padding(
+                              padding: EdgeInsets.all(8.0),
                               child: Center(child: CircularProgressIndicator()),
                             ));
             }
@@ -431,37 +448,56 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
   Future<void> _refreshData() async {
     // Call your API here to refresh the data
     try {
-      final refreshedData =
-          await restaurantsProvider.getRestaurantsDealsList(data.id, page: 1);
 
-      if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
-        for (DealData deal in refreshedData.data!) {
-          if (deal.favourite == false) {
-            setState(() {
-              dealListData = refreshedData as List<DealData>;
-              currentPage =
-                  1; // Reset the page to 2 as you loaded the first page.
-              hasMoreData = true; // Reset the flag for more data.
-            });
-          } else if (deal.favourite == true) {
-            setState(() {
-              favouriteDealListData = refreshedData as List<DealData>;
+      final nextPageData = await restaurantsProvider.getRestaurantsDealsList(
+        data.id,
+        page: currentPage,
+      );
 
-              currentPage =
-                  1; // Reset the page to 2 as you loaded the first page.
-              hasMoreData = true; // Reset the flag for more data.
-            });
+      if (nextPageData.data != null && nextPageData.data!.isNotEmpty) {
+
+        setState(() {
+
+          isRefresh = true;
+          if (mounted) {
+
+
+            for (DealData deal in nextPageData.data!) {
+              if (deal.favourite == false) {
+                setState(() {
+                  dealListData.add(deal);
+                });
+              } else if (deal.favourite == true) {
+                setState(() {
+                  favouriteDealListData.add(deal);
+                });
+              }
+            }
+
+            if (isRefresh == true) {
+              dealListData.clear();
+              favouriteDealListData.clear();
+              dealListData.addAll(dealList);
+              isRefresh = false;
+              favouriteDealListData.addAll(favouriteDealList);
+              currentPage++;
+            } else {
+              dealListData.addAll(dealList);
+              favouriteDealListData.addAll(favouriteDealList);
+              currentPage++;
+            }
           }
-        }
+        });
       } else {
+        // No more data available
         setState(() {
           hasMoreData = false;
-          dealListData.clear();
-          favouriteDealListData.clear();
+
         });
       }
+
     } catch (error) {
-      print('Error refreshing data: $error');
+      //
     }
   }
 
@@ -532,12 +568,12 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
                     sizeOfFont: 14,
                   ),
                   CustomText(
-                      text: '${startTiming ?? ""} - ${endTiming ?? ""}',
+                      text: '$startTiming - $endTiming',
                       maxLin: 1,
                       color: graysColor,
                       sizeOfFont: 12,
                       fontfamilly: montRegular),
-                  SizedBox(
+                  const SizedBox(
                     height: 5,
                   ),
                   Row(
@@ -553,10 +589,10 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
                         size: 18,
                         maxRating: 5,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 5,
                       ),
-                      Expanded(
+                      const Expanded(
                           child: CustomText(
                               text: "84 Km",
                               maxLin: 1,
@@ -585,10 +621,10 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(15.0),
                     child: Container(
-                      padding: EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(8.0),
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(15.0),
-                        gradient: LinearGradient(
+                        gradient: const LinearGradient(
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                           colors: [
@@ -618,11 +654,9 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
                     right: -4,
                     child: GestureDetector(
                       onTap: () async {
-                        bool? ratingStatus = data.favourite;
                         int? dealId = data.id;
                         int? storeId = data.storeId;
 
-                        print('ratingStatus:$ratingStatus');
 
                         try {
                           if (data.favourite == false) {
@@ -641,7 +675,6 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
                                 favData.message ==
                                     "Deal Added in favourite successfully.") {
                               // Print data to console
-                              print(favData);
 
                               final snackBar = SnackBar(
                                 content: Text('${favData.message}'),
@@ -652,7 +685,7 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
                                   .showSnackBar(snackBar);
 
                               // Automatically hide the SnackBar after 1 second
-                              Future.delayed(Duration(milliseconds: 1000), () {
+                              Future.delayed(const Duration(milliseconds: 1000), () {
                                 ScaffoldMessenger.of(context)
                                     .hideCurrentSnackBar();
                               });
@@ -697,11 +730,9 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
                                   });
                                 }
                               } catch (error) {
-                                print('Error refreshing data: $error');
                               }
                             } else {
                               // API call failed
-                              print("Something went wrong: ${favData.message}");
 
                               final snackBar = SnackBar(
                                 content: Text('${favData.message}'),
@@ -712,7 +743,7 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
                                   .showSnackBar(snackBar);
 
                               // Automatically hide the SnackBar after 1 second
-                              Future.delayed(Duration(milliseconds: 1000), () {
+                              Future.delayed(const Duration(milliseconds: 1000), () {
                                 ScaffoldMessenger.of(context)
                                     .hideCurrentSnackBar();
                               });
@@ -729,7 +760,6 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
                                 delData.message ==
                                     "Favourite Deal deleted successfully.") {
                               // Print data to console
-                              print(delData);
 
                               final snackBar = SnackBar(
                                 content: Text('${delData.message}'),
@@ -740,7 +770,7 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
                                   .showSnackBar(snackBar);
 
                               // Automatically hide the SnackBar after 1 second
-                              Future.delayed(Duration(milliseconds: 1000), () {
+                              Future.delayed(const Duration(milliseconds: 1000), () {
                                 ScaffoldMessenger.of(context)
                                     .hideCurrentSnackBar();
                               });
@@ -785,11 +815,9 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
                                   });
                                 }
                               } catch (error) {
-                                print('Error refreshing data: $error');
                               }
                             } else {
                               // API call failed
-                              print("Something went wrong: ${delData.message}");
 
                               final snackBar = SnackBar(
                                 content: Text('${delData.message}'),
@@ -800,7 +828,7 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
                                   .showSnackBar(snackBar);
 
                               // Automatically hide the SnackBar after 1 second
-                              Future.delayed(Duration(milliseconds: 1000), () {
+                              Future.delayed(const Duration(milliseconds: 1000), () {
                                 ScaffoldMessenger.of(context)
                                     .hideCurrentSnackBar();
                               });
@@ -808,7 +836,6 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
                           }
                         } catch (e) {
                           // Display error message
-                          print("Error: $e");
                         }
                       },
                       child: Image.asset(
