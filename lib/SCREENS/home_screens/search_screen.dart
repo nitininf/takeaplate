@@ -20,10 +20,10 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-
   final TextEditingController _searchController = TextEditingController();
   final FocusNode _searchFocusNode = FocusNode();
-  var counterProvider=Provider.of<CommonCounter>(navigatorKey.currentContext!, listen: false);
+  var counterProvider =
+      Provider.of<CommonCounter>(navigatorKey.currentContext!, listen: false);
 
   final SearchProvider searchProvider = SearchProvider();
   bool isFavorite = false;
@@ -43,7 +43,7 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
-  GlobalKey<RefreshIndicatorState>();
+      GlobalKey<RefreshIndicatorState>();
 
   void _scrollListener() {
     if (_scrollController.position.pixels ==
@@ -54,47 +54,59 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   void _loadData() async {
-    if (!isLoading && hasMoreData) {
-      try {
-        setState(() {
-          isLoading = true;
-        });
 
-        final nextPageData = await searchProvider.getSearchHistoryList(
-          page: currentPage,
-        );
 
-        if (nextPageData.data != null && nextPageData.data!.isNotEmpty) {
+    Future.delayed(Duration.zero,() async {
+
+      if (!isLoading && hasMoreData) {
+        try {
           setState(() {
-            if (mounted) {
-              if (isRefresh == true) {
-                searchData.clear();
-                searchData.addAll(nextPageData.data!);
-                isRefresh = false;
-
-                currentPage++;
-              } else {
-                searchData.addAll(nextPageData.data!);
-                currentPage++;
-              }
-            }
+            isLoading = true;
           });
-        } else {
+
+          final nextPageData = await searchProvider.getSearchHistoryList(
+            page: currentPage,
+          );
+
+          if (nextPageData.data != null && nextPageData.data!.isNotEmpty) {
+            setState(() {
+              if (mounted) {
+                if (isRefresh == true) {
+                  searchData.clear();
+                  searchData.addAll(nextPageData.data!);
+                  isRefresh = false;
+
+                  currentPage++;
+                } else {
+                  searchData.addAll(nextPageData.data!);
+                  currentPage++;
+                }
+              }
+            });
+          } else {
+            setState(() {
+              if (mounted) {
+                hasMoreData = false;
+              }
+            });
+          }
+        } catch (error) {
+        } finally {
           setState(() {
             if (mounted) {
-              hasMoreData = false;
+              isLoading = false;
             }
           });
         }
-      } catch (error) {
-      } finally {
-        setState(() {
-          if (mounted) {
-            isLoading = false;
-          }
-        });
       }
-    }
+
+
+
+    },);
+
+
+
+
   }
 
   @override
@@ -102,35 +114,97 @@ class _SearchScreenState extends State<SearchScreen> {
     return Scaffold(
         backgroundColor: bgColor,
         body: Padding(
-          padding: const EdgeInsets.only(top: 20.0,bottom: 20,left: 28,right: 28),
+          padding:
+              const EdgeInsets.only(top: 20.0, bottom: 20, left: 28, right: 28),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Padding(
-                padding: EdgeInsets.only(top: 5.0,right:20,left: 4 ,bottom: 10),
-                child: CustomText(text: "SEARCH", color: btnbgColor, fontfamilly: montHeavy,  sizeOfFont: 20),
+                padding:
+                    EdgeInsets.only(top: 5.0, right: 20, left: 4, bottom: 10),
+                child: CustomText(
+                    text: "SEARCH",
+                    color: btnbgColor,
+                    fontfamilly: montHeavy,
+                    sizeOfFont: 20),
               ),
+              TextFormField(
+                keyboardType: TextInputType.text,
+                controller: _searchController,
+                focusNode: _searchFocusNode,
 
-              CustomSearchField(hintText:"Search",controller: _searchController,focusnde: _searchFocusNode,),
+                textAlign: TextAlign.start,
+                autofocus: true,
+                //  focusNode: focusNode,
+                style: const TextStyle(
+                  fontSize: 18,
+                  color: hintColor,
+                  fontFamily: montBook,
+                ),
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: editbgColor,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    borderSide: BorderSide.none,
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    borderSide: BorderSide.none,
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    borderSide: BorderSide.none,
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    borderSide: BorderSide.none,
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    borderSide: BorderSide.none,
+                  ),
+                  suffixIcon: const Padding(
+                    padding: EdgeInsets.only(right: 20.0, top: 10, bottom: 10),
+                    child: Icon(Icons.search, color: hintColor, size: 25),
+                  ),
+                  contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 30, vertical: 13),
+                  hintStyle: const TextStyle(
+                    color: hintColor,
+                    fontFamily: montBook,
+                    fontSize: 18,
+                  ),
+                  hintText: "Search",
+                ),
+                onEditingComplete: () {
+                  // Navigate to login screen
+                  Navigator.pushReplacementNamed(
+                    arguments:_searchController.text,
+                      context, '/SearchResultScreen');
+                },
+              ),
               const Padding(
-                padding: EdgeInsets.only(left: 4.0,top: 30),
-                child: CustomText(text: "RECENT SEARCHES", color: btnbgColor, fontfamilly: montHeavy,  sizeOfFont: 20),
+                padding: EdgeInsets.only(left: 4.0, top: 30),
+                child: CustomText(
+                  text: "RECENT SEARCHES",
+                  color: btnbgColor,
+                  fontfamilly: montHeavy,
+                  sizeOfFont: 20,
+                ),
               ),
               Expanded(
                 child: getSearchList(),
               ),
             ],
           ),
-        )
-    );
-
+        ));
   }
 
   Future<void> _refreshData() async {
     // Call your API here to refresh the data
     try {
-      final refreshedData =
-      await searchProvider.getSearchHistoryList(page: 1);
+      final refreshedData = await searchProvider.getSearchHistoryList(page: 1);
 
       if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
         setState(() {
@@ -145,8 +219,6 @@ class _SearchScreenState extends State<SearchScreen> {
       //
     }
   }
-
-
 
   Widget getSearchList() {
     return Expanded(
@@ -177,12 +249,12 @@ class _SearchScreenState extends State<SearchScreen> {
               return FutureBuilder(
                 future: Future.delayed(const Duration(seconds: 1)),
                 builder: (context, snapshot) =>
-                snapshot.connectionState == ConnectionState.done
-                    ? const SizedBox()
-                    : const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Center(child: CircularProgressIndicator()),
-                ),
+                    snapshot.connectionState == ConnectionState.done
+                        ? const SizedBox()
+                        : const Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Center(child: CircularProgressIndicator()),
+                          ),
               );
             }
           },
@@ -191,34 +263,40 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
-
-  Widget getView(int index, HistoryData searchData){
-
+  Widget getView(int index, HistoryData searchData) {
     return Column(
       children: [
-        const SizedBox(height: 10,),
+        const SizedBox(
+          height: 10,
+        ),
         Padding(
-          padding: const EdgeInsets.only(left: 8.0,right: 7.0,top: 2),
+          padding: const EdgeInsets.only(left: 8.0, right: 7.0, top: 2),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              CustomText(text: searchData.searchTerm ?? '', color: btntxtColor, fontfamilly: montBold, sizeOfFont: 15),
-              CustomText(text: searchData.createdAt ?? '', color: graysColor, fontfamilly: montRegular, sizeOfFont: 11,),
+              CustomText(
+                  text: searchData.searchTerm ?? '',
+                  color: btntxtColor,
+                  fontfamilly: montBold,
+                  sizeOfFont: 15),
+              CustomText(
+                text: searchData.createdAt ?? '',
+                color: graysColor,
+                fontfamilly: montRegular,
+                sizeOfFont: 11,
+              ),
             ],
           ),
         ),
         const Padding(
-          padding: EdgeInsets.only(top:12.0),
+          padding: EdgeInsets.only(top: 12.0),
           child: Divider(
             height: 0,
             color: grayColor,
             thickness: 0,
-
           ),
         )
       ],
     );
-
   }
-
 }

@@ -64,21 +64,25 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
   }
 
   void _loadData() async {
-    if (!isLoading && hasMoreData) {
-      try {
-        setState(() {
-          isLoading = true;
-        });
 
-        final nextPageData = await restaurantsProvider.getRestaurantsDealsList(
-          data.id,
-          page: currentPage,
-        );
 
-        if (nextPageData.data != null && nextPageData.data!.isNotEmpty) {
+    Future.delayed(Duration.zero,() async {
 
+      if (!isLoading && hasMoreData) {
+        try {
           setState(() {
-            if (mounted) {
+            isLoading = true;
+          });
+
+          final nextPageData = await restaurantsProvider.getRestaurantsDealsList(
+            data.id,
+            page: currentPage,
+          );
+
+          if (nextPageData.data != null && nextPageData.data!.isNotEmpty) {
+
+            setState(() {
+              if (mounted) {
 
 
                 for (DealData deal in nextPageData.data!) {
@@ -104,23 +108,31 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
                   dealListData.addAll(dealList);
                   favouriteDealListData.addAll(favouriteDealList);
                   currentPage++;
+                }
               }
-            }
-          });
-        } else {
-          // No more data available
-          setState(() {
-            hasMoreData = false;
+            });
+          } else {
+            // No more data available
+            setState(() {
+              hasMoreData = false;
 
+            });
+          }
+        } catch (error) {
+        } finally {
+          setState(() {
+            isLoading = false;
           });
         }
-      } catch (error) {
-      } finally {
-        setState(() {
-          isLoading = false;
-        });
       }
-    }
+
+
+
+    },);
+
+
+
+
   }
 
   @override

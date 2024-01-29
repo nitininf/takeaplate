@@ -56,64 +56,73 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
       GlobalKey<RefreshIndicatorState>();
 
   void _loadData() async {
-    if (!isLoading && hasMoreData) {
-      try {
-        setState(() {
-          isLoading = true;
-        });
 
-        final nextPageData = await cartOperationProvider.getCartList();
 
-        totalPrice = nextPageData.totalPrice ?? 0;
+    Future.delayed(Duration.zero,() async {
 
-        if (nextPageData.cartItems != null &&
-            nextPageData.cartItems!.isNotEmpty) {
+      if (!isLoading && hasMoreData) {
+        try {
           setState(() {
-            if (mounted) {
-              cartItemsData = nextPageData.cartItems!;
-
-              // cartItemsData.addAll(nextPageData.cartItems!);
-              // currentPage++;
-            }
+            isLoading = true;
           });
-        } else {
-          setState(() {
-            if (mounted) {
-              hasMoreData = false;
-              cartItemsData.clear();
-            }
-          });
-        }
 
-        final paymentCardData = await carDOperationProvider.getCardList();
+          final nextPageData = await cartOperationProvider.getCartList();
 
-        if (paymentCardData.data != null && paymentCardData.data!.isNotEmpty) {
-          setState(() {
-            if (mounted) {
-              cardListData = paymentCardData.data!;
+          totalPrice = nextPageData.totalPrice ?? 0;
 
-              // cartItemsData.addAll(nextPageData.cartItems!);
-              // currentPage++;
-            }
-          });
-        } else {
-          setState(() {
-            if (mounted) {
-              hasMoreData = false;
-              cardListData.clear();
-            }
-          });
-        }
-      } catch (error) {
-        print('Error loading more data: $error');
-      } finally {
-        setState(() {
-          if (mounted) {
-            isLoading = false;
+          if (nextPageData.cartItems != null &&
+              nextPageData.cartItems!.isNotEmpty) {
+            setState(() {
+              if (mounted) {
+                cartItemsData = nextPageData.cartItems!;
+
+                // cartItemsData.addAll(nextPageData.cartItems!);
+                // currentPage++;
+              }
+            });
+          } else {
+            setState(() {
+              if (mounted) {
+                hasMoreData = false;
+                cartItemsData.clear();
+              }
+            });
           }
-        });
+
+          final paymentCardData = await carDOperationProvider.getCardList();
+
+          if (paymentCardData.data != null && paymentCardData.data!.isNotEmpty) {
+            setState(() {
+              if (mounted) {
+                cardListData = paymentCardData.data!;
+
+                // cartItemsData.addAll(nextPageData.cartItems!);
+                // currentPage++;
+              }
+            });
+          } else {
+            setState(() {
+              if (mounted) {
+                hasMoreData = false;
+                cardListData.clear();
+              }
+            });
+          }
+        } catch (error) {
+          print('Error loading more data: $error');
+        } finally {
+          setState(() {
+            if (mounted) {
+              isLoading = false;
+            }
+          });
+        }
       }
-    }
+
+    },);
+
+
+
   }
 
   @override

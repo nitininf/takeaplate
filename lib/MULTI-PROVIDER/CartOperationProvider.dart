@@ -43,7 +43,6 @@ class CartOperationProvider extends ChangeNotifier {
         formData: formData,
       );
 
-      print("my response : ${response}");
 
       if (response != null && response.data is Map<String, dynamic>) {
         final Map<String, dynamic> responseData = response.data;
@@ -54,7 +53,6 @@ class CartOperationProvider extends ChangeNotifier {
       }
     } catch (error) {
       // Handle network errors or any other exceptions
-      print('Error: $error');
       rethrow; // Re-throw the error to the caller
     } finally {
       notifyListeners();

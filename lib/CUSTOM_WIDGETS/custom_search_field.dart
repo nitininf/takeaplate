@@ -24,6 +24,7 @@ class CustomSearchField extends StatelessWidget {
         controller: controller,
         textAlign: TextAlign.start,
       //  focusNode: focusNode,
+
         style: const TextStyle(
           fontSize: 18,
           color: hintColor,

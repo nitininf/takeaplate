@@ -20,7 +20,14 @@ import '../notification/your_notifcation.dart';
 import '../setting_screen/settings_screen.dart';
 import 'home_screen.dart';
 
+
+
+
 class BaseHome extends StatefulWidget {
+
+  static bool isSearch = false;
+
+
   @override
   _BaseHomeScreen createState() => _BaseHomeScreen();
 }
@@ -29,8 +36,25 @@ class _BaseHomeScreen extends State<BaseHome> {
    int _selectedIndex = 2;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
+@override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
 
 
+
+
+
+   if(BaseHome.isSearch == true){
+
+    setState(() {
+      _selectedIndex = 0;
+    });
+
+   }
+
+
+  }
 
   static final List<Widget> _widgetOptions = <Widget>[
     SearchScreen(),

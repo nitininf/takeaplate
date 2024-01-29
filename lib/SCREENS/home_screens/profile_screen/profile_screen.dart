@@ -55,89 +55,100 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   void _loadData() async {
-    if (!isLoading && hasMoreData) {
-      try {
-        setState(() {
-          isLoading = true;
-        });
 
-        final nextPageData = await homeProvider.getProfilePageData(
-          page: currentPage,
-        );
 
-        if (nextPageData.currentDeal != null &&
-            nextPageData.currentDeal!.isNotEmpty) {
-          // currentPage++;
+    Future.delayed(Duration.zero,() async {
 
+      if (!isLoading && hasMoreData) {
+        try {
           setState(() {
-            if (mounted) {
-              currentOrderDeals = nextPageData.currentDeal!;
-            }
+            isLoading = true;
           });
-        } else {
+
+          final nextPageData = await homeProvider.getProfilePageData(
+            page: currentPage,
+          );
+
+          if (nextPageData.currentDeal != null &&
+              nextPageData.currentDeal!.isNotEmpty) {
+            // currentPage++;
+
+            setState(() {
+              if (mounted) {
+                currentOrderDeals = nextPageData.currentDeal!;
+              }
+            });
+          } else {
+            setState(() {
+              if (mounted) {
+                hasMoreData = false;
+                currentOrderDeals.clear();
+              }
+            });
+          }
+
+          if (nextPageData.previousDeal != null &&
+              nextPageData.previousDeal!.isNotEmpty) {
+            setState(() {
+              if (mounted) {
+                previousOrderDeals = nextPageData.previousDeal!;
+              }
+            });
+          } else {
+            setState(() {
+              if (mounted) {
+                hasMoreData = false;
+                previousOrderDeals.clear();
+              }
+            });
+          }
+
+          if (nextPageData.favoriteDeals != null &&
+              nextPageData.favoriteDeals!.isNotEmpty) {
+            setState(() {
+              if (mounted) {
+                favoriteStoresAndDeals = nextPageData.favoriteDeals!;
+              }
+            });
+          } else {
+            setState(() {
+              if (mounted) {
+                hasMoreData = false;
+                favoriteStoresAndDeals.clear();
+              }
+            });
+          }
+
+          if (nextPageData.paymentCard != null &&
+              nextPageData.paymentCard!.isNotEmpty) {
+            setState(() {
+              if (mounted) {
+                cardListData = nextPageData.paymentCard!;
+              }
+            });
+          } else {
+            setState(() {
+              if (mounted) {
+                hasMoreData = false;
+                cardListData.clear();
+              }
+            });
+          }
+        } catch (error) {
+          // Display error message
+        } finally {
           setState(() {
-            if (mounted) {
-              hasMoreData = false;
-              currentOrderDeals.clear();
-            }
+            isLoading = false;
           });
         }
-
-        if (nextPageData.previousDeal != null &&
-            nextPageData.previousDeal!.isNotEmpty) {
-          setState(() {
-            if (mounted) {
-              previousOrderDeals = nextPageData.previousDeal!;
-            }
-          });
-        } else {
-          setState(() {
-            if (mounted) {
-              hasMoreData = false;
-              previousOrderDeals.clear();
-            }
-          });
-        }
-
-        if (nextPageData.favoriteDeals != null &&
-            nextPageData.favoriteDeals!.isNotEmpty) {
-          setState(() {
-            if (mounted) {
-              favoriteStoresAndDeals = nextPageData.favoriteDeals!;
-            }
-          });
-        } else {
-          setState(() {
-            if (mounted) {
-              hasMoreData = false;
-              favoriteStoresAndDeals.clear();
-            }
-          });
-        }
-
-        if (nextPageData.paymentCard != null &&
-            nextPageData.paymentCard!.isNotEmpty) {
-          setState(() {
-            if (mounted) {
-              cardListData = nextPageData.paymentCard!;
-            }
-          });
-        } else {
-          setState(() {
-            if (mounted) {
-              hasMoreData = false;
-              cardListData.clear();
-            }
-          });
-        }
-      } catch (error) {
-        // Display error message
-      } finally {
-        setState(() {
-          isLoading = false;
-        });
       }
-    }
+
+
+
+    },);
+
+
+
   }
 
   @override

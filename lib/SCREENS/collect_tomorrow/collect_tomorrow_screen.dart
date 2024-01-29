@@ -55,45 +55,53 @@ class _CollectTomorrowScreenState extends State<CollectTomorrowScreen> {
   }
 
   void _loadData() async {
-    if (!isLoading && hasMoreData) {
-      try {
-        setState(() {
-          isLoading = true;
-        });
 
-        final nextPageData = await restaurantsProvider.getCollectTomorrowList(
-          page: currentPage,
-        );
+    Future.delayed(Duration.zero,() async {
 
-        if (nextPageData.data != null && nextPageData.data!.isNotEmpty) {
+
+      if (!isLoading && hasMoreData) {
+        try {
           setState(() {
-            if(isRefresh == true){
-
-              collectTomorrowData.clear();
-              collectTomorrowData.addAll(nextPageData.data!);
-
-              currentPage++;
-              isRefresh = false;
-
-            }else{
-              collectTomorrowData.addAll(nextPageData.data!);
-              currentPage++;
-            }
+            isLoading = true;
           });
-        } else {
-          // No more data available
+
+          final nextPageData = await restaurantsProvider.getCollectTomorrowList(
+            page: currentPage,
+          );
+
+          if (nextPageData.data != null && nextPageData.data!.isNotEmpty) {
+            setState(() {
+              if(isRefresh == true){
+
+                collectTomorrowData.clear();
+                collectTomorrowData.addAll(nextPageData.data!);
+
+                currentPage++;
+                isRefresh = false;
+
+              }else{
+                collectTomorrowData.addAll(nextPageData.data!);
+                currentPage++;
+              }
+            });
+          } else {
+            // No more data available
+            setState(() {
+              hasMoreData = false;
+            });
+          }
+        } catch (error) {
+          print('Error loading more data: $error');
+        } finally {
           setState(() {
-            hasMoreData = false;
+            isLoading = false;
           });
         }
-      } catch (error) {
-        print('Error loading more data: $error');
-      } finally {
-        setState(() {
-          isLoading = false;
-        });
       }
-    }
+
+
+    },);
+
   }
 
   @override

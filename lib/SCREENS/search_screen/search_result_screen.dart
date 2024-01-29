@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/custom_app_bar.dart';
 import '../../MULTI-PROVIDER/FavoriteOperationProvider.dart';
+import '../../MULTI-PROVIDER/SearchProvider.dart';
 import '../../Response_Model/FavAddedResponse.dart';
 import '../../Response_Model/FavDeleteResponse.dart';
 import '../../Response_Model/RestaurantDealResponse.dart';
@@ -16,14 +17,16 @@ import '../../UTILS/app_images.dart';
 import '../../UTILS/fontfaimlly_string.dart';
 import '../../main.dart';
 
-class FavouriteScreen extends StatefulWidget {
-  const FavouriteScreen({super.key});
+class SearchResultScreen extends StatefulWidget {
+  SearchResultScreen({super.key, required this.context});
+
+  BuildContext context;
 
   @override
-  _FavouriteScreenState createState() => _FavouriteScreenState();
+  _SearchResultScreenState createState() => _SearchResultScreenState();
 }
 
-class _FavouriteScreenState extends State<FavouriteScreen> {
+class _SearchResultScreenState extends State<SearchResultScreen> {
   final List<String> items = [
     'Healthy',
     'Sushi',
@@ -32,6 +35,8 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
     'Sweets'
   ];
   final RestaurantsListProvider restaurantsProvider = RestaurantsListProvider();
+  final SearchProvider searchProvider = SearchProvider();
+
   int isFavorite = 0;
   int currentRestaurantPage = 1;
   int currentDealPage = 1;
@@ -41,14 +46,19 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
   bool hasMoreData = true;
   List<StoreData> restaurantData = [];
   List<DealData> dealListingData = [];
-
+  late var data;
   ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
+
     _scrollController.addListener(_scrollListener);
-    _loadData();
+
+    data = ModalRoute.of(widget.context)!.settings.arguments;
+
+    print('Search Query : $data');
+    _loadData(data);
   }
 
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
@@ -58,100 +68,58 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
     if (_scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
       // Reached the end of the list, load more data
-      _loadData();
+      _loadData(data);
     }
   }
 
-  void _loadData() async {
-
-
-    Future.delayed(Duration.zero,() async {
-
-
-      if (!isRestaurantLoading && hasMoreData) {
-        try {
-          setState(() {
-            isRestaurantLoading = true;
-          });
-
-          final nextPageRestaurantData =
-          await restaurantsProvider.getFavRestaurantsList(
-            page: currentRestaurantPage,
-          );
-
-          if (nextPageRestaurantData.data != null &&
-              nextPageRestaurantData.data!.isNotEmpty) {
+  void _loadData(Object? data) async {
+    Future.delayed(
+      Duration.zero,
+      () async {
+        if (!isRestaurantLoading && hasMoreData) {
+          try {
             setState(() {
+              isRestaurantLoading = true;
+            });
 
-              if(isRefresh == true) {
-                restaurantData.clear();
-                restaurantData.addAll(nextPageRestaurantData.data!);
-                isRefresh = false;
+            var formData = {"search_query": data};
 
-                currentRestaurantPage++;
-              }else{
-                restaurantData.addAll(nextPageRestaurantData.data!);
-                currentRestaurantPage++;
-              }
+            final searchQueryData =
+                await searchProvider.getSearchQueryResultList(
+              formData,
+              page: currentRestaurantPage,
+            );
+
+            if (searchQueryData.stores != null &&
+                searchQueryData.stores!.isNotEmpty) {
+              setState(() {
+                if (isRefresh == true) {
+                  restaurantData.clear();
+                  dealListingData.clear();
+
+                  restaurantData.addAll(searchQueryData.stores!);
+                  dealListingData.addAll(searchQueryData.deals!);
+                  isRefresh = false;
+
+                  currentRestaurantPage++;
+                } else {
+                  restaurantData.addAll(searchQueryData.stores!);
+                  dealListingData.addAll(searchQueryData.deals!);
+
+                  currentRestaurantPage++;
+                }
+              });
+            }
+          } catch (error) {
+            print('Error loading more data: $error');
+          } finally {
+            setState(() {
+              isRestaurantLoading = false;
             });
           }
-
-
-
-        } catch (error) {
-          print('Error loading more data: $error');
-        } finally {
-          setState(() {
-            isRestaurantLoading = false;
-          });
         }
-      }
-      if (!isDealLoading && hasMoreData) {
-        try {
-          setState(() {
-            isDealLoading = true;
-          });
-
-          final nextPageDealData = await restaurantsProvider.getFavDealsList(
-            page: currentDealPage,
-          );
-
-          if (nextPageDealData.data != null &&
-              nextPageDealData.data!.isNotEmpty) {
-            setState(() {
-              if(isRefresh == true) {
-                dealListingData.clear();
-                dealListingData.addAll(nextPageDealData.data!);
-                currentDealPage++;
-              }else{
-                dealListingData.addAll(nextPageDealData.data!);
-                currentDealPage++;
-              }
-            });
-
-            print(dealListingData);
-          } else {
-            // No more data available
-            setState(() {
-              hasMoreData = false;
-            });
-          }
-        } catch (error) {
-          print('Error loading more data: $error');
-        } finally {
-          setState(() {
-            isDealLoading = false;
-          });
-        }
-      }
-
-
-    },);
-
-
-
-
-
+      },
+    );
   }
 
   @override
@@ -168,7 +136,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
               const Padding(
                 padding: EdgeInsets.only(left: 8.0, top: 26),
                 child: CustomText(
-                    text: "YOUR FAVOURITES",
+                    text: "SEARCH RESULTS",
                     color: btnbgColor,
                     fontfamilly: montHeavy,
                     sizeOfFont: 20),
@@ -194,7 +162,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
             !commonProvider.isStore
                 ? buildSection("DEALS", "")
                 : buildSection("STORES", ""),
-            buildHorizontalList(items),
+            // buildHorizontalList(items),
             buildVerticalCards(commonProvider)
           ],
         ),
@@ -251,7 +219,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                           commonCounter.getFavStore(false);
                         },
                         child: const CustomText(
-                          text: "Stores you loved",
+                          text: "Available Stores",
                           sizeOfFont: 10,
                           fontfamilly: montBook,
                           color: hintColor,
@@ -272,7 +240,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                           commonCounter.getFavStore(true);
                         },
                         child: const CustomText(
-                          text: "Stores you loved",
+                          text: "Available Stores",
                           sizeOfFont: 10,
                           fontfamilly: montBook,
                           color: hintColor,
@@ -297,7 +265,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                           commonCounter.getFavStore(true);
                         },
                         child: const CustomText(
-                          text: "Deals you loved",
+                          text: "Available Deals",
                           sizeOfFont: 10,
                           fontfamilly: montBook,
                           color: hintColor,
@@ -318,7 +286,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                           commonCounter.getFavStore(false);
                         },
                         child: const CustomText(
-                          text: "Deals you loved",
+                          text: "Available Deals",
                           sizeOfFont: 10,
                           fontfamilly: montBook,
                           color: hintColor,
@@ -385,12 +353,14 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                     arguments: currentList[index],
                   );
                 },
-                child: commonCounter.isStore ? getFavStoreCards(index, currentList[index] as StoreData)  : getFavDealCards(index, currentList[index] as DealData) ,
+                child: commonCounter.isStore
+                    ? getFavStoreCards(index, currentList[index] as StoreData)
+                    : getFavDealCards(index, currentList[index] as DealData),
               );
             } else {
               // Display loading indicator while fetching more data
               return FutureBuilder(
-                  future: Future.delayed(const Duration(seconds: 3)),
+                  future: Future.delayed(const Duration(seconds: 1)),
                   builder: (context, snapshot) =>
                       snapshot.connectionState == ConnectionState.done
                           ? const SizedBox()
@@ -408,29 +378,26 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
   Future<void> _refreshData() async {
     // Call your API here to refresh the data
     try {
-      final refreshedData = await restaurantsProvider.getFavRestaurantsList(page: 1);
-      final refreshedDealData = await restaurantsProvider.getFavDealsList(page: 1);
+      var formData = {"search_query": data};
 
-      if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
+      final searchQueryData = await searchProvider.getSearchQueryResultList(
+        formData,
+        page: currentRestaurantPage,
+      );
+
+      if (searchQueryData.stores != null &&
+          searchQueryData.stores!.isNotEmpty) {
         setState(() {
-
-          currentRestaurantPage = 1; // Reset the page to 1 as you loaded the first page.
+          currentRestaurantPage =
+              1; // Reset the page to 1 as you loaded the first page.
           hasMoreData = true; // Reset the flag for more data.
           isRefresh = true;
           restaurantData.clear(); // Clear existing data before adding new data.
-          restaurantData.addAll(refreshedData.data!);
+          dealListingData
+              .clear(); // Clear existing data before adding new data.
 
-
-        });
-      }if (refreshedDealData.data != null && refreshedDealData.data!.isNotEmpty) {
-        setState(() {
-
-          currentDealPage = 1; // Reset the page to 1 as you loaded the first page.
-          hasMoreData = true; // Reset the flag for more data.
-          isRefresh = true;
-          dealListingData.clear(); // Clear existing data before adding new data.
-          dealListingData.addAll(refreshedDealData.data!);
-
+          restaurantData.addAll(searchQueryData.stores!);
+          dealListingData.addAll(searchQueryData.deals!);
         });
       }
     } catch (error) {
@@ -478,7 +445,6 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                 const SizedBox(
                   height: 5,
                 ),
-
                 const CustomText(
                   text: "3 offers available",
                   color: offerColor,
@@ -486,7 +452,6 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                   fontfamilly: montRegular,
                   maxLin: 1,
                 ),
-
                 const SizedBox(
                   height: 5,
                 ),
@@ -501,8 +466,6 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
               ],
             ),
           ),
-
-
           Expanded(
             child: Stack(
               alignment: Alignment.topRight,
@@ -517,30 +480,38 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                       gradient: const LinearGradient(
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
-                        colors: [Colors.white, Colors.grey], // Adjust colors as needed
+                        colors: [
+                          Colors.white,
+                          Colors.grey
+                        ], // Adjust colors as needed
                       ),
                     ),
-                    child: storeData.profileImage != null ? ClipRRect(
-                        borderRadius: BorderRadius.circular(15.0),
-                        child: Image.network(
-                          storeData.profileImage!,
-                          fit: BoxFit.cover,
-                          height: 90, width: 90,
-                        )
-                    ): Image.asset(food_image,height: 90, width: 90,),
+                    child: storeData.profileImage != null
+                        ? ClipRRect(
+                            borderRadius: BorderRadius.circular(15.0),
+                            child: Image.network(
+                              storeData.profileImage!,
+                              fit: BoxFit.cover,
+                              height: 90,
+                              width: 90,
+                            ))
+                        : Image.asset(
+                            food_image,
+                            height: 90,
+                            width: 90,
+                          ),
                   ),
                 ),
-
                 Positioned(
                   right: -4,
                   child: GestureDetector(
                     onTap: () async {
-                    var ratingStatus = storeData.favourite as bool;
+                      var ratingStatus = storeData.favourite as int;
 
                       print('ratingStatus:$ratingStatus');
 
                       try {
-                        if (ratingStatus == false) {
+                        if (ratingStatus == 0) {
                           // Only hit the API if storeData.favourite is true
                           var formData = {
                             'favourite': 1,
@@ -568,26 +539,38 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                                 .showSnackBar(snackBar);
 
                             // Automatically hide the SnackBar after 1 second
-                            Future.delayed(const Duration(milliseconds: 1000), () {
+                            Future.delayed(const Duration(milliseconds: 1000),
+                                () {
                               ScaffoldMessenger.of(context)
                                   .hideCurrentSnackBar();
                             });
 
                             setState(() {
-                              storeData.favourite = true;
+                              ratingStatus = 1;
                             });
-                            try {
-                              final refreshedData = await restaurantsProvider
-                                  .getFavRestaurantsList(page: 1);
 
-                              if (refreshedData.data != null &&
-                                  refreshedData.data!.isNotEmpty) {
+                            try {
+                              var formData = {"search_query": data};
+
+                              final searchQueryData =
+                                  await searchProvider.getSearchQueryResultList(
+                                formData,
+                                page: currentRestaurantPage,
+                              );
+
+                              if (searchQueryData.stores != null &&
+                                  searchQueryData.stores!.isNotEmpty) {
                                 setState(() {
-                                  currentRestaurantPage = 1; // Reset the page to 1 as you loaded the first page.
-                                  hasMoreData = true; // Reset the flag for more data.
+                                  currentRestaurantPage =
+                                      1; // Reset the page to 1 as you loaded the first page.
+                                  hasMoreData =
+                                      true; // Reset the flag for more data.
                                   isRefresh = true;
-                                  restaurantData.clear(); // Clear existing data before adding new data.
-                                  restaurantData.addAll(refreshedData.data!);
+                                  restaurantData
+                                      .clear(); // Clear existing data before adding new data.
+
+                                  restaurantData
+                                      .addAll(searchQueryData.stores!);
                                 });
                               }
                             } catch (error) {
@@ -606,12 +589,13 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                                 .showSnackBar(snackBar);
 
                             // Automatically hide the SnackBar after 1 second
-                            Future.delayed(const Duration(milliseconds: 1000), () {
+                            Future.delayed(const Duration(milliseconds: 1000),
+                                () {
                               ScaffoldMessenger.of(context)
                                   .hideCurrentSnackBar();
                             });
                           }
-                        } else if (storeData.favourite == true) {
+                        } else if (ratingStatus == 1) {
                           // If storeData.favourite is false, print its value
                           FavDeleteResponse delData =
                               await Provider.of<FavoriteOperationProvider>(
@@ -634,27 +618,38 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                                 .showSnackBar(snackBar);
 
                             // Automatically hide the SnackBar after 1 second
-                            Future.delayed(const Duration(milliseconds: 1000), () {
+                            Future.delayed(const Duration(milliseconds: 1000),
+                                () {
                               ScaffoldMessenger.of(context)
                                   .hideCurrentSnackBar();
                             });
 
                             setState(() {
-                              storeData.favourite = false;
+                              ratingStatus = 0;
                             });
 
                             try {
-                              final refreshedData = await restaurantsProvider
-                                  .getFavRestaurantsList(page: 1);
+                              var formData = {"search_query": data};
 
-                              if (refreshedData.data != null &&
-                                  refreshedData.data!.isNotEmpty) {
+                              final searchQueryData =
+                                  await searchProvider.getSearchQueryResultList(
+                                formData,
+                                page: currentRestaurantPage,
+                              );
+
+                              if (searchQueryData.stores != null &&
+                                  searchQueryData.stores!.isNotEmpty) {
                                 setState(() {
-                                  currentRestaurantPage = 1; // Reset the page to 1 as you loaded the first page.
-                                  hasMoreData = true; // Reset the flag for more data.
+                                  currentRestaurantPage =
+                                      1; // Reset the page to 1 as you loaded the first page.
+                                  hasMoreData =
+                                      true; // Reset the flag for more data.
                                   isRefresh = true;
-                                  restaurantData.clear(); // Clear existing data before adding new data.
-                                  restaurantData.addAll(refreshedData.data!);
+                                  restaurantData
+                                      .clear(); // Clear existing data before adding new data.
+
+                                  restaurantData
+                                      .addAll(searchQueryData.stores!);
                                 });
                               }
                             } catch (error) {
@@ -673,7 +668,8 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                                 .showSnackBar(snackBar);
 
                             // Automatically hide the SnackBar after 1 second
-                            Future.delayed(const Duration(milliseconds: 1000), () {
+                            Future.delayed(const Duration(milliseconds: 1000),
+                                () {
                               ScaffoldMessenger.of(context)
                                   .hideCurrentSnackBar();
                             });
@@ -687,7 +683,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                     child: Image.asset(
                       height: 15,
                       width: 18,
-                      storeData.favourite == true ? save_icon_red : save_icon,
+                      storeData.favourite == 1 ? save_icon_red : save_icon,
                     ),
                   ),
                 ),
@@ -700,36 +696,29 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
   }
 
   Widget getFavDealCards(int index, DealData data) {
-    var  currentDay = DateTime.now().weekday;
-    var  startTiming = '';
+    var currentDay = DateTime.now().weekday;
+    var startTiming = '';
     var endTiming = '';
 
-    if(currentDay == 1){
+    if (currentDay == 1) {
       startTiming = data.store?.openingHour?.monday?.start ?? '';
       endTiming = data.store?.openingHour?.monday?.end ?? '';
-
-    }else if(currentDay == 2){
-
+    } else if (currentDay == 2) {
       startTiming = data.store?.openingHour?.tuesday?.start ?? '';
       endTiming = data.store?.openingHour?.tuesday?.end ?? '';
-    }else if(currentDay == 3){
-
+    } else if (currentDay == 3) {
       startTiming = data.store?.openingHour?.wednesday?.start ?? '';
       endTiming = data.store?.openingHour?.wednesday?.end ?? '';
-    }else if(currentDay == 4){
-
+    } else if (currentDay == 4) {
       startTiming = data.store?.openingHour?.thursday?.start ?? '';
       endTiming = data.store?.openingHour?.thursday?.end ?? '';
-    }else if(currentDay == 5){
-
+    } else if (currentDay == 5) {
       startTiming = data.store?.openingHour?.friday?.start ?? '';
       endTiming = data.store?.openingHour?.friday?.end ?? '';
-    }else if(currentDay == 6){
-
+    } else if (currentDay == 6) {
       startTiming = data.store?.openingHour?.saturday?.start ?? '';
       endTiming = data.store?.openingHour?.saturday?.end ?? '';
-    }else if(currentDay == 7){
-
+    } else if (currentDay == 7) {
       startTiming = data.store?.openingHour?.sunday?.start ?? '';
       endTiming = data.store?.openingHour?.sunday?.end ?? '';
     }
@@ -771,7 +760,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                     sizeOfFont: 14,
                   ),
                   CustomText(
-                      text: '${startTiming ?? ""} - ${endTiming ?? ""}',
+                      text: '$startTiming - $endTiming',
                       maxLin: 1,
                       color: graysColor,
                       sizeOfFont: 12,
@@ -816,7 +805,6 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                 ],
               ),
             ),
-
             Expanded(
               child: Stack(
                 alignment: Alignment.topRight,
@@ -831,174 +819,199 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                         gradient: const LinearGradient(
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
-                          colors: [Colors.white, Colors.grey], // Adjust colors as needed
+                          colors: [
+                            Colors.white,
+                            Colors.grey
+                          ], // Adjust colors as needed
                         ),
                       ),
-                      child: data.profileImage != null ? ClipRRect(
-                          borderRadius: BorderRadius.circular(15.0),
-                          child: Image.network(
-                            data.profileImage!,
-                            fit: BoxFit.cover,
-                            height: 90, width: 90,
-                          )
-                      ): Image.asset(food_image,height: 90, width: 90,),
+                      child: data.profileImage != null
+                          ? ClipRRect(
+                              borderRadius: BorderRadius.circular(15.0),
+                              child: Image.network(
+                                data.profileImage!,
+                                fit: BoxFit.cover,
+                                height: 90,
+                                width: 90,
+                              ))
+                          : Image.asset(
+                              food_image,
+                              height: 90,
+                              width: 90,
+                            ),
                     ),
                   ),
-              
                   Positioned(
                     right: -4,
                     child: GestureDetector(
                       onTap: () async {
-              
-                       var ratingStatus = data.favourite as bool;
+                        var ratingStatus = data.favourite as bool;
                         int? dealId = data.id;
                         int? storeId = data.storeId;
-              
+
                         print('ratingStatus:$ratingStatus');
-              
+
                         try {
-              
                           if (data.favourite == false) {
                             // Only hit the API if data.favourite is true
                             var formData = {
                               'favourite': 1,
                             };
-              
-                            FavAddedResponse favData = await Provider.of<FavoriteOperationProvider>(context, listen: false)
-                                .AddToFavoriteDeal(dealId??0,formData);
-              
-                            if (favData.status == true && favData.message == "Deal Added in favourite successfully.") {
+
+                            FavAddedResponse favData =
+                                await Provider.of<FavoriteOperationProvider>(
+                                        context,
+                                        listen: false)
+                                    .AddToFavoriteDeal(dealId ?? 0, formData);
+
+                            if (favData.status == true &&
+                                favData.message ==
+                                    "Deal Added in favourite successfully.") {
                               // Print data to console
                               print(favData);
-              
-                              final snackBar = SnackBar(
-                                content:  Text('${favData.message}'),
-                              );
-              
-                              // Show the SnackBar
-                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
-              
-                              // Automatically hide the SnackBar after 1 second
-                              Future.delayed(const Duration(milliseconds: 1000), () {
-                                ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                              });
-              
-                              setState(() {
-              
-                                data.favourite = true;
-              
-              
-                              });
-              
-              
-                              try {
-                                final refreshedData = await restaurantsProvider.getFavDealsList( page: 1);
-              
-                                if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
-              
-                                      setState(() {
 
-                                        currentDealPage = 1; // Reset the page to 1 as you loaded the first page.
-                                        hasMoreData = true; // Reset the flag for more data.
-                                        isRefresh = true;
-                                        dealListingData.clear(); // Clear existing data before adding new data.
-                                        dealListingData.addAll(refreshedData.data!);
-                                      });
-              
-              
-              
-              
-              
+                              final snackBar = SnackBar(
+                                content: Text('${favData.message}'),
+                              );
+
+                              // Show the SnackBar
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
+
+                              // Automatically hide the SnackBar after 1 second
+                              Future.delayed(const Duration(milliseconds: 1000),
+                                  () {
+                                ScaffoldMessenger.of(context)
+                                    .hideCurrentSnackBar();
+                              });
+
+                              setState(() {
+                                data.favourite = true;
+                              });
+
+                              try {
+                                var formData = {"search_query": data};
+
+                                final searchQueryData = await searchProvider
+                                    .getSearchQueryResultList(
+                                  formData,
+                                  page: currentRestaurantPage,
+                                );
+
+                                if (searchQueryData.stores != null &&
+                                    searchQueryData.stores!.isNotEmpty) {
+                                  setState(() {
+                                    currentRestaurantPage =
+                                        1; // Reset the page to 1 as you loaded the first page.
+                                    hasMoreData =
+                                        true; // Reset the flag for more data.
+                                    isRefresh = true;
+                                    dealListingData
+                                        .clear(); // Clear existing data before adding new data.
+
+                                    dealListingData
+                                        .addAll(searchQueryData.deals!);
+                                  });
                                 }
                               } catch (error) {
                                 print('Error refreshing data: $error');
                               }
-              
-              
                             } else {
                               // API call failed
                               print("Something went wrong: ${favData.message}");
-              
+
                               final snackBar = SnackBar(
-                                content:  Text('${favData.message}'),
+                                content: Text('${favData.message}'),
                               );
-              
+
                               // Show the SnackBar
-                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
-              
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
+
                               // Automatically hide the SnackBar after 1 second
-                              Future.delayed(const Duration(milliseconds: 1000), () {
-                                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                              Future.delayed(const Duration(milliseconds: 1000),
+                                  () {
+                                ScaffoldMessenger.of(context)
+                                    .hideCurrentSnackBar();
                               });
                             }
-                          } else if (data.favourite == true){
+                          } else if (data.favourite == true) {
                             // If data.favourite is false, print its value
-                            FavDeleteResponse delData = await Provider.of<FavoriteOperationProvider>(context, listen: false)
-                                .RemoveFromFavoriteDeal(data.id ?? 0);
-              
-                            if (delData.status == true && delData.message == "Favourite Deal deleted successfully.") {
+                            FavDeleteResponse delData =
+                                await Provider.of<FavoriteOperationProvider>(
+                                        context,
+                                        listen: false)
+                                    .RemoveFromFavoriteDeal(data.id ?? 0);
+
+                            if (delData.status == true &&
+                                delData.message ==
+                                    "Favourite Deal deleted successfully.") {
                               // Print data to console
                               print(delData);
-              
-                              final snackBar = SnackBar(
-                                content:  Text('${delData.message}'),
-                              );
-              
-                              // Show the SnackBar
-                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
-              
-                              // Automatically hide the SnackBar after 1 second
-                              Future.delayed(const Duration(milliseconds: 1000), () {
-                                ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                              });
-              
-                              setState(() {
-              
-                                data.favourite = false;
-              
-              
-                              });
-              
-                              try {
-                                final refreshedData = await restaurantsProvider.getFavDealsList( page: 1);
-              
-                                if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
-              
-              
-              
-              
-                                      setState(() {
 
-                                        currentDealPage = 1; // Reset the page to 1 as you loaded the first page.
-                                        hasMoreData = true; // Reset the flag for more data.
-                                        isRefresh = true;
-                                        dealListingData.clear(); // Clear existing data before adding new data.
-                                        dealListingData.addAll(refreshedData.data!);
-                                      });
-              
-              
-              
-              
+                              final snackBar = SnackBar(
+                                content: Text('${delData.message}'),
+                              );
+
+                              // Show the SnackBar
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
+
+                              // Automatically hide the SnackBar after 1 second
+                              Future.delayed(const Duration(milliseconds: 1000),
+                                  () {
+                                ScaffoldMessenger.of(context)
+                                    .hideCurrentSnackBar();
+                              });
+
+                              setState(() {
+                                data.favourite = false;
+                              });
+
+                              try {
+                                var formData = {"search_query": data};
+
+                                final searchQueryData = await searchProvider
+                                    .getSearchQueryResultList(
+                                  formData,
+                                  page: currentRestaurantPage,
+                                );
+
+                                if (searchQueryData.stores != null &&
+                                    searchQueryData.stores!.isNotEmpty) {
+                                  setState(() {
+                                    currentRestaurantPage =
+                                        1; // Reset the page to 1 as you loaded the first page.
+                                    hasMoreData =
+                                        true; // Reset the flag for more data.
+                                    isRefresh = true;
+                                    dealListingData
+                                        .clear(); // Clear existing data before adding new data.
+
+                                    dealListingData
+                                        .addAll(searchQueryData.deals!);
+                                  });
                                 }
                               } catch (error) {
                                 print('Error refreshing data: $error');
                               }
-              
-              
                             } else {
                               // API call failed
                               print("Something went wrong: ${delData.message}");
-              
+
                               final snackBar = SnackBar(
-                                content:  Text('${delData.message}'),
+                                content: Text('${delData.message}'),
                               );
-              
+
                               // Show the SnackBar
-                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
-              
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
+
                               // Automatically hide the SnackBar after 1 second
-                              Future.delayed(const Duration(milliseconds: 1000), () {
-                                ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                              Future.delayed(const Duration(milliseconds: 1000),
+                                  () {
+                                ScaffoldMessenger.of(context)
+                                    .hideCurrentSnackBar();
                               });
                             }
                           }
@@ -1008,14 +1021,12 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                         }
                       },
                       child: Image.asset(
-              
                         height: 15,
                         width: 18,
-                        data.favourite == true  ? save_icon_red : save_icon,
+                        data.favourite == true ? save_icon_red : save_icon,
                       ),
                     ),
                   ),
-              
                 ],
               ),
             ),
@@ -1024,5 +1035,4 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
       ),
     );
   }
-
 }

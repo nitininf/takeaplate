@@ -61,44 +61,53 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
   }
 
   void _loadData() async {
-    if (!isLoading && hasMoreData) {
-      try {
-        setState(() {
-          isLoading = true;
-        });
 
-        final nextPageData = await restaurantsProvider.getLastMinuteDealsList(
-          page: currentPage,
-        );
 
-        if (nextPageData.data != null && nextPageData.data!.isNotEmpty) {
+    Future.delayed(Duration.zero,() async {
+
+      if (!isLoading && hasMoreData) {
+        try {
           setState(() {
-            if (isRefresh == true) {
-              dealListData.clear();
-              dealListData.addAll(nextPageData.data!);
-
-              currentPage++;
-              isRefresh = false;
-
-            } else {
-              dealListData.addAll(nextPageData.data!);
-              currentPage++;
-            }
+            isLoading = true;
           });
-        } else {
-          // No more data available
+
+          final nextPageData = await restaurantsProvider.getLastMinuteDealsList(
+            page: currentPage,
+          );
+
+          if (nextPageData.data != null && nextPageData.data!.isNotEmpty) {
+            setState(() {
+              if (isRefresh == true) {
+                dealListData.clear();
+                dealListData.addAll(nextPageData.data!);
+
+                currentPage++;
+                isRefresh = false;
+
+              } else {
+                dealListData.addAll(nextPageData.data!);
+                currentPage++;
+              }
+            });
+          } else {
+            // No more data available
+            setState(() {
+              hasMoreData = false;
+            });
+          }
+        } catch (error) {
+          print('Error loading more data: $error');
+        } finally {
           setState(() {
-            hasMoreData = false;
+            isLoading = false;
           });
         }
-      } catch (error) {
-        print('Error loading more data: $error');
-      } finally {
-        setState(() {
-          isLoading = false;
-        });
       }
-    }
+
+
+    },);
+
+
   }
 
   @override

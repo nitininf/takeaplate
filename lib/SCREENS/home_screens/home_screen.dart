@@ -15,6 +15,7 @@ import '../../Response_Model/FavAddedResponse.dart';
 import '../../Response_Model/FavDeleteResponse.dart';
 import '../../Response_Model/RestaurantDealResponse.dart';
 import '../../Response_Model/RestaurantsListResponse.dart';
+import 'base_home.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -24,6 +25,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final FocusNode _searchFocusNode = FocusNode();
+
   final List<String> items = [
     'Healthy',
     'Sushi',
@@ -43,7 +46,6 @@ class _HomeScreenState extends State<HomeScreen> {
   List<StoreData> favoriteStoresAndDeals = [];
   List<DealData> collectTomorrowList = [];
 
-
   @override
   void initState() {
     super.initState();
@@ -51,171 +53,222 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _loadData() async {
-    if (!isLoading && hasMoreData) {
-      try {
-        setState(() {
-          isLoading = true;
-        });
+    Future.delayed(
+      Duration.zero,
+      () async {
+        if (!isLoading && hasMoreData) {
+          try {
+            setState(() {
+              isLoading = true;
+            });
 
-        final nextPageData = await homeProvider.getHomePageList(
-          page: currentPage,
-        );
+            final nextPageData = await homeProvider.getHomePageList(
+              page: currentPage,
+            );
 
-        if (nextPageData.data != null && nextPageData.data!.isNotEmpty) {
-          currentPage++;
+            if (nextPageData.data != null && nextPageData.data!.isNotEmpty) {
+              currentPage++;
 
-          setState(() {
-            if (mounted) {
-              closestRestaurants=nextPageData.data!;
+              setState(() {
+                if (mounted) {
+                  closestRestaurants = nextPageData.data!;
+                }
+              });
+            } else {
+              setState(() {
+                if (mounted) {
+                  hasMoreData = false;
+                  closestRestaurants.clear();
+                }
+              });
             }
-          });
-        } else {
-          setState(() {
-            if (mounted) {
-              hasMoreData = false;
-              closestRestaurants.clear();
+
+            if (nextPageData.dealData != null &&
+                nextPageData.dealData!.isNotEmpty) {
+              setState(() {
+                if (mounted) {
+                  lastMinuteDeals = nextPageData.dealData!;
+                }
+              });
+            } else {
+              setState(() {
+                if (mounted) {
+                  hasMoreData = false;
+                  lastMinuteDeals.clear();
+                }
+              });
             }
-          });
+
+            if (nextPageData.favoriteStores != null &&
+                nextPageData.favoriteStores!.isNotEmpty) {
+              setState(() {
+                if (mounted) {
+                  favoriteStoresAndDeals = nextPageData.favoriteStores!;
+                }
+              });
+            } else {
+              setState(() {
+                if (mounted) {
+                  hasMoreData = false;
+                  favoriteStoresAndDeals.clear();
+                }
+              });
+            }
+
+            if (nextPageData.collectTomorrow != null &&
+                nextPageData.collectTomorrow!.isNotEmpty) {
+              setState(() {
+                if (mounted) {
+                  collectTomorrowList = nextPageData.collectTomorrow!;
+                }
+              });
+            } else {
+              setState(() {
+                if (mounted) {
+                  hasMoreData = false;
+                  collectTomorrowList.clear();
+                }
+              });
+            }
+          } catch (error) {
+          } finally {
+            setState(() {
+              isLoading = false;
+            });
+          }
         }
-
-        if (nextPageData.dealData != null &&
-            nextPageData.dealData!.isNotEmpty) {
-          setState(() {
-            if (mounted) {
-              lastMinuteDeals=nextPageData.dealData!;
-            }
-          });
-        } else {
-          setState(() {
-            if (mounted) {
-              hasMoreData = false;
-              lastMinuteDeals.clear();
-            }
-          });
-        }
-
-        if (nextPageData.favoriteStores != null &&
-            nextPageData.favoriteStores!.isNotEmpty) {
-          setState(() {
-            if (mounted) {
-              favoriteStoresAndDeals=nextPageData.favoriteStores!;
-            }
-          });
-        } else {
-          setState(() {
-            if (mounted) {
-              hasMoreData = false;
-              favoriteStoresAndDeals.clear();
-            }
-          });
-        }
-
-        if (nextPageData.collectTomorrow != null &&
-            nextPageData.collectTomorrow!.isNotEmpty) {
-          setState(() {
-            if (mounted) {
-              collectTomorrowList=nextPageData.collectTomorrow!;
-            }
-          });
-        } else {
-          setState(() {
-            if (mounted) {
-              hasMoreData = false;
-              collectTomorrowList.clear();
-            }
-          });
-        }
-      } catch (error) {
-      } finally {
-        setState(() {
-          isLoading = false;
-        });
-      }
-    }
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    return Stack(children: [
+      Scaffold(
+        backgroundColor: bgColor,
+        body: Padding(
+          padding:
+              const EdgeInsets.only(top: 9.0, right: 20, left: 20, bottom: 10),
+          child: Column(
+            // crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              const SizedBox(height: 20),
+              TextFormField(
+                keyboardType: TextInputType.text,
+                readOnly: true,
+                focusNode: _searchFocusNode,
+                textAlign: TextAlign.start,
+                //  focusNode: focusNode,
+                style: const TextStyle(
+                  fontSize: 18,
+                  color: hintColor,
+                  fontFamily: montBook,
+                ),
+                autofocus: false,
 
+                decoration: InputDecoration(
+                  filled: true,
+                  fillColor: editbgColor,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    borderSide: BorderSide.none,
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    borderSide: BorderSide.none,
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    borderSide: BorderSide.none,
+                  ),
+                  errorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    borderSide: BorderSide.none,
+                  ),
+                  focusedErrorBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                    borderSide: BorderSide.none,
+                  ),
+                  suffixIcon: const Padding(
+                    padding: EdgeInsets.only(right: 20.0, top: 10, bottom: 10),
+                    child: Icon(Icons.search, color: hintColor, size: 25),
+                  ),
+                  contentPadding:
+                      const EdgeInsets.symmetric(horizontal: 30, vertical: 13),
+                  hintStyle: const TextStyle(
+                    color: hintColor,
+                    fontFamily: montBook,
+                    fontSize: 18,
+                  ),
+                  hintText: "Search",
+                ),
+                onTap: () {
+                  // Navigate to login screen
 
-    return
+                  BaseHome.isSearch = true;
 
-      Stack(
-      children: [
-        Scaffold(
-          backgroundColor: bgColor,
-          body: Padding(
-            padding:
-            const EdgeInsets.only(top: 9.0, right: 20, left: 20, bottom: 10),
-            child: Column(
-              // crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const SizedBox(height: 20),
-                const CustomSearchField(hintText: "Search"),
-                Expanded(
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    child: Column(
-                      children: [
-                        buildHorizontalList(items),
-                        buildSection(closet, viewAll),
-                        buildClosestDealCards(),
-                        const Padding(
-                          padding: EdgeInsets.only(
-                              top: 10.0, left: 20, right: 20, bottom: 15),
-                          child: Divider(
-                            color: Colors.grey,
-                            thickness: 0,
-                          ),
+                  Navigator.pushReplacementNamed(context, '/BaseHome');
+                },
+              ),
+              Expanded(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: Column(
+                    children: [
+                      buildHorizontalList(items),
+                      buildSection(closet, viewAll),
+                      buildClosestDealCards(),
+                      const Padding(
+                        padding: EdgeInsets.only(
+                            top: 10.0, left: 20, right: 20, bottom: 15),
+                        child: Divider(
+                          color: Colors.grey,
+                          thickness: 0,
                         ),
-                        buildSection(lastMinute, viewAll),
-                        buildLastMinuteDealCards(),
-                        const Padding(
-                          padding: EdgeInsets.only(
-                              top: 10.0, left: 15, right: 15, bottom: 15),
-                          child: Divider(
-                            color: Colors.grey,
-                            thickness: 0,
-                          ),
+                      ),
+                      buildSection(lastMinute, viewAll),
+                      buildLastMinuteDealCards(),
+                      const Padding(
+                        padding: EdgeInsets.only(
+                            top: 10.0, left: 15, right: 15, bottom: 15),
+                        child: Divider(
+                          color: Colors.grey,
+                          thickness: 0,
                         ),
-                        buildSection(collectTomorrow, viewAll),
-                        buildCollectTomorrowCards(),
-                        const Padding(
-                          padding: EdgeInsets.only(
-                              top: 10.0, left: 15, right: 15, bottom: 15),
-                          child: Divider(
-                            color: Colors.grey,
-                            thickness: 0,
-                          ),
+                      ),
+                      buildSection(collectTomorrow, viewAll),
+                      buildCollectTomorrowCards(),
+                      const Padding(
+                        padding: EdgeInsets.only(
+                            top: 10.0, left: 15, right: 15, bottom: 15),
+                        child: Divider(
+                          color: Colors.grey,
+                          thickness: 0,
                         ),
-                        buildSection(myFav, viewAll),
-                        buildMyFavoriteCards(),
-                      ],
-                    ),
+                      ),
+                      buildSection(myFav, viewAll),
+                      buildMyFavoriteCards(),
+                    ],
                   ),
                 ),
-              ],
-            ),
-          ),
-        ),
-
-        Visibility(
-          visible: isLoading,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(20),
-            child: Container(
-              color: Colors.black.withOpacity(0.1),
-              child: const Center(
-                child: CircularProgressIndicator(),
               ),
+            ],
+          ),
+        ),
+      ),
+      Visibility(
+        visible: isLoading,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(20),
+          child: Container(
+
+            child: const Center(
+              child: CircularProgressIndicator(),
             ),
           ),
         ),
-
-      ]
-
-
-    );
+      ),
+    ]);
   }
 
   Widget buildHorizontalList(List<String> items) {
@@ -311,7 +364,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget getClosestDealData(int index, StoreData storeData) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         border: Border.all(width: 0, color: editbgColor.withOpacity(0.25)),
@@ -396,7 +449,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       ], // Adjust colors as needed
                     ),
                   ),
-                  child: storeData.profileImage != null && !(storeData.profileImage)!.contains("SocketException")
+                  child: storeData.profileImage != null &&
+                          !(storeData.profileImage)!.contains("SocketException")
                       ? ClipRRect(
                           borderRadius: BorderRadius.circular(15.0),
                           child: Image.network(
@@ -417,7 +471,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: GestureDetector(
                   onTap: () async {
                     bool? ratingStatus = storeData.favourite;
-
 
                     try {
                       if (ratingStatus == false) {
@@ -446,18 +499,16 @@ class _HomeScreenState extends State<HomeScreen> {
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
                           // Automatically hide the SnackBar after 1 second
-                          Future.delayed(const Duration(milliseconds: 1000), () {
+                          Future.delayed(const Duration(milliseconds: 1000),
+                              () {
                             ScaffoldMessenger.of(context).hideCurrentSnackBar();
                           });
 
                           setState(() {
                             storeData.favourite = true;
-
                           });
 
                           await refreshData();
-
-
                         } else {
                           // API call failed
 
@@ -469,7 +520,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
                           // Automatically hide the SnackBar after 1 second
-                          Future.delayed(const Duration(milliseconds: 1000), () {
+                          Future.delayed(const Duration(milliseconds: 1000),
+                              () {
                             ScaffoldMessenger.of(context).hideCurrentSnackBar();
                           });
                         }
@@ -494,18 +546,16 @@ class _HomeScreenState extends State<HomeScreen> {
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
                           // Automatically hide the SnackBar after 1 second
-                          Future.delayed(const Duration(milliseconds: 1000), () {
+                          Future.delayed(const Duration(milliseconds: 1000),
+                              () {
                             ScaffoldMessenger.of(context).hideCurrentSnackBar();
                           });
 
                           setState(() {
                             storeData.favourite = false;
-
                           });
 
                           await refreshData();
-
-
                         } else {
                           // API call failed
 
@@ -517,7 +567,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
                           // Automatically hide the SnackBar after 1 second
-                          Future.delayed(const Duration(milliseconds: 1000), () {
+                          Future.delayed(const Duration(milliseconds: 1000),
+                              () {
                             ScaffoldMessenger.of(context).hideCurrentSnackBar();
                           });
                         }
@@ -694,7 +745,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         ], // Adjust colors as needed
                       ),
                     ),
-                    child: lastMinuteDeal.profileImage != null && !(lastMinuteDeal.profileImage)!.contains("SocketException")
+                    child: lastMinuteDeal.profileImage != null &&
+                            !(lastMinuteDeal.profileImage)!
+                                .contains("SocketException")
                         ? ClipRRect(
                             borderRadius: BorderRadius.circular(15.0),
                             child: Image.network(
@@ -743,7 +796,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 .showSnackBar(snackBar);
 
                             // Automatically hide the SnackBar after 1 second
-                            Future.delayed(const Duration(milliseconds: 1000), () {
+                            Future.delayed(const Duration(milliseconds: 1000),
+                                () {
                               ScaffoldMessenger.of(context)
                                   .hideCurrentSnackBar();
                             });
@@ -753,7 +807,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             });
 
                             await refreshData();
-
                           } else {
                             // API call failed
 
@@ -766,7 +819,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 .showSnackBar(snackBar);
 
                             // Automatically hide the SnackBar after 1 second
-                            Future.delayed(const Duration(milliseconds: 1000), () {
+                            Future.delayed(const Duration(milliseconds: 1000),
+                                () {
                               ScaffoldMessenger.of(context)
                                   .hideCurrentSnackBar();
                             });
@@ -779,7 +833,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               .RemoveFromFavoriteDeal(lastMinuteDeal.id ?? 0);
 
                           if (delData.status == true &&
-                              delData.message == "Favourite Deal deleted successfully.") {
+                              delData.message ==
+                                  "Favourite Deal deleted successfully.") {
                             // Print data to console
 
                             final snackBar = SnackBar(
@@ -791,7 +846,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 .showSnackBar(snackBar);
 
                             // Automatically hide the SnackBar after 1 second
-                            Future.delayed(const Duration(milliseconds: 1000), () {
+                            Future.delayed(const Duration(milliseconds: 1000),
+                                () {
                               ScaffoldMessenger.of(context)
                                   .hideCurrentSnackBar();
                             });
@@ -801,7 +857,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             });
 
                             await refreshData();
-
                           } else {
                             // API call failed
 
@@ -814,7 +869,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 .showSnackBar(snackBar);
 
                             // Automatically hide the SnackBar after 1 second
-                            Future.delayed(const Duration(milliseconds: 1000), () {
+                            Future.delayed(const Duration(milliseconds: 1000),
+                                () {
                               ScaffoldMessenger.of(context)
                                   .hideCurrentSnackBar();
                             });
@@ -857,8 +913,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       collectTomorrowList[index], // Pass the data as arguments
                 );
               },
-              child:
-                  getCollectTomorrowData(index, collectTomorrowList[index])),
+              child: getCollectTomorrowData(index, collectTomorrowList[index])),
         ),
       ),
     );
@@ -999,7 +1054,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         ], // Adjust colors as needed
                       ),
                     ),
-                    child: collectTomorrowData.profileImage != null && !(collectTomorrowData.profileImage)!.contains("SocketException")
+                    child: collectTomorrowData.profileImage != null &&
+                            !(collectTomorrowData.profileImage)!
+                                .contains("SocketException")
                         ? ClipRRect(
                             borderRadius: BorderRadius.circular(15.0),
                             child: Image.network(
@@ -1048,7 +1105,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 .showSnackBar(snackBar);
 
                             // Automatically hide the SnackBar after 1 second
-                            Future.delayed(const Duration(milliseconds: 1000), () {
+                            Future.delayed(const Duration(milliseconds: 1000),
+                                () {
                               ScaffoldMessenger.of(context)
                                   .hideCurrentSnackBar();
                             });
@@ -1058,7 +1116,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             });
 
                             await refreshData();
-
                           } else {
                             // API call failed
 
@@ -1071,7 +1128,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 .showSnackBar(snackBar);
 
                             // Automatically hide the SnackBar after 1 second
-                            Future.delayed(const Duration(milliseconds: 1000), () {
+                            Future.delayed(const Duration(milliseconds: 1000),
+                                () {
                               ScaffoldMessenger.of(context)
                                   .hideCurrentSnackBar();
                             });
@@ -1099,7 +1157,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 .showSnackBar(snackBar);
 
                             // Automatically hide the SnackBar after 1 second
-                            Future.delayed(const Duration(milliseconds: 1000), () {
+                            Future.delayed(const Duration(milliseconds: 1000),
+                                () {
                               ScaffoldMessenger.of(context)
                                   .hideCurrentSnackBar();
                             });
@@ -1109,7 +1168,6 @@ class _HomeScreenState extends State<HomeScreen> {
                             });
 
                             await refreshData();
-
                           } else {
                             // API call failed
 
@@ -1122,7 +1180,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                 .showSnackBar(snackBar);
 
                             // Automatically hide the SnackBar after 1 second
-                            Future.delayed(const Duration(milliseconds: 1000), () {
+                            Future.delayed(const Duration(milliseconds: 1000),
+                                () {
                               ScaffoldMessenger.of(context)
                                   .hideCurrentSnackBar();
                             });
@@ -1174,7 +1233,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget getFavCardsData(int index, StoreData favoriteStores) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         border: Border.all(width: 0, color: editbgColor.withOpacity(0.25)),
@@ -1259,7 +1318,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       ], // Adjust colors as needed
                     ),
                   ),
-                  child: favoriteStores.profileImage != null && !(favoriteStores.profileImage)!.contains("SocketException")
+                  child: favoriteStores.profileImage != null &&
+                          !(favoriteStores.profileImage)!
+                              .contains("SocketException")
                       ? ClipRRect(
                           borderRadius: BorderRadius.circular(15.0),
                           child: Image.network(
@@ -1280,7 +1341,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: GestureDetector(
                   onTap: () async {
                     bool? ratingStatus = favoriteStores.favourite;
-
 
                     try {
                       if (ratingStatus == false) {
@@ -1309,7 +1369,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
                           // Automatically hide the SnackBar after 1 second
-                          Future.delayed(const Duration(milliseconds: 1000), () {
+                          Future.delayed(const Duration(milliseconds: 1000),
+                              () {
                             ScaffoldMessenger.of(context).hideCurrentSnackBar();
                           });
 
@@ -1318,7 +1379,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           });
 
                           await refreshData();
-
                         } else {
                           // API call failed
 
@@ -1330,7 +1390,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
                           // Automatically hide the SnackBar after 1 second
-                          Future.delayed(const Duration(milliseconds: 1000), () {
+                          Future.delayed(const Duration(milliseconds: 1000),
+                              () {
                             ScaffoldMessenger.of(context).hideCurrentSnackBar();
                           });
                         }
@@ -1354,7 +1415,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
                           // Automatically hide the SnackBar after 1 second
-                          Future.delayed(const Duration(milliseconds: 1000), () {
+                          Future.delayed(const Duration(milliseconds: 1000),
+                              () {
                             ScaffoldMessenger.of(context).hideCurrentSnackBar();
                           });
 
@@ -1363,7 +1425,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           });
 
                           await refreshData();
-
                         } else {
                           // API call failed
 
@@ -1375,7 +1436,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
                           // Automatically hide the SnackBar after 1 second
-                          Future.delayed(const Duration(milliseconds: 1000), () {
+                          Future.delayed(const Duration(milliseconds: 1000),
+                              () {
                             ScaffoldMessenger.of(context).hideCurrentSnackBar();
                           });
                         }
@@ -1387,7 +1449,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Image.asset(
                     height: 15,
                     width: 18,
-                    favoriteStores.favourite == true ? save_icon_red : save_icon,
+                    favoriteStores.favourite == true
+                        ? save_icon_red
+                        : save_icon,
                   ),
                 ),
               ),
@@ -1399,7 +1463,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> refreshData() async {
-
     final nextPageData = await homeProvider.getHomePageList(
       page: currentPage,
     );
@@ -1409,7 +1472,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
       setState(() {
         if (mounted) {
-          closestRestaurants=nextPageData.data!;
+          closestRestaurants = nextPageData.data!;
         }
       });
     } else {
@@ -1421,11 +1484,10 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     }
 
-    if (nextPageData.dealData != null &&
-        nextPageData.dealData!.isNotEmpty) {
+    if (nextPageData.dealData != null && nextPageData.dealData!.isNotEmpty) {
       setState(() {
         if (mounted) {
-          lastMinuteDeals=nextPageData.dealData!;
+          lastMinuteDeals = nextPageData.dealData!;
         }
       });
     } else {
@@ -1441,7 +1503,7 @@ class _HomeScreenState extends State<HomeScreen> {
         nextPageData.favoriteStores!.isNotEmpty) {
       setState(() {
         if (mounted) {
-          favoriteStoresAndDeals=nextPageData.favoriteStores!;
+          favoriteStoresAndDeals = nextPageData.favoriteStores!;
         }
       });
     } else {
@@ -1457,7 +1519,7 @@ class _HomeScreenState extends State<HomeScreen> {
         nextPageData.collectTomorrow!.isNotEmpty) {
       setState(() {
         if (mounted) {
-          collectTomorrowList=nextPageData.collectTomorrow!;
+          collectTomorrowList = nextPageData.collectTomorrow!;
         }
       });
     } else {
@@ -1469,6 +1531,4 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     }
   }
-
-
 }

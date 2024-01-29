@@ -7,6 +7,7 @@ import '../Response_Model/HomeItemsListingResponse.dart';
 import '../Response_Model/ProfilePageResponse.dart';
 import '../Response_Model/RestaurantsListResponse.dart';
 import '../Response_Model/SearchHistoryResponse.dart';
+import '../Response_Model/SearchQueryResponse.dart';
 import '../Response_Model/SearchResponse.dart';
 
 class SearchProvider extends ChangeNotifier {
@@ -17,6 +18,7 @@ class SearchProvider extends ChangeNotifier {
     try {
       final response = await _network.postRequest(
           endPoint: '/store-data-search',
+          // isLoader: false,
           // Replace with your actual API endpoint
           formData: formData);
 
@@ -37,6 +39,26 @@ class SearchProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
+
+
+
+  Future<SearchQueryResponse> getSearchQueryResultList(Map<String, Object?> formData,{int page = 1}) async {
+    // Make network request with pagination parameters
+    // You might need to update your API endpoint to support pagination
+    final response = await _network.postRequest(
+      endPoint: '/all-search/$page',
+      formData: formData
+    );
+
+    if (response != null && response.data is Map<String, dynamic>) {
+      final Map<String, dynamic> responseData = response.data;
+      return SearchQueryResponse.fromJson(responseData);
+    } else {
+      throw Exception('Failed to parse API response');
+    }
+  }
+
+
 
 
   Future<SearchHistoryResponse> getSearchHistoryList({int page = 1}) async {

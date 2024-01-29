@@ -59,49 +59,58 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
   }
 
   void _loadData() async {
-    if (!isLoading && hasMoreData) {
-      try {
-        setState(() {
-          isLoading = true;
-        });
 
-        final nextPageData = await restaurantsProvider.getRestaurantsList(
-          page: currentPage,
-        );
 
-        if (nextPageData.data != null && nextPageData.data!.isNotEmpty) {
+    Future.delayed(Duration.zero,() async {
+
+      if (!isLoading && hasMoreData) {
+        try {
           setState(() {
-            if (mounted) {
-              if (isRefresh == true) {
-                restaurantData.clear();
-                restaurantData.addAll(nextPageData.data!);
-                currentPage++;
-
-                isRefresh = false;
-
-              } else {
-                restaurantData.addAll(nextPageData.data!);
-                currentPage++;
-              }
-            }
+            isLoading = true;
           });
-        } else {
+
+          final nextPageData = await restaurantsProvider.getRestaurantsList(
+            page: currentPage,
+          );
+
+          if (nextPageData.data != null && nextPageData.data!.isNotEmpty) {
+            setState(() {
+              if (mounted) {
+                if (isRefresh == true) {
+                  restaurantData.clear();
+                  restaurantData.addAll(nextPageData.data!);
+                  currentPage++;
+
+                  isRefresh = false;
+
+                } else {
+                  restaurantData.addAll(nextPageData.data!);
+                  currentPage++;
+                }
+              }
+            });
+          } else {
+            setState(() {
+              if (mounted) {
+                hasMoreData = false;
+              }
+            });
+          }
+        } catch (error) {
+          print('Error loading more data: $error');
+        } finally {
           setState(() {
             if (mounted) {
-              hasMoreData = false;
+              isLoading = false;
             }
           });
         }
-      } catch (error) {
-        print('Error loading more data: $error');
-      } finally {
-        setState(() {
-          if (mounted) {
-            isLoading = false;
-          }
-        });
       }
-    }
+
+
+    },);
+
+
   }
 
   @override

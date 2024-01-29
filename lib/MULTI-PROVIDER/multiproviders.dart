@@ -20,6 +20,7 @@ import '../SCREENS/home_screens/my_orders.dart';
 import '../SCREENS/home_screens/orderandpay.dart';
 import '../SCREENS/home_screens/paymentdetails.dart';
 import '../SCREENS/home_screens/restrurent.dart';
+import '../SCREENS/home_screens/search_screen.dart';
 import '../SCREENS/notification/NotifcattionTurnOnScreen.dart';
 import '../SCREENS/notification/notification_center.dart';
 import '../SCREENS/notification/your_notifcation.dart';
@@ -27,6 +28,7 @@ import '../SCREENS/order_summery/order_summery.dart';
 import '../SCREENS/previous_orders/previous_orders_screen.dart';
 import '../SCREENS/privacy_policy/privacypolicy_screen.dart';
 import '../SCREENS/reestrurent_profile/restrorent_profile.dart';
+import '../SCREENS/search_screen/search_result_screen.dart';
 import '../SCREENS/setting_screen/settings_screen.dart';
 import '../SCREENS/signup_flow/SignupScreen.dart';
 import '../SCREENS/login_flow/CreateOrLoginScreen.dart';
@@ -122,6 +124,8 @@ MultiProvider getProviders() {
         '/RestaurantsProfileScreen': (context) => RestaurantsProfileScreen(context: context),
         '/CollectTomorrowScreen': (context) => CollectTomorrowScreen(),
         '/PreviousOrderScreen': (context) => PreviousOrderScreen(),
+        '/SearchResultScreen': (context) => SearchResultScreen(context: context),
+        '/SearchScreen': (context) => SearchScreen(),
       },
       theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: btnbgColor),

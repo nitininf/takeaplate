@@ -3,10 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:takeaplate/MULTI-PROVIDER/CartOperationProvider.dart';
 import 'package:takeaplate/MULTI-PROVIDER/OrderAndPayProvider.dart';
-import 'package:takeaplate/MULTI-PROVIDER/OrderAndPayProvider.dart';
 import 'package:takeaplate/MULTI-PROVIDER/common_counter.dart';
 import 'package:takeaplate/Response_Model/RestaurantDealResponse.dart';
-
 import '../../CUSTOM_WIDGETS/common_button.dart';
 import '../../CUSTOM_WIDGETS/custom_app_bar.dart';
 import '../../CUSTOM_WIDGETS/custom_search_field.dart';
@@ -36,9 +34,9 @@ class OrderAndPayScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              CustomAppBar(),
+              const CustomAppBar(),
               const SizedBox(height: 23),
-              CustomSearchField(hintText: "Search"),
+              const CustomSearchField(hintText: "Search"),
               Expanded(
                 child: SingleChildScrollView(
                   scrollDirection: Axis.vertical,
@@ -55,7 +53,7 @@ class OrderAndPayScreen extends StatelessWidget {
                         height: 10,
                       ),
                       Padding(
-                        padding: EdgeInsets.only(left: 30, right: 30),
+                        padding: const EdgeInsets.only(left: 30, right: 30),
                         child: CommonButton(
                           btnBgColor: btnbgColor,
                           btnText: orderAndPay,
@@ -80,10 +78,8 @@ class OrderAndPayScreen extends StatelessWidget {
                             onClick: () async {
 
 
-                              print('DealId - $dealId');
 
                               if (dealId !=0 || dealId != null) {
-                                print('DealId - 0');
 
 
                                 try {
@@ -97,12 +93,6 @@ class OrderAndPayScreen extends StatelessWidget {
                                               context,
                                               listen: false)
                                           .addToCartItem(formData);
-
-
-                                  print(data.status);
-                                  print(data.message);
-
-
                                   if (data.status == true &&
                                       data.message ==
                                           "Item added to the cart successfully.") {
@@ -116,7 +106,7 @@ class OrderAndPayScreen extends StatelessWidget {
                                         .showSnackBar(snackBar);
 
                                     // Automatically hide the SnackBar after 1 second
-                                    Future.delayed(Duration(milliseconds: 1000),
+                                    Future.delayed(const Duration(milliseconds: 1000),
                                         () {
                                       ScaffoldMessenger.of(context)
                                           .hideCurrentSnackBar();
@@ -125,7 +115,6 @@ class OrderAndPayScreen extends StatelessWidget {
                                     // Navigate to the next screen or perform other actions after login
                                   } else {
                                     // Login failed
-                                    print("Something went wrong: ${data.message}");
 
                                     final snackBar = SnackBar(
                                       content: Text('${data.message}'),
@@ -136,7 +125,7 @@ class OrderAndPayScreen extends StatelessWidget {
                                         .showSnackBar(snackBar);
 
                                     // Automatically hide the SnackBar after 1 second
-                                    Future.delayed(Duration(milliseconds: 1000),
+                                    Future.delayed(const Duration(milliseconds: 1000),
                                         () {
                                       ScaffoldMessenger.of(context)
                                           .hideCurrentSnackBar();
@@ -144,7 +133,6 @@ class OrderAndPayScreen extends StatelessWidget {
                                   }
                                 } catch (e) {
                                   // Display error message
-                                  print("Error: $e");
                                 }
                               } else {
                                 // Show an error message or handle empty fields
@@ -222,7 +210,7 @@ class OrderAndPayScreen extends StatelessWidget {
                     )
                   : Image.asset(restrorent_food),
             ),
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
             Row(
@@ -241,22 +229,22 @@ class OrderAndPayScreen extends StatelessWidget {
                                 horizontal: 10, vertical: 5),
                             decoration: BoxDecoration(
                               color: editbgColor,
-                              borderRadius: BorderRadius.only(
+                              borderRadius: const BorderRadius.only(
                                   topLeft: Radius.circular(30.0),
                                   topRight: Radius.circular(30.0),
                                   bottomLeft: Radius.circular(30.0)),
                               border: Border.all(width: 1, color: Colors.white),
                             ),
-                            child: CustomText(
+                            child: const CustomText(
                               text: "Report",
                               color: hintColor,
                               fontfamilly: montLight,
                               sizeOfFont: 11,
                             ))
-                        : Text(" "),
-                    SizedBox(width: 5,),
+                        : const Text(" "),
+                    const SizedBox(width: 5,),
                     Padding(
-                      padding: EdgeInsets.only(left: 2.0, top: 20),
+                      padding: const EdgeInsets.only(left: 2.0, top: 20),
                       child: Image.asset(
                         three_dot,
                         width: 14,
@@ -276,7 +264,7 @@ class OrderAndPayScreen extends StatelessWidget {
                     sizeOfFont: 16,
                     fontfamilly: montLight),
                 Padding(
-                  padding: EdgeInsets.only(top: 10.0),
+                  padding: const EdgeInsets.only(top: 10.0),
                   child: CustomText(
                       text:
                           'Pickup time - ${data.store?.pickupTime?.startTime ?? ""}',
@@ -286,7 +274,7 @@ class OrderAndPayScreen extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 3,
             ),
             Row(
@@ -315,7 +303,7 @@ class OrderAndPayScreen extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             CustomText(
@@ -327,7 +315,7 @@ class OrderAndPayScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                CustomText(
+                const CustomText(
                   text: "Description...",
                   color: viewallColor,
                   fontfamilly: montLight,
@@ -364,14 +352,14 @@ class OrderAndPayScreen extends StatelessWidget {
                   sizeOfFont: 12,
                   color: cardTextColor.withOpacity(0.47),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Column(
                   children: [
 
                     featureImage(data.allergens ?? ""),
-                    SizedBox(
+                    const SizedBox(
                       height: 5,
                     ),
                     CustomText(
@@ -384,7 +372,7 @@ class OrderAndPayScreen extends StatelessWidget {
                     //   featureImage(feature),
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 GestureDetector(
@@ -420,7 +408,6 @@ class OrderAndPayScreen extends StatelessWidget {
   }
 
   Widget featureImage(String feature) {
-    print('feature = $feature');
     String imagePath = "";
 
     switch (feature) {

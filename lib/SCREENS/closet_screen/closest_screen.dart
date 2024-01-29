@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/custom_app_bar.dart';
 import 'package:takeaplate/UTILS/app_strings.dart';
-
-import '../../CUSTOM_WIDGETS/custom_search_field.dart';
 import '../../CUSTOM_WIDGETS/custom_text_style.dart';
 import '../../MULTI-PROVIDER/FavoriteOperationProvider.dart';
 import '../../MULTI-PROVIDER/RestaurantsListProvider.dart';
@@ -16,7 +14,6 @@ import '../../Response_Model/RestaurantsListResponse.dart';
 import '../../UTILS/app_color.dart';
 import '../../UTILS/app_images.dart';
 import '../../UTILS/fontfaimlly_string.dart';
-import '../../UTILS/request_string.dart';
 import '../../main.dart';
 
 class ClosestScreen extends StatefulWidget {
@@ -65,46 +62,57 @@ class _ClosestScreenState extends State<ClosestScreen> {
   }
 
   void _loadData() async {
-    if (!isLoading && hasMoreData) {
-      try {
-        setState(() {
-          isLoading = true;
-        });
 
-        final nextPageData =
-            await restaurantsProvider.getClosestRestaurantsList(
-          page: currentPage,
-        );
 
-        if (nextPageData.data != null && nextPageData.data!.isNotEmpty) {
+    Future.delayed(Duration.zero,() async {
+
+
+      if (!isLoading && hasMoreData) {
+        try {
           setState(() {
-
-           if(isRefresh == true){
-             restaurantData.clear();
-             restaurantData.addAll(nextPageData.data!);
-             currentPage++;
-             isRefresh = false;
-
-           }else{
-             restaurantData.addAll(nextPageData.data!);
-             currentPage++;
-           }
-
+            isLoading = true;
           });
-        } else {
-          // No more data available
+
+          final nextPageData =
+          await restaurantsProvider.getClosestRestaurantsList(
+            page: currentPage,
+          );
+
+          if (nextPageData.data != null && nextPageData.data!.isNotEmpty) {
+            setState(() {
+
+              if(isRefresh == true){
+                restaurantData.clear();
+                restaurantData.addAll(nextPageData.data!);
+                currentPage++;
+                isRefresh = false;
+
+              }else{
+                restaurantData.addAll(nextPageData.data!);
+                currentPage++;
+              }
+
+            });
+          } else {
+            // No more data available
+            setState(() {
+              hasMoreData = false;
+            });
+          }
+        } catch (error) {
+          print('Error loading more data: $error');
+        } finally {
           setState(() {
-            hasMoreData = false;
+            isLoading = false;
           });
         }
-      } catch (error) {
-        print('Error loading more data: $error');
-      } finally {
-        setState(() {
-          isLoading = false;
-        });
       }
-    }
+
+    },);
+
+
+
+
   }
 
   @override
@@ -143,7 +151,7 @@ class _ClosestScreenState extends State<ClosestScreen> {
                             };
 
                             var data = await Provider.of<SearchProvider>(context, listen: false)
-                                .getSearchResult(formData);
+                                .getSearchResult(formData,);
 
                             if (data.status == true && data.message == "Search successful") {
                               // Login successful
@@ -169,7 +177,7 @@ class _ClosestScreenState extends State<ClosestScreen> {
                               ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
                               // Automatically hide the SnackBar after 1 second
-                              Future.delayed(Duration(milliseconds: 1000), () {
+                              Future.delayed(const Duration(milliseconds: 1000), () {
                                 ScaffoldMessenger.of(context).hideCurrentSnackBar();
                               });
 
@@ -369,16 +377,16 @@ class _ClosestScreenState extends State<ClosestScreen> {
                   fontfamilly: montRegular,
                   sizeOfFont: 14,
                 ),
-                CustomText(
+                const CustomText(
                   text: '3 offer available', // Assuming 'offers' is a key in your data
                   color: offerColor,
                   sizeOfFont: 9,
                   fontfamilly: montBook,
                 ),
-                SizedBox(height: 1),
+                const SizedBox(height: 1),
                 Row(
                   children: [
-                    RatingBar.readOnly(
+                    const RatingBar.readOnly(
                       filledIcon: Icons.star,
                       emptyIcon: Icons.star_border,
                       halfFilledIcon: Icons.star_half,
@@ -389,7 +397,7 @@ class _ClosestScreenState extends State<ClosestScreen> {
                       size: 18,
                       maxRating: 5,
                     ),
-                    SizedBox(width: 10),
+                    const SizedBox(width: 10),
                     Container(
                       margin: const EdgeInsets.symmetric(
                           horizontal: 0, vertical: 3),
@@ -420,10 +428,10 @@ class _ClosestScreenState extends State<ClosestScreen> {
               ClipRRect(
                 borderRadius: BorderRadius.circular(15.0),
                 child: Container(
-                  padding: EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(8.0),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15.0),
-                    gradient: LinearGradient(
+                    gradient: const LinearGradient(
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                       colors: [Colors.white, Colors.grey], // Adjust colors as needed
@@ -476,7 +484,7 @@ class _ClosestScreenState extends State<ClosestScreen> {
                               .showSnackBar(snackBar);
 
                           // Automatically hide the SnackBar after 1 second
-                          Future.delayed(Duration(milliseconds: 1000), () {
+                          Future.delayed(const Duration(milliseconds: 1000), () {
                             ScaffoldMessenger.of(context)
                                 .hideCurrentSnackBar();
                           });
@@ -514,7 +522,7 @@ class _ClosestScreenState extends State<ClosestScreen> {
                               .showSnackBar(snackBar);
 
                           // Automatically hide the SnackBar after 1 second
-                          Future.delayed(Duration(milliseconds: 1000), () {
+                          Future.delayed(const Duration(milliseconds: 1000), () {
                             ScaffoldMessenger.of(context)
                                 .hideCurrentSnackBar();
                           });
@@ -542,7 +550,7 @@ class _ClosestScreenState extends State<ClosestScreen> {
                               .showSnackBar(snackBar);
 
                           // Automatically hide the SnackBar after 1 second
-                          Future.delayed(Duration(milliseconds: 1000), () {
+                          Future.delayed(const Duration(milliseconds: 1000), () {
                             ScaffoldMessenger.of(context)
                                 .hideCurrentSnackBar();
                           });
@@ -580,7 +588,7 @@ class _ClosestScreenState extends State<ClosestScreen> {
                               .showSnackBar(snackBar);
 
                           // Automatically hide the SnackBar after 1 second
-                          Future.delayed(Duration(milliseconds: 1000), () {
+                          Future.delayed(const Duration(milliseconds: 1000), () {
                             ScaffoldMessenger.of(context)
                                 .hideCurrentSnackBar();
                           });
