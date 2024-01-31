@@ -90,26 +90,45 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
               page: currentRestaurantPage,
             );
 
-            if (searchQueryData.stores != null &&
-                searchQueryData.stores!.isNotEmpty) {
+            if (searchQueryData.stores != null && searchQueryData.stores!.isNotEmpty) {
               setState(() {
                 if (isRefresh == true) {
-                  restaurantData.clear();
-                  dealListingData.clear();
+                  // restaurantData.clear();
+                  // dealListingData.clear();
 
                   restaurantData.addAll(searchQueryData.stores!);
-                  dealListingData.addAll(searchQueryData.deals!);
                   isRefresh = false;
 
                   currentRestaurantPage++;
                 } else {
                   restaurantData.addAll(searchQueryData.stores!);
-                  dealListingData.addAll(searchQueryData.deals!);
 
                   currentRestaurantPage++;
                 }
               });
             }
+
+            if (searchQueryData.deals != null && searchQueryData.deals!.isNotEmpty) {
+              setState(() {
+                if (isRefresh == true) {
+                  // restaurantData.clear();
+                  // dealListingData.clear();
+
+                  dealListingData.addAll(searchQueryData.deals!);
+                  isRefresh = false;
+
+                  currentDealPage++;
+                } else {
+                  dealListingData.addAll(searchQueryData.deals!);
+
+                  currentDealPage++;
+                }
+              });
+            }
+
+
+
+
           } catch (error) {
             print('Error loading more data: $error');
           } finally {
@@ -331,7 +350,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
   Widget buildVerticalCards(CommonCounter commonCounter) {
     // var currentList = restaurantData;
     var currentList = commonCounter.isStore ? restaurantData : dealListingData;
-
+print('Deal Length: ${dealListingData.length}');
     return Expanded(
       child: RefreshIndicator(
         key: _refreshIndicatorKey,
@@ -391,13 +410,13 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
           currentRestaurantPage =
               1; // Reset the page to 1 as you loaded the first page.
           hasMoreData = true; // Reset the flag for more data.
-          isRefresh = true;
+
           restaurantData.clear(); // Clear existing data before adding new data.
-          dealListingData
-              .clear(); // Clear existing data before adding new data.
+          dealListingData.clear(); // Clear existing data before adding new data.
 
           restaurantData.addAll(searchQueryData.stores!);
           dealListingData.addAll(searchQueryData.deals!);
+          isRefresh = true;
         });
       }
     } catch (error) {

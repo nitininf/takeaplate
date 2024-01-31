@@ -175,18 +175,21 @@ class _YourCardScreenState extends State<YourCardScreen> {
             ),
             Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 30.0, right: 30, left: 30),
-                  child: CommonButton(
-                      btnBgColor: btnbgColor,
-                      sizeOfFont: 18,
-                      btnText: "GO TO CHECKOUT",
-                      onClick: () {
-                        // print("Total Price: \$${totalPrice.toStringAsFixed(2)}");
+                Visibility(
+                  visible: cartItemsData.isNotEmpty,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 30.0, right: 30, left: 30),
+                    child: CommonButton(
+                        btnBgColor: btnbgColor,
+                        sizeOfFont: 18,
+                        btnText: "GO TO CHECKOUT",
+                        onClick: () {
+                          // print("Total Price: \$${totalPrice.toStringAsFixed(2)}");
 
-                        Navigator.pushNamed(
-                            navigatorKey.currentContext!, '/OrderSummeryScreen');
-                      }),
+                          Navigator.pushNamed(
+                              navigatorKey.currentContext!, '/OrderSummeryScreen');
+                        }),
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(

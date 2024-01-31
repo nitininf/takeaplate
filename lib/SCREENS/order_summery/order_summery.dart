@@ -7,10 +7,8 @@ import 'package:takeaplate/CUSTOM_WIDGETS/custom_app_bar.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/custom_text_style.dart';
 import 'package:takeaplate/UTILS/app_color.dart';
 import 'package:takeaplate/main.dart';
-
 import '../../../UTILS/app_images.dart';
 import '../../../UTILS/fontfamily_string.dart';
-import '../../CUSTOM_WIDGETS/common_edit_text.dart';
 import '../../MULTI-PROVIDER/CartOperationProvider.dart';
 import '../../MULTI-PROVIDER/PaymentDetailsProvider.dart';
 import '../../Response_Model/AddPaymentCardResponse.dart';
@@ -52,8 +50,7 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
     _loadData();
   }
 
-  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
-      GlobalKey<RefreshIndicatorState>();
+
 
   void _loadData() async {
 
@@ -109,7 +106,6 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
             });
           }
         } catch (error) {
-          print('Error loading more data: $error');
         } finally {
           setState(() {
             if (mounted) {
@@ -128,7 +124,6 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
-    double screenWidth = MediaQuery.of(context).size.width;
 
     return Stack(
       children: [
@@ -142,7 +137,7 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const CustomAppBar(),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     getView(screenHeight, context),
@@ -156,7 +151,7 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
             borderRadius: BorderRadius.circular(20),
             child: Container(
               color: Colors.black.withOpacity(0.1),
-              child: Center(
+              child: const Center(
                 child: CircularProgressIndicator(),
               ),
             ),
@@ -179,7 +174,7 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                CustomText(
+                const CustomText(
                   text: "ORDER SUMMARY",
                   color: editbgColor,
                   sizeOfFont: 20,
@@ -227,11 +222,11 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
                         borderRadius: BorderRadius.circular(16),
                         border: Border.all(width: 0, color: grayColor)),
                     child: Padding(
-                      padding: EdgeInsets.only(left: 8.0, right: 8),
+                      padding: const EdgeInsets.only(left: 8.0, right: 8),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          CustomText(
+                          const CustomText(
                             text: "Total",
                             color: viewallColor,
                             sizeOfFont: 21,
@@ -256,7 +251,7 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                CustomText(
+                const CustomText(
                   text: "PAYMENT METHOD",
                   color: editbgColor,
                   sizeOfFont: 21,
@@ -286,7 +281,7 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
                 )
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             getPaymentCardList(),
@@ -303,11 +298,6 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
                       CardData selectedCard = cardListData[selectedCardIndex];
 
                       // Print the selected item details
-                      print("Selected Card Details:");
-                      print("Card Type: ${selectedCard.cardType}");
-                      print("Card Id: ${selectedCard.id}");
-                      print(
-                          "Last 4 Digits: ${selectedCard.cardNumber?.substring(selectedCard.cardNumber!.length - 4, selectedCard.cardNumber!.length)}");
 
                       // Show the success popup
                       DialogHelper.showCommonPopup(navigatorKey.currentContext!,
@@ -317,7 +307,7 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
                     } else {
                       // No item selected, show an error message or handle as needed
 
-                      final snackBar = SnackBar(
+                      final snackBar = const SnackBar(
                         content: Text('No card selected'),
                       );
 
@@ -325,7 +315,7 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
                       ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
                       // Automatically hide the SnackBar after 1 second
-                      Future.delayed(Duration(milliseconds: 1000), () {
+                      Future.delayed(const Duration(milliseconds: 1000), () {
                         ScaffoldMessenger.of(context).hideCurrentSnackBar();
                       });
                     }
@@ -339,7 +329,7 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
 
   Widget getPaymentCardList() {
     return Container(
-      margin: EdgeInsets.all(15),
+      margin: const EdgeInsets.all(15),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
@@ -347,7 +337,7 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
       ),
       child: ListView.builder(
         shrinkWrap: true,
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         itemCount: cardListData.length,
         itemBuilder: (context, index) {
           if (index < cardListData.length) {
@@ -366,11 +356,11 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
             );
           } else {
             return FutureBuilder(
-              future: Future.delayed(Duration(milliseconds: 500)),
+              future: Future.delayed(const Duration(milliseconds: 500)),
               builder: (context, snapshot) =>
                   snapshot.connectionState == ConnectionState.done
-                      ? SizedBox()
-                      : Center(child: CircularProgressIndicator()),
+                      ? const SizedBox()
+                      : const Center(child: CircularProgressIndicator()),
             );
           }
         },
@@ -391,32 +381,30 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
         children: [
           cardListData.imagePath != null &&
                   !(cardListData.imagePath)!.contains("SocketException")
-              ? Container(
-                  child: ClipRRect(
-                    child: Container(
-                      padding: EdgeInsets.all(2),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.rectangle,
-                        border: Border.all(
-                          color: Colors.black,
-                          width: 1.0, // Adjust the width as needed
-                        ),
-                      ),
-                      child: Image.network(
-                        cardListData.imagePath!,
-                        fit: BoxFit.cover,
-                        height: 30,
-                        width: 30,
-                      ),
+              ? ClipRRect(
+                child: Container(
+                  padding: const EdgeInsets.all(2),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.rectangle,
+                    border: Border.all(
+                      color: Colors.black,
+                      width: 1.0, // Adjust the width as needed
                     ),
                   ),
-                )
+                  child: Image.network(
+                    cardListData.imagePath!,
+                    fit: BoxFit.cover,
+                    height: 30,
+                    width: 30,
+                  ),
+                ),
+              )
               : Image.asset(
                   food_image,
                   height: 40,
                   width: 70,
                 ),
-          SizedBox(
+          const SizedBox(
             width: 10,
           ),
           Expanded(
@@ -428,8 +416,7 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
           )),
           CustomText(
             text:
-                '- ${cardListData.cardNumber?.substring(cardListData.cardNumber!.length - 4, cardListData.cardNumber!.length)}' ??
-                    "",
+                '- ${cardListData.cardNumber?.substring(cardListData.cardNumber!.length - 4, cardListData.cardNumber!.length)}',
             color: viewallColor,
             sizeOfFont: 14,
             fontfamilly: montRegular,
@@ -442,18 +429,18 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
   Widget getVerticalItemList() {
     return ListView.builder(
       shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
+      physics: const NeverScrollableScrollPhysics(),
       itemCount: cartItemsData.length,
       itemBuilder: (context, index) {
         if (index < cartItemsData.length) {
           return getCardViews(index, cartItemsData[index]);
         } else {
           return FutureBuilder(
-            future: Future.delayed(Duration(milliseconds: 500)),
+            future: Future.delayed(const Duration(milliseconds: 500)),
             builder: (context, snapshot) =>
                 snapshot.connectionState == ConnectionState.done
-                    ? SizedBox()
-                    : Center(child: CircularProgressIndicator()),
+                    ? const SizedBox()
+                    : const Center(child: CircularProgressIndicator()),
           );
         }
       },
@@ -484,7 +471,7 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
                       height: 40,
                       width: 40,
                     ),
-              SizedBox(
+              const SizedBox(
                 width: 8,
               ),
               Expanded(
@@ -532,7 +519,6 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
                         onTap: () async {
                           var cartId = itemData.cartId ?? '';
 
-                          print('cartId:$cartId');
 
                           try {
                             AddToCartResponse decrementStatus =
@@ -545,7 +531,6 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
                                 decrementStatus.message ==
                                     "Quantity decremented successfully.") {
                               // Print data to console
-                              print(decrementStatus);
 
                               // try {
                               //   final refreshedData =
@@ -564,8 +549,6 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
                               _loadData();
                             } else {
                               // API call failed
-                              print(
-                                  "Something went wrong: ${decrementStatus.message}");
 
                               final snackBar = SnackBar(
                                 content: Text('${decrementStatus.message}'),
@@ -576,14 +559,13 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
                                   .showSnackBar(snackBar);
 
                               // Automatically hide the SnackBar after 1 second
-                              Future.delayed(Duration(milliseconds: 1000), () {
+                              Future.delayed(const Duration(milliseconds: 1000), () {
                                 ScaffoldMessenger.of(context)
                                     .hideCurrentSnackBar();
                               });
                             }
                           } catch (e) {
                             // Display error message
-                            print("Error: $e");
                           }
                         },
                         child: Image.asset(
@@ -592,22 +574,21 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
                           width: 9,
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 8,
                       ),
                       CustomText(
-                        text: itemData.quantity.toString() ?? '',
+                        text: itemData.quantity.toString(),
                         sizeOfFont: 12,
                         color: hintColor,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 8,
                       ),
                       GestureDetector(
                         onTap: () async {
                           var cartId = itemData.cartId ?? '';
 
-                          print('cartId:$cartId');
 
                           try {
                             AddToCartResponse incrementStatus =
@@ -620,7 +601,6 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
                                 incrementStatus.message ==
                                     "Quantity incremented successfully.") {
                               // Print data to console
-                              print(incrementStatus);
 
                               try {
                                 final refreshedData =
@@ -633,14 +613,11 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
                                   });
                                 }
                               } catch (error) {
-                                print('Error refreshing data: $error');
                               }
 
                               _loadData();
                             } else {
                               // API call failed
-                              print(
-                                  "Something went wrong: ${incrementStatus.message}");
 
                               final snackBar = SnackBar(
                                 content: Text('${incrementStatus.message}'),
@@ -651,17 +628,16 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
                                   .showSnackBar(snackBar);
 
                               // Automatically hide the SnackBar after 1 second
-                              Future.delayed(Duration(milliseconds: 1000), () {
+                              Future.delayed(const Duration(milliseconds: 1000), () {
                                 ScaffoldMessenger.of(context)
                                     .hideCurrentSnackBar();
                               });
                             }
                           } catch (e) {
                             // Display error message
-                            print("Error: $e");
                           }
                         },
-                        child: Icon(
+                        child: const Icon(
                           Icons.add,
                           color: hintColor,
                           size: 12,
@@ -673,17 +649,17 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
               ),
               CustomText(
                 // Calculate the total price based on the count and item price
-                text: "\$${itemData.subtotal.toString() ?? 0}",
+                text: "\$${itemData.subtotal.toString()}",
                 sizeOfFont: 15,
                 color: offerColor,
                 fontfamilly: montHeavy,
               ),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 5,
           ),
-          Divider(
+          const Divider(
             color: grayColor,
             thickness: 0,
           )
@@ -791,15 +767,15 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
                         fillColor: newcardbgColor,
                         focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20),
-                            borderSide: BorderSide(
+                            borderSide: const BorderSide(
                                 color: editbgColor, style: BorderStyle.solid)),
                         enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20),
-                            borderSide: BorderSide(
+                            borderSide: const BorderSide(
                                 color: editbgColor, style: BorderStyle.solid)),
                         contentPadding: const EdgeInsets.symmetric(
                             horizontal: 20, vertical: 10),
-                        hintStyle: TextStyle(
+                        hintStyle: const TextStyle(
                           fontFamily: montBook,
                           fontSize: 16,
                           color:
@@ -834,15 +810,15 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
                         fillColor: newcardbgColor,
                         focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20),
-                            borderSide: BorderSide(
+                            borderSide: const BorderSide(
                                 color: editbgColor, style: BorderStyle.solid)),
                         enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(20),
-                            borderSide: BorderSide(
+                            borderSide: const BorderSide(
                                 color: editbgColor, style: BorderStyle.solid)),
                         contentPadding: const EdgeInsets.symmetric(
                             horizontal: 20, vertical: 10),
-                        hintStyle: TextStyle(
+                        hintStyle: const TextStyle(
                           fontFamily: montBook,
                           fontSize: 16,
                           color:
@@ -882,17 +858,17 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
                               fillColor: newcardbgColor,
                               focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(20),
-                                  borderSide: BorderSide(
+                                  borderSide: const BorderSide(
                                       color: editbgColor,
                                       style: BorderStyle.solid)),
                               enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(20),
-                                  borderSide: BorderSide(
+                                  borderSide: const BorderSide(
                                       color: editbgColor,
                                       style: BorderStyle.solid)),
                               contentPadding: const EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 10),
-                              hintStyle: TextStyle(
+                              hintStyle: const TextStyle(
                                 fontFamily: montBook,
                                 fontSize: 16,
                                 color:
@@ -928,17 +904,17 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
                               fillColor: newcardbgColor,
                               focusedBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(20),
-                                  borderSide: BorderSide(
+                                  borderSide: const BorderSide(
                                       color: editbgColor,
                                       style: BorderStyle.solid)),
                               enabledBorder: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(20),
-                                  borderSide: BorderSide(
+                                  borderSide: const BorderSide(
                                       color: editbgColor,
                                       style: BorderStyle.solid)),
                               contentPadding: const EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 10),
-                              hintStyle: TextStyle(
+                              hintStyle: const TextStyle(
                                 fontFamily: montBook,
                                 fontSize: 16,
                                 color:
@@ -968,7 +944,6 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
                                 var validatedCard = cardNum.replaceAll(" ", "");
                                 String cardType =
                                     validateCardType(validatedCard);
-                                print("Card Type: ${cardType}");
 
                                 if (nameController.text.isNotEmpty &&
                                     cardNumberController.text.isNotEmpty &&
@@ -1030,7 +1005,7 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
 
                                       // Automatically hide the SnackBar after 1 second
                                       Future.delayed(
-                                          Duration(milliseconds: 1000), () {
+                                          const Duration(milliseconds: 1000), () {
                                         ScaffoldMessenger.of(context)
                                             .hideCurrentSnackBar();
                                       });
@@ -1043,8 +1018,6 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
                                       // Navigate to the next screen or perform other actions after login
                                     } else {
                                       // Login failed
-                                      print(
-                                          "Something went wrong: ${data.message}");
 
                                       final snackBar = SnackBar(
                                         content: Text('${data.message}'),
@@ -1056,14 +1029,13 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
 
                                       // Automatically hide the SnackBar after 1 second
                                       Future.delayed(
-                                          Duration(milliseconds: 1000), () {
+                                          const Duration(milliseconds: 1000), () {
                                         ScaffoldMessenger.of(context)
                                             .hideCurrentSnackBar();
                                       });
                                     }
                                   } catch (e) {
                                     // Display error message
-                                    print("Error: $e");
                                   }
                                 } else {
                                   final snackBar = SnackBar(
@@ -1154,14 +1126,14 @@ class ExpiryDateFormatter extends TextInputFormatter {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('Invalid Month'),
-              content: Text('Please enter a valid month (01-12)'),
+              title: const Text('Invalid Month'),
+              content: const Text('Please enter a valid month (01-12)'),
               actions: <Widget>[
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: Text('OK'),
+                  child: const Text('OK'),
                 ),
               ],
             );
@@ -1180,14 +1152,14 @@ class ExpiryDateFormatter extends TextInputFormatter {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('Invalid Year'),
-              content: Text('Please enter a Valid Year'),
+              title: const Text('Invalid Year'),
+              content: const Text('Please enter a Valid Year'),
               actions: <Widget>[
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: Text('OK'),
+                  child: const Text('OK'),
                 ),
               ],
             );
