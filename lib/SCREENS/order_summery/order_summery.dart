@@ -874,7 +874,7 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
                               // Limit to 4 characters (MMYY)
 
                               // Limit to 19 characters
-                              ExpiryDateFormatter(),
+                              ExpiryDateFormatter(context: context),
                             ],
                             decoration: InputDecoration(
                               counterText: '',
@@ -1124,6 +1124,12 @@ class CreditCardFormatter extends TextInputFormatter {
 }
 
 class ExpiryDateFormatter extends TextInputFormatter {
+
+
+  final BuildContext context;
+
+  ExpiryDateFormatter({required this.context});
+
   @override
   TextEditingValue formatEditUpdate(
       TextEditingValue oldValue, TextEditingValue newValue) {
@@ -1136,6 +1142,59 @@ class ExpiryDateFormatter extends TextInputFormatter {
         formattedText += '/'; // Add a slash after the second character
       }
       formattedText += text[i];
+    }
+
+    // Validate month here
+    if (formattedText.length > 2) {
+      final monthString = formattedText.substring(0, 2);
+      final month = int.tryParse(monthString);
+      if (month == null || month > 12) {
+        // Show alert dialog for invalid month
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Invalid Month'),
+              content: Text('Please enter a valid month (01-12)'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+        return oldValue; // Revert to old value
+      }
+    }
+
+    if (formattedText.length > 2) {
+      final yearString = formattedText.substring(3, 5);
+      final month = int.tryParse(yearString);
+      if (month == null || month <= 23) {
+        // Show alert dialog for invalid month
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Invalid Year'),
+              content: Text('Please enter a Valid Year'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+        return oldValue; // Revert to old value
+      }
     }
 
     return TextEditingValue(

@@ -1,10 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:custom_rating_bar/custom_rating_bar.dart';
 import 'package:provider/provider.dart';
-
-import '../../CUSTOM_WIDGETS/custom_app_bar.dart';
-import '../../CUSTOM_WIDGETS/custom_search_field.dart';
 import '../../CUSTOM_WIDGETS/custom_text_style.dart';
 import '../../MULTI-PROVIDER/FavoriteOperationProvider.dart';
 import '../../MULTI-PROVIDER/HomeDataListProvider.dart';
@@ -45,6 +41,7 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
   bool isFilterLoading = false;
   bool hasFilterMoreData = true;
   List<FilterData> filterList = [];
+  int dataId = 0;
 
 
   ScrollController _scrollController = ScrollController();
@@ -107,7 +104,7 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
             });
           }
         } catch (error) {
-          print('Error loading more data: $error');
+          //
         } finally {
           setState(() {
             if (mounted) {
@@ -206,7 +203,6 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
                           // Navigate to the next screen or perform other actions after login
                         } else {
                           // Login failed
-                          print("Something went wrong: ${data.message}");
 
                           final snackBar = SnackBar(
                             content:  Text('${data.message}'),
@@ -217,19 +213,17 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
                           // Automatically hide the SnackBar after 1 second
-                          Future.delayed(Duration(milliseconds: 1000), () {
+                          Future.delayed(const Duration(milliseconds: 1000), () {
                             ScaffoldMessenger.of(context).hideCurrentSnackBar();
                           });
 
                         }
                       } catch (e) {
                         // Display error message
-                        print("Error: $e");
                       }
 
 
                       // For simplicity, I'll just print the search query for now
-                      print("Search query: $query");
                     }
                     // Update the search query in the provider
                     // searchProvider.setSearchQuery(query);
@@ -303,7 +297,7 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
 
   Widget buildHorizontalList(List<FilterData> filterList) {
     if (filterList.length <= 1) {
-      return SizedBox.shrink(); // Return an empty widget if there's only 1 or no items
+      return const SizedBox.shrink(); // Return an empty widget if there's only 1 or no items
     }
 
     return SingleChildScrollView(
@@ -363,12 +357,12 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
             } else {
               // Display loading indicator while fetching more data
               return FutureBuilder(
-                future: Future.delayed(Duration(seconds: 1)),
+                future: Future.delayed(const Duration(seconds: 1)),
                 builder: (context, snapshot) =>
                     snapshot.connectionState == ConnectionState.done
-                        ? SizedBox()
-                        : Padding(
-                            padding: const EdgeInsets.all(8.0),
+                        ? const SizedBox()
+                        : const Padding(
+                            padding: EdgeInsets.all(8.0),
                             child: Center(child: CircularProgressIndicator()),
                           ),
               );
@@ -400,7 +394,7 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
         });
 
     } catch (error) {
-      print('Error refreshing data: $error');
+      //
     }
   }
 
@@ -442,10 +436,10 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
                   fontfamilly: montLight,
                   maxLin: 1,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 5,
                 ),
-                Row(
+                const Row(
                   children: [
                     RatingBar.readOnly(
                       filledIcon: Icons.star,
@@ -479,10 +473,10 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(15.0),
                   child: Container(
-                    padding: EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(8.0),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15.0),
-                      gradient: LinearGradient(
+                      gradient: const LinearGradient(
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                         colors: [
@@ -515,8 +509,6 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
                     onTap: () async {
                       bool? ratingStatus = storeData.favourite;
 
-                      print('ratingStatus:$ratingStatus');
-                      print('StoreId: ${storeData.id}');
 
                       try {
                         if (ratingStatus == false) {
@@ -536,7 +528,6 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
                               favData.message ==
                                   "Store Added in favourite successfully.") {
                             // Print data to console
-                            print(favData);
 
                             final snackBar = SnackBar(
                               content: Text('${favData.message}'),
@@ -547,7 +538,7 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
                                 .showSnackBar(snackBar);
 
                             // Automatically hide the SnackBar after 1 second
-                            Future.delayed(Duration(milliseconds: 1000), () {
+                            Future.delayed(const Duration(milliseconds: 1000), () {
                               ScaffoldMessenger.of(context)
                                   .hideCurrentSnackBar();
                             });
@@ -573,11 +564,10 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
                                 });
                               }
                             } catch (error) {
-                              print('Error refreshing data: $error');
+                              //
                             }
                           } else {
                             // API call failed
-                            print("Something went wrong: ${favData.message}");
 
                             final snackBar = SnackBar(
                               content: Text('${favData.message}'),
@@ -588,7 +578,7 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
                                 .showSnackBar(snackBar);
 
                             // Automatically hide the SnackBar after 1 second
-                            Future.delayed(Duration(milliseconds: 1000), () {
+                            Future.delayed(const Duration(milliseconds: 1000), () {
                               ScaffoldMessenger.of(context)
                                   .hideCurrentSnackBar();
                             });
@@ -605,7 +595,6 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
                               delData.message ==
                                   "Favourite Store deleted successfully") {
                             // Print data to console
-                            print(delData);
 
                             final snackBar = SnackBar(
                               content: Text('${delData.message}'),
@@ -616,7 +605,7 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
                                 .showSnackBar(snackBar);
 
                             // Automatically hide the SnackBar after 1 second
-                            Future.delayed(Duration(milliseconds: 1000), () {
+                            Future.delayed(const Duration(milliseconds: 1000), () {
                               ScaffoldMessenger.of(context)
                                   .hideCurrentSnackBar();
                             });
@@ -641,11 +630,10 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
                                 restaurantData.addAll(refreshedData.data!);
                               }
                             } catch (error) {
-                              print('Error refreshing data: $error');
+                              //
                             }
                           } else {
                             // API call failed
-                            print("Something went wrong: ${delData.message}");
 
                             final snackBar = SnackBar(
                               content: Text('${delData.message}'),
@@ -656,7 +644,7 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
                                 .showSnackBar(snackBar);
 
                             // Automatically hide the SnackBar after 1 second
-                            Future.delayed(Duration(milliseconds: 1000), () {
+                            Future.delayed(const Duration(milliseconds: 1000), () {
                               ScaffoldMessenger.of(context)
                                   .hideCurrentSnackBar();
                             });
@@ -664,7 +652,6 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
                         }
                       } catch (e) {
                         // Display error message
-                        print("Error: $e");
                       }
                     },
                     child: Image.asset(

@@ -8,8 +8,6 @@ import 'package:takeaplate/UTILS/app_color.dart';
 import 'package:takeaplate/UTILS/app_images.dart';
 import 'package:takeaplate/UTILS/app_strings.dart';
 import 'package:takeaplate/UTILS/fontfamily_string.dart';
-import '../../CUSTOM_WIDGETS/common_edit_text.dart';
-import '../../CUSTOM_WIDGETS/common_email_field.dart';
 import '../../CUSTOM_WIDGETS/custom_app_bar.dart';
 import '../../CUSTOM_WIDGETS/custom_search_field.dart';
 import '../../MULTI-PROVIDER/FavoriteOperationProvider.dart';
@@ -19,7 +17,6 @@ import '../../Response_Model/FavAddedResponse.dart';
 import '../../Response_Model/FavDeleteResponse.dart';
 import '../../Response_Model/RestaurantDealResponse.dart';
 import '../../UTILS/request_string.dart';
-import '../../UTILS/validation.dart';
 
 class PaymentDetailsScreen extends StatefulWidget {
   const PaymentDetailsScreen({super.key});
@@ -84,7 +81,7 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
                   scrollDirection: Axis.vertical,
                   child: Column(
                     children: [
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       getLastMinuteDealsData(data, context),
@@ -160,13 +157,13 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CustomText(
+              const CustomText(
                 text: paymentDetail,
                 color: viewallColor,
                 fontfamilly: montBold,
                 sizeOfFont: 19,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 25,
               ),
               // CommonEditText(hintText: cardName,isbgColor: true,),
@@ -254,7 +251,7 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
                               FilteringTextInputFormatter.digitsOnly,
                               LengthLimitingTextInputFormatter(4),
                               // Limit to 4 characters (MMYY)
-                              ExpiryDateFormatter(),
+                              ExpiryDateFormatter(context:context),
                             ],
                             controller: expiryController,
                             style: const TextStyle(
@@ -269,7 +266,7 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
                                     color: cardTextColor),
                                 hintText: expiry))),
                   ), // CommonEditText(hintText: expiry,isbgColor: true,)),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
                   Expanded(
@@ -314,7 +311,6 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
                     var cardNum = cardNumberController.text;
                     var validatedCard = cardNum.replaceAll(" ", "");
                     String cardType = validateCardType(validatedCard);
-                    print("Card Type: ${cardType}");
 
 
 if(nameController.text.isNotEmpty && cardNumberController.text.isNotEmpty && expiryController.text.isNotEmpty && cvvController.text.isNotEmpty && cardType.isNotEmpty){
@@ -343,7 +339,7 @@ if(nameController.text.isNotEmpty && cardNumberController.text.isNotEmpty && exp
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
       // Automatically hide the SnackBar after 1 second
-      Future.delayed(Duration(milliseconds: 1000), () {
+      Future.delayed(const Duration(milliseconds: 1000), () {
         ScaffoldMessenger.of(context).hideCurrentSnackBar();
       });
 
@@ -355,7 +351,6 @@ if(nameController.text.isNotEmpty && cardNumberController.text.isNotEmpty && exp
       // Navigate to the next screen or perform other actions after login
     } else {
       // Login failed
-      print("Something went wrong: ${data.message}");
 
       final snackBar = SnackBar(
         content:  Text('${data.message}'),
@@ -366,14 +361,13 @@ if(nameController.text.isNotEmpty && cardNumberController.text.isNotEmpty && exp
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
       // Automatically hide the SnackBar after 1 second
-      Future.delayed(Duration(milliseconds: 1000), () {
+      Future.delayed(const Duration(milliseconds: 1000), () {
         ScaffoldMessenger.of(context).hideCurrentSnackBar();
       });
 
     }
   } catch (e) {
     // Display error message
-    print("Error: $e");
   }
 
 
@@ -413,7 +407,7 @@ if(nameController.text.isNotEmpty && cardNumberController.text.isNotEmpty && exp
                         borderRadius: BorderRadius.circular(30),
                         border: Border.all(width: 1, color: Colors.white),
                       ),
-                      child: CustomText(
+                      child: const CustomText(
                         text: "SAVE",
                         color: btntxtColor,
                         fontfamilly: montHeavy,
@@ -483,11 +477,11 @@ if(nameController.text.isNotEmpty && cardNumberController.text.isNotEmpty && exp
                 sizeOfFont: 13,
               ),
               CustomText(
-                  text: '${startTiming ?? ""} - ${endTiming ?? ""}',
+                  text: '$startTiming - $endTiming',
                   color: graysColor,
                   sizeOfFont: 12,
                   fontfamilly: montRegular),
-              SizedBox(
+              const SizedBox(
                 height: 5,
               ),
               Row(
@@ -504,17 +498,17 @@ if(nameController.text.isNotEmpty && cardNumberController.text.isNotEmpty && exp
                         double.parse(lastMinuteDeal.averageRating ?? '0'),
                     maxRating: 5,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
-                  CustomText(
+                  const CustomText(
                       text: '8KM',
                       color: graysColor,
                       sizeOfFont: 12,
                       fontfamilly: montSemiBold),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 5,
               ),
               CustomText(
@@ -546,10 +540,10 @@ if(nameController.text.isNotEmpty && cardNumberController.text.isNotEmpty && exp
                 ClipRRect(
                   borderRadius: BorderRadius.circular(15.0),
                   child: Container(
-                    padding: EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(8.0),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15.0),
-                      gradient: LinearGradient(
+                      gradient: const LinearGradient(
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                         colors: [
@@ -580,11 +574,8 @@ if(nameController.text.isNotEmpty && cardNumberController.text.isNotEmpty && exp
                   right: -4,
                   child: GestureDetector(
                     onTap: () async {
-                      var ratingStatus = lastMinuteDeal.favourite as bool;
                       int? dealId = lastMinuteDeal.id;
-                      int? storeId = lastMinuteDeal.storeId;
 
-                      print('ratingStatus:$ratingStatus');
 
                       try {
                         if (lastMinuteDeal.favourite == false) {
@@ -603,7 +594,6 @@ if(nameController.text.isNotEmpty && cardNumberController.text.isNotEmpty && exp
                               favData.message ==
                                   "Deal Added in favourite successfully.") {
                             // Print data to console
-                            print(favData);
 
                             final snackBar = SnackBar(
                               content: Text('${favData.message}'),
@@ -614,7 +604,7 @@ if(nameController.text.isNotEmpty && cardNumberController.text.isNotEmpty && exp
                                 .showSnackBar(snackBar);
 
                             // Automatically hide the SnackBar after 1 second
-                            Future.delayed(Duration(milliseconds: 1000), () {
+                            Future.delayed(const Duration(milliseconds: 1000), () {
                               ScaffoldMessenger.of(context)
                                   .hideCurrentSnackBar();
                             });
@@ -624,7 +614,6 @@ if(nameController.text.isNotEmpty && cardNumberController.text.isNotEmpty && exp
                             });
                           } else {
                             // API call failed
-                            print("Something went wrong: ${favData.message}");
 
                             final snackBar = SnackBar(
                               content: Text('${favData.message}'),
@@ -635,7 +624,7 @@ if(nameController.text.isNotEmpty && cardNumberController.text.isNotEmpty && exp
                                 .showSnackBar(snackBar);
 
                             // Automatically hide the SnackBar after 1 second
-                            Future.delayed(Duration(milliseconds: 1000), () {
+                            Future.delayed(const Duration(milliseconds: 1000), () {
                               ScaffoldMessenger.of(context)
                                   .hideCurrentSnackBar();
                             });
@@ -651,7 +640,6 @@ if(nameController.text.isNotEmpty && cardNumberController.text.isNotEmpty && exp
                               delData.message ==
                                   "Favourite Deal deleted successfully.") {
                             // Print data to console
-                            print(delData);
 
                             final snackBar = SnackBar(
                               content: Text('${delData.message}'),
@@ -662,7 +650,7 @@ if(nameController.text.isNotEmpty && cardNumberController.text.isNotEmpty && exp
                                 .showSnackBar(snackBar);
 
                             // Automatically hide the SnackBar after 1 second
-                            Future.delayed(Duration(milliseconds: 1000), () {
+                            Future.delayed(const Duration(milliseconds: 1000), () {
                               ScaffoldMessenger.of(context)
                                   .hideCurrentSnackBar();
                             });
@@ -672,7 +660,6 @@ if(nameController.text.isNotEmpty && cardNumberController.text.isNotEmpty && exp
                             });
                           } else {
                             // API call failed
-                            print("Something went wrong: ${delData.message}");
 
                             final snackBar = SnackBar(
                               content: Text('${delData.message}'),
@@ -683,7 +670,7 @@ if(nameController.text.isNotEmpty && cardNumberController.text.isNotEmpty && exp
                                 .showSnackBar(snackBar);
 
                             // Automatically hide the SnackBar after 1 second
-                            Future.delayed(Duration(milliseconds: 1000), () {
+                            Future.delayed(const Duration(milliseconds: 1000), () {
                               ScaffoldMessenger.of(context)
                                   .hideCurrentSnackBar();
                             });
@@ -691,7 +678,6 @@ if(nameController.text.isNotEmpty && cardNumberController.text.isNotEmpty && exp
                         }
                       } catch (e) {
                         // Display error message
-                        print("Error: $e");
                       }
                     },
                     child: Image.asset(
@@ -735,6 +721,11 @@ class CreditCardFormatter extends TextInputFormatter {
 }
 
 class ExpiryDateFormatter extends TextInputFormatter {
+
+  final BuildContext context;
+
+  ExpiryDateFormatter({required this.context});
+
   @override
   TextEditingValue formatEditUpdate(
       TextEditingValue oldValue, TextEditingValue newValue) {
@@ -748,6 +739,61 @@ class ExpiryDateFormatter extends TextInputFormatter {
       }
       formattedText += text[i];
     }
+
+
+    // Validate month here
+    if (formattedText.length > 2) {
+      final monthString = formattedText.substring(0, 2);
+      final month = int.tryParse(monthString);
+      if (month == null || month > 12) {
+        // Show alert dialog for invalid month
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Invalid Month'),
+              content: Text('Please enter a valid month (01-12)'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+        return oldValue; // Revert to old value
+      }
+    }
+
+    if (formattedText.length > 2) {
+      final yearString = formattedText.substring(3, 5);
+      final month = int.tryParse(yearString);
+      if (month == null || month <= 23) {
+        // Show alert dialog for invalid month
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Invalid Year'),
+              content: Text('Please enter a Valid Year'),
+              actions: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+        return oldValue; // Revert to old value
+      }
+    }
+
 
     return TextEditingValue(
       text: formattedText,

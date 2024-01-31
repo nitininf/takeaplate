@@ -1,5 +1,6 @@
 import 'package:custom_rating_bar/custom_rating_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/custom_text_style.dart';
 import 'package:takeaplate/UTILS/app_color.dart';
@@ -54,14 +55,62 @@ class _HomeScreenState extends State<HomeScreen> {
 
   int dataId = 0;
 
+  String _latitude = 'Unknown';
+  String _longitude = 'Unknown';
+
   @override
   void initState() {
     super.initState();
     _loadData(dataId);
     _loadFilterData();
+    _getLocation();
   }
 
+
+  Future<void> _getLocation() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Check if location services are enabled
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return;
+    }
+
+    // Request location permission
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return;
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      // Permissions are denied forever, handle appropriately.
+      return;
+    }
+
+    try {
+      // Get the current location
+      Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.best);
+      setState(() {
+        _latitude = '${position.latitude}';
+        _longitude = '${position.longitude}';
+      });
+
+
+      print('Coordinates : \n _________\n Latitude: $_latitude \n Longitude: $_longitude');
+
+    } catch (e) {
+      print(e);
+    }
+  }
+
+
   void _loadData(int dataId) async {
+
     Future.delayed(
       Duration.zero,
       () async {
