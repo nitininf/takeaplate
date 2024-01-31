@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../UTILS/app_color.dart';
-import '../UTILS/fontfaimlly_string.dart';
+import '../UTILS/fontfamily_string.dart';
 
 class CommonRichText extends StatelessWidget {
   const CommonRichText({

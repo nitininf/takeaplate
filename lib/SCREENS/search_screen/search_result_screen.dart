@@ -14,7 +14,7 @@ import '../../MULTI-PROVIDER/RestaurantsListProvider.dart';
 import '../../MULTI-PROVIDER/common_counter.dart';
 import '../../UTILS/app_color.dart';
 import '../../UTILS/app_images.dart';
-import '../../UTILS/fontfaimlly_string.dart';
+import '../../UTILS/fontfamily_string.dart';
 import '../../main.dart';
 
 class SearchResultScreen extends StatefulWidget {

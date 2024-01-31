@@ -12,7 +12,7 @@ import 'package:takeaplate/main.dart';
 import '../../CUSTOM_WIDGETS/custom_text_style.dart';
 import '../../UTILS/app_color.dart';
 import '../../UTILS/app_strings.dart';
-import '../../UTILS/fontfaimlly_string.dart';
+import '../../UTILS/fontfamily_string.dart';
 import '../../UTILS/request_string.dart';
 import '../../UTILS/validation.dart';
 

@@ -13,7 +13,7 @@ import '../../Response_Model/AddToCartResponse.dart';
 import '../../UTILS/app_color.dart';
 import '../../UTILS/app_images.dart';
 import '../../UTILS/app_strings.dart';
-import '../../UTILS/fontfaimlly_string.dart';
+import '../../UTILS/fontfamily_string.dart';
 import '../../UTILS/request_string.dart';
 
 class OrderAndPayScreen extends StatelessWidget {
@@ -190,8 +190,8 @@ class OrderAndPayScreen extends StatelessWidget {
     return Consumer<OrderAndPayProvider>(
         builder: ((context, orderAndPayProvider, child) {
       return Container(
-        margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+        margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
           border: Border.all(width: 0, color: viewallColor),

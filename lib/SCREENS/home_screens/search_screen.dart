@@ -8,7 +8,7 @@ import '../../MULTI-PROVIDER/SearchProvider.dart';
 import '../../MULTI-PROVIDER/common_counter.dart';
 import '../../Response_Model/SearchHistoryResponse.dart';
 import '../../UTILS/app_color.dart';
-import '../../UTILS/fontfaimlly_string.dart';
+import '../../UTILS/fontfamily_string.dart';
 
 
 

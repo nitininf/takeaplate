@@ -7,14 +7,16 @@ import '../../CUSTOM_WIDGETS/custom_app_bar.dart';
 import '../../CUSTOM_WIDGETS/custom_search_field.dart';
 import '../../CUSTOM_WIDGETS/custom_text_style.dart';
 import '../../MULTI-PROVIDER/FavoriteOperationProvider.dart';
+import '../../MULTI-PROVIDER/HomeDataListProvider.dart';
 import '../../MULTI-PROVIDER/RestaurantsListProvider.dart';
 import '../../MULTI-PROVIDER/SearchProvider.dart';
+import '../../Response_Model/CategoryFilterResponse.dart';
 import '../../Response_Model/FavAddedResponse.dart';
 import '../../Response_Model/FavDeleteResponse.dart';
 import '../../Response_Model/RestaurantsListResponse.dart';
 import '../../UTILS/app_color.dart';
 import '../../UTILS/app_images.dart';
-import '../../UTILS/fontfaimlly_string.dart';
+import '../../UTILS/fontfamily_string.dart';
 import '../../main.dart';
 
 class RestaurantsScreen extends StatefulWidget {
@@ -30,6 +32,8 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
     'Sugar',
     'Sweets'
   ];
+  final HomeDataListProvider homeProvider = HomeDataListProvider();
+
   final RestaurantsListProvider restaurantsProvider = RestaurantsListProvider();
   bool isFavorite = false;
   int currentPage = 1;
@@ -38,6 +42,11 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
   bool hasMoreData = true;
   List<StoreData> restaurantData = [];
 
+  bool isFilterLoading = false;
+  bool hasFilterMoreData = true;
+  List<FilterData> filterList = [];
+
+
   ScrollController _scrollController = ScrollController();
 
   @override
@@ -45,6 +54,7 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
     super.initState();
     _scrollController.addListener(_scrollListener);
     _loadData();
+    _loadFilterData();
   }
 
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
@@ -112,6 +122,45 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
 
 
   }
+
+  void _loadFilterData() async {
+    if (!isFilterLoading && hasFilterMoreData) {
+      try {
+        setState(() {
+          isFilterLoading = true;
+        });
+
+        final filterData = await homeProvider.getCategoryFilterData(
+
+        );
+
+        if (filterData.data != null && filterData.data!.isNotEmpty) {
+
+          setState(() {
+            if (mounted) {
+              filterList = filterData.data!;
+            }
+          });
+        } else {
+          setState(() {
+            if (mounted) {
+              hasFilterMoreData = false;
+              filterList.clear();
+            }
+          });
+        }
+
+
+      } catch (error) {
+        //
+      } finally {
+        setState(() {
+          isFilterLoading = false;
+        });
+      }
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -244,7 +293,7 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
                   fontfamilly: montHeavy,
                   sizeOfFont: 20),
             ),
-            buildHorizontalList(items),
+            buildHorizontalList(filterList),
             buildVerticalCards(),
           ],
         ),
@@ -252,25 +301,29 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
     );
   }
 
-  Widget buildHorizontalList(List<String> items) {
+  Widget buildHorizontalList(List<FilterData> filterList) {
+    if (filterList.length <= 1) {
+      return SizedBox.shrink(); // Return an empty widget if there's only 1 or no items
+    }
+
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: List.generate(
-          items.length,
-          (index) => GestureDetector(
+          filterList.length - 1,
+              (index) => GestureDetector(
             onTap: () {},
             child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 3, vertical: 10),
-              padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 10),
+              margin: const EdgeInsets.symmetric(horizontal: 3, vertical: 15),
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
               decoration: BoxDecoration(
                 color: editbgColor,
                 borderRadius: BorderRadius.circular(30),
                 border: Border.all(width: 1, color: Colors.white),
               ),
               child: CustomText(
-                text: items[index],
+                text: filterList[index + 1].category ?? "",
                 color: hintColor,
                 fontfamilly: montBook,
                 sizeOfFont: 19,
@@ -281,6 +334,7 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
       ),
     );
   }
+
 
   Widget buildVerticalCards() {
     return Expanded(

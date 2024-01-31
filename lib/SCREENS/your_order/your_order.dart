@@ -5,12 +5,10 @@ import 'package:takeaplate/CUSTOM_WIDGETS/common_button.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/custom_text_style.dart';
 import 'package:takeaplate/UTILS/app_color.dart';
 import 'package:takeaplate/UTILS/app_images.dart';
-import 'package:takeaplate/UTILS/app_strings.dart';
 import 'package:takeaplate/UTILS/dialog_helper.dart';
-import 'package:takeaplate/UTILS/fontfaimlly_string.dart';
+import 'package:takeaplate/UTILS/fontfamily_string.dart';
 import 'package:takeaplate/main.dart';
 import '../../../CUSTOM_WIDGETS/custom_app_bar.dart';
-import '../../../CUSTOM_WIDGETS/custom_search_field.dart';
 import '../../MULTI-PROVIDER/common_counter.dart';
 import '../../Response_Model/CurrentOrderResponse.dart';
 class YourOrderScreen extends StatelessWidget {
@@ -116,11 +114,6 @@ class YourOrderScreen extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  // Icon(Icons.star,size: 20,color: btnbgColor,),
-                  // Icon(Icons.star,size: 20,color: btnbgColor,),
-                  // Icon(Icons.star,size: 20,color: btnbgColor,),
-                  // Icon(Icons.star,size: 20,color: btnbgColor,),
-                  // Icon(Icons.star,size: 20,color: btnbgColor,),
 
                   RatingBar.readOnly(
                     filledIcon: Icons.star,

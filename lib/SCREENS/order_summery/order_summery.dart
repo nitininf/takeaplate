@@ -9,7 +9,7 @@ import 'package:takeaplate/UTILS/app_color.dart';
 import 'package:takeaplate/main.dart';
 
 import '../../../UTILS/app_images.dart';
-import '../../../UTILS/fontfaimlly_string.dart';
+import '../../../UTILS/fontfamily_string.dart';
 import '../../CUSTOM_WIDGETS/common_edit_text.dart';
 import '../../MULTI-PROVIDER/CartOperationProvider.dart';
 import '../../MULTI-PROVIDER/PaymentDetailsProvider.dart';

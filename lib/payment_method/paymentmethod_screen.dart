@@ -7,7 +7,7 @@ import 'package:takeaplate/CUSTOM_WIDGETS/common_button.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/custom_app_bar.dart';
 import 'package:takeaplate/MULTI-PROVIDER/common_counter.dart';
 import 'package:takeaplate/UTILS/dialog_helper.dart';
-import 'package:takeaplate/UTILS/fontfaimlly_string.dart';
+import 'package:takeaplate/UTILS/fontfamily_string.dart';
 import 'package:takeaplate/main.dart';
 
 import '../CUSTOM_WIDGETS/custom_text_style.dart';

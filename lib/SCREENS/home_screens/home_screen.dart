@@ -5,12 +5,12 @@ import 'package:takeaplate/CUSTOM_WIDGETS/custom_text_style.dart';
 import 'package:takeaplate/UTILS/app_color.dart';
 import 'package:takeaplate/UTILS/app_images.dart';
 import 'package:takeaplate/UTILS/app_strings.dart';
-import 'package:takeaplate/UTILS/fontfaimlly_string.dart';
+import 'package:takeaplate/UTILS/fontfamily_string.dart';
 import 'package:takeaplate/main.dart';
-import '../../CUSTOM_WIDGETS/custom_search_field.dart';
 import '../../MULTI-PROVIDER/FavoriteOperationProvider.dart';
 import '../../MULTI-PROVIDER/HomeDataListProvider.dart';
 import '../../MULTI-PROVIDER/RestaurantsListProvider.dart';
+import '../../Response_Model/CategoryFilterResponse.dart';
 import '../../Response_Model/FavAddedResponse.dart';
 import '../../Response_Model/FavDeleteResponse.dart';
 import '../../Response_Model/RestaurantDealResponse.dart';
@@ -39,20 +39,29 @@ class _HomeScreenState extends State<HomeScreen> {
   int currentPage = 1;
   bool isLoading = false;
   bool hasMoreData = true;
+  int selectedCardIndex = -1;
+
+  bool isFilterLoading = false;
+  bool hasFilterMoreData = true;
+
   final RestaurantsListProvider restaurantsProvider = RestaurantsListProvider();
 
   List<StoreData> closestRestaurants = [];
   List<DealData> lastMinuteDeals = [];
   List<StoreData> favoriteStoresAndDeals = [];
   List<DealData> collectTomorrowList = [];
+  List<FilterData> filterList = [];
+
+  int dataId = 0;
 
   @override
   void initState() {
     super.initState();
-    _loadData();
+    _loadData(dataId);
+    _loadFilterData();
   }
 
-  void _loadData() async {
+  void _loadData(int dataId) async {
     Future.delayed(
       Duration.zero,
       () async {
@@ -62,9 +71,8 @@ class _HomeScreenState extends State<HomeScreen> {
               isLoading = true;
             });
 
-            final nextPageData = await homeProvider.getHomePageList(
-              page: currentPage,
-            );
+            final nextPageData =
+                await homeProvider.getHomePageList(page: currentPage, dataId);
 
             if (nextPageData.data != null && nextPageData.data!.isNotEmpty) {
               currentPage++;
@@ -131,6 +139,7 @@ class _HomeScreenState extends State<HomeScreen> {
               });
             }
           } catch (error) {
+            //
           } finally {
             setState(() {
               isLoading = false;
@@ -139,6 +148,39 @@ class _HomeScreenState extends State<HomeScreen> {
         }
       },
     );
+  }
+
+  void _loadFilterData() async {
+    if (!isFilterLoading && hasFilterMoreData) {
+      try {
+        setState(() {
+          isFilterLoading = true;
+        });
+
+        final filterData = await homeProvider.getCategoryFilterData();
+
+        if (filterData.data != null && filterData.data!.isNotEmpty) {
+          setState(() {
+            if (mounted) {
+              filterList = filterData.data!;
+            }
+          });
+        } else {
+          setState(() {
+            if (mounted) {
+              hasFilterMoreData = false;
+              filterList.clear();
+            }
+          });
+        }
+      } catch (error) {
+        //
+      } finally {
+        setState(() {
+          isFilterLoading = false;
+        });
+      }
+    }
   }
 
   @override
@@ -215,8 +257,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   scrollDirection: Axis.vertical,
                   child: Column(
                     children: [
-                      buildHorizontalList(items),
-                      buildSection(closet, viewAll),
+                      buildHorizontalList(filterList),
+                      buildSection(closet, closestRestaurants.isNotEmpty?viewAll:""),
                       buildClosestDealCards(),
                       const Padding(
                         padding: EdgeInsets.only(
@@ -226,7 +268,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           thickness: 0,
                         ),
                       ),
-                      buildSection(lastMinute, viewAll),
+                      buildSection(lastMinute, lastMinuteDeals.isNotEmpty?viewAll:""),
                       buildLastMinuteDealCards(),
                       const Padding(
                         padding: EdgeInsets.only(
@@ -236,7 +278,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           thickness: 0,
                         ),
                       ),
-                      buildSection(collectTomorrow, viewAll),
+                      buildSection(collectTomorrow, collectTomorrowList.isNotEmpty?viewAll:""),
                       buildCollectTomorrowCards(),
                       const Padding(
                         padding: EdgeInsets.only(
@@ -246,7 +288,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           thickness: 0,
                         ),
                       ),
-                      buildSection(myFav, viewAll),
+                      buildSection(myFav, favoriteStoresAndDeals.isNotEmpty?viewAll:""),
                       buildMyFavoriteCards(),
                     ],
                   ),
@@ -261,7 +303,6 @@ class _HomeScreenState extends State<HomeScreen> {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(20),
           child: Container(
-
             child: const Center(
               child: CircularProgressIndicator(),
             ),
@@ -271,25 +312,37 @@ class _HomeScreenState extends State<HomeScreen> {
     ]);
   }
 
-  Widget buildHorizontalList(List<String> items) {
+  Widget buildHorizontalList(List<FilterData> filterList) {
+    if (filterList.length < 1) {
+      return const SizedBox.shrink(); // Return an empty widget if there's only 1 or no items
+    }
+
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: List.generate(
-          items.length,
-          (index) => GestureDetector(
-            onTap: () {},
+          filterList.length - 1,
+              (index) => GestureDetector(
+            onTap: () async {
+              setState(() {
+                selectedCardIndex = index;
+              });
+              print('filterId - ${filterList[index + 1].id!}');
+
+              dataId = filterList[index + 1].id!;
+              await refreshData();
+            },
             child: Container(
               margin: const EdgeInsets.symmetric(horizontal: 3, vertical: 36),
               padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 10),
               decoration: BoxDecoration(
-                color: editbgColor,
+                color: selectedCardIndex == index ? Colors.grey : editbgColor,
                 borderRadius: BorderRadius.circular(30),
                 border: Border.all(width: 1, color: Colors.white),
               ),
               child: CustomText(
-                text: items[index],
+                text: filterList[index + 1].category ?? "",
                 color: hintColor,
                 fontfamilly: montBook,
                 sizeOfFont: 19,
@@ -300,6 +353,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+
 
   Widget buildSection(String title, String viewAllText) {
     return Padding(
@@ -328,6 +382,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       navigatorKey.currentContext!, '/FavouriteScreen');
                 }
               },
+
+
+
+
               child: CustomText(
                 text: viewAllText,
                 color: viewallColor,
@@ -340,6 +398,20 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget buildClosestDealCards() {
+
+    if (closestRestaurants.isEmpty) {
+      return const Padding(
+        padding: EdgeInsets.all(20.0),
+        child: CustomText(
+          text: 'No Item Found',
+          maxLin: 1,
+          color: btntxtColor,
+          fontfamilly: montBold,
+          sizeOfFont: 15,
+        ),
+      );
+    }
+
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
@@ -362,6 +434,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget getClosestDealData(int index, StoreData storeData) {
+
+
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
@@ -592,6 +666,19 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget buildLastMinuteDealCards() {
+
+    if (lastMinuteDeals.length < 1) {
+      return const Padding(
+        padding: EdgeInsets.all(20.0),
+        child: CustomText(
+          text: 'No Item Found',
+          maxLin: 1,
+          color: btntxtColor,
+          fontfamilly: montBold,
+          sizeOfFont: 15,
+        ),
+      );
+    }
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
@@ -898,6 +985,19 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget buildCollectTomorrowCards() {
+
+    if (collectTomorrowList.length < 1) {
+      return const Padding(
+        padding: EdgeInsets.all(20.0),
+        child: CustomText(
+          text: 'No Item Found',
+          maxLin: 1,
+          color: btntxtColor,
+          fontfamilly: montBold,
+          sizeOfFont: 15,
+        ),
+      );
+    }
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
@@ -1209,6 +1309,20 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget buildMyFavoriteCards() {
+
+    if (favoriteStoresAndDeals.length < 1) {
+      return const Padding(
+        padding: EdgeInsets.all(20.0),
+        child: CustomText(
+          text: 'No Item Found',
+          maxLin: 1,
+          color: btntxtColor,
+          fontfamilly: montBold,
+          sizeOfFont: 15,
+        ),
+      );
+    }
+
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
@@ -1463,9 +1577,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> refreshData() async {
-    final nextPageData = await homeProvider.getHomePageList(
-      page: currentPage,
-    );
+    final nextPageData =
+        await homeProvider.getHomePageList(page: currentPage, dataId);
 
     if (nextPageData.data != null && nextPageData.data!.isNotEmpty) {
       currentPage++;

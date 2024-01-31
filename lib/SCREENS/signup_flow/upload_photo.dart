@@ -11,7 +11,7 @@ import 'package:takeaplate/Response_Model/UploadImageResponse.dart';
 import 'package:takeaplate/UTILS/app_color.dart';
 import 'package:takeaplate/UTILS/app_images.dart';
 import 'package:takeaplate/UTILS/app_strings.dart';
-import 'package:takeaplate/UTILS/fontfaimlly_string.dart';
+import 'package:takeaplate/UTILS/fontfamily_string.dart';
 import '../../MULTI-PROVIDER/AuthenticationProvider.dart';
 import '../../MULTI-PROVIDER/SignUp_StepOne.dart';
 import '../../MULTI-PROVIDER/SignUp_StepTwo.dart';

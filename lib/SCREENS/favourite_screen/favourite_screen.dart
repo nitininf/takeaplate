@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/custom_app_bar.dart';
 import '../../MULTI-PROVIDER/FavoriteOperationProvider.dart';
+import '../../MULTI-PROVIDER/HomeDataListProvider.dart';
+import '../../Response_Model/CategoryFilterResponse.dart';
 import '../../Response_Model/FavAddedResponse.dart';
 import '../../Response_Model/FavDeleteResponse.dart';
 import '../../Response_Model/RestaurantDealResponse.dart';
@@ -13,7 +15,7 @@ import '../../MULTI-PROVIDER/RestaurantsListProvider.dart';
 import '../../MULTI-PROVIDER/common_counter.dart';
 import '../../UTILS/app_color.dart';
 import '../../UTILS/app_images.dart';
-import '../../UTILS/fontfaimlly_string.dart';
+import '../../UTILS/fontfamily_string.dart';
 import '../../main.dart';
 
 class FavouriteScreen extends StatefulWidget {
@@ -32,6 +34,8 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
     'Sweets'
   ];
   final RestaurantsListProvider restaurantsProvider = RestaurantsListProvider();
+
+
   int isFavorite = 0;
   int currentRestaurantPage = 1;
   int currentDealPage = 1;
@@ -59,6 +63,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
         _scrollController.position.maxScrollExtent) {
       // Reached the end of the list, load more data
       _loadData();
+
     }
   }
 
@@ -154,6 +159,8 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
 
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -194,7 +201,6 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
             !commonProvider.isStore
                 ? buildSection("DEALS", "")
                 : buildSection("STORES", ""),
-            buildHorizontalList(items),
             buildVerticalCards(commonProvider)
           ],
         ),
@@ -330,25 +336,29 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
     );
   }
 
-  Widget buildHorizontalList(List<String> items) {
+  Widget buildHorizontalList(List<FilterData> filterList) {
+    if (filterList.length <= 1) {
+      return SizedBox.shrink(); // Return an empty widget if there's only 1 or no items
+    }
+
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: List.generate(
-          items.length,
-          (index) => GestureDetector(
+          filterList.length - 1,
+              (index) => GestureDetector(
             onTap: () {},
             child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 3, vertical: 10),
-              padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 10),
+              margin: const EdgeInsets.symmetric(horizontal: 3, vertical: 15),
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
               decoration: BoxDecoration(
                 color: editbgColor,
                 borderRadius: BorderRadius.circular(30),
                 border: Border.all(width: 1, color: Colors.white),
               ),
               child: CustomText(
-                text: items[index],
+                text: filterList[index + 1].category ?? "",
                 color: hintColor,
                 fontfamilly: montBook,
                 sizeOfFont: 19,
@@ -359,6 +369,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
       ),
     );
   }
+
 
   Widget buildVerticalCards(CommonCounter commonCounter) {
     // var currentList = restaurantData;

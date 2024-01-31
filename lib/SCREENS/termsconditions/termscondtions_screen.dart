@@ -7,7 +7,7 @@ import 'package:takeaplate/Response_Model/TermsAndConditionsResponse.dart';
 
 import '../../CUSTOM_WIDGETS/custom_text_style.dart';
 import '../../UTILS/app_color.dart';
-import '../../UTILS/fontfaimlly_string.dart';
+import '../../UTILS/fontfamily_string.dart';
 
 class TermsAndConditionScreen extends StatelessWidget{
   final TermsAndConditionsProvider privacyPolicyProvider = TermsAndConditionsProvider();

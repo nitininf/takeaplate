@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../UTILS/app_color.dart';
-import '../UTILS/fontfaimlly_string.dart';
+import '../UTILS/fontfamily_string.dart';
 class CommonButton extends StatelessWidget {
   const CommonButton(
       {super.key,

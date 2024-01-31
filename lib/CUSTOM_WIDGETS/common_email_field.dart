@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../UTILS/app_color.dart';
-import '../UTILS/fontfaimlly_string.dart';
+import '../UTILS/fontfamily_string.dart';
 import '../UTILS/validation.dart';
 
 class CommonEmailField extends StatelessWidget {

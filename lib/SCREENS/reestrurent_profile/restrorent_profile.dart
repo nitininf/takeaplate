@@ -14,7 +14,7 @@ import '../../Response_Model/RestaurantsListResponse.dart';
 import '../../Response_Model/RestaurantDealResponse.dart';
 import '../../UTILS/app_color.dart';
 import '../../UTILS/app_images.dart';
-import '../../UTILS/fontfaimlly_string.dart';
+import '../../UTILS/fontfamily_string.dart';
 
 class RestaurantsProfileScreen extends StatefulWidget {
   RestaurantsProfileScreen({super.key, required this.context});

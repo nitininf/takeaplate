@@ -7,7 +7,7 @@ import 'package:takeaplate/CUSTOM_WIDGETS/common_button.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/common_edit_text.dart';
 import 'package:takeaplate/SCREENS/login_flow/CreateOrLoginScreen.dart';
 import 'package:takeaplate/UTILS/app_color.dart';
-import 'package:takeaplate/UTILS/fontfaimlly_string.dart';
+import 'package:takeaplate/UTILS/fontfamily_string.dart';
 import 'package:takeaplate/main.dart';
 
 import '../../CUSTOM_WIDGETS/custom_app_bar.dart';

@@ -11,7 +11,7 @@ import '../main.dart';
 import 'app_color.dart';
 import 'app_images.dart';
 import 'app_strings.dart';
-import 'fontfaimlly_string.dart';
+import 'fontfamily_string.dart';
 
 class DialogHelper {
   static double screenHeight =

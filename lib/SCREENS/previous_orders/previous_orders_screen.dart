@@ -14,7 +14,7 @@ import '../../Response_Model/FavDeleteResponse.dart';
 import '../../Response_Model/RestaurantDealResponse.dart';
 import '../../UTILS/app_color.dart';
 import '../../UTILS/app_images.dart';
-import '../../UTILS/fontfaimlly_string.dart';
+import '../../UTILS/fontfamily_string.dart';
 import '../../main.dart';
 
 class PreviousOrderScreen extends StatefulWidget {

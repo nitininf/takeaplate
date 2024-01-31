@@ -18,7 +18,7 @@ import '../../MULTI-PROVIDER/SharedPrefsUtils.dart';
 import '../../MULTI-PROVIDER/selectImageProvider.dart';
 import '../../UTILS/app_color.dart';
 import '../../UTILS/app_strings.dart';
-import '../../UTILS/fontfaimlly_string.dart';
+import '../../UTILS/fontfamily_string.dart';
 import '../../UTILS/request_string.dart';
 import '../../UTILS/utils.dart';
 

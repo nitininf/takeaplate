@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/custom_app_bar.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/custom_text_style.dart';
 import 'package:takeaplate/UTILS/app_color.dart';
-import 'package:takeaplate/UTILS/fontfaimlly_string.dart';
+import 'package:takeaplate/UTILS/fontfamily_string.dart';
 
 class YourNotificationScreen extends StatelessWidget{
   @override

@@ -9,7 +9,7 @@ import 'package:takeaplate/SCREENS/home_screens/search_screen.dart';
 import 'package:takeaplate/SCREENS/home_screens/your_cart/yourcart_screen.dart';
 import 'package:takeaplate/UTILS/app_color.dart';
 import 'package:takeaplate/UTILS/app_images.dart';
-import 'package:takeaplate/UTILS/fontfaimlly_string.dart';
+import 'package:takeaplate/UTILS/fontfamily_string.dart';
 
 import '../../CUSTOM_WIDGETS/custom_text_style.dart';
 import '../../MULTI-PROVIDER/common_counter.dart';

@@ -4,7 +4,7 @@ import 'package:takeaplate/CUSTOM_WIDGETS/custom_text_style.dart';
 import 'package:takeaplate/UTILS/app_color.dart';
 import 'package:takeaplate/UTILS/app_images.dart';
 import 'package:takeaplate/UTILS/app_strings.dart';
-import 'package:takeaplate/UTILS/fontfaimlly_string.dart';
+import 'package:takeaplate/UTILS/fontfamily_string.dart';
 
 class PassWordSentScreen extends StatelessWidget {
   const PassWordSentScreen({super.key});

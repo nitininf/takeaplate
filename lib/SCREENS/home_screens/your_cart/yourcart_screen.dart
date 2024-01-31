@@ -11,7 +11,7 @@ import '../../../MULTI-PROVIDER/CartOperationProvider.dart';
 import '../../../Response_Model/AddToCartResponse.dart';
 import '../../../Response_Model/CartListingResponse.dart';
 import '../../../UTILS/app_images.dart';
-import '../../../UTILS/fontfaimlly_string.dart';
+import '../../../UTILS/fontfamily_string.dart';
 
 class YourCardScreen extends StatefulWidget {
   const YourCardScreen({super.key});
@@ -207,7 +207,21 @@ class _YourCardScreenState extends State<YourCardScreen> {
   }
 
   Widget getVerticalItemList() {
+
+    if (cartItemsData.isEmpty) {
+      return Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: const CustomText(
+          text: 'No Item Found',
+          maxLin: 1,
+          color: btntxtColor,
+          fontfamilly: montBold,
+          sizeOfFont: 15,
+        ),
+      );
+    }
     return ListView.builder(
+
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       itemCount: cartItemsData.length,
