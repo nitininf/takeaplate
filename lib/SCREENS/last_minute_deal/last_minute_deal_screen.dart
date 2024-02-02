@@ -41,6 +41,9 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
   bool hasMoreData = true;
   bool isRefresh = false;
 
+  int dataId = 0;
+  int selectedCardIndex = -1;
+
   bool isFilterLoading = false;
   bool hasFilterMoreData = true;
   List<FilterData> filterList = [];
@@ -53,7 +56,9 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
   void initState() {
     super.initState();
     _scrollController.addListener(_scrollListener);
-    _loadData();
+    _loadData(dataId);
+    _loadFilterData();
+
   }
 
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
@@ -63,61 +68,59 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
     if (_scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
       // Reached the end of the list, load more data
-      _loadData();
-      _loadFilterData();
+      _loadData(dataId);
     }
   }
 
-  void _loadData() async {
-
-
-    Future.delayed(Duration.zero,() async {
-
-      if (!isLoading && hasMoreData) {
-        try {
-          setState(() {
-            isLoading = true;
-          });
-
-          final nextPageData = await restaurantsProvider.getLastMinuteDealsList(
-            page: currentPage,
-          );
-
-          if (nextPageData.data != null && nextPageData.data!.isNotEmpty) {
+  void _loadData(int dataId) async {
+    Future.delayed(
+      Duration.zero,
+      () async {
+        if (!isLoading && hasMoreData) {
+          try {
             setState(() {
-              if (isRefresh == true) {
-                dealListData.clear();
-                dealListData.addAll(nextPageData.data!);
+              isLoading = true;
+            });
 
-                currentPage++;
-                isRefresh = false;
+            final nextPageData = await restaurantsProvider
+                .getLastMinuteDealsList(page: currentPage, dataId);
 
-              } else {
-                dealListData.addAll(nextPageData.data!);
-                currentPage++;
+            if (nextPageData.data != null && nextPageData.data!.isNotEmpty) {
+              setState(() {
+                if (mounted) {
+                  if (isRefresh == true) {
+                    dealListData.clear();
+                    dealListData.addAll(nextPageData.data!);
+
+                    currentPage++;
+                    isRefresh = false;
+                  } else {
+                    dealListData.addAll(nextPageData.data!);
+                    currentPage++;
+                  }
+                }
+              });
+            } else {
+              // No more data available
+              setState(() {
+                if (mounted) {
+                  hasMoreData = false;
+                }
+              });
+            }
+          } catch (error) {
+            print('Error loading more data: $error');
+          } finally {
+            setState(() {
+              if (mounted) {
+                isLoading = false;
               }
             });
-          } else {
-            // No more data available
-            setState(() {
-              hasMoreData = false;
-            });
           }
-        } catch (error) {
-          print('Error loading more data: $error');
-        } finally {
-          setState(() {
-            isLoading = false;
-          });
         }
-      }
-
-
-    },);
-
-
+      },
+    );
   }
-
 
   void _loadFilterData() async {
     if (!isFilterLoading && hasFilterMoreData) {
@@ -157,7 +160,6 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -173,7 +175,8 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
               const SizedBox(height: 20),
               Consumer<SearchProvider>(
                 builder: (context, searchProvider, child) {
-                  return  TextFormField(
+                  return
+                    TextFormField(
                     keyboardType: TextInputType.text,
                     onChanged: (query) async {
                       if (query.length >= 3) {
@@ -185,21 +188,20 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
                           var formData = {
                             "search_query": query,
                             'search_type': 'Last Minute Deal',
-
                           };
 
-                          var data = await Provider.of<SearchProvider>(context, listen: false)
+                          var data = await Provider.of<SearchProvider>(context,
+                                  listen: false)
                               .getSearchResult(formData);
 
-                          if (data.status == true && data.message == "Search successful") {
+                          if (data.status == true &&
+                              data.message == "Search successful") {
                             // Login successful
 
                             // Print data to console
                             setState(() {
                               dealListData = data.lastMinuteDeals!;
-
                             });
-
 
                             // Navigate to the next screen or perform other actions after login
                           } else {
@@ -207,24 +209,24 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
                             print("Something went wrong: ${data.message}");
 
                             final snackBar = SnackBar(
-                              content:  Text('${data.message}'),
-
+                              content: Text('${data.message}'),
                             );
 
                             // Show the SnackBar
-                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                            ScaffoldMessenger.of(context)
+                                .showSnackBar(snackBar);
 
                             // Automatically hide the SnackBar after 1 second
-                            Future.delayed(const Duration(milliseconds: 1000), () {
-                              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                            Future.delayed(const Duration(milliseconds: 1000),
+                                () {
+                              ScaffoldMessenger.of(context)
+                                  .hideCurrentSnackBar();
                             });
-
                           }
                         } catch (e) {
                           // Display error message
                           print("Error: $e");
                         }
-
 
                         // For simplicity, I'll just print the search query for now
                         print("Search query: $query");
@@ -263,11 +265,12 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
                         borderSide: BorderSide.none,
                       ),
                       suffixIcon: const Padding(
-                        padding: EdgeInsets.only(right: 20.0, top: 10, bottom: 10),
+                        padding:
+                            EdgeInsets.only(right: 20.0, top: 10, bottom: 10),
                         child: Icon(Icons.search, color: hintColor, size: 25),
                       ),
-
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 30, vertical: 13),
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 30, vertical: 13),
                       hintStyle: const TextStyle(
                         color: hintColor,
                         fontFamily: montBook,
@@ -276,13 +279,8 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
                       hintText: "Search",
                     ),
                   );
-
-
-
-
                 },
               ),
-
               const Padding(
                 padding: EdgeInsets.only(left: 13.0, top: 20),
                 child: CustomText(
@@ -302,7 +300,8 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
 
   Widget buildHorizontalList(List<FilterData> filterList) {
     if (filterList.length <= 1) {
-      return SizedBox.shrink(); // Return an empty widget if there's only 1 or no items
+      return const SizedBox
+          .shrink(); // Return an empty widget if there's only 1 or no items
     }
 
     return SingleChildScrollView(
@@ -311,13 +310,41 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
         mainAxisSize: MainAxisSize.min,
         children: List.generate(
           filterList.length - 1,
-              (index) => GestureDetector(
-            onTap: () {},
+          (index) => GestureDetector(
+            onTap: () async {
+              currentPage = 1;
+
+              setState(() {
+                selectedCardIndex = index;
+              });
+              print('filterId - ${filterList[index + 1].id!}');
+
+              dataId = filterList[index + 1].id!;
+
+              final nextPageData = await restaurantsProvider
+                  .getCollectTomorrowList(page: currentPage, dataId);
+
+              if (nextPageData.data != null && nextPageData.data!.isNotEmpty) {
+                setState(() {
+                  if (mounted) {
+                    dealListData = nextPageData.data!;
+                    currentPage++;
+                  }
+                });
+              } else {
+                setState(() {
+                  if (mounted) {
+                    hasMoreData = false;
+                    dealListData.clear();
+                  }
+                });
+              }
+            },
             child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 3, vertical: 15),
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+              margin: const EdgeInsets.symmetric(horizontal: 3, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 10),
               decoration: BoxDecoration(
-                color: editbgColor,
+                color: selectedCardIndex == index ? Colors.grey : editbgColor,
                 borderRadius: BorderRadius.circular(30),
                 border: Border.all(width: 1, color: Colors.white),
               ),
@@ -333,7 +360,6 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
       ),
     );
   }
-
 
   Widget buildVerticalCards() {
     return Expanded(
@@ -386,8 +412,7 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
       // hasMoreData = true; // Reset the flag for more data.
       // restaurantData=refreshedData.data!;
 
-      _loadData();
-
+      _loadData(dataId);
     });
   }
 
@@ -575,7 +600,8 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
                                   .showSnackBar(snackBar);
 
                               // Automatically hide the SnackBar after 1 second
-                              Future.delayed(const Duration(milliseconds: 1000), () {
+                              Future.delayed(const Duration(milliseconds: 1000),
+                                  () {
                                 ScaffoldMessenger.of(context)
                                     .hideCurrentSnackBar();
                               });
@@ -584,7 +610,8 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
                                 try {
                                   final refreshedData =
                                       await restaurantsProvider
-                                          .getLastMinuteDealsList(page: 1);
+                                          .getLastMinuteDealsList(
+                                              page: 1, dataId);
 
                                   if (refreshedData.data != null &&
                                       refreshedData.data!.isNotEmpty) {
@@ -618,7 +645,8 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
                                   .showSnackBar(snackBar);
 
                               // Automatically hide the SnackBar after 1 second
-                              Future.delayed(const Duration(milliseconds: 1000), () {
+                              Future.delayed(const Duration(milliseconds: 1000),
+                                  () {
                                 ScaffoldMessenger.of(context)
                                     .hideCurrentSnackBar();
                               });
@@ -646,7 +674,8 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
                                   .showSnackBar(snackBar);
 
                               // Automatically hide the SnackBar after 1 second
-                              Future.delayed(const Duration(milliseconds: 1000), () {
+                              Future.delayed(const Duration(milliseconds: 1000),
+                                  () {
                                 ScaffoldMessenger.of(context)
                                     .hideCurrentSnackBar();
                               });
@@ -655,7 +684,8 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
                                 try {
                                   final refreshedData =
                                       await restaurantsProvider
-                                          .getLastMinuteDealsList(page: 1);
+                                          .getLastMinuteDealsList(
+                                              page: 1, dataId);
 
                                   if (refreshedData.data != null &&
                                       refreshedData.data!.isNotEmpty) {
@@ -687,7 +717,8 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
                                   .showSnackBar(snackBar);
 
                               // Automatically hide the SnackBar after 1 second
-                              Future.delayed(const Duration(milliseconds: 1000), () {
+                              Future.delayed(const Duration(milliseconds: 1000),
+                                  () {
                                 ScaffoldMessenger.of(context)
                                     .hideCurrentSnackBar();
                               });

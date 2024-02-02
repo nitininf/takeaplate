@@ -360,7 +360,7 @@ class _YourCardScreenState extends State<YourCardScreen> {
                         width: 8,
                       ),
                       CustomText(
-                        text: itemData.quantity.toString() ?? '',
+                        text: itemData.quantity.toString(),
                         sizeOfFont: 12,
                         color: hintColor,
                       ),
@@ -431,7 +431,7 @@ class _YourCardScreenState extends State<YourCardScreen> {
               ),
               CustomText(
                 // Calculate the total price based on the count and item price
-                text: "\$${itemData.subtotal.toString() ?? 0}",
+                text: "\$${itemData.subtotal.toString()}",
                 sizeOfFont: 15,
                 color: offerColor,
                 fontfamilly: montHeavy,

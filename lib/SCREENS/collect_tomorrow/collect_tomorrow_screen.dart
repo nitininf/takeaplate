@@ -28,6 +28,8 @@ class CollectTomorrowScreen extends StatefulWidget {
 class _CollectTomorrowScreenState extends State<CollectTomorrowScreen> {
 
   final List<String> items = ['Healthy', 'Sushi', 'Desserts', 'Sugar', 'Sweets'];
+
+
   final RestaurantsListProvider restaurantsProvider = RestaurantsListProvider();
   final HomeDataListProvider homeProvider = HomeDataListProvider();
 
@@ -36,9 +38,14 @@ class _CollectTomorrowScreenState extends State<CollectTomorrowScreen> {
   bool hasMoreData = true;
   bool isRefresh = false;
 
+
+
   bool isFilterLoading = false;
   bool hasFilterMoreData = true;
   List<FilterData> filterList = [];
+  int dataId = 0;
+  int selectedCardIndex = -1;
+
 
 
   List<DealData> collectTomorrowData = [];
@@ -49,7 +56,7 @@ class _CollectTomorrowScreenState extends State<CollectTomorrowScreen> {
   void initState() {
     super.initState();
     _scrollController.addListener(_scrollListener);
-    _loadData();
+    _loadData(dataId);
     _loadFilterData();
 
   }
@@ -60,11 +67,11 @@ class _CollectTomorrowScreenState extends State<CollectTomorrowScreen> {
   void _scrollListener() {
     if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
       // Reached the end of the list, load more data
-      _loadData();
+      _loadData(dataId);
     }
   }
 
-  void _loadData() async {
+  void _loadData(int dataId) async {
 
     Future.delayed(Duration.zero,() async {
 
@@ -76,35 +83,39 @@ class _CollectTomorrowScreenState extends State<CollectTomorrowScreen> {
           });
 
           final nextPageData = await restaurantsProvider.getCollectTomorrowList(
-            page: currentPage,
+            page: currentPage,dataId
           );
 
           if (nextPageData.data != null && nextPageData.data!.isNotEmpty) {
             setState(() {
-              if(isRefresh == true){
+              if (mounted) {
+                if (isRefresh == true) {
+                  collectTomorrowData.clear();
+                  collectTomorrowData.addAll(nextPageData.data!);
 
-                collectTomorrowData.clear();
-                collectTomorrowData.addAll(nextPageData.data!);
-
-                currentPage++;
-                isRefresh = false;
-
-              }else{
-                collectTomorrowData.addAll(nextPageData.data!);
-                currentPage++;
+                  currentPage++;
+                  isRefresh = false;
+                } else {
+                  collectTomorrowData.addAll(nextPageData.data!);
+                  currentPage++;
+                }
               }
             });
+
           } else {
-            // No more data available
             setState(() {
-              hasMoreData = false;
+              if (mounted) {
+                hasMoreData = false;
+              }
             });
           }
         } catch (error) {
           print('Error loading more data: $error');
         } finally {
           setState(() {
-            isLoading = false;
+            if (mounted) {
+              isLoading = false;
+            }
           });
         }
       }
@@ -168,7 +179,8 @@ class _CollectTomorrowScreenState extends State<CollectTomorrowScreen> {
               const SizedBox(height: 20),
               Consumer<SearchProvider>(
                 builder: (context, searchProvider, child) {
-                  return  TextFormField(
+                  return
+                    TextFormField(
                     keyboardType: TextInputType.text,
                     onChanged: (query) async {
                       if (query.length >= 3) {
@@ -271,10 +283,6 @@ class _CollectTomorrowScreenState extends State<CollectTomorrowScreen> {
                       hintText: "Search",
                     ),
                   );
-
-
-
-
                 },
               ),
 
@@ -292,9 +300,11 @@ class _CollectTomorrowScreenState extends State<CollectTomorrowScreen> {
 
 }
 
+
+
   Widget buildHorizontalList(List<FilterData> filterList) {
     if (filterList.length <= 1) {
-      return SizedBox.shrink(); // Return an empty widget if there's only 1 or no items
+      return const SizedBox.shrink(); // Return an empty widget if there's only 1 or no items
     }
 
     return SingleChildScrollView(
@@ -304,12 +314,45 @@ class _CollectTomorrowScreenState extends State<CollectTomorrowScreen> {
         children: List.generate(
           filterList.length - 1,
               (index) => GestureDetector(
-            onTap: () {},
+            onTap: () async {
+
+              currentPage = 1;
+
+              setState(() {
+                selectedCardIndex = index;
+              });
+              print('filterId - ${filterList[index + 1].id!}');
+
+              dataId = filterList[index + 1].id!;
+
+              final nextPageData = await restaurantsProvider.getCollectTomorrowList(
+                  page: currentPage,dataId
+              );
+
+              if (nextPageData.data != null && nextPageData.data!.isNotEmpty) {
+                setState(() {
+                  if (mounted) {
+
+                      collectTomorrowData = nextPageData.data!;
+                      currentPage++;
+
+                  }
+                });
+
+              } else {
+                setState(() {
+                  if (mounted) {
+                    hasMoreData = false;
+                    collectTomorrowData.clear();
+                  }
+                });
+              }
+            },
             child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 3, vertical: 15),
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+              margin: const EdgeInsets.symmetric(horizontal: 3, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 10),
               decoration: BoxDecoration(
-                color: editbgColor,
+                color: selectedCardIndex == index ? Colors.grey : editbgColor,
                 borderRadius: BorderRadius.circular(30),
                 border: Border.all(width: 1, color: Colors.white),
               ),
@@ -324,10 +367,25 @@ class _CollectTomorrowScreenState extends State<CollectTomorrowScreen> {
         ),
       ),
     );
+
   }
 
 
   Widget buildVerticalCards() {
+
+    if (collectTomorrowData.isEmpty) {
+      return const Padding(
+        padding: EdgeInsets.all(20.0),
+        child: CustomText(
+          text: 'No Item Found',
+          maxLin: 1,
+          color: btntxtColor,
+          fontfamilly: montBold,
+          sizeOfFont: 15,
+        ),
+      );
+    }
+
     return Expanded(
       child: RefreshIndicator(
         key: _refreshIndicatorKey,
@@ -369,6 +427,7 @@ class _CollectTomorrowScreenState extends State<CollectTomorrowScreen> {
   }
 
   Future<void> _refreshData() async {
+
     setState(() {
       isRefresh = true;
 
@@ -376,7 +435,7 @@ class _CollectTomorrowScreenState extends State<CollectTomorrowScreen> {
       // hasMoreData = true; // Reset the flag for more data.
       // restaurantData=refreshedData.data!;
 
-      _loadData();
+      _loadData(dataId);
 
     });
   }
@@ -568,7 +627,7 @@ class _CollectTomorrowScreenState extends State<CollectTomorrowScreen> {
 
                               setState(() async {
                                 try {
-                                  final refreshedData = await restaurantsProvider.getCollectTomorrowList( page: 1);
+                                  final refreshedData = await restaurantsProvider.getCollectTomorrowList( page: 1,dataId);
 
                                   if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
                                     setState(() {
@@ -627,7 +686,7 @@ class _CollectTomorrowScreenState extends State<CollectTomorrowScreen> {
                               setState(() async {
 
                                 try {
-                                  final refreshedData = await restaurantsProvider.getCollectTomorrowList( page: 1);
+                                  final refreshedData = await restaurantsProvider.getCollectTomorrowList( page: 1,dataId);
 
                                   if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
                                     setState(() {

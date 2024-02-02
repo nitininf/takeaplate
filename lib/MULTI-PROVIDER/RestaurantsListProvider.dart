@@ -10,11 +10,11 @@ class RestaurantsListProvider extends ChangeNotifier {
   final Network _network = Network();
 
 
-  Future<RestaurantsListResponse> getRestaurantsList({int page = 1}) async {
+  Future<RestaurantsListResponse> getRestaurantsList( int filterId, {int page = 1}) async {
     // Make network request with pagination parameters
     // You might need to update your API endpoint to support pagination
     final response = await _network.getRequest(
-      endPoint: '/store-list/$page',
+      endPoint: '/store-list/$filterId/$page',
     );
 
     if (response != null && response.data is Map<String, dynamic>) {
@@ -55,11 +55,11 @@ class RestaurantsListProvider extends ChangeNotifier {
     }
   }
 
-  Future<RestaurantsListResponse> getClosestRestaurantsList({int page = 1}) async {
+  Future<RestaurantsListResponse> getClosestRestaurantsList( int filterId, {int page = 1}) async {
 
     try {
       final response = await _network.getRequest(
-        endPoint: '/closed-resturent/$page', // Replace with your actual API endpoint
+        endPoint: '/closed-resturent/$filterId/$page', // Replace with your actual API endpoint
 
       );
 
@@ -107,11 +107,11 @@ class RestaurantsListProvider extends ChangeNotifier {
     }
   }
 
-  Future<RestaurentDealResponse> getLastMinuteDealsList({int page = 1}) async {
+  Future<RestaurentDealResponse> getLastMinuteDealsList( int filterId, {int page = 1}) async {
 
     try {
       final response = await _network.getRequest(
-        endPoint: '/last-minute-deal/$page', // Replace with your actual API endpoint
+        endPoint: '/last-minute-deal/$filterId/$page', // Replace with your actual API endpoint
 
       );
 
@@ -132,11 +132,11 @@ class RestaurantsListProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
-  Future<RestaurentDealResponse> getCollectTomorrowList({int page = 1}) async {
+  Future<RestaurentDealResponse> getCollectTomorrowList( int filterId, {int page = 1}) async {
 
     try {
       final response = await _network.getRequest(
-        endPoint: '/tomorrow-deal-data/$page', // Replace with your actual API endpoint
+        endPoint: '/tomorrow-deal-data/$filterId/$page', // Replace with your actual API endpoint
 
       );
 

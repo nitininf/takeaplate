@@ -29,6 +29,7 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
     'Sweets'
   ];
   final HomeDataListProvider homeProvider = HomeDataListProvider();
+  int selectedCardIndex = -1;
 
   final RestaurantsListProvider restaurantsProvider = RestaurantsListProvider();
   bool isFavorite = false;
@@ -50,7 +51,7 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
   void initState() {
     super.initState();
     _scrollController.addListener(_scrollListener);
-    _loadData();
+    _loadData(dataId);
     _loadFilterData();
   }
 
@@ -61,11 +62,11 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
     if (_scrollController.position.pixels ==
         _scrollController.position.maxScrollExtent) {
       // Reached the end of the list, load more data
-      _loadData();
+      _loadData(dataId);
     }
   }
 
-  void _loadData() async {
+  void _loadData(int dataId) async {
 
 
     Future.delayed(Duration.zero,() async {
@@ -77,7 +78,7 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
           });
 
           final nextPageData = await restaurantsProvider.getRestaurantsList(
-            page: currentPage,
+            page: currentPage,dataId
           );
 
           if (nextPageData.data != null && nextPageData.data!.isNotEmpty) {
@@ -104,6 +105,8 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
             });
           }
         } catch (error) {
+
+          print(error);
           //
         } finally {
           setState(() {
@@ -307,12 +310,20 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
         children: List.generate(
           filterList.length - 1,
               (index) => GestureDetector(
-            onTap: () {},
+            onTap: () async {
+              setState(() {
+                selectedCardIndex = index;
+              });
+              print('filterId - ${filterList[index + 1].id!}');
+
+              dataId = filterList[index + 1].id!;
+              await _refreshData();
+            },
             child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 3, vertical: 15),
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+              margin: const EdgeInsets.symmetric(horizontal: 3, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 10),
               decoration: BoxDecoration(
-                color: editbgColor,
+                color: selectedCardIndex == index ? Colors.grey : editbgColor,
                 borderRadius: BorderRadius.circular(30),
                 border: Border.all(width: 1, color: Colors.white),
               ),
@@ -327,6 +338,7 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
         ),
       ),
     );
+
   }
 
 
@@ -389,7 +401,7 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
           // hasMoreData = true; // Reset the flag for more data.
           // restaurantData=refreshedData.data!;
 
-          _loadData();
+          _loadData(dataId);
 
         });
 
@@ -548,7 +560,7 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
                             });
                             try {
                               final refreshedData = await restaurantsProvider
-                                  .getRestaurantsList(page: 1);
+                                  .getRestaurantsList(page: 1,dataId);
 
                               if (refreshedData.data != null &&
                                   refreshedData.data!.isNotEmpty) {
@@ -616,7 +628,7 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
 
                             try {
                               final refreshedData = await restaurantsProvider
-                                  .getRestaurantsList(page: 1);
+                                  .getRestaurantsList(page: 1,dataId);
 
                               if (refreshedData.data != null &&
                                   refreshedData.data!.isNotEmpty) {

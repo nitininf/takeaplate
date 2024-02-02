@@ -71,6 +71,12 @@ class RequestString{
   static const String CVV = "cvv";
   static const String CARD_TYPE = "card_type";
 
+  static const String DEAL = "deal";
+  static const String MEAL = "meal";
+  static const String STORE = "store";
+
+
+
 
 
 

@@ -193,9 +193,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   sizeOfFont: 20,
                 ),
               ),
-              Expanded(
-                child: getSearchList(),
-              ),
+              getSearchList(),
             ],
           ),
         ));
@@ -235,13 +233,11 @@ class _SearchScreenState extends State<SearchScreen> {
             if (index < searchData.length) {
               // Display restaurant card
               return GestureDetector(
-                // onTap: () {
-                //   Navigator.pushNamed(
-                //     navigatorKey.currentContext!,
-                //     '/RestaurantsProfileScreen',
-                //     arguments: searchData[index],
-                //   );
-                // },
+                onTap: () {
+                  Navigator.pushReplacementNamed(
+                      arguments:searchData[index].searchTerm,
+                      context, '/SearchResultScreen');
+                },
                 child: getView(index, searchData[index]),
               );
             } else {

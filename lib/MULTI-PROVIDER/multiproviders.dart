@@ -47,6 +47,7 @@ import 'FaqProvider.dart';
 import 'FavCardsProvider.dart';
 import 'FavoriteOperationProvider.dart';
 import 'HomeDataListProvider.dart';
+import 'NotificationProvider.dart';
 import 'OrderAndPayProvider.dart';
 import 'OrderProvider.dart';
 import 'PaymentDetailsProvider.dart';
@@ -83,6 +84,7 @@ MultiProvider getProviders() {
       ChangeNotifierProvider(create: (_) => PaymentDetailsProvider()),
       ChangeNotifierProvider(create: (_) => OrderProvider()),
       ChangeNotifierProvider(create: (_) => SearchProvider()),
+      ChangeNotifierProvider(create: (_) => NotificationProvider()),
 
     ],
     child:

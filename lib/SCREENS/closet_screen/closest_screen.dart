@@ -1,5 +1,4 @@
 import 'package:custom_rating_bar/custom_rating_bar.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/custom_app_bar.dart';
@@ -35,6 +34,7 @@ class _ClosestScreenState extends State<ClosestScreen> {
   ];
   final RestaurantsListProvider restaurantsProvider = RestaurantsListProvider();
   final HomeDataListProvider homeProvider = HomeDataListProvider();
+  int selectedCardIndex = -1;
 
   int currentPage = 1;
   bool isLoading = false;
@@ -44,14 +44,15 @@ class _ClosestScreenState extends State<ClosestScreen> {
   bool hasFilterMoreData = true;
   bool isRefresh=false;
   List<FilterData> filterList = [];
+  int dataId = 0;
 
-  ScrollController _scrollController = ScrollController();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
     _scrollController.addListener(_scrollListener);
-    _loadData();
+    _loadData(dataId);
     _loadFilterData();
   }
 
@@ -63,11 +64,11 @@ class _ClosestScreenState extends State<ClosestScreen> {
         _scrollController.position.maxScrollExtent) {
       // Reached the end of the list, load more data
 
-      _loadData();
+      _loadData(dataId);
     }
   }
 
-  void _loadData() async {
+  void _loadData(int dataId) async {
 
 
     Future.delayed(Duration.zero,() async {
@@ -81,36 +82,41 @@ class _ClosestScreenState extends State<ClosestScreen> {
 
           final nextPageData =
           await restaurantsProvider.getClosestRestaurantsList(
-            page: currentPage,
+            page: currentPage,dataId
           );
 
           if (nextPageData.data != null && nextPageData.data!.isNotEmpty) {
             setState(() {
-
-              if(isRefresh == true){
-                restaurantData.clear();
-                restaurantData.addAll(nextPageData.data!);
-                currentPage++;
-                isRefresh = false;
-
-              }else{
-                restaurantData.addAll(nextPageData.data!);
-                currentPage++;
+              if (mounted) {
+                if (isRefresh == true) {
+                  restaurantData.clear();
+                  restaurantData.addAll(nextPageData.data!);
+                  currentPage++;
+                  isRefresh = false;
+                } else {
+                  restaurantData.addAll(nextPageData.data!);
+                  currentPage++;
+                }
               }
-
             });
           } else {
             // No more data available
             setState(() {
-              hasMoreData = false;
+
+              if (mounted) {
+                hasMoreData = false;
+              }
             });
           }
         } catch (error) {
-          print('Error loading more data: $error');
+          //
         } finally {
           setState(() {
-            isLoading = false;
-          });
+            if (mounted) {
+              isLoading = false;
+            }
+
+            });
         }
       }
 
@@ -211,7 +217,6 @@ class _ClosestScreenState extends State<ClosestScreen> {
                               // Navigate to the next screen or perform other actions after login
                             } else {
                               // Login failed
-                              print("Something went wrong: ${data.message}");
 
                               final snackBar = SnackBar(
                                 content:  Text('${data.message}'),
@@ -229,12 +234,10 @@ class _ClosestScreenState extends State<ClosestScreen> {
                             }
                           } catch (e) {
                             // Display error message
-                            print("Error: $e");
                           }
 
 
                         // For simplicity, I'll just print the search query for now
-                        print("Search query: $query");
                       }
                       // Update the search query in the provider
                       // searchProvider.setSearchQuery(query);
@@ -308,7 +311,7 @@ class _ClosestScreenState extends State<ClosestScreen> {
 
   Widget buildHorizontalList(List<FilterData> filterList) {
     if (filterList.length <= 1) {
-      return SizedBox.shrink(); // Return an empty widget if there's only 1 or no items
+      return const SizedBox.shrink(); // Return an empty widget if there's only 1 or no items
     }
 
     return SingleChildScrollView(
@@ -318,12 +321,45 @@ class _ClosestScreenState extends State<ClosestScreen> {
         children: List.generate(
           filterList.length - 1,
               (index) => GestureDetector(
-            onTap: () {},
+            onTap: () async {
+
+              currentPage = 1;
+
+              setState(() {
+                selectedCardIndex = index;
+              });
+              print('filterId - ${filterList[index + 1].id!}');
+
+              dataId = filterList[index + 1].id!;
+
+              final nextPageData = await restaurantsProvider.getClosestRestaurantsList(
+                  page: currentPage,dataId
+              );
+
+              if (nextPageData.data != null && nextPageData.data!.isNotEmpty) {
+                setState(() {
+                  if (mounted) {
+
+                    restaurantData = nextPageData.data!;
+                    currentPage++;
+
+                  }
+                });
+
+              } else {
+                setState(() {
+                  if (mounted) {
+                    hasMoreData = false;
+                    restaurantData.clear();
+                  }
+                });
+              }
+            },
             child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 3, vertical: 15),
-              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+              margin: const EdgeInsets.symmetric(horizontal: 3, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 10),
               decoration: BoxDecoration(
-                color: editbgColor,
+                color: selectedCardIndex == index ? Colors.grey : editbgColor,
                 borderRadius: BorderRadius.circular(30),
                 border: Border.all(width: 1, color: Colors.white),
               ),
@@ -338,7 +374,9 @@ class _ClosestScreenState extends State<ClosestScreen> {
         ),
       ),
     );
+
   }
+
 
 
   Widget buildVerticalCards() {
@@ -391,7 +429,7 @@ class _ClosestScreenState extends State<ClosestScreen> {
       // hasMoreData = true; // Reset the flag for more data.
       // restaurantData=refreshedData.data!;
 
-      _loadData();
+      _loadData(dataId);
 
     });
   }
@@ -504,7 +542,6 @@ class _ClosestScreenState extends State<ClosestScreen> {
                   onTap: () async {
                     bool? ratingStatus = item.favourite;
 
-                    print('ratingStatus:$ratingStatus');
 
                     try {
                       if (ratingStatus == false) {
@@ -523,7 +560,6 @@ class _ClosestScreenState extends State<ClosestScreen> {
                             favData.message ==
                                 "Store Added in favourite successfully.") {
                           // Print data to console
-                          print(favData);
 
                           final snackBar = SnackBar(
                             content: Text('${favData.message}'),
@@ -542,7 +578,7 @@ class _ClosestScreenState extends State<ClosestScreen> {
                           setState(() async {
                             try {
                               final refreshedData = await restaurantsProvider
-                                  .getClosestRestaurantsList(page: 1);
+                                  .getClosestRestaurantsList(page: 1,dataId);
 
                               if (refreshedData.data != null &&
                                   refreshedData.data!.isNotEmpty) {
@@ -556,12 +592,11 @@ class _ClosestScreenState extends State<ClosestScreen> {
                                 });
                               }
                             } catch (error) {
-                              print('Error refreshing data: $error');
+                              //
                             }
                           });
                         } else {
                           // API call failed
-                          print("Something went wrong: ${favData.message}");
 
                           final snackBar = SnackBar(
                             content: Text('${favData.message}'),
@@ -589,7 +624,6 @@ class _ClosestScreenState extends State<ClosestScreen> {
                             delData.message ==
                                 "Favourite Store deleted successfully") {
                           // Print data to console
-                          print(delData);
 
                           final snackBar = SnackBar(
                             content: Text('${delData.message}'),
@@ -608,7 +642,7 @@ class _ClosestScreenState extends State<ClosestScreen> {
                           setState(() async {
                             try {
                               final refreshedData = await restaurantsProvider
-                                  .getClosestRestaurantsList(page: 1);
+                                  .getClosestRestaurantsList(page: 1,dataId);
 
                               if (refreshedData.data != null &&
                                   refreshedData.data!.isNotEmpty) {
@@ -622,12 +656,11 @@ class _ClosestScreenState extends State<ClosestScreen> {
                                 });
                               }
                             } catch (error) {
-                              print('Error refreshing data: $error');
+                              //
                             }
                           });
                         } else {
                           // API call failed
-                          print("Something went wrong: ${delData.message}");
 
                           final snackBar = SnackBar(
                             content: Text('${delData.message}'),
@@ -646,7 +679,6 @@ class _ClosestScreenState extends State<ClosestScreen> {
                       }
                     } catch (e) {
                       // Display error message
-                      print("Error: $e");
                     }
                   },
                   child: Image.asset(

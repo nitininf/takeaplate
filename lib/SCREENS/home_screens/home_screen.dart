@@ -35,6 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
     'Sugar',
     'Sweets'
   ];
+
   final HomeDataListProvider homeProvider = HomeDataListProvider();
   bool isFavorite = false;
   int currentPage = 1;
@@ -65,7 +66,6 @@ class _HomeScreenState extends State<HomeScreen> {
     _loadFilterData();
     _getLocation();
   }
-
 
   Future<void> _getLocation() async {
     bool serviceEnabled;
@@ -100,17 +100,14 @@ class _HomeScreenState extends State<HomeScreen> {
         _longitude = '${position.longitude}';
       });
 
-
-      print('Coordinates : \n _________\n Latitude: $_latitude \n Longitude: $_longitude');
-
+      print(
+          'Coordinates : \n _________\n Latitude: $_latitude \n Longitude: $_longitude');
     } catch (e) {
       print(e);
     }
   }
 
-
   void _loadData(int dataId) async {
-
     Future.delayed(
       Duration.zero,
       () async {
@@ -307,7 +304,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Column(
                     children: [
                       buildHorizontalList(filterList),
-                      buildSection(closet, closestRestaurants.isNotEmpty?viewAll:""),
+                      buildSection(
+                          closet, closestRestaurants.isNotEmpty ? viewAll : ""),
                       buildClosestDealCards(),
                       const Padding(
                         padding: EdgeInsets.only(
@@ -317,7 +315,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           thickness: 0,
                         ),
                       ),
-                      buildSection(lastMinute, lastMinuteDeals.isNotEmpty?viewAll:""),
+                      buildSection(lastMinute,
+                          lastMinuteDeals.isNotEmpty ? viewAll : ""),
                       buildLastMinuteDealCards(),
                       const Padding(
                         padding: EdgeInsets.only(
@@ -327,7 +326,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           thickness: 0,
                         ),
                       ),
-                      buildSection(collectTomorrow, collectTomorrowList.isNotEmpty?viewAll:""),
+                      buildSection(collectTomorrow,
+                          collectTomorrowList.isNotEmpty ? viewAll : ""),
                       buildCollectTomorrowCards(),
                       const Padding(
                         padding: EdgeInsets.only(
@@ -337,7 +337,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           thickness: 0,
                         ),
                       ),
-                      buildSection(myFav, favoriteStoresAndDeals.isNotEmpty?viewAll:""),
+                      buildSection(myFav,
+                          favoriteStoresAndDeals.isNotEmpty ? viewAll : ""),
                       buildMyFavoriteCards(),
                     ],
                   ),
@@ -351,10 +352,8 @@ class _HomeScreenState extends State<HomeScreen> {
         visible: isLoading,
         child: ClipRRect(
           borderRadius: BorderRadius.circular(20),
-          child: Container(
-            child: const Center(
-              child: CircularProgressIndicator(),
-            ),
+          child: const Center(
+            child: CircularProgressIndicator(),
           ),
         ),
       ),
@@ -362,8 +361,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget buildHorizontalList(List<FilterData> filterList) {
-    if (filterList.length < 1) {
-      return const SizedBox.shrink(); // Return an empty widget if there's only 1 or no items
+    if (filterList.isEmpty) {
+      return const SizedBox
+          .shrink(); // Return an empty widget if there's only 1 or no items
     }
 
     return SingleChildScrollView(
@@ -372,7 +372,7 @@ class _HomeScreenState extends State<HomeScreen> {
         mainAxisSize: MainAxisSize.min,
         children: List.generate(
           filterList.length - 1,
-              (index) => GestureDetector(
+          (index) => GestureDetector(
             onTap: () async {
               setState(() {
                 selectedCardIndex = index;
@@ -403,7 +403,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-
   Widget buildSection(String title, String viewAllText) {
     return Padding(
       padding: const EdgeInsets.only(left: 20.0, right: 13.0, top: 8.0),
@@ -431,10 +430,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       navigatorKey.currentContext!, '/FavouriteScreen');
                 }
               },
-
-
-
-
               child: CustomText(
                 text: viewAllText,
                 color: viewallColor,
@@ -447,7 +442,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget buildClosestDealCards() {
-
     if (closestRestaurants.isEmpty) {
       return const Padding(
         padding: EdgeInsets.all(20.0),
@@ -483,8 +477,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget getClosestDealData(int index, StoreData storeData) {
-
-
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
@@ -715,8 +707,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget buildLastMinuteDealCards() {
-
-    if (lastMinuteDeals.length < 1) {
+    if (lastMinuteDeals.isEmpty) {
       return const Padding(
         padding: EdgeInsets.all(20.0),
         child: CustomText(
@@ -1034,8 +1025,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget buildCollectTomorrowCards() {
-
-    if (collectTomorrowList.length < 1) {
+    if (collectTomorrowList.isEmpty) {
       return const Padding(
         padding: EdgeInsets.all(20.0),
         child: CustomText(
@@ -1358,8 +1348,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget buildMyFavoriteCards() {
-
-    if (favoriteStoresAndDeals.length < 1) {
+    if (favoriteStoresAndDeals.isEmpty) {
       return const Padding(
         padding: EdgeInsets.all(20.0),
         child: CustomText(

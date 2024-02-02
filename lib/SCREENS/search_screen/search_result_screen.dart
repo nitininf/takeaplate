@@ -57,7 +57,6 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
 
     data = ModalRoute.of(widget.context)!.settings.arguments;
 
-    print('Search Query : $data');
     _loadData(data);
   }
 
@@ -90,7 +89,8 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
               page: currentRestaurantPage,
             );
 
-            if (searchQueryData.stores != null && searchQueryData.stores!.isNotEmpty) {
+            if (searchQueryData.stores != null &&
+                searchQueryData.stores!.isNotEmpty) {
               setState(() {
                 if (isRefresh == true) {
                   // restaurantData.clear();
@@ -108,7 +108,8 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
               });
             }
 
-            if (searchQueryData.deals != null && searchQueryData.deals!.isNotEmpty) {
+            if (searchQueryData.deals != null &&
+                searchQueryData.deals!.isNotEmpty) {
               setState(() {
                 if (isRefresh == true) {
                   // restaurantData.clear();
@@ -125,12 +126,7 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
                 }
               });
             }
-
-
-
-
           } catch (error) {
-            print('Error loading more data: $error');
           } finally {
             setState(() {
               isRestaurantLoading = false;
@@ -143,25 +139,35 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: bgColor,
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.only(bottom: 20, right: 20, left: 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const CustomAppBar(),
-              const Padding(
-                padding: EdgeInsets.only(left: 8.0, top: 26),
-                child: CustomText(
-                    text: "SEARCH RESULTS",
-                    color: btnbgColor,
-                    fontfamilly: montHeavy,
-                    sizeOfFont: 20),
-              ),
-              getView(),
-            ],
+    return WillPopScope(
+      onWillPop: () async {
+
+        Navigator.of(context)
+            .pushNamedAndRemoveUntil('/BaseHome', (Route route) => false);
+
+        // Allow the back button action
+        return true;
+      },
+      child: Scaffold(
+        backgroundColor: bgColor,
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 20, right: 20, left: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const CustomAppBar(),
+                const Padding(
+                  padding: EdgeInsets.only(left: 8.0, top: 26),
+                  child: CustomText(
+                      text: "SEARCH RESULTS",
+                      color: btnbgColor,
+                      fontfamilly: montHeavy,
+                      sizeOfFont: 20),
+                ),
+                getView(),
+              ],
+            ),
           ),
         ),
       ),
@@ -179,8 +185,8 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
             ),
             getCards(commonProvider),
             !commonProvider.isStore
-                ? buildSection("DEALS", "")
-                : buildSection("STORES", ""),
+                ? buildSection("AVAILABLE DEALS", "")
+                : buildSection("AVAILABLE RESTAURANTS", ""),
             // buildHorizontalList(items),
             buildVerticalCards(commonProvider)
           ],
@@ -221,95 +227,112 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
           height: 10,
         ),
         Row(
+
           children: [
             commonCounter.isStore
-                ? Container(
-                    margin:
-                        const EdgeInsets.symmetric(horizontal: 0, vertical: 3),
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                    decoration: BoxDecoration(
-                      color: btnbgColor.withOpacity(0.3),
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(width: 1, color: Colors.white),
+                ? Expanded(
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 0, vertical: 3),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 5),
+                      decoration: BoxDecoration(
+                        color: btnbgColor.withOpacity(0.3),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(width: 1, color: Colors.white),
+                      ),
+                      child: GestureDetector(
+                          onTap: () {
+                            commonCounter.getFavStore(false);
+                          },
+                          child: const Center(
+                            child: CustomText(
+                              text: "RESTAURANTS",
+                              sizeOfFont: 10,
+                              fontfamilly: montBook,
+                              color: hintColor,
+                            ),
+                          )),
                     ),
-                    child: GestureDetector(
-                        onTap: () {
-                          commonCounter.getFavStore(false);
-                        },
-                        child: const CustomText(
-                          text: "Available Stores",
-                          sizeOfFont: 10,
-                          fontfamilly: montBook,
-                          color: hintColor,
-                        )),
                   )
-                : Container(
-                    margin:
-                        const EdgeInsets.symmetric(horizontal: 0, vertical: 3),
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                    decoration: BoxDecoration(
-                      color: btnbgColor,
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(width: 1, color: Colors.white),
+                : Expanded(
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 0, vertical: 3),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 5),
+                      decoration: BoxDecoration(
+                        color: btnbgColor,
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(width: 1, color: Colors.white),
+                      ),
+                      child: GestureDetector(
+                          onTap: () {
+                            commonCounter.getFavStore(true);
+                          },
+                          child: const Center(
+                            child: CustomText(
+                              text: "RESTAURANTS",
+                              sizeOfFont: 10,
+                              fontfamilly: montBook,
+                              color: hintColor,
+                            ),
+                          )),
                     ),
-                    child: GestureDetector(
-                        onTap: () {
-                          commonCounter.getFavStore(true);
-                        },
-                        child: const CustomText(
-                          text: "Available Stores",
-                          sizeOfFont: 10,
-                          fontfamilly: montBook,
-                          color: hintColor,
-                        )),
                   ),
             const SizedBox(
-              width: 8,
+              width: 20,
             ),
             !commonCounter.isStore
-                ? Container(
-                    margin:
-                        const EdgeInsets.symmetric(horizontal: 0, vertical: 3),
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                    decoration: BoxDecoration(
-                      color: btnbgColor.withOpacity(0.3),
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(width: 1, color: Colors.white),
+                ? Expanded(
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 0, vertical: 3),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 5),
+                      decoration: BoxDecoration(
+                        color: btnbgColor.withOpacity(0.3),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(width: 1, color: Colors.white),
+                      ),
+                      child: GestureDetector(
+                          onTap: () {
+                            commonCounter.getFavStore(true);
+                          },
+                          child: const Center(
+                            child: CustomText(
+                              text: "DEALS",
+                              sizeOfFont: 10,
+                              fontfamilly: montBook,
+                              color: hintColor,
+                            ),
+                          )),
                     ),
-                    child: GestureDetector(
-                        onTap: () {
-                          commonCounter.getFavStore(true);
-                        },
-                        child: const CustomText(
-                          text: "Available Deals",
-                          sizeOfFont: 10,
-                          fontfamilly: montBook,
-                          color: hintColor,
-                        )),
                   )
-                : Container(
-                    margin:
-                        const EdgeInsets.symmetric(horizontal: 0, vertical: 3),
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                    decoration: BoxDecoration(
-                      color: btnbgColor,
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(width: 1, color: Colors.white),
+                : Expanded(
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 0, vertical: 3),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 5),
+                      decoration: BoxDecoration(
+                        color: btnbgColor,
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(width: 1, color: Colors.white),
+                      ),
+                      child: GestureDetector(
+                          onTap: () {
+                            commonCounter.getFavStore(false);
+                          },
+                          child: const Center(
+                            child: CustomText(
+                              text: "DEALS",
+                              sizeOfFont: 10,
+                              fontfamilly: montBook,
+                              color: hintColor,
+                            ),
+                          )),
                     ),
-                    child: GestureDetector(
-                        onTap: () {
-                          commonCounter.getFavStore(false);
-                        },
-                        child: const CustomText(
-                          text: "Available Deals",
-                          sizeOfFont: 10,
-                          fontfamilly: montBook,
-                          color: hintColor,
-                        )),
                   )
           ],
         )
@@ -318,6 +341,9 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
   }
 
   Widget buildHorizontalList(List<String> items) {
+
+
+
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
@@ -349,8 +375,23 @@ class _SearchResultScreenState extends State<SearchResultScreen> {
 
   Widget buildVerticalCards(CommonCounter commonCounter) {
     // var currentList = restaurantData;
+
+  //   if (restaurantData.isEmpty) {
+  //   return const Padding(
+  //     padding: EdgeInsets.all(20.0),
+  //     child: CustomText(
+  //       text: 'No Item Found',
+  //       maxLin: 1,
+  //       color: btntxtColor,
+  //       fontfamilly: montBold,
+  //       sizeOfFont: 15,
+  //     ),
+  //   );
+  // }
+
+
     var currentList = commonCounter.isStore ? restaurantData : dealListingData;
-print('Deal Length: ${dealListingData.length}');
+
     return Expanded(
       child: RefreshIndicator(
         key: _refreshIndicatorKey,
@@ -412,7 +453,8 @@ print('Deal Length: ${dealListingData.length}');
           hasMoreData = true; // Reset the flag for more data.
 
           restaurantData.clear(); // Clear existing data before adding new data.
-          dealListingData.clear(); // Clear existing data before adding new data.
+          dealListingData
+              .clear(); // Clear existing data before adding new data.
 
           restaurantData.addAll(searchQueryData.stores!);
           dealListingData.addAll(searchQueryData.deals!);
@@ -420,7 +462,6 @@ print('Deal Length: ${dealListingData.length}');
         });
       }
     } catch (error) {
-      print('Error refreshing data: $error');
     }
   }
 
@@ -527,7 +568,6 @@ print('Deal Length: ${dealListingData.length}');
                     onTap: () async {
                       var ratingStatus = storeData.favourite as int;
 
-                      print('ratingStatus:$ratingStatus');
 
                       try {
                         if (ratingStatus == 0) {
@@ -547,7 +587,6 @@ print('Deal Length: ${dealListingData.length}');
                               favData.message ==
                                   "Store Added in favourite successfully.") {
                             // Print data to console
-                            print(favData);
 
                             final snackBar = SnackBar(
                               content: Text('${favData.message}'),
@@ -593,11 +632,9 @@ print('Deal Length: ${dealListingData.length}');
                                 });
                               }
                             } catch (error) {
-                              print('Error refreshing data: $error');
                             }
                           } else {
                             // API call failed
-                            print("Something went wrong: ${favData.message}");
 
                             final snackBar = SnackBar(
                               content: Text('${favData.message}'),
@@ -626,7 +663,6 @@ print('Deal Length: ${dealListingData.length}');
                               delData.message ==
                                   "Favourite Store deleted successfully") {
                             // Print data to console
-                            print(delData);
 
                             final snackBar = SnackBar(
                               content: Text('${delData.message}'),
@@ -672,11 +708,9 @@ print('Deal Length: ${dealListingData.length}');
                                 });
                               }
                             } catch (error) {
-                              print('Error refreshing data: $error');
                             }
                           } else {
                             // API call failed
-                            print("Something went wrong: ${delData.message}");
 
                             final snackBar = SnackBar(
                               content: Text('${delData.message}'),
@@ -696,7 +730,6 @@ print('Deal Length: ${dealListingData.length}');
                         }
                       } catch (e) {
                         // Display error message
-                        print("Error: $e");
                       }
                     },
                     child: Image.asset(
@@ -864,11 +897,8 @@ print('Deal Length: ${dealListingData.length}');
                     right: -4,
                     child: GestureDetector(
                       onTap: () async {
-                        var ratingStatus = data.favourite as bool;
                         int? dealId = data.id;
-                        int? storeId = data.storeId;
 
-                        print('ratingStatus:$ratingStatus');
 
                         try {
                           if (data.favourite == false) {
@@ -887,7 +917,6 @@ print('Deal Length: ${dealListingData.length}');
                                 favData.message ==
                                     "Deal Added in favourite successfully.") {
                               // Print data to console
-                              print(favData);
 
                               final snackBar = SnackBar(
                                 content: Text('${favData.message}'),
@@ -933,11 +962,9 @@ print('Deal Length: ${dealListingData.length}');
                                   });
                                 }
                               } catch (error) {
-                                print('Error refreshing data: $error');
                               }
                             } else {
                               // API call failed
-                              print("Something went wrong: ${favData.message}");
 
                               final snackBar = SnackBar(
                                 content: Text('${favData.message}'),
@@ -966,7 +993,6 @@ print('Deal Length: ${dealListingData.length}');
                                 delData.message ==
                                     "Favourite Deal deleted successfully.") {
                               // Print data to console
-                              print(delData);
 
                               final snackBar = SnackBar(
                                 content: Text('${delData.message}'),
@@ -1012,11 +1038,9 @@ print('Deal Length: ${dealListingData.length}');
                                   });
                                 }
                               } catch (error) {
-                                print('Error refreshing data: $error');
                               }
                             } else {
                               // API call failed
-                              print("Something went wrong: ${delData.message}");
 
                               final snackBar = SnackBar(
                                 content: Text('${delData.message}'),
@@ -1036,7 +1060,6 @@ print('Deal Length: ${dealListingData.length}');
                           }
                         } catch (e) {
                           // Display error message
-                          print("Error: $e");
                         }
                       },
                       child: Image.asset(

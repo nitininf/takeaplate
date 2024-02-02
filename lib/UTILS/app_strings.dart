@@ -52,6 +52,8 @@ const String submit = "SUBMIT";
 const String logout = "LOG OUT!";
 const String deleteAccount = "DELETE ACCOUNT!";
 const String proceed = "Are you sure you want to proceed?";
+const String notification_disable = "Disabling notifications may cause you to miss important updates and offers. Are you sure you want to proceed?";
+
 
 
 

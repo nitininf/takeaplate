@@ -2,14 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/common_button.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/custom_text_style.dart';
+import 'package:takeaplate/MULTI-PROVIDER/NotificationProvider.dart';
 import 'package:takeaplate/UTILS/app_color.dart';
 import 'package:takeaplate/UTILS/app_images.dart';
 import 'package:takeaplate/UTILS/app_strings.dart';
 import 'package:takeaplate/UTILS/fontfamily_string.dart';
 
 import '../../MULTI-PROVIDER/common_counter.dart';
+import '../../Response_Model/SendNotificationPrefResponse.dart';
 import '../../UTILS/request_string.dart';
 import '../../UTILS/utils.dart';
+
+var deal = 0;
+var meal = 0;
+var store = 0;
 
 class NotificationTurnOnScreen extends StatelessWidget {
   const NotificationTurnOnScreen({super.key});
@@ -68,8 +74,9 @@ class NotificationTurnOnScreen extends StatelessWidget {
                               border: Border.all(width: 1, color: editbgColor)),
                           child: Row(
                             children: [
-                              SizedBox(width: 20,),
-
+                              SizedBox(
+                                width: 20,
+                              ),
                               Expanded(
                                   child: Image.asset(
                                 appLogo,
@@ -83,7 +90,6 @@ class NotificationTurnOnScreen extends StatelessWidget {
                                     children: [
                                       const SizedBox(
                                         height: 10,
-
                                       ),
                                       Align(
                                         child: CustomText(
@@ -111,27 +117,27 @@ class NotificationTurnOnScreen extends StatelessWidget {
                               Consumer<CommonCounter>(
                                   builder: (context, commonProvider, child) {
                                 return Expanded(
-                                  flex: 2,
+                                    flex: 2,
                                     child: GestureDetector(
-                                  onTap: () {
-                                    commonProvider.isNotification
-                                        ? commonProvider
-                                            .notificationShowOn(false)
-                                        : commonProvider
-                                            .notificationShowOn(true);
-                                  },
-                                  child: commonProvider.isNotification
-                                      ? Image.asset(
-                                          radioon,
-                                          height: 17,
-                                          width: 17,
-                                        )
-                                      : Image.asset(
-                                          notification_off,
-                                          height: 17,
-                                          width: 17,
-                                        ),
-                                ));
+                                      onTap: () {
+                                        commonProvider.isNotification
+                                            ? commonProvider
+                                                .notificationShowOn(false)
+                                            : commonProvider
+                                                .notificationShowOn(true);
+                                      },
+                                      child: commonProvider.isNotification
+                                          ? Image.asset(
+                                              radioon,
+                                              height: 17,
+                                              width: 17,
+                                            )
+                                          : Image.asset(
+                                              notification_off,
+                                              height: 17,
+                                              width: 17,
+                                            ),
+                                    ));
                               })
                             ],
                           ),
@@ -147,8 +153,9 @@ class NotificationTurnOnScreen extends StatelessWidget {
                               border: Border.all(width: 1, color: editbgColor)),
                           child: Row(
                             children: [
-                              SizedBox(width: 20,),
-
+                              SizedBox(
+                                width: 20,
+                              ),
                               Expanded(
                                   child: Image.asset(
                                 appLogo,
@@ -190,27 +197,26 @@ class NotificationTurnOnScreen extends StatelessWidget {
                                   builder: (context, commonProvider, child) {
                                 return Expanded(
                                     flex: 2,
-
                                     child: GestureDetector(
-                                  onTap: () {
-                                    commonProvider.isNotification_one
-                                        ? commonProvider
-                                            .notificationShowOn_one(false)
-                                        : commonProvider
-                                            .notificationShowOn_one(true);
-                                  },
-                                  child: commonProvider.isNotification_one
-                                      ? Image.asset(
-                                          radioon,
-                                          height: 17,
-                                          width: 17,
-                                        )
-                                      : Image.asset(
-                                          notification_off,
-                                          height: 17,
-                                          width: 17,
-                                        ),
-                                ));
+                                      onTap: () {
+                                        commonProvider.isNotification_one
+                                            ? commonProvider
+                                                .notificationShowOn_one(false)
+                                            : commonProvider
+                                                .notificationShowOn_one(true);
+                                      },
+                                      child: commonProvider.isNotification_one
+                                          ? Image.asset(
+                                              radioon,
+                                              height: 17,
+                                              width: 17,
+                                            )
+                                          : Image.asset(
+                                              notification_off,
+                                              height: 17,
+                                              width: 17,
+                                            ),
+                                    ));
                               })
                             ],
                           ),
@@ -226,7 +232,9 @@ class NotificationTurnOnScreen extends StatelessWidget {
                               border: Border.all(width: 1, color: editbgColor)),
                           child: Row(
                             children: [
-SizedBox(width: 20,),
+                              SizedBox(
+                                width: 20,
+                              ),
                               Expanded(
                                   child: Image.asset(
                                 appLogo,
@@ -268,27 +276,26 @@ SizedBox(width: 20,),
                                   builder: (context, commonProvider, child) {
                                 return Expanded(
                                     flex: 2,
-
                                     child: GestureDetector(
-                                  onTap: () {
-                                    commonProvider.isNotification_two
-                                        ? commonProvider
-                                            .notificationShowOn_two(false)
-                                        : commonProvider
-                                            .notificationShowOn_two(true);
-                                  },
-                                  child: commonProvider.isNotification_two
-                                      ? Image.asset(
-                                          radioon,
-                                          height: 17,
-                                          width: 17,
-                                        )
-                                      : Image.asset(
-                                          notification_off,
-                                          height: 17,
-                                          width: 17,
-                                        ),
-                                ));
+                                      onTap: () {
+                                        commonProvider.isNotification_two
+                                            ? commonProvider
+                                                .notificationShowOn_two(false)
+                                            : commonProvider
+                                                .notificationShowOn_two(true);
+                                      },
+                                      child: commonProvider.isNotification_two
+                                          ? Image.asset(
+                                              radioon,
+                                              height: 17,
+                                              width: 17,
+                                            )
+                                          : Image.asset(
+                                              notification_off,
+                                              height: 17,
+                                              width: 17,
+                                            ),
+                                    ));
                               })
                             ],
                           ),
@@ -327,15 +334,78 @@ SizedBox(width: 20,),
                           var token =
                               await Utility.getStringValue(RequestString.TOKEN);
                           print(token);
-                          print(
-                              'Notification 1 Status: ${Provider.of<CommonCounter>(context, listen: false).isNotification}');
-                          print(
-                              'Notification 2 Status: ${Provider.of<CommonCounter>(context, listen: false).isNotification_one}');
-                          print(
-                              'Notification 3 Status: ${Provider.of<CommonCounter>(context, listen: false).isNotification_two}');
 
-                          Navigator.pushNamed(context, '/BaseHome');
-                        },
+                          var dealStatus =
+                              ('${Provider.of<CommonCounter>(context, listen: false).isNotification}');
+                          var storeStatus =
+                              ('${Provider.of<CommonCounter>(context, listen: false).isNotification_one}');
+                          var mealStatus =
+                              ('${Provider.of<CommonCounter>(context, listen: false).isNotification_two}');
+
+
+                          if (dealStatus == "true") {
+                            deal = 1;
+                          } else {
+                            deal = 0;
+                          }
+                          if (storeStatus == "true") {
+                            store = 1;
+                          } else {
+                            store = 0;
+                          }
+                          if (mealStatus == "true") {
+                            meal = 1;
+                          } else {
+                            meal = 0;
+                          }
+
+                          try {
+                            var formData = {
+                              RequestString.DEAL: deal,
+                              RequestString.MEAL:meal,
+                              RequestString.STORE: store,
+                            };
+
+                            SendNotificationPrefResponse data =
+                                await Provider.of<NotificationProvider>(context,
+                                        listen: false)
+                                    .sendNotificationPref(formData);
+
+                            if (data.status == true &&
+                                data.message ==
+                                    "Notification update successfully") {
+                              // Login successful
+
+                              Navigator.pushNamed(context, '/BaseHome');
+
+                              // Print data to console
+                              print(data);
+
+                              // Navigate to the next screen or perform other actions after login
+                            } else {
+                              // Login failed
+                              print("Something went wrong: ${data.message}");
+
+                              final snackBar = SnackBar(
+                                content: Text('${data.message}'),
+                              );
+
+                              // Show the SnackBar
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
+
+                              // Automatically hide the SnackBar after 1 second
+                              Future.delayed(Duration(milliseconds: 1000), () {
+                                ScaffoldMessenger.of(context)
+                                    .hideCurrentSnackBar();
+                              });
+                            }
+                          } catch (e) {
+                            // Display error message
+                            print("Error: $e");
+                          }
+
+                                                },
                       ),
                     ],
                   ),
