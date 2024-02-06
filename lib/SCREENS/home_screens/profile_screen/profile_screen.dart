@@ -338,9 +338,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget buildCurrentOrderCards() {
-    return SingleChildScrollView(
+    return
+      SingleChildScrollView(
       scrollDirection: Axis.vertical,
-      child: Column(
+      child:
+
+      Column(
         mainAxisSize: MainAxisSize.min,
         children: List.generate(
           // Limit the number of items to 2

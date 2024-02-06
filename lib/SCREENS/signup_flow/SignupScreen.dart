@@ -13,7 +13,6 @@ import '../../MULTI-PROVIDER/DateProvider.dart';
 import '../../MULTI-PROVIDER/SignUp_StepOne.dart';
 import '../../UTILS/validation.dart';
 
-
 List<String> genders = ['Gender'];
 List<String> genderList = ['Male', 'Female', 'Other'];
 TextEditingController fullNameController = TextEditingController();
@@ -21,14 +20,11 @@ TextEditingController emailController = TextEditingController();
 TextEditingController phoneNumberController = TextEditingController();
 TextEditingController dobController = TextEditingController();
 TextEditingController genderController =
-TextEditingController(text: genders[0]);
+    TextEditingController(text: genders[0]);
 
 final DateProvider dateProvider = DateProvider();
 
-class SignUpScreen extends StatelessWidget {
-
-
-
+ class SignUpScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
@@ -117,42 +113,48 @@ class SignUpScreen extends StatelessWidget {
                             const SizedBox(width: 10),
                             Expanded(
                               child: TextFormField(
-
                                 maxLength: 15,
                                 controller: genderController,
                                 readOnly: true,
-
-                                style:  TextStyle(
+                                style: const TextStyle(
                                   decoration: TextDecoration.none,
                                   decorationThickness: 0,
-                                  fontSize:  18,
+                                  fontSize: 18,
                                   fontFamily: montBook,
-                                  color: Colors.white , // Make sure to define your colors properly
+                                  color: Colors
+                                      .white, // Make sure to define your colors properly
                                 ),
                                 decoration: InputDecoration(
                                   counterText: '',
                                   filled: true,
                                   fillColor: editbgColor,
-                                  focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(20),borderSide: BorderSide(color:editbgColor,style:BorderStyle.solid )),
-
-                                  enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(20),borderSide: BorderSide(color:editbgColor,style:BorderStyle.solid )),
-
+                                  focusedBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                      borderSide: const BorderSide(
+                                          color: editbgColor,
+                                          style: BorderStyle.solid)),
+                                  enabledBorder: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                      borderSide: const BorderSide(
+                                          color: editbgColor,
+                                          style: BorderStyle.solid)),
                                   suffixIcon: IconButton(
                                     onPressed: () {
                                       _showGenderDropdown(context);
                                     },
-                                    icon: Image.asset(down_arrow, height: 16, width: 12),
+                                    icon: Image.asset(down_arrow,
+                                        height: 16, width: 12),
                                   ),
-                                  contentPadding:EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                                  hintStyle:  TextStyle(
+                                  contentPadding: const EdgeInsets.symmetric(
+                                      horizontal: 16, vertical: 16),
+                                  hintStyle: const TextStyle(
                                     fontFamily: montBook,
                                     fontSize: 20,
-                                    color:readybgColor, // Define your hint color properly
+                                    color:
+                                        readybgColor, // Define your hint color properly
                                   ),
                                 ),
                               ),
-
-
                             ),
                           ],
                         ),
@@ -163,26 +165,26 @@ class SignUpScreen extends StatelessWidget {
                     height: screenHeight * 0.170,
                   ),
                   Padding(
-                    padding: EdgeInsets.only(left: 40, right: 40, bottom: 20),
+                    padding:
+                        const EdgeInsets.only(left: 40, right: 40, bottom: 20),
                     child: CommonButton(
                       btnBgColor: btnbgColor,
                       btnText: next,
                       onClick: () async {
-                        var validEmail = FormValidator.validateEmail(emailController.text);
-                        var validPhone = FormValidator.validatePhoneNumber(phoneNumberController.text);
+                        var validEmail =
+                            FormValidator.validateEmail(emailController.text);
+                        var validPhone = FormValidator.validatePhoneNumber(
+                            phoneNumberController.text);
 
-
-                        print(validEmail);
                         // Check if any field is null or empty
                         if (fullNameController.text.isEmpty ||
                             emailController.text.isEmpty ||
                             phoneNumberController.text.isEmpty ||
                             dobController.text.isEmpty ||
-                            genderController.text == genders[0] ) {
+                            genderController.text == genders[0]) {
                           // Show an error message or perform any action for invalid input
-                          print("Please fill in all fields");
 
-                          final snackBar = SnackBar(
+                          const snackBar = SnackBar(
                             content: Text('Please fill in all fields'),
                           );
 
@@ -190,11 +192,12 @@ class SignUpScreen extends StatelessWidget {
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
                           // Automatically hide the SnackBar after 1 second
-                          Future.delayed(Duration(milliseconds: 1000), () {
+                          Future.delayed(const Duration(milliseconds: 1000),
+                              () {
                             ScaffoldMessenger.of(context).hideCurrentSnackBar();
                           });
                         } else if (validEmail != null) {
-                          final snackBar = SnackBar(
+                          const snackBar = SnackBar(
                             content: Text('Please enter valid Email Id'),
                           );
 
@@ -202,11 +205,12 @@ class SignUpScreen extends StatelessWidget {
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
                           // Automatically hide the SnackBar after 1 second
-                          Future.delayed(Duration(milliseconds: 1000), () {
+                          Future.delayed(const Duration(milliseconds: 1000),
+                              () {
                             ScaffoldMessenger.of(context).hideCurrentSnackBar();
                           });
-                        }else if (validPhone != null) {
-                          final snackBar = SnackBar(
+                        } else if (validPhone != null) {
+                          const snackBar = SnackBar(
                             content: Text('Please enter valid Phone Number'),
                           );
 
@@ -214,13 +218,12 @@ class SignUpScreen extends StatelessWidget {
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
                           // Automatically hide the SnackBar after 1 second
-                          Future.delayed(Duration(milliseconds: 1000), () {
+                          Future.delayed(const Duration(milliseconds: 1000),
+                              () {
                             ScaffoldMessenger.of(context).hideCurrentSnackBar();
                           });
                         } else {
                           // If all fields are filled, proceed to the next screen
-                          print(
-                              "Full Name: ${fullNameController.text} ,\n Email: ${emailController.text},\n Phone Number: ${phoneNumberController.text},\n Date Of Birth: ${dobController.text},\n Gender: ${genderController.text}");
 
                           var date = dateProvider.formattedDate(
                               DateTime.parse(dobController.text));
@@ -238,11 +241,7 @@ class SignUpScreen extends StatelessWidget {
                             gender: genderController.text.toLowerCase(),
                           );
 
-
-
                           Navigator.pushNamed(context, '/UploadPhoto');
-
-
                         }
                       },
                     ),
@@ -268,8 +267,6 @@ class SignUpScreen extends StatelessWidget {
   }
 
   Future<void> _selectDate(BuildContext context) async {
-    print("Selecting date...");
-
     DateTime? picked = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
@@ -291,7 +288,7 @@ class SignUpScreen extends StatelessWidget {
           height: 200,
           child: Column(
             children: [
-              ListTile(
+              const ListTile(
                 title: Text('Select Gender',
                     style: TextStyle(fontWeight: FontWeight.bold)),
               ),

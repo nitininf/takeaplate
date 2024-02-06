@@ -212,9 +212,9 @@ class _YourCardScreenState extends State<YourCardScreen> {
   Widget getVerticalItemList() {
 
     if (cartItemsData.isEmpty) {
-      return Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: const CustomText(
+      return const Padding(
+        padding: EdgeInsets.all(20.0),
+        child: CustomText(
           text: 'No Item Found',
           maxLin: 1,
           color: btntxtColor,

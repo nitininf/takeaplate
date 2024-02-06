@@ -24,7 +24,7 @@ const String dinesmart = "DineSmart: Savor the Savings!";
 const String enjoyExclusive = "Enjoy Exclusive Deals From Restaurants With Surplus Food Relish High Quality Meals At Unbeatable Prices";
 const String ecoeats = "EcoEats: Bite into Sustainability!";
 const String helpResttrutent = "Join The Eco-conscious Dining Revolution And Help Restaurants Minimise Food Waste One Meal At A Time";
-const String flavoredResttrutent = "FlavorFind: Uncover Culinary Gems";
+const String flavoredRestaurant = "FlavorFind: Uncover Culinary Gems";
 const String delight = "Delight In The Thrill Of Exploring New Cuisines And Unique Local Eateries With Last Minute Deals That Turn Every Meal Into An Adventure";
 const String sentPss = "YOUR PASSWORD HAS BEEN SENT TO YOUR EMAIL.";
 const String checkInbox = "PLEASE CHECK YOUR INBOX.";
@@ -52,7 +52,7 @@ const String submit = "SUBMIT";
 const String logout = "LOG OUT!";
 const String deleteAccount = "DELETE ACCOUNT!";
 const String proceed = "Are you sure you want to proceed?";
-const String notification_disable = "Disabling notifications may cause you to miss important updates and offers. Are you sure you want to proceed?";
+const String notification_disable = "Disabling notifications may cause you to miss important updates and offers.";
 
 
 

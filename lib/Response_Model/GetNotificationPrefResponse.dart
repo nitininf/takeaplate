@@ -26,13 +26,15 @@ class Data {
   int? deal;
   int? meal;
   int? store;
+  int? broadcastNotification;
 
-  Data({this.deal, this.meal, this.store});
+  Data({this.deal, this.meal, this.store, this.broadcastNotification});
 
   Data.fromJson(Map<String, dynamic> json) {
     deal = json['deal'];
     meal = json['meal'];
     store = json['store'];
+    broadcastNotification = json['broadcast_notification'];
   }
 
   Map<String, dynamic> toJson() {
@@ -40,6 +42,7 @@ class Data {
     data['deal'] = this.deal;
     data['meal'] = this.meal;
     data['store'] = this.store;
+    data['broadcast_notification'] = this.broadcastNotification;
     return data;
   }
 }

@@ -169,7 +169,9 @@ class _CollectTomorrowScreenState extends State<CollectTomorrowScreen> {
 
     return  Scaffold(
       backgroundColor: bgColor,
-      body: SafeArea(
+      body:
+
+      SafeArea(
         child: Padding(padding: const EdgeInsets.only(top: 0.0,bottom: 20,left: 25,right: 25),
 
           child: Column(

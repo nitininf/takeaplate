@@ -4,7 +4,6 @@ import 'package:takeaplate/SCREENS/onboarding_screen/onboarding_screens.dart';
 import 'MULTI-PROVIDER/multiproviders.dart';
 import 'SCREENS/splash_screen/splash_screen.dart';
 
-
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 main() async {
@@ -15,11 +14,9 @@ main() async {
   ]);
   //WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
 
-
-
   runApp(const MyApp()); //MyUserList()
 // whenever your initialization is completed, remove the splash screen:
- // FlutterNativeSplash.remove();
+  // FlutterNativeSplash.remove();
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.light,
@@ -36,17 +33,20 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class AppRoot extends StatelessWidget {
-  AppRoot({Key? key}) : super(key: key);
+class AppRoot extends StatefulWidget {
+  const AppRoot({Key? key}) : super(key: key);
 
+  @override
+  State<AppRoot> createState() => _AppRootState();
+}
+
+class _AppRootState extends State<AppRoot> {
   String status = "";
 
   void showImage(BuildContext context) {
     Future.delayed(
       Duration.zero,
-          () async {
-
-      },
+      () async {},
     );
   }
 
@@ -56,9 +56,9 @@ class AppRoot extends StatelessWidget {
     return FutureBuilder(
         future: Future.delayed(const Duration(seconds: 2)),
         builder: (context, snapshot) =>
-        snapshot.connectionState != ConnectionState.done
-            ? SplashScreen() //OnBoardingScreen()
-            : OnBoardingScreen()//Screen1(),
-    );
+            snapshot.connectionState != ConnectionState.done
+                ? SplashScreen() //OnBoardingScreen()
+                : const OnBoardingScreen() //Screen1(),
+        );
   }
 }

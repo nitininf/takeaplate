@@ -7,11 +7,9 @@ import 'package:takeaplate/UTILS/app_color.dart';
 import 'package:takeaplate/UTILS/app_images.dart';
 import 'package:takeaplate/UTILS/app_strings.dart';
 import 'package:takeaplate/UTILS/fontfamily_string.dart';
-
 import '../../MULTI-PROVIDER/common_counter.dart';
 import '../../Response_Model/SendNotificationPrefResponse.dart';
 import '../../UTILS/request_string.dart';
-import '../../UTILS/utils.dart';
 
 var deal = 0;
 var meal = 0;
@@ -74,7 +72,7 @@ class NotificationTurnOnScreen extends StatelessWidget {
                               border: Border.all(width: 1, color: editbgColor)),
                           child: Row(
                             children: [
-                              SizedBox(
+                              const SizedBox(
                                 width: 20,
                               ),
                               Expanded(
@@ -83,23 +81,23 @@ class NotificationTurnOnScreen extends StatelessWidget {
                                 height: 30,
                                 width: 30,
                               )),
-                              Expanded(
+                              const Expanded(
                                   flex: 3,
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      const SizedBox(
+                                      SizedBox(
                                         height: 10,
                                       ),
                                       Align(
+                                        alignment: Alignment.topLeft,
                                         child: CustomText(
-                                          text: favRes!,
+                                          text: favRes,
                                           fontfamilly: montBold,
                                           color: hintColor,
                                           sizeOfFont: 10,
                                           isAlign: false,
                                         ),
-                                        alignment: Alignment.topLeft,
                                       ),
                                       //SizedBox(height: 5,),
                                       Align(
@@ -153,7 +151,7 @@ class NotificationTurnOnScreen extends StatelessWidget {
                               border: Border.all(width: 1, color: editbgColor)),
                           child: Row(
                             children: [
-                              SizedBox(
+                              const SizedBox(
                                 width: 20,
                               ),
                               Expanded(
@@ -162,15 +160,16 @@ class NotificationTurnOnScreen extends StatelessWidget {
                                 height: 30,
                                 width: 30,
                               )),
-                              Expanded(
+                              const Expanded(
                                   flex: 3,
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      const SizedBox(
+                                      SizedBox(
                                         height: 10,
                                       ),
-                                      const Align(
+                                      Align(
+                                        alignment: Alignment.topLeft,
                                         child: CustomText(
                                           text: nearby,
                                           fontfamilly: montBold,
@@ -178,13 +177,12 @@ class NotificationTurnOnScreen extends StatelessWidget {
                                           sizeOfFont: 10,
                                           isAlign: false,
                                         ),
-                                        alignment: Alignment.topLeft,
                                       ),
                                       //SizedBox(height: 5,),
                                       Align(
                                         alignment: Alignment.topLeft,
                                         child: CustomText(
-                                          text: miss!,
+                                          text: miss,
                                           fontfamilly: montLight,
                                           color: hintColor,
                                           sizeOfFont: 10,
@@ -232,7 +230,7 @@ class NotificationTurnOnScreen extends StatelessWidget {
                               border: Border.all(width: 1, color: editbgColor)),
                           child: Row(
                             children: [
-                              SizedBox(
+                              const SizedBox(
                                 width: 20,
                               ),
                               Expanded(
@@ -241,29 +239,29 @@ class NotificationTurnOnScreen extends StatelessWidget {
                                 height: 30,
                                 width: 30,
                               )),
-                              Expanded(
+                              const Expanded(
                                   flex: 3,
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      const SizedBox(
+                                      SizedBox(
                                         height: 10,
                                       ),
                                       Align(
+                                        alignment: Alignment.topLeft,
                                         child: CustomText(
-                                          text: confirm!,
+                                          text: confirm,
                                           fontfamilly: montBold,
                                           color: hintColor,
                                           sizeOfFont: 10,
                                           isAlign: false,
                                         ),
-                                        alignment: Alignment.topLeft,
                                       ),
                                       //SizedBox(height: 5,),
                                       Align(
                                         alignment: Alignment.topLeft,
                                         child: CustomText(
-                                          text: ""!,
+                                          text: "",
                                           fontfamilly: montLight,
                                           color: hintColor,
                                           sizeOfFont: 10,
@@ -305,7 +303,7 @@ class NotificationTurnOnScreen extends StatelessWidget {
                   ),
                   Column(
                     children: [
-                      Align(
+                      const Align(
                         alignment: Alignment.center,
                         child: CustomText(
                           text: dealAgain,
@@ -315,7 +313,7 @@ class NotificationTurnOnScreen extends StatelessWidget {
                           isAlign: false,
                         ),
                       ),
-                      Align(
+                      const Align(
                         alignment: Alignment.center,
                         child: CustomText(
                           text: choose,
@@ -331,17 +329,12 @@ class NotificationTurnOnScreen extends StatelessWidget {
                         btnText: turnonnotification,
                         sizeOfFont: 17,
                         onClick: () async {
-                          var token =
-                              await Utility.getStringValue(RequestString.TOKEN);
-                          print(token);
-
                           var dealStatus =
                               ('${Provider.of<CommonCounter>(context, listen: false).isNotification}');
                           var storeStatus =
                               ('${Provider.of<CommonCounter>(context, listen: false).isNotification_one}');
                           var mealStatus =
                               ('${Provider.of<CommonCounter>(context, listen: false).isNotification_two}');
-
 
                           if (dealStatus == "true") {
                             deal = 1;
@@ -362,8 +355,9 @@ class NotificationTurnOnScreen extends StatelessWidget {
                           try {
                             var formData = {
                               RequestString.DEAL: deal,
-                              RequestString.MEAL:meal,
+                              RequestString.MEAL: meal,
                               RequestString.STORE: store,
+                              RequestString.BROADCAST_NOTIFICATION: 1,
                             };
 
                             SendNotificationPrefResponse data =
@@ -379,12 +373,10 @@ class NotificationTurnOnScreen extends StatelessWidget {
                               Navigator.pushNamed(context, '/BaseHome');
 
                               // Print data to console
-                              print(data);
 
                               // Navigate to the next screen or perform other actions after login
                             } else {
                               // Login failed
-                              print("Something went wrong: ${data.message}");
 
                               final snackBar = SnackBar(
                                 content: Text('${data.message}'),
@@ -395,17 +387,16 @@ class NotificationTurnOnScreen extends StatelessWidget {
                                   .showSnackBar(snackBar);
 
                               // Automatically hide the SnackBar after 1 second
-                              Future.delayed(Duration(milliseconds: 1000), () {
+                              Future.delayed(const Duration(milliseconds: 1000),
+                                  () {
                                 ScaffoldMessenger.of(context)
                                     .hideCurrentSnackBar();
                               });
                             }
                           } catch (e) {
                             // Display error message
-                            print("Error: $e");
                           }
-
-                                                },
+                        },
                       ),
                     ],
                   ),

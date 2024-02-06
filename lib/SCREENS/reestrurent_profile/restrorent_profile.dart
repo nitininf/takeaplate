@@ -1,5 +1,4 @@
 import 'package:custom_rating_bar/custom_rating_bar.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/custom_app_bar.dart';
@@ -119,6 +118,7 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
             });
           }
         } catch (error) {
+          //
         } finally {
           setState(() {
             isLoading = false;
@@ -271,10 +271,10 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
                   Navigator.pushNamed(
                       navigatorKey.currentContext!, '/OrderAndPayScreen');
                 },
-                child: SizedBox(
+                child: const SizedBox(
                   width: 120,
                   height: 60,
-                  child: const Text(""),
+                  child: Text(""),
                 ),
               ),
             ],
@@ -742,6 +742,7 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
                                   });
                                 }
                               } catch (error) {
+                                //
                               }
                             } else {
                               // API call failed

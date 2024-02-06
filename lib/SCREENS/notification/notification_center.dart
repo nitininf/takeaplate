@@ -135,7 +135,8 @@ class _NotificationCenterScreenState extends State<NotificationCenterScreen> {
         isNotificationEnabled = getNotificationPrefResponse.data?.meal ?? 0;
         break;
       case 3:
-        isNotificationEnabled = 1;
+        isNotificationEnabled = getNotificationPrefResponse.data?.broadcastNotification ?? 0;
+
         break;
     // Add more cases for other positions if needed
       default:
@@ -160,7 +161,9 @@ class _NotificationCenterScreenState extends State<NotificationCenterScreen> {
               isNotificationEnabled == 1 ? 0 : 1;
               break;
             case 3:
-              showNotificationConfirmationDialog(context);
+              // showNotificationConfirmationDialog(context,getNotificationPrefResponse,isNotificationEnabled);
+              getNotificationPrefResponse.data?.broadcastNotification =
+              isNotificationEnabled == 1 ? 0 : 1;
               break;
           // Add more cases for other positions if needed
             default:
@@ -173,6 +176,7 @@ class _NotificationCenterScreenState extends State<NotificationCenterScreen> {
           'deal': getNotificationPrefResponse.data?.deal,
           'store': getNotificationPrefResponse.data?.store,
           'meal': getNotificationPrefResponse.data?.meal,
+          'broadcast_notification': getNotificationPrefResponse.data?.broadcastNotification,
         };
 
         // Call the API to update the notification preferences
@@ -199,6 +203,11 @@ class _NotificationCenterScreenState extends State<NotificationCenterScreen> {
                 isNotificationEnabled == 1 ? 0 : 1;
                 break;
 
+              case 3:
+                getNotificationPrefResponse.data?.broadcastNotification =
+                isNotificationEnabled == 1 ? 0 : 1;
+                break;
+
 
             // Add more cases for other positions if needed
               default:
@@ -221,7 +230,10 @@ class _NotificationCenterScreenState extends State<NotificationCenterScreen> {
     );
   }
 
-  void showNotificationConfirmationDialog(BuildContext context) {
+  void showNotificationConfirmationDialog(BuildContext context, GetNotificationPrefResponse getNotificationPrefResponse, int isNotificationEnabled) {
+    getNotificationPrefResponse.data?.broadcastNotification =
+    isNotificationEnabled == 1 ? 0 : 1;
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -234,6 +246,17 @@ class _NotificationCenterScreenState extends State<NotificationCenterScreen> {
               child: const Text("CANCEL"),
               onPressed: () {
                 Navigator.of(context).pop();
+              },
+            ), ElevatedButton(
+              child: const Text("OK"),
+              onPressed: () {
+
+                setState(() {
+                  getNotificationPrefResponse.data?.broadcastNotification =
+                  isNotificationEnabled == 1 ? 0 : 1;
+                });
+
+
               },
             ),
 

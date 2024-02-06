@@ -5,7 +5,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-/// Created by Nitin android
+/// Created by Flutter Developer
 
 class Utility {
   static SharedPreferences? prefs;

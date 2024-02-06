@@ -74,6 +74,7 @@ class RequestString{
   static const String DEAL = "deal";
   static const String MEAL = "meal";
   static const String STORE = "store";
+  static const String BROADCAST_NOTIFICATION = "broadcast_notification";
 
 
 

@@ -10,12 +10,10 @@ import 'package:takeaplate/SCREENS/home_screens/your_cart/yourcart_screen.dart';
 import 'package:takeaplate/UTILS/app_color.dart';
 import 'package:takeaplate/UTILS/app_images.dart';
 import 'package:takeaplate/UTILS/fontfamily_string.dart';
-
 import '../../CUSTOM_WIDGETS/custom_text_style.dart';
 import '../../MULTI-PROVIDER/common_counter.dart';
 import '../../main.dart';
 import '../contact_us/contact_us.dart';
-import '../notification/notification_center.dart';
 import '../notification/your_notifcation.dart';
 import '../setting_screen/settings_screen.dart';
 import 'home_screen.dart';
@@ -57,18 +55,18 @@ class _BaseHomeScreen extends State<BaseHome> {
   }
 
   static final List<Widget> _widgetOptions = <Widget>[
-    SearchScreen(),
-    YourCardScreen(),
-    HomeScreen(),
+    const SearchScreen(),
+    const YourCardScreen(),
+    const HomeScreen(),
     RestaurantsScreen(),
-    ProfileScreen(),
+    const ProfileScreen(),
   ];
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
       if(_selectedIndex==4) {
-        _widgetOptions[4] =   ProfileScreen();
+        _widgetOptions[4] =   const ProfileScreen();
       }
     });
   }
@@ -76,7 +74,6 @@ class _BaseHomeScreen extends State<BaseHome> {
   @override
   Widget build(BuildContext context) {
 
-    print('selected Index - $_selectedIndex');
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     var counterProvider=Provider.of<CommonCounter>(navigatorKey.currentContext!, listen: false);
@@ -95,24 +92,22 @@ class _BaseHomeScreen extends State<BaseHome> {
         elevation: 3.0,
         width: screenWidth,
         child: RightDrawerMenuWidget(onClick: (index1) {
-          print("========$index1");
           setState(() {
             _selectedIndex = index1;
-            print("selectedincdex========$_selectedIndex");
 
             if (_selectedIndex == 5) {
               _selectedIndex = 4;
               _widgetOptions[4] = YourNotificationScreen();
             } else if (_selectedIndex == 6) {
               _selectedIndex = 4;
-              _widgetOptions[4] = SettingScreen();
+              _widgetOptions[4] = const SettingScreen();
             } else if (_selectedIndex == 7) {
               _selectedIndex = 4;
               _widgetOptions[4] = ContactUs();
             }
             else if(_selectedIndex==4){
               _selectedIndex = 4;
-              _widgetOptions[4] = ProfileScreen();
+              _widgetOptions[4] = const ProfileScreen();
             }
           });
         }),
@@ -123,7 +118,7 @@ class _BaseHomeScreen extends State<BaseHome> {
           child: Column(
             children: [
               Padding(
-                padding: EdgeInsets.only(left: 28.0, right: 30, top: 6),
+                padding: const EdgeInsets.only(left: 28.0, right: 30, top: 6),
                 child: CustomAppBar(
                   onTap: () {
                     _scaffoldKey.currentState!.openEndDrawer();
@@ -150,6 +145,7 @@ class _BaseHomeScreen extends State<BaseHome> {
       ),
       bottomNavigationBar: SafeArea(
         child: Container(
+
           padding: const EdgeInsets.only(left: 8, right: 8, top: 4),
           decoration: BoxDecoration(
             color: hintColor,
@@ -300,8 +296,8 @@ class RightDrawerMenuWidget extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          index1 == 4 ? Image.asset(eclipse, height: 14, width: 14,) : Text(""),
-                          SizedBox(width: 5,),
+                          index1 == 4 ? Image.asset(eclipse, height: 14, width: 14,) : const Text(""),
+                          const SizedBox(width: 5,),
                           CustomText(
                             text: listOfItems[index1],
                             fontfamilly: montHeavy,
@@ -313,7 +309,7 @@ class RightDrawerMenuWidget extends StatelessWidget {
                     ),
                   ),
                 ),
-              Spacer(),
+              const Spacer(),
             ],
           ),
           Positioned(

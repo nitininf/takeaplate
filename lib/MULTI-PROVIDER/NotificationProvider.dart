@@ -2,6 +2,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:takeaplate/Response_Model/NotificationListResponse.dart';
 import '../NETWORKS/network.dart';
 import '../Response_Model/GetNotificationPrefResponse.dart';
 import '../Response_Model/SendNotificationPrefResponse.dart';
@@ -49,10 +50,6 @@ class NotificationProvider extends ChangeNotifier {
       if (response != null && response.data is Map<String, dynamic>) {
         final Map<String, dynamic> responseData = response.data;
 
-
-
-
-
         return GetNotificationPrefResponse.fromJson(responseData);
       } else {
         throw Exception('Failed to parse API response');
@@ -67,5 +64,30 @@ class NotificationProvider extends ChangeNotifier {
   }
 
 
+  Future<NotificationListResponse> getNotificationList({int page = 1}) async {
+
+    try {
+      final response = await _network.getRequest(
+        endPoint: '/get-notification/$page', // Replace with your actual API endpoint
+
+      );
+
+      print("Notification Preference response : ${response}");
+
+      if (response != null && response.data is Map<String, dynamic>) {
+        final Map<String, dynamic> responseData = response.data;
+
+        return NotificationListResponse.fromJson(responseData);
+      } else {
+        throw Exception('Failed to parse API response');
+      }
+    } catch (error) {
+      // Handle network errors or any other exceptions
+      print('Error: $error');
+      rethrow; // Re-throw the error to the caller
+    } finally {
+      notifyListeners();
+    }
+  }
 
 }

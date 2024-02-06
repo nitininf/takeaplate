@@ -751,14 +751,14 @@ class ExpiryDateFormatter extends TextInputFormatter {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('Invalid Month'),
-              content: Text('Please enter a valid month (01-12)'),
+              title: const Text('Invalid Month'),
+              content: const Text('Please enter a valid month (01-12)'),
               actions: <Widget>[
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: Text('OK'),
+                  child: const Text('OK'),
                 ),
               ],
             );
@@ -777,14 +777,14 @@ class ExpiryDateFormatter extends TextInputFormatter {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('Invalid Year'),
-              content: Text('Please enter a Valid Year'),
+              title: const Text('Invalid Year'),
+              content: const Text('Please enter a Valid Year'),
               actions: <Widget>[
                 TextButton(
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: Text('OK'),
+                  child: const Text('OK'),
                 ),
               ],
             );

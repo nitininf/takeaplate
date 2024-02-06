@@ -10,6 +10,7 @@ class CustomAppBar extends StatelessWidget {
       this.isMenu,
       this.onTap,
       this.onTap_one});
+
   final bool? isMenu;
   final Color? logoColor;
   final Color? textColor;
@@ -20,44 +21,43 @@ class CustomAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         color: bgColor,
-      child:
-        Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-        GestureDetector(
-        onTap:onTap_one ?? (){
-          Navigator.pop(context);
-        },
-        child: Image.asset(
-        back_arrow,
-        height: 27,
-        width: 17,
-    ),
-    ),
-    Expanded(
-    child: Align(
-    alignment: Alignment.center,
-    child:  Image.asset(
-    appLogo,
-    height: 56,
-    width: 60,
-    ),
-    ),
-    ),
-    Center(
-    child: onTap_one ==null ? Text("") : GestureDetector(
-        onTap: onTap,
-        child:  Image.asset(
-          menu_icon,
-          height: 23,
-          width: 34,
-          fit: BoxFit.contain,
-        )
-    )
-    )
-    ],
-    )
-    );
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            GestureDetector(
+              onTap: onTap_one ??
+                  () {
+                    Navigator.pop(context);
+                  },
+              child: Image.asset(
+                back_arrow,
+                height: 27,
+                width: 17,
+              ),
+            ),
+            Expanded(
+              child: Align(
+                alignment: Alignment.center,
+                child: Image.asset(
+                  appLogo,
+                  height: 56,
+                  width: 60,
+                ),
+              ),
+            ),
+            Center(
+                child: onTap_one == null
+                    ? Text("")
+                    : GestureDetector(
+                        onTap: onTap,
+                        child: Image.asset(
+                          menu_icon,
+                          height: 23,
+                          width: 34,
+                          fit: BoxFit.contain,
+                        )))
+          ],
+        ));
   }
 }

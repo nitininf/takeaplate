@@ -1,18 +1,13 @@
-import 'package:custom_rating_bar/custom_rating_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/custom_app_bar.dart';
 import 'package:takeaplate/MULTI-PROVIDER/OrderProvider.dart';
-import 'package:takeaplate/UTILS/app_strings.dart';
-import '../../CUSTOM_WIDGETS/custom_search_field.dart';
 import '../../CUSTOM_WIDGETS/custom_text_style.dart';
 import '../../MULTI-PROVIDER/FavoriteOperationProvider.dart';
-import '../../MULTI-PROVIDER/RestaurantsListProvider.dart';
 import '../../Response_Model/CurrentOrderResponse.dart';
 import '../../Response_Model/FavAddedResponse.dart';
 import '../../Response_Model/FavDeleteResponse.dart';
-import '../../Response_Model/RestaurantDealResponse.dart';
 import '../../UTILS/app_color.dart';
 import '../../UTILS/app_images.dart';
 import '../../UTILS/fontfamily_string.dart';
@@ -90,7 +85,6 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
             });
           }
         } catch (error) {
-          print('Error loading more data: $error');
         } finally {
           setState(() {
             isLoading = false;
@@ -156,10 +150,10 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
             } else {
               // Display loading indicator while fetching more data
               return FutureBuilder(
-                future: Future.delayed(Duration(seconds: 3)),
+                future: Future.delayed(const Duration(seconds: 3)),
                 builder: (context, snapshot) => snapshot.connectionState == ConnectionState.done ?
-                SizedBox(): Padding(
-                  padding: const EdgeInsets.all(8.0),
+                const SizedBox(): const Padding(
+                  padding: EdgeInsets.all(8.0),
                   child: Center(child: CircularProgressIndicator()),
                 ),
               );
@@ -192,7 +186,7 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
 
     var  currentDay = DateTime.now().weekday;
     var  startTiming = '';
-    var endTiming = '';
+    var  endTiming = '';
 
     if(currentDay == 1){
       startTiming = data.store?.openingHour?.monday?.start ?? '';
@@ -258,7 +252,7 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                     color: graysColor,
                     sizeOfFont: 11,
                     fontfamilly: montRegular),
-                SizedBox(
+                const SizedBox(
                   height: 5,
                 ),
                 Row(
@@ -272,10 +266,10 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                       ),
                       child:  CustomText(text: data.status == 0 ? "PENDING" : "READY FOR PICKUP",maxLin:1,sizeOfFont: 9,fontfamilly:montHeavy,color: readyColor,),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 5,
                     ),
-                    Expanded(
+                    const Expanded(
                       child: CustomText(
                           text: "84 Km",
                           maxLin: 1,
@@ -285,7 +279,7 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                     ),
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 2,
                 ),
                 CustomText(
@@ -308,10 +302,10 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(15.0),
                   child: Container(
-                    padding: EdgeInsets.all(8.0),
+                    padding: const EdgeInsets.all(8.0),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(15.0),
-                      gradient: LinearGradient(
+                      gradient: const LinearGradient(
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                         colors: [Colors.white, Colors.grey], // Adjust colors as needed
@@ -333,11 +327,8 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                   child: GestureDetector(
                     onTap: () async {
 
-                      bool? ratingStatus = data.favourite;
                       int? dealId = data.id;
-                      int? storeId = data.storeId;
 
-                      print('ratingStatus:$ratingStatus');
 
                       try {
 
@@ -352,7 +343,6 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
 
                           if (favData.status == true && favData.message == "Deal Added in favourite successfully.") {
                             // Print data to console
-                            print(favData);
 
                             final snackBar = SnackBar(
                               content:  Text('${favData.message}'),
@@ -362,7 +352,7 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                             ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
                             // Automatically hide the SnackBar after 1 second
-                            Future.delayed(Duration(milliseconds: 1000), () {
+                            Future.delayed(const Duration(milliseconds: 1000), () {
                               ScaffoldMessenger.of(context).hideCurrentSnackBar();
                             });
 
@@ -384,12 +374,10 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                                   });
                                 }
                               } catch (error) {
-                                print('Error refreshing data: $error');
                               }
                             });
                           } else {
                             // API call failed
-                            print("Something went wrong: ${favData.message}");
 
                             final snackBar = SnackBar(
                               content:  Text('${favData.message}'),
@@ -399,7 +387,7 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                             ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
                             // Automatically hide the SnackBar after 1 second
-                            Future.delayed(Duration(milliseconds: 1000), () {
+                            Future.delayed(const Duration(milliseconds: 1000), () {
                               ScaffoldMessenger.of(context).hideCurrentSnackBar();
                             });
                           }
@@ -410,7 +398,6 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
 
                           if (delData.status == true && delData.message == "Favourite Deal deleted successfully.") {
                             // Print data to console
-                            print(delData);
 
                             final snackBar = SnackBar(
                               content:  Text('${delData.message}'),
@@ -420,7 +407,7 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                             ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
                             // Automatically hide the SnackBar after 1 second
-                            Future.delayed(Duration(milliseconds: 1000), () {
+                            Future.delayed(const Duration(milliseconds: 1000), () {
                               ScaffoldMessenger.of(context).hideCurrentSnackBar();
                             });
 
@@ -440,12 +427,10 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                                   });
                                 }
                               } catch (error) {
-                                print('Error refreshing data: $error');
                               }
                             });
                           } else {
                             // API call failed
-                            print("Something went wrong: ${delData.message}");
 
                             final snackBar = SnackBar(
                               content:  Text('${delData.message}'),
@@ -455,14 +440,13 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                             ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
                             // Automatically hide the SnackBar after 1 second
-                            Future.delayed(Duration(milliseconds: 1000), () {
+                            Future.delayed(const Duration(milliseconds: 1000), () {
                               ScaffoldMessenger.of(context).hideCurrentSnackBar();
                             });
                           }
                         }
                       } catch (e) {
                         // Display error message
-                        print("Error: $e");
                       }
                     },
                     child: Image.asset(
