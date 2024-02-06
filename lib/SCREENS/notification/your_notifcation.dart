@@ -192,8 +192,7 @@ class _YourNotificationScreenState extends State<YourNotificationScreen> {
           Expanded(
               flex: 1,
               child: CustomText(
-                text:
-                   notificationList.title ?? '',
+                text: notificationList.title ?? '',
                 color: editbgColor,
                 sizeOfFont: 14,
                 fontfamilly: montSemiBold,

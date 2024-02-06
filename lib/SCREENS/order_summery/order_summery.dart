@@ -307,15 +307,15 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
                     } else {
                       // No item selected, show an error message or handle as needed
 
-                      final snackBar = const SnackBar(
-                        content: Text('No card selected'),
+                      const snackBar = SnackBar(
+                        content: Text('Add and select a card if not added or selected..'),
                       );
 
                       // Show the SnackBar
                       ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
                       // Automatically hide the SnackBar after 1 second
-                      Future.delayed(const Duration(milliseconds: 1000), () {
+                      Future.delayed(const Duration(milliseconds: 3000), () {
                         ScaffoldMessenger.of(context).hideCurrentSnackBar();
                       });
                     }
@@ -1078,7 +1078,7 @@ class CreditCardFormatter extends TextInputFormatter {
   TextEditingValue formatEditUpdate(
       TextEditingValue oldValue, TextEditingValue newValue) {
     final text =
-        newValue.text.replaceAll(RegExp(r'\s'), ''); // Remove existing spaces
+    newValue.text.replaceAll(RegExp(r'\s'), ''); // Remove existing spaces
     var formattedText = '';
 
     for (var i = 0; i < text.length; i++) {
