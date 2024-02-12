@@ -292,8 +292,8 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
               padding: EdgeInsets.all(7.0),
               child: Image.asset(
                 cross,
-                width: 8,
-                height: 8,
+                width: 12,
+                height: 12,
               ),
             ),
           )

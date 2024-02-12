@@ -55,7 +55,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           phoneNumberController.text = data["phoneNumber"]!;
           dobController.text = data["dob"]!;
           genderController.text = data["gender"]!.toUpperCase();
-          selectedImagePathController.text = data["selectedImagePath"]!;
+          selectedImagePathController.text = data["selectedImagePath"]! ??"";
           isInitialized = true;
         });
       });
@@ -103,14 +103,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 width: 300,
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
+
+
                   image: Provider.of<SelectImageProvider>(context)
                           .selectedImage
                           .isNotEmpty
+
                       ? DecorationImage(
+                    fit: BoxFit.fill ,
                           image: FileImage(File(
                               Provider.of<SelectImageProvider>(context)
                                   .selectedImage)),
-                          fit: BoxFit.cover,
                         )
                       : selectedImagePathController.text.isNotEmpty
                           ? DecorationImage(
@@ -329,15 +332,25 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         .formattedDate(DateTime.parse(dobController.text));
 
                     try {
+
+                      var imageData ;
+
+                      if(selectedImagePathController.text == null || selectedImagePathController.text.isEmpty){
+
+                        imageData = "";
+                      }else{
+                        imageData = selectedImagePathController.text;
+                      }
+
+
+
                       var formData = {
                         RequestString.NAME: fullNameController.text,
                         RequestString.EMAIL: emailController.text,
                         RequestString.PHONE_NO: phoneNumberController.text,
                         RequestString.DOB: date,
-                        RequestString.GENDER:
-                            genderController.text.toLowerCase(),
-                        RequestString.USER_IMAGE:
-                            selectedImagePathController.text ?? '',
+                        RequestString.GENDER: genderController.text.toLowerCase(),
+                        RequestString.USER_IMAGE: imageData,
                       };
 
                       formData.forEach((key, value) {

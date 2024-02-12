@@ -41,14 +41,19 @@ class NotificationTurnOnScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  const Padding(
+                   Padding(
                     padding: EdgeInsets.all(3.0),
                     child: Align(
                       alignment: Alignment.topRight,
-                      child: CustomText(
-                        text: skip,
-                        color: hintColor,
-                        fontfamilly: montBold,
+                      child: GestureDetector(
+                        onTap: (){
+                          Navigator.pushNamed(context, '/BaseHome');
+                        },
+                        child: CustomText(
+                          text: skip,
+                          color: hintColor,
+                          fontfamilly: montBold,
+                        ),
                       ),
                     ),
                   ),
@@ -370,8 +375,7 @@ class NotificationTurnOnScreen extends StatelessWidget {
                                     "Notification update successfully") {
                               // Login successful
 
-                              Navigator.pushNamed(context, '/BaseHome');
-
+                              Navigator.pushNamedAndRemoveUntil(context, '/BaseHome', (Route route) => false);
                               // Print data to console
 
                               // Navigate to the next screen or perform other actions after login

@@ -18,7 +18,6 @@ import '../../MULTI-PROVIDER/SignUp_StepTwo.dart';
 import '../../UTILS/request_string.dart';
 import '../../UTILS/utils.dart';
 
-
 class UploadPhoto extends StatefulWidget {
   const UploadPhoto({super.key});
 
@@ -27,10 +26,8 @@ class UploadPhoto extends StatefulWidget {
 }
 
 class _UploadPhotoState extends State<UploadPhoto> {
-
   TextEditingController selectedImagePathController = TextEditingController();
   final SelectImageProvider selectImageProvider = SelectImageProvider();
-
 
   @override
   Widget build(BuildContext context) {
@@ -47,8 +44,8 @@ class _UploadPhotoState extends State<UploadPhoto> {
         selectedImagePathController.text = '';
         selectImageProvider.resetState();
 
-        Navigator.of(context).pushNamedAndRemoveUntil('/SignupScreen', (Route route) => false);
-
+        Navigator.of(context)
+            .pushNamedAndRemoveUntil('/SignupScreen', (Route route) => false);
 
         // Allow the back button action
         return true;
@@ -88,8 +85,10 @@ class _UploadPhotoState extends State<UploadPhoto> {
                           Align(
                             alignment: Alignment.centerRight,
                             child: GestureDetector(
-                              onTap: (){
-                                var saveUserImage = Provider.of<SignUp_StepTwo>(context, listen: false);
+                              onTap: () {
+                                var saveUserImage = Provider.of<SignUp_StepTwo>(
+                                    context,
+                                    listen: false);
 
                                 // Set user information in the provider
                                 saveUserImage.saveSignUpStepTwoData(
@@ -101,7 +100,8 @@ class _UploadPhotoState extends State<UploadPhoto> {
                                   user_image: '',
                                 );
 
-                                Navigator.pushNamed(context, '/SetYourPasswordScreen');
+                                Navigator.pushNamed(
+                                    context, '/SetYourPasswordScreen');
                               },
                               child: CustomText(
                                 text: skip,
@@ -124,7 +124,7 @@ class _UploadPhotoState extends State<UploadPhoto> {
                                 alignment: Alignment.topLeft,
                                 child: CustomText(
                                   text: profilePicture,
-                                  color: Colors.white,
+                                  color: Color(0xffD0E2F6),
                                   fontfamilly: montHeavy,
                                   sizeOfFont: 20,
                                 )),
@@ -142,6 +142,7 @@ class _UploadPhotoState extends State<UploadPhoto> {
                                           text: 'Optional',
                                           style: TextStyle(
                                             color: Colors.white,
+                                            fontFamily: montMedium
                                           ))
                                     ]),
                               ),
@@ -150,7 +151,7 @@ class _UploadPhotoState extends State<UploadPhoto> {
                         ),
                       ),
                       SizedBox(
-                        height: screenHeight * 0.04,
+                        height: 20,
                       ),
                       ClipRRect(
                         borderRadius: BorderRadius.circular(40.0),
@@ -162,19 +163,17 @@ class _UploadPhotoState extends State<UploadPhoto> {
                           // padding: const EdgeInsets.symmetric(
                           //     horizontal: 16, vertical: 12),
                           decoration: BoxDecoration(
+
                             image: selectedImagePathController.text.isNotEmpty
                                 ? DecorationImage(
-                                image: FileImage(File(
-
-                                    selectedImagePathController.text
-
-                                ),
-
-                                ))
+                              fit: BoxFit.fill ,
+                                    image: FileImage(
+                                    File(selectedImagePathController.text),
+                                  ))
                                 : const DecorationImage(
-                              image: AssetImage(upload_photo),
-                              fit: BoxFit.contain,
-                            ),
+                                    image: AssetImage(upload_photo),
+                                    fit: BoxFit.fill,
+                                  ),
                           ),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -185,13 +184,13 @@ class _UploadPhotoState extends State<UploadPhoto> {
                                   if (image != null) {
                                     // Update the selected image in the provider or state
                                     Provider.of<SelectImageProvider>(context,
-                                        listen: false)
+                                            listen: false)
                                         .setSelectedImage(image);
                                   }
                                 },
                                 child: Visibility(
                                   visible:
-                                  selectedImagePathController.text.isEmpty,
+                                      selectedImagePathController.text.isEmpty,
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
@@ -237,10 +236,10 @@ class _UploadPhotoState extends State<UploadPhoto> {
                       if (selectedImagePath.isNotEmpty) {
                         try {
                           var data = await Provider.of<AuthenticationProvider>(
-                              context,
-                              listen: false)
+                                  context,
+                                  listen: false)
                               .uploadMultipartImage(
-                              File(selectedImagePath), "registration");
+                                  File(selectedImagePath), "registration");
 
                           print(data);
 
@@ -308,7 +307,8 @@ class _UploadPhotoState extends State<UploadPhoto> {
                           print("Error: $e");
                         }
                       } else {
-                        var saveUserImage = Provider.of<SignUp_StepTwo>(context, listen: false);
+                        var saveUserImage =
+                            Provider.of<SignUp_StepTwo>(context, listen: false);
 
                         // Set user information in the provider
                         saveUserImage.saveSignUpStepTwoData(
@@ -403,7 +403,6 @@ class _UploadPhotoState extends State<UploadPhoto> {
     if (croppedFile != null) {
       setState(() {
         selectedImagePathController.text = croppedFile.path;
-
       });
       return croppedFile.path;
     } else {
@@ -412,5 +411,3 @@ class _UploadPhotoState extends State<UploadPhoto> {
     }
   }
 }
-
-

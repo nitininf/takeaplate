@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/common_button.dart';
@@ -101,9 +102,14 @@ class LogInScreen extends StatelessWidget {
 
                               if (emailController.text.isNotEmpty && passwordController.text.isNotEmpty) {
                                 try {
+
+                                  final fcmToken = await FirebaseMessaging.instance.getToken();
+
+
                                   var formData = {
                                     RequestString.EMAIL: emailController.text,
                                     RequestString.PASSWORD: passwordController.text,
+                                    RequestString.FCM_TOKEN: fcmToken,
 
                                   };
 

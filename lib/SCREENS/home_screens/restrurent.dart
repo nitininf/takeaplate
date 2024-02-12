@@ -44,7 +44,6 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
   List<FilterData> filterList = [];
   int dataId = 0;
 
-
   ScrollController _scrollController = ScrollController();
 
   @override
@@ -67,60 +66,53 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
   }
 
   void _loadData(int dataId) async {
-
-
-    Future.delayed(Duration.zero,() async {
-
-      if (!isLoading && hasMoreData) {
-        try {
-          setState(() {
-            isLoading = true;
-          });
-
-          final nextPageData = await restaurantsProvider.getRestaurantsList(
-            page: currentPage,dataId
-          );
-
-          if (nextPageData.data != null && nextPageData.data!.isNotEmpty) {
+    Future.delayed(
+      Duration.zero,
+      () async {
+        if (!isLoading && hasMoreData) {
+          try {
             setState(() {
-              if (mounted) {
-                if (isRefresh == true) {
-                  restaurantData.clear();
-                  restaurantData.addAll(nextPageData.data!);
-                  currentPage++;
-
-                  isRefresh = false;
-
-                } else {
-                  restaurantData.addAll(nextPageData.data!);
-                  currentPage++;
-                }
-              }
+              isLoading = true;
             });
-          } else {
+
+            final nextPageData = await restaurantsProvider.getRestaurantsList(
+                page: currentPage, dataId);
+
+            if (nextPageData.data != null && nextPageData.data!.isNotEmpty) {
+              setState(() {
+                if (mounted) {
+                  if (isRefresh == true) {
+                    restaurantData.clear();
+                    restaurantData.addAll(nextPageData.data!);
+                    currentPage++;
+
+                    isRefresh = false;
+                  } else {
+                    restaurantData.addAll(nextPageData.data!);
+                    currentPage++;
+                  }
+                }
+              });
+            } else {
+              setState(() {
+                if (mounted) {
+                  hasMoreData = false;
+                }
+              });
+            }
+          } catch (error) {
+            print(error);
+            //
+          } finally {
             setState(() {
               if (mounted) {
-                hasMoreData = false;
+                isLoading = false;
               }
             });
           }
-        } catch (error) {
-
-          print(error);
-          //
-        } finally {
-          setState(() {
-            if (mounted) {
-              isLoading = false;
-            }
-          });
         }
-      }
-
-
-    },);
-
-
+      },
+    );
   }
 
   void _loadFilterData() async {
@@ -130,12 +122,9 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
           isFilterLoading = true;
         });
 
-        final filterData = await homeProvider.getCategoryFilterData(
-
-        );
+        final filterData = await homeProvider.getCategoryFilterData();
 
         if (filterData.data != null && filterData.data!.isNotEmpty) {
-
           setState(() {
             if (mounted) {
               filterList = filterData.data!;
@@ -149,8 +138,6 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
             }
           });
         }
-
-
       } catch (error) {
         //
       } finally {
@@ -160,7 +147,6 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
       }
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -175,7 +161,7 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
             const SizedBox(height: 20),
             Consumer<SearchProvider>(
               builder: (context, searchProvider, child) {
-                return  TextFormField(
+                return TextFormField(
                   keyboardType: TextInputType.text,
                   onChanged: (query) async {
                     if (query.length >= 3) {
@@ -187,44 +173,41 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
                         var formData = {
                           "search_query": query,
                           'search_type': 'Restaurant',
-
                         };
 
-                        var data = await Provider.of<SearchProvider>(context, listen: false)
+                        var data = await Provider.of<SearchProvider>(context,
+                                listen: false)
                             .getSearchResult(formData);
 
-                        if (data.status == true && data.message == "Search successful") {
+                        if (data.status == true &&
+                            data.message == "Search successful") {
                           // Login successful
 
                           // Print data to console
                           setState(() {
                             restaurantData = data.restaurant!;
-
                           });
-
 
                           // Navigate to the next screen or perform other actions after login
                         } else {
                           // Login failed
 
                           final snackBar = SnackBar(
-                            content:  Text('${data.message}'),
-
+                            content: Text('${data.message}'),
                           );
 
                           // Show the SnackBar
                           ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
                           // Automatically hide the SnackBar after 1 second
-                          Future.delayed(const Duration(milliseconds: 1000), () {
+                          Future.delayed(const Duration(milliseconds: 1000),
+                              () {
                             ScaffoldMessenger.of(context).hideCurrentSnackBar();
                           });
-
                         }
                       } catch (e) {
                         // Display error message
                       }
-
 
                       // For simplicity, I'll just print the search query for now
                     }
@@ -262,11 +245,12 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
                       borderSide: BorderSide.none,
                     ),
                     suffixIcon: const Padding(
-                      padding: EdgeInsets.only(right: 20.0, top: 10, bottom: 10),
+                      padding:
+                          EdgeInsets.only(right: 20.0, top: 10, bottom: 10),
                       child: Icon(Icons.search, color: hintColor, size: 25),
                     ),
-
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 30, vertical: 13),
+                    contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 30, vertical: 13),
                     hintStyle: const TextStyle(
                       color: hintColor,
                       fontFamily: montBook,
@@ -275,13 +259,8 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
                     hintText: "Search",
                   ),
                 );
-
-
-
-
               },
             ),
-
             const Padding(
               padding: EdgeInsets.only(left: 13.0, top: 30),
               child: CustomText(
@@ -300,7 +279,8 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
 
   Widget buildHorizontalList(List<FilterData> filterList) {
     if (filterList.length <= 1) {
-      return const SizedBox.shrink(); // Return an empty widget if there's only 1 or no items
+      return const SizedBox
+          .shrink(); // Return an empty widget if there's only 1 or no items
     }
 
     return SingleChildScrollView(
@@ -309,7 +289,7 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
         mainAxisSize: MainAxisSize.min,
         children: List.generate(
           filterList.length - 1,
-              (index) => GestureDetector(
+          (index) => GestureDetector(
             onTap: () async {
               setState(() {
                 selectedCardIndex = index;
@@ -338,9 +318,7 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
         ),
       ),
     );
-
   }
-
 
   Widget buildVerticalCards() {
     return Expanded(
@@ -388,23 +366,20 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
   Future<void> _refreshData() async {
     // Call your API here to refresh the data
     try {
-
       // final refreshedData =
       //     await restaurantsProvider.getRestaurantsList(page: 1);
       //
       // if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
 
-        setState(() {
-          isRefresh = true;
+      setState(() {
+        isRefresh = true;
 
-          currentPage = 1; // Reset the page to 1 as you loaded the first page.
-          // hasMoreData = true; // Reset the flag for more data.
-          // restaurantData=refreshedData.data!;
+        currentPage = 1; // Reset the page to 1 as you loaded the first page.
+        // hasMoreData = true; // Reset the flag for more data.
+        // restaurantData=refreshedData.data!;
 
-          _loadData(dataId);
-
-        });
-
+        _loadData(dataId);
+      });
     } catch (error) {
       //
     }
@@ -521,7 +496,6 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
                     onTap: () async {
                       bool? ratingStatus = storeData.favourite;
 
-
                       try {
                         if (ratingStatus == false) {
                           // Only hit the API if storeData.favourite is true
@@ -550,7 +524,8 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
                                 .showSnackBar(snackBar);
 
                             // Automatically hide the SnackBar after 1 second
-                            Future.delayed(const Duration(milliseconds: 1000), () {
+                            Future.delayed(const Duration(milliseconds: 1000),
+                                () {
                               ScaffoldMessenger.of(context)
                                   .hideCurrentSnackBar();
                             });
@@ -560,7 +535,7 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
                             });
                             try {
                               final refreshedData = await restaurantsProvider
-                                  .getRestaurantsList(page: 1,dataId);
+                                  .getRestaurantsList(page: 1, dataId);
 
                               if (refreshedData.data != null &&
                                   refreshedData.data!.isNotEmpty) {
@@ -590,7 +565,8 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
                                 .showSnackBar(snackBar);
 
                             // Automatically hide the SnackBar after 1 second
-                            Future.delayed(const Duration(milliseconds: 1000), () {
+                            Future.delayed(const Duration(milliseconds: 1000),
+                                () {
                               ScaffoldMessenger.of(context)
                                   .hideCurrentSnackBar();
                             });
@@ -617,7 +593,8 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
                                 .showSnackBar(snackBar);
 
                             // Automatically hide the SnackBar after 1 second
-                            Future.delayed(const Duration(milliseconds: 1000), () {
+                            Future.delayed(const Duration(milliseconds: 1000),
+                                () {
                               ScaffoldMessenger.of(context)
                                   .hideCurrentSnackBar();
                             });
@@ -628,7 +605,7 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
 
                             try {
                               final refreshedData = await restaurantsProvider
-                                  .getRestaurantsList(page: 1,dataId);
+                                  .getRestaurantsList(page: 1, dataId);
 
                               if (refreshedData.data != null &&
                                   refreshedData.data!.isNotEmpty) {
@@ -656,7 +633,8 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
                                 .showSnackBar(snackBar);
 
                             // Automatically hide the SnackBar after 1 second
-                            Future.delayed(const Duration(milliseconds: 1000), () {
+                            Future.delayed(const Duration(milliseconds: 1000),
+                                () {
                               ScaffoldMessenger.of(context)
                                   .hideCurrentSnackBar();
                             });

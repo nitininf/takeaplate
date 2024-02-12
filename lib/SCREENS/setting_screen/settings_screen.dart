@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:takeaplate/CUSTOM_WIDGETS/common_button.dart';
@@ -20,6 +21,7 @@ import '../../UTILS/app_strings.dart';
 import '../../UTILS/dialog_helper.dart';
 import '../../UTILS/request_string.dart';
 import '../../UTILS/utils.dart';
+import '../home_screens/base_home.dart';
 
 class SettingScreen extends StatelessWidget {
   //var counterProvider=Provider.of<CommonCounter>(navigatorKey.currentContext!, listen: false);
@@ -209,6 +211,7 @@ class SettingScreen extends StatelessWidget {
                       child: ElevatedButton(
                         onPressed: () async {
                           if (title == deleteAccount) {
+                            BaseHome.isSearch = false;
                             try {
                               DeleteAccountResponse data =
                                   await Provider.of<AuthenticationProvider>(
@@ -256,10 +259,12 @@ class SettingScreen extends StatelessWidget {
                               print("Error: $e");
                             }
                           } else if (title == logout) {
+                            BaseHome.isSearch = false;
+
                             SharedPreferences.getInstance().then((prefs) {
                               prefs.clear();
                             });
-
+                            DefaultCacheManager().emptyCache();
                             // Navigate to the desired screen, e.g., login screen
 
                             Navigator.pushNamedAndRemoveUntil(

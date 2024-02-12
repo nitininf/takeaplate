@@ -10,8 +10,6 @@ import '../../Response_Model/SearchHistoryResponse.dart';
 import '../../UTILS/app_color.dart';
 import '../../UTILS/fontfamily_string.dart';
 
-
-
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
 
@@ -54,59 +52,52 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   void _loadData() async {
-
-
-    Future.delayed(Duration.zero,() async {
-
-      if (!isLoading && hasMoreData) {
-        try {
-          setState(() {
-            isLoading = true;
-          });
-
-          final nextPageData = await searchProvider.getSearchHistoryList(
-            page: currentPage,
-          );
-
-          if (nextPageData.data != null && nextPageData.data!.isNotEmpty) {
+    Future.delayed(
+      Duration.zero,
+      () async {
+        if (!isLoading && hasMoreData) {
+          try {
             setState(() {
-              if (mounted) {
-                if (isRefresh == true) {
-                  searchData.clear();
-                  searchData.addAll(nextPageData.data!);
-                  isRefresh = false;
-
-                  currentPage++;
-                } else {
-                  searchData.addAll(nextPageData.data!);
-                  currentPage++;
-                }
-              }
+              isLoading = true;
             });
-          } else {
+
+            final nextPageData = await searchProvider.getSearchHistoryList(
+              page: currentPage,
+            );
+
+            if (nextPageData.data != null && nextPageData.data!.isNotEmpty) {
+              setState(() {
+                if (mounted) {
+                  if (isRefresh == true) {
+                    searchData.clear();
+                    searchData.addAll(nextPageData.data!);
+                    isRefresh = false;
+
+                    currentPage++;
+                  } else {
+                    searchData.addAll(nextPageData.data!);
+                    currentPage++;
+                  }
+                }
+              });
+            } else {
+              setState(() {
+                if (mounted) {
+                  hasMoreData = false;
+                }
+              });
+            }
+          } catch (error) {
+          } finally {
             setState(() {
               if (mounted) {
-                hasMoreData = false;
+                isLoading = false;
               }
             });
           }
-        } catch (error) {
-        } finally {
-          setState(() {
-            if (mounted) {
-              isLoading = false;
-            }
-          });
         }
-      }
-
-
-
-    },);
-
-
-
-
+      },
+    );
   }
 
   @override
@@ -144,10 +135,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 decoration: InputDecoration(
                   filled: true,
                   fillColor: editbgColor,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(20),
-                    borderSide: BorderSide.none,
-                  ),
+                  border: InputBorder.none,
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(20),
                     borderSide: BorderSide.none,
@@ -180,8 +168,9 @@ class _SearchScreenState extends State<SearchScreen> {
                 onEditingComplete: () {
                   // Navigate to login screen
                   Navigator.pushReplacementNamed(
-                    arguments:_searchController.text,
-                      context, '/SearchResultScreen');
+                      arguments: _searchController.text,
+                      context,
+                      '/SearchResultScreen');
                 },
               ),
               const Padding(
@@ -235,8 +224,9 @@ class _SearchScreenState extends State<SearchScreen> {
               return GestureDetector(
                 onTap: () {
                   Navigator.pushReplacementNamed(
-                      arguments:searchData[index].searchTerm,
-                      context, '/SearchResultScreen');
+                      arguments: searchData[index].searchTerm,
+                      context,
+                      '/SearchResultScreen');
                 },
                 child: getView(index, searchData[index]),
               );

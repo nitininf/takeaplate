@@ -246,7 +246,7 @@ print('token:$token');
       try {
         _dio?.options.connectTimeout = Duration(milliseconds: connectTimeOut);
         response = await _dio!.post(
-           'http://3.145.80.252/api/upload-image',
+           'http://18.220.120.69/api/upload-image',
             data: formData,
             cancelToken: _cancelRequestToken,
             options: Options(

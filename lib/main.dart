@@ -1,8 +1,12 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:takeaplate/SCREENS/onboarding_screen/onboarding_screens.dart';
 import 'MULTI-PROVIDER/multiproviders.dart';
 import 'SCREENS/splash_screen/splash_screen.dart';
+import 'UTILS/PushNotificationService.dart';
+import 'firebase_options.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -14,6 +18,17 @@ main() async {
   ]);
   //WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
 
+
+  // await Firebase.initializeApp(
+  //   options: DefaultFirebaseOptions.currentPlatform,
+  // );
+  //
+  // await FirebaseMessaging.instance.setAutoInitEnabled(true);
+
+
+
+
+
   runApp(const MyApp()); //MyUserList()
 // whenever your initialization is completed, remove the splash screen:
   // FlutterNativeSplash.remove();
@@ -21,6 +36,14 @@ main() async {
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.light,
       statusBarBrightness: Brightness.dark));
+
+
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+  final fcmToken = await FirebaseMessaging.instance.getToken();
+  await FirebaseMessaging.instance.setAutoInitEnabled(true);
+  print("FCMToken $fcmToken");
 }
 
 class MyApp extends StatelessWidget {

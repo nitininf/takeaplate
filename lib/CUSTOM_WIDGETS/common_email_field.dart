@@ -60,9 +60,10 @@ class CommonEmailField extends StatelessWidget {
       maxLines: maxLine ?? 1,
       controller: controller,
       style: TextStyle(
-        fontSize: 18,
+        fontSize: 20,
         fontFamily: montBook,
-        color: isbgColor ? btntxtColor : readybgColor,
+        color: isbgColor ? btntxtColor : hintColor,
+        // color: isbgColor ? btntxtColor : readybgColor,
 
         decoration: TextDecoration.none,
         decorationThickness: 0,

@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyCV8GwRohvTqHhej84MLX2gf27VJlKTIig</string>
+	<string>AIzaSyAuJVM5LA7sdQTRZAceM8ZEb7cjqJpHYpk</string>
 	<key>GCM_SENDER_ID</key>
-	<string>562730144845</string>
+	<string>307471951857</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.takeaplate</string>
 	<key>PROJECT_ID</key>
-	<string>take-a-plate-356e3</string>
+	<string>takeaplate-2e5b5</string>
 	<key>STORAGE_BUCKET</key>
-	<string>take-a-plate-356e3.appspot.com</string>
+	<string>takeaplate-2e5b5.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:562730144845:ios:cbc453f68d6fc37ff93804</string>
+	<string>1:307471951857:ios:c0a949deb9ba98d2ba4650</string>
 </dict>
 </plist>
