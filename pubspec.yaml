@@ -56,6 +56,8 @@ dependencies:
   flutter_widget_from_html: ^0.14.11
   flutter_animate: ^4.5.0
   flutter_cache_manager: ^3.3.1
+  flutter_stripe: ^5.0.0
+  flutter_dotenv: ^5.0.2
 
 
 
@@ -98,6 +100,7 @@ flutter:
   assets:
     - images/
     - fonts/
+    - assets/.env
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

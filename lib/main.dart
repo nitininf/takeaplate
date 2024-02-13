@@ -2,8 +2,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:takeaplate/SCREENS/onboarding_screen/onboarding_screens.dart';
 import 'MULTI-PROVIDER/multiproviders.dart';
+import 'SCREENS/STRIPE/payment_screen.dart';
 import 'SCREENS/splash_screen/splash_screen.dart';
 import 'UTILS/PushNotificationService.dart';
 import 'firebase_options.dart';
@@ -26,6 +29,10 @@ main() async {
   // await FirebaseMessaging.instance.setAutoInitEnabled(true);
 
 
+  Stripe.publishableKey = "pk_test_51OhnPMEZpEOHAybdKjB84iswQCUqYgrKIH8IAgAg5D2dgsk1snSfw4fZpeoT3fk1GWQlS9GlwqQ4h9m5qchcXZHC00v0veYOQ8";
+
+  //Load our .env file that contains our Stripe Secret key
+  await dotenv.load(fileName: "assets/.env");
 
 
 
@@ -81,7 +88,7 @@ class _AppRootState extends State<AppRoot> {
         builder: (context, snapshot) =>
             snapshot.connectionState != ConnectionState.done
                 ? SplashScreen() //OnBoardingScreen()
-                : const OnBoardingScreen() //Screen1(),
+                : PaymentScreen() //Screen1(),
         );
   }
 }
