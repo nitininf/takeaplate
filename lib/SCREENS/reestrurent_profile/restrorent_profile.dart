@@ -604,9 +604,9 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
                       const SizedBox(
                         width: 5,
                       ),
-                      const Expanded(
+                       Expanded(
                           child: CustomText(
-                              text: "84 Km",
+                              text: '${data.store?.distanceKm}',
                               maxLin: 1,
                               color: graysColor,
                               sizeOfFont: 12,

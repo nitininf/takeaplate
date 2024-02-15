@@ -6,8 +6,8 @@ class RestaurantsListResponse {
   int? perPage;
   int? total;
   int? lastPage;
-  String? nextPageUrl;
-  String? prevPageUrl;
+  Null? nextPageUrl;
+  Null? prevPageUrl;
 
   RestaurantsListResponse(
       {this.message,
@@ -48,8 +48,8 @@ class RestaurantsListResponse {
     data['perPage'] = this.perPage;
     data['total'] = this.total;
     data['lastPage'] = this.lastPage;
-    data['nextPageUrl'] = this.nextPageUrl;
-    data['prevPageUrl'] = this.prevPageUrl;
+    data['nextPageUrl'] = nextPageUrl;
+    data['prevPageUrl'] = prevPageUrl;
     return data;
   }
 }
@@ -67,10 +67,16 @@ class StoreData {
   String? pin;
   OpeningHour? openingHour;
   PickupTime? pickupTime;
-  String? deletedAt;
+  Null? deletedAt;
   String? createdAt;
   String? updatedAt;
-  var favourite;
+  int? status;
+  String? password;
+  String? accountStatus;
+  int? isActive;
+  String? commission;
+  bool? favourite;
+  String? distanceKm;
 
   StoreData(
       {this.id,
@@ -88,7 +94,13 @@ class StoreData {
         this.deletedAt,
         this.createdAt,
         this.updatedAt,
-        this.favourite});
+        this.status,
+        this.password,
+        this.accountStatus,
+        this.isActive,
+        this.commission,
+        this.favourite,
+        this.distanceKm});
 
   StoreData.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -110,7 +122,13 @@ class StoreData {
     deletedAt = json['deleted_at'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    status = json['status'];
+    password = json['password'];
+    accountStatus = json['account_status'];
+    isActive = json['is_active'];
+    commission = json['commission'];
     favourite = json['favourite'];
+    distanceKm = json['distance_km'];
   }
 
   Map<String, dynamic> toJson() {
@@ -134,7 +152,13 @@ class StoreData {
     data['deleted_at'] = this.deletedAt;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
+    data['status'] = this.status;
+    data['password'] = this.password;
+    data['account_status'] = this.accountStatus;
+    data['is_active'] = this.isActive;
+    data['commission'] = this.commission;
     data['favourite'] = this.favourite;
+    data['distance_km'] = this.distanceKm;
     return data;
   }
 }

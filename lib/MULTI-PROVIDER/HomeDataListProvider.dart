@@ -11,13 +11,14 @@ import '../Response_Model/RestaurantsListResponse.dart';
 class HomeDataListProvider extends ChangeNotifier {
   final Network _network = Network();
 
-  Future<HomeItemsListingResponse> getHomePageList( int filterId, {int page = 1}) async {
-
+  Future<HomeItemsListingResponse> getHomePageList(
+      int filterId, dynamic formData,
+      {int page = 1}) async {
     try {
-      final response = await _network.getRequest(
-        endPoint: '/home-data/$filterId', // Replace with your actual API endpoint
-
-      );
+      final response = await _network.postRequest(
+          endPoint: '/home-data/$filterId',
+          // Replace with your actual API endpoint
+          formData: formData);
 
       print("Home Page's response : ${response}");
 
@@ -38,11 +39,9 @@ class HomeDataListProvider extends ChangeNotifier {
   }
 
   Future<ProfilePageResponse> getProfilePageData({int page = 1}) async {
-
     try {
       final response = await _network.getRequest(
         endPoint: '/profile-data', // Replace with your actual API endpoint
-
       );
 
       print("Profile Page's response : ${response}");
@@ -64,11 +63,9 @@ class HomeDataListProvider extends ChangeNotifier {
   }
 
   Future<CategoryFilterResponse> getCategoryFilterData({int page = 1}) async {
-
     try {
       final response = await _network.getRequest(
         endPoint: '/category-search', // Replace with your actual API endpoint
-
       );
 
       print("Filter response : ${response}");
@@ -88,5 +85,4 @@ class HomeDataListProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
-
 }

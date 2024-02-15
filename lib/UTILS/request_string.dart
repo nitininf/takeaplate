@@ -79,6 +79,8 @@ class RequestString{
 
 
 
+  static const String LATITUDE = "latitude";
+  static const String LONGITUDE = "longitude";
 
 
 

@@ -16,6 +16,7 @@ import '../../Response_Model/FavAddedResponse.dart';
 import '../../Response_Model/FavDeleteResponse.dart';
 import '../../Response_Model/RestaurantDealResponse.dart';
 import '../../Response_Model/RestaurantsListResponse.dart';
+import '../../UTILS/request_string.dart';
 import 'base_home.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -56,18 +57,20 @@ class _HomeScreenState extends State<HomeScreen> {
 
   int dataId = 0;
 
-  String _latitude = 'Unknown';
-  String _longitude = 'Unknown';
+  String _latitude = '';
+  String _longitude = '';
 
   @override
   void initState() {
     super.initState();
-    _loadData(dataId);
-    _loadFilterData();
+
     _getLocation();
+
+
+    _loadFilterData();
   }
 
-  Future<void> _getLocation() async {
+  void _getLocation() async {
     bool serviceEnabled;
     LocationPermission permission;
 
@@ -95,9 +98,12 @@ class _HomeScreenState extends State<HomeScreen> {
       // Get the current location
       Position position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.best);
-      setState(() {
+      setState(() async {
         _latitude = '${position.latitude}';
         _longitude = '${position.longitude}';
+        _loadData(dataId);
+
+
       });
 
       print(
@@ -117,14 +123,20 @@ class _HomeScreenState extends State<HomeScreen> {
               isLoading = true;
             });
 
-            final nextPageData =
-                await homeProvider.getHomePageList(page: currentPage, dataId);
+            var formData = {
+              RequestString.LATITUDE: _latitude,
+              RequestString.LONGITUDE: _longitude,
+
+            };
+
+            final nextPageData = await homeProvider.getHomePageList(page: currentPage, dataId,formData);
 
             if (nextPageData.data != null && nextPageData.data!.isNotEmpty) {
               currentPage++;
 
               setState(() {
                 if (mounted) {
+
                   closestRestaurants = nextPageData.data!;
                 }
               });
@@ -532,8 +544,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       color: editbgColor,
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    child: const CustomText(
-                      text: "4 km",
+                    child:  CustomText(
+                      text: '${storeData.distanceKm} km'?? "NA",
                       maxLin: 1,
                       sizeOfFont: 10,
                       fontfamilly: montHeavy,
@@ -1615,8 +1627,15 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> refreshData() async {
+
+    var formData = {
+      RequestString.LATITUDE: _latitude,
+      RequestString.LONGITUDE: _longitude,
+
+    };
+
     final nextPageData =
-        await homeProvider.getHomePageList(page: currentPage, dataId);
+        await homeProvider.getHomePageList(page: currentPage, dataId,formData);
 
     if (nextPageData.data != null && nextPageData.data!.isNotEmpty) {
       currentPage++;

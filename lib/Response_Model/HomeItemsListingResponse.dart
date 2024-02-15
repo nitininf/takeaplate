@@ -41,12 +41,7 @@ class HomeItemsListingResponse {
         favoriteStores!.add(new StoreData.fromJson(v));
       });
     }
-    // if (json['favoriteDeals'] != null) {
-    //   favoriteDeals = <DealData>[];
-    //   json['favoriteDeals'].forEach((v) {
-    //     favoriteDeals!.add(new DealData.fromJson(v));
-    //   });
-    // }
+
     if (json['collectTomorrow'] != null) {
       collectTomorrow = <DealData>[];
       json['collectTomorrow'].forEach((v) {

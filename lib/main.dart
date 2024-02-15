@@ -6,7 +6,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:takeaplate/SCREENS/onboarding_screen/onboarding_screens.dart';
 import 'MULTI-PROVIDER/multiproviders.dart';
-import 'SCREENS/STRIPE/payment_screen.dart';
 import 'SCREENS/splash_screen/splash_screen.dart';
 import 'UTILS/PushNotificationService.dart';
 import 'firebase_options.dart';
@@ -37,7 +36,7 @@ main() async {
 
 
   runApp(const MyApp()); //MyUserList()
-// whenever your initialization is completed, remove the splash screen:
+  // whenever your initialization is completed, remove the splash screen:
   // FlutterNativeSplash.remove();
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
@@ -88,7 +87,7 @@ class _AppRootState extends State<AppRoot> {
         builder: (context, snapshot) =>
             snapshot.connectionState != ConnectionState.done
                 ? SplashScreen() //OnBoardingScreen()
-                : PaymentScreen() //Screen1(),
+                : const OnBoardingScreen() //Screen1(),
         );
   }
 }

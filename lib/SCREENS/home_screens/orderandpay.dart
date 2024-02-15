@@ -296,7 +296,7 @@ class OrderAndPayScreen extends StatelessWidget {
                   ],
                 ),
                 CustomText(
-                  text: orderAndPayProvider.foodData[0]["distance"],
+                  text:data.store!.distanceKm ?? "NA",
                   color: editbgColor,
                   fontfamilly: montMedium,
                   sizeOfFont: 17,
