@@ -203,6 +203,8 @@ class Store {
         this.commission,
         this.distanceKm});
 
+
+
   Store.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
@@ -229,6 +231,12 @@ class Store {
     isActive = json['is_active'];
     commission = json['commission'];
     distanceKm = json['distance_km'];
+  }
+
+
+  @override
+  String toString() {
+    return 'Store: { id: $id, name: $name, address: $address, email: $email, phoneNo: $phoneNo, category: $category, profileImage: $profileImage, description: $description, bannerImage: $bannerImage, pin: $pin, openingHour: $openingHour, pickupTime: $pickupTime, deletedAt: $deletedAt, createdAt: $createdAt, updatedAt: $updatedAt, status: $status, password: $password, accountStatus: $accountStatus, isActive: $isActive, commission: $commission, distanceKm: $distanceKm }';
   }
 
   Map<String, dynamic> toJson() {

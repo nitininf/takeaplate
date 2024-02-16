@@ -501,8 +501,8 @@ if(nameController.text.isNotEmpty && cardNumberController.text.isNotEmpty && exp
                   const SizedBox(
                     width: 10,
                   ),
-                  const CustomText(
-                      text: '8KM',
+                   CustomText(
+                      text: '${lastMinuteDeal.store?.distanceKm} Km',
                       color: graysColor,
                       sizeOfFont: 12,
                       fontfamilly: montSemiBold),

@@ -6,8 +6,8 @@ class RestaurantsListResponse {
   int? perPage;
   int? total;
   int? lastPage;
-  Null? nextPageUrl;
-  Null? prevPageUrl;
+  String? nextPageUrl;
+  String? prevPageUrl;
 
   RestaurantsListResponse(
       {this.message,
@@ -67,7 +67,7 @@ class StoreData {
   String? pin;
   OpeningHour? openingHour;
   PickupTime? pickupTime;
-  Null? deletedAt;
+  String? deletedAt;
   String? createdAt;
   String? updatedAt;
   int? status;

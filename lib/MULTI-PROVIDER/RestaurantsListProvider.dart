@@ -10,11 +10,12 @@ class RestaurantsListProvider extends ChangeNotifier {
   final Network _network = Network();
 
 
-  Future<RestaurantsListResponse> getRestaurantsList( int filterId, {int page = 1}) async {
+  Future<RestaurantsListResponse> getRestaurantsList( int filterId, dynamic formData, {int page = 1}) async {
     // Make network request with pagination parameters
     // You might need to update your API endpoint to support pagination
-    final response = await _network.getRequest(
+    final response = await _network.postRequest(
       endPoint: '/store-list/$filterId/$page',
+      formData: formData
     );
 
     if (response != null && response.data is Map<String, dynamic>) {
@@ -81,12 +82,12 @@ class RestaurantsListProvider extends ChangeNotifier {
     }
   }
 
-  Future<RestaurentDealResponse> getRestaurantsDealsList(int? restaurantId,{int page = 1}) async {
+  Future<RestaurentDealResponse> getRestaurantsDealsList(int? restaurantId, dynamic formData,{int page = 1}) async {
 
     try {
-      final response = await _network.getRequest(
+      final response = await _network.postRequest(
         endPoint: '/get-deal/${restaurantId}/$page', // Replace with your actual API endpoint
-
+formData: formData
       );
 
       print("Restaurant's Deal response : ${response}");

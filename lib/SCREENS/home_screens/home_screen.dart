@@ -17,6 +17,7 @@ import '../../Response_Model/FavDeleteResponse.dart';
 import '../../Response_Model/RestaurantDealResponse.dart';
 import '../../Response_Model/RestaurantsListResponse.dart';
 import '../../UTILS/request_string.dart';
+import '../../UTILS/utils.dart';
 import 'base_home.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -101,6 +102,16 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() async {
         _latitude = '${position.latitude}';
         _longitude = '${position.longitude}';
+
+        await Utility.getSharedPreferences();
+
+
+        await Utility.setStringValue(
+            RequestString.LATITUDE, _latitude);
+        await Utility.setStringValue(
+            RequestString.LONGITUDE, _longitude);
+
+
         _loadData(dataId);
 
 
@@ -122,6 +133,10 @@ class _HomeScreenState extends State<HomeScreen> {
             setState(() {
               isLoading = true;
             });
+
+
+
+
 
             var formData = {
               RequestString.LATITUDE: _latitude,

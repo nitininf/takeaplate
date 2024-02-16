@@ -14,6 +14,7 @@ import '../../Response_Model/RestaurantDealResponse.dart';
 import '../../UTILS/app_color.dart';
 import '../../UTILS/app_images.dart';
 import '../../UTILS/fontfamily_string.dart';
+import '../../UTILS/request_string.dart';
 
 class RestaurantsProfileScreen extends StatefulWidget {
   RestaurantsProfileScreen({super.key, required this.context});
@@ -73,8 +74,14 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
             isLoading = true;
           });
 
+          var formData = {
+            RequestString.LATITUDE: "28.581823",
+            RequestString.LONGITUDE: "77.3197478",
+
+          };
+
           final nextPageData = await restaurantsProvider.getRestaurantsDealsList(
-            data.id,
+            data.id,formData,
             page: currentPage,
           );
 
@@ -429,16 +436,7 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
           itemBuilder: (context, index) {
             if (index < currentList.length) {
               // Display restaurant card
-              return GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(
-                    navigatorKey.currentContext!,
-                    '/RestaurantsProfileScreen',
-                    arguments: currentList[index],
-                  );
-                },
-                child: getFavCards(index, currentList[index]),
-              );
+              return getFavCards(index, currentList[index]);
             } else {
               // Display loading indicator while fetching more data
               return FutureBuilder(
@@ -461,8 +459,17 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
     // Call your API here to refresh the data
     try {
 
+      var formData = {
+        RequestString.LATITUDE: "28.581823",
+        RequestString.LONGITUDE: "77.3197478",
+
+      };
+
+
+
+
       final nextPageData = await restaurantsProvider.getRestaurantsDealsList(
-        data.id,
+        data.id,formData,
         page: currentPage,
       );
 
@@ -513,40 +520,45 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
     }
   }
 
-  Widget getFavCards(int index, DealData data) {
+  Widget getFavCards(int index, DealData dealData) {
     var currentDay = DateTime.now().weekday;
     var startTiming = '';
     var endTiming = '';
 
     if (currentDay == 1) {
-      startTiming = data.store?.openingHour?.monday?.start ?? '';
-      endTiming = data.store?.openingHour?.monday?.end ?? '';
+      startTiming = dealData.store?.openingHour?.monday?.start ?? '';
+      endTiming = dealData.store?.openingHour?.monday?.end ?? '';
     } else if (currentDay == 2) {
-      startTiming = data.store?.openingHour?.tuesday?.start ?? '';
-      endTiming = data.store?.openingHour?.tuesday?.end ?? '';
+      startTiming = dealData.store?.openingHour?.tuesday?.start ?? '';
+      endTiming = dealData.store?.openingHour?.tuesday?.end ?? '';
     } else if (currentDay == 3) {
-      startTiming = data.store?.openingHour?.wednesday?.start ?? '';
-      endTiming = data.store?.openingHour?.wednesday?.end ?? '';
+      startTiming = dealData.store?.openingHour?.wednesday?.start ?? '';
+      endTiming = dealData.store?.openingHour?.wednesday?.end ?? '';
     } else if (currentDay == 4) {
-      startTiming = data.store?.openingHour?.thursday?.start ?? '';
-      endTiming = data.store?.openingHour?.thursday?.end ?? '';
+      startTiming = dealData.store?.openingHour?.thursday?.start ?? '';
+      endTiming = dealData.store?.openingHour?.thursday?.end ?? '';
     } else if (currentDay == 5) {
-      startTiming = data.store?.openingHour?.friday?.start ?? '';
-      endTiming = data.store?.openingHour?.friday?.end ?? '';
+      startTiming = dealData.store?.openingHour?.friday?.start ?? '';
+      endTiming = dealData.store?.openingHour?.friday?.end ?? '';
     } else if (currentDay == 6) {
-      startTiming = data.store?.openingHour?.saturday?.start ?? '';
-      endTiming = data.store?.openingHour?.saturday?.end ?? '';
+      startTiming = dealData.store?.openingHour?.saturday?.start ?? '';
+      endTiming = dealData.store?.openingHour?.saturday?.end ?? '';
     } else if (currentDay == 7) {
-      startTiming = data.store?.openingHour?.sunday?.start ?? '';
-      endTiming = data.store?.openingHour?.sunday?.end ?? '';
+      startTiming = dealData.store?.openingHour?.sunday?.start ?? '';
+      endTiming = dealData.store?.openingHour?.sunday?.end ?? '';
     }
+
+    var storeData = dealData.store.toString();
+
+
+    print('store:${storeData}\ndealData:${dealData.id}\nstoreId:${dealData.store?.id}\nkilometer:${dealData.store?.distanceKm}');
 
     return GestureDetector(
       onTap: () {
         Navigator.pushNamed(
           navigatorKey.currentContext!,
           '/OrderAndPayScreen',
-          arguments: data,
+          arguments: dealData,
         );
       },
       child: Container(
@@ -566,14 +578,14 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CustomText(
-                    text: data.name ?? "",
+                    text: dealData.name ?? "",
                     maxLin: 1,
                     color: btntxtColor,
                     fontfamilly: montBold,
                     sizeOfFont: 18,
                   ),
                   CustomText(
-                    text: data.store?.name ?? "",
+                    text: dealData.store?.name ?? "",
                     maxLin: 1,
                     color: btntxtColor,
                     fontfamilly: montRegular,
@@ -597,7 +609,7 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
                         isHalfAllowed: true,
                         halfFilledColor: btnbgColor,
                         filledColor: btnbgColor,
-                        initialRating: double.parse(data.averageRating ?? '2'),
+                        initialRating: double.parse(dealData.averageRating ?? '2'),
                         size: 18,
                         maxRating: 5,
                       ),
@@ -606,7 +618,7 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
                       ),
                        Expanded(
                           child: CustomText(
-                              text: '${data.store?.distanceKm}',
+                              text: '${data.distanceKm} Km',
                               maxLin: 1,
                               color: graysColor,
                               sizeOfFont: 12,
@@ -614,7 +626,7 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
                     ],
                   ),
                   CustomText(
-                    text: '\$ ${data.price ?? ""}',
+                    text: '\$ ${dealData.price ?? ""}',
                     color: dolorColor,
                     sizeOfFont: 20,
                     fontfamilly: montHeavy,
@@ -645,12 +657,12 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
                           ], // Adjust colors as needed
                         ),
                       ),
-                      child: data.profileImage != null &&
-                              !(data.profileImage)!.contains("SocketException")
+                      child: dealData.profileImage != null &&
+                              !(dealData.profileImage)!.contains("SocketException")
                           ? ClipRRect(
                               borderRadius: BorderRadius.circular(15.0),
                               child: Image.network(
-                                data.profileImage!,
+                                dealData.profileImage!,
                                 fit: BoxFit.cover,
                                 height: 100,
                                 width: 100,
@@ -666,12 +678,12 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
                     right: -4,
                     child: GestureDetector(
                       onTap: () async {
-                        int? dealId = data.id;
-                        int? storeId = data.storeId;
+                        int? dealId = dealData.id;
+                        int? storeId = dealData.storeId;
 
 
                         try {
-                          if (data.favourite == false) {
+                          if (dealData.favourite == false) {
                             // Only hit the API if data.favourite is true
                             var formData = {
                               'favourite': 1,
@@ -703,12 +715,19 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
                               });
 
                               setState(() {
-                                data.favourite = true;
+                                dealData.favourite = true;
                               });
 
                               try {
+
+                                var formData = {
+                                  RequestString.LATITUDE: "28.581823",
+                                  RequestString.LONGITUDE: "77.3197478",
+
+                                };
+
                                 final refreshedData = await restaurantsProvider
-                                    .getRestaurantsDealsList(storeId, page: 1);
+                                    .getRestaurantsDealsList(storeId,formData, page: 1);
 
                                 if (refreshedData.data != null &&
                                     refreshedData.data!.isNotEmpty) {
@@ -761,13 +780,13 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
                                     .hideCurrentSnackBar();
                               });
                             }
-                          } else if (data.favourite == true) {
+                          } else if (dealData.favourite == true) {
                             // If data.favourite is false, print its value
                             FavDeleteResponse delData =
                                 await Provider.of<FavoriteOperationProvider>(
                                         context,
                                         listen: false)
-                                    .RemoveFromFavoriteDeal(data.id ?? 0);
+                                    .RemoveFromFavoriteDeal(dealData.id ?? 0);
 
                             if (delData.status == true &&
                                 delData.message ==
@@ -789,12 +808,19 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
                               });
 
                               setState(() {
-                                data.favourite = false;
+                                dealData.favourite = false;
                               });
 
                               try {
+
+
+                                var formData = {
+                                  RequestString.LATITUDE: "28.581823",
+                                  RequestString.LONGITUDE: "77.3197478",
+
+                                };
                                 final refreshedData = await restaurantsProvider
-                                    .getRestaurantsDealsList(storeId, page: 1);
+                                    .getRestaurantsDealsList(storeId,formData, page: 1);
 
                                 if (refreshedData.data != null &&
                                     refreshedData.data!.isNotEmpty) {
@@ -854,7 +880,7 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
                       child: Image.asset(
                         height: 15,
                         width: 18,
-                        data.favourite == true ? save_icon_red : save_icon,
+                        dealData.favourite == true ? save_icon_red : save_icon,
                       ),
                     ),
                   ),
