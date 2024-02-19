@@ -70,9 +70,12 @@ class DealData {
   String? createdAt;
   String? updatedAt;
   int? collectTomorrow;
-  var favourite;
+  int? status;
+  int? reported;
+  String? oneTimeDate;
+  bool? favourite;
   String? averageRating;
-  CustomTime? customTime;
+  String? customTime;
   Store? store;
 
   DealData(
@@ -91,6 +94,9 @@ class DealData {
         this.createdAt,
         this.updatedAt,
         this.collectTomorrow,
+        this.status,
+        this.reported,
+        this.oneTimeDate,
         this.favourite,
         this.averageRating,
         this.customTime,
@@ -112,11 +118,12 @@ class DealData {
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     collectTomorrow = json['collect_tomorrow'];
+    status = json['status'];
+    reported = json['reported'];
+    oneTimeDate = json['one_time_date'];
     favourite = json['favourite'];
     averageRating = json['average_rating'];
-    customTime = json['custom_time'] != null
-        ? new CustomTime.fromJson(json['custom_time'])
-        : null;
+    customTime = json['custom_time'];
     store = json['store'] != null ? new Store.fromJson(json['store']) : null;
   }
 
@@ -137,55 +144,15 @@ class DealData {
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
     data['collect_tomorrow'] = this.collectTomorrow;
+    data['status'] = this.status;
+    data['reported'] = this.reported;
+    data['one_time_date'] = this.oneTimeDate;
     data['favourite'] = this.favourite;
     data['average_rating'] = this.averageRating;
-    if (this.customTime != null) {
-      data['custom_time'] = this.customTime!.toJson();
-    }
+    data['custom_time'] = this.customTime;
     if (this.store != null) {
       data['store'] = this.store!.toJson();
     }
-    return data;
-  }
-}
-
-class CustomTime {
-  int? id;
-  String? days;
-  String? startTime;
-  String? endTime;
-  int? dealId;
-  String? createdAt;
-  String? updatedAt;
-
-  CustomTime(
-      {this.id,
-        this.days,
-        this.startTime,
-        this.endTime,
-        this.dealId,
-        this.createdAt,
-        this.updatedAt});
-
-  CustomTime.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    days = json['days'];
-    startTime = json['start_time'];
-    endTime = json['end_time'];
-    dealId = json['deal_id'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['days'] = this.days;
-    data['start_time'] = this.startTime;
-    data['end_time'] = this.endTime;
-    data['deal_id'] = this.dealId;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
     return data;
   }
 }
@@ -206,6 +173,12 @@ class Store {
   String? deletedAt;
   String? createdAt;
   String? updatedAt;
+  int? status;
+  String? password;
+  String? accountStatus;
+  int? isActive;
+  String? commission;
+  String? distanceKm;
 
   Store(
       {this.id,
@@ -222,7 +195,15 @@ class Store {
         this.pickupTime,
         this.deletedAt,
         this.createdAt,
-        this.updatedAt});
+        this.updatedAt,
+        this.status,
+        this.password,
+        this.accountStatus,
+        this.isActive,
+        this.commission,
+        this.distanceKm});
+
+
 
   Store.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -244,6 +225,18 @@ class Store {
     deletedAt = json['deleted_at'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    status = json['status'];
+    password = json['password'];
+    accountStatus = json['account_status'];
+    isActive = json['is_active'];
+    commission = json['commission'];
+    distanceKm = json['distance_km'];
+  }
+
+
+  @override
+  String toString() {
+    return 'Store: { id: $id, name: $name, address: $address, email: $email, phoneNo: $phoneNo, category: $category, profileImage: $profileImage, description: $description, bannerImage: $bannerImage, pin: $pin, openingHour: $openingHour, pickupTime: $pickupTime, deletedAt: $deletedAt, createdAt: $createdAt, updatedAt: $updatedAt, status: $status, password: $password, accountStatus: $accountStatus, isActive: $isActive, commission: $commission, distanceKm: $distanceKm }';
   }
 
   Map<String, dynamic> toJson() {
@@ -267,6 +260,12 @@ class Store {
     data['deleted_at'] = this.deletedAt;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
+    data['status'] = this.status;
+    data['password'] = this.password;
+    data['account_status'] = this.accountStatus;
+    data['is_active'] = this.isActive;
+    data['commission'] = this.commission;
+    data['distance_km'] = this.distanceKm;
     return data;
   }
 }

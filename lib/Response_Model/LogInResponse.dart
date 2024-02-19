@@ -1,16 +1,19 @@
 class LoginResponse {
   String? message;
   bool? status;
-  LoginData? data;
+  Data? data;
   String? token;
+  String? fcmToken;
 
-  LoginResponse({this.message, this.status, this.data, this.token});
+  LoginResponse(
+      {this.message, this.status, this.data, this.token, this.fcmToken});
 
   LoginResponse.fromJson(Map<String, dynamic> json) {
     message = json['message'];
     status = json['status'];
-    data = json['data'] != null ? new LoginData.fromJson(json['data']) : null;
+    data = json['data'] != null ? new Data.fromJson(json['data']) : null;
     token = json['token'];
+    fcmToken = json['fcm_token'];
   }
 
   Map<String, dynamic> toJson() {
@@ -21,26 +24,30 @@ class LoginResponse {
       data['data'] = this.data!.toJson();
     }
     data['token'] = this.token;
+    data['fcm_token'] = this.fcmToken;
     return data;
   }
 }
 
-class LoginData {
+class Data {
   int? id;
   String? name;
   String? email;
-  Null? emailVerifiedAt;
+  String? emailVerifiedAt;
   int? userType;
   int? phoneNo;
   String? dOB;
   String? gender;
   String? userImage;
   int? status;
-  Null? fcmToken;
+  String? fcmToken;
   String? createdAt;
   String? updatedAt;
+  Notification? notification;
+  String? role;
+  String? deletedAt;
 
-  LoginData(
+  Data(
       {this.id,
         this.name,
         this.email,
@@ -53,9 +60,12 @@ class LoginData {
         this.status,
         this.fcmToken,
         this.createdAt,
-        this.updatedAt});
+        this.updatedAt,
+        this.notification,
+        this.role,
+        this.deletedAt});
 
-  LoginData.fromJson(Map<String, dynamic> json) {
+  Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     email = json['email'];
@@ -69,6 +79,11 @@ class LoginData {
     fcmToken = json['fcm_token'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
+    notification = json['notification'] != null
+        ? new Notification.fromJson(json['notification'])
+        : null;
+    role = json['role'];
+    deletedAt = json['deleted_at'];
   }
 
   Map<String, dynamic> toJson() {
@@ -86,6 +101,36 @@ class LoginData {
     data['fcm_token'] = this.fcmToken;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
+    if (this.notification != null) {
+      data['notification'] = this.notification!.toJson();
+    }
+    data['role'] = this.role;
+    data['deleted_at'] = this.deletedAt;
+    return data;
+  }
+}
+
+class Notification {
+  int? deal;
+  int? meal;
+  int? store;
+  int? broadcastNotification;
+
+  Notification({this.deal, this.meal, this.store, this.broadcastNotification});
+
+  Notification.fromJson(Map<String, dynamic> json) {
+    deal = json['deal'];
+    meal = json['meal'];
+    store = json['store'];
+    broadcastNotification = json['broadcast_notification'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['deal'] = this.deal;
+    data['meal'] = this.meal;
+    data['store'] = this.store;
+    data['broadcast_notification'] = this.broadcastNotification;
     return data;
   }
 }

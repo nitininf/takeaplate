@@ -13,6 +13,8 @@ import '../../Response_Model/RestaurantsListResponse.dart';
 import '../../UTILS/app_color.dart';
 import '../../UTILS/app_images.dart';
 import '../../UTILS/fontfamily_string.dart';
+import '../../UTILS/request_string.dart';
+import '../../UTILS/utils.dart';
 import '../../main.dart';
 
 class RestaurantsScreen extends StatefulWidget {
@@ -75,8 +77,20 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
               isLoading = true;
             });
 
+
+
+            var lat = await Utility.getStringValue(RequestString.LATITUDE);
+            var long = await Utility.getStringValue(RequestString.LONGITUDE);
+
+
+            var formData = {
+              RequestString.LATITUDE: lat,
+              RequestString.LONGITUDE: long,
+
+            };
+
             final nextPageData = await restaurantsProvider.getRestaurantsList(
-                page: currentPage, dataId);
+                page: currentPage, dataId,formData);
 
             if (nextPageData.data != null && nextPageData.data!.isNotEmpty) {
               setState(() {
@@ -534,8 +548,17 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
                               storeData.favourite = true;
                             });
                             try {
+                              var lat = await Utility.getStringValue(RequestString.LATITUDE);
+                              var long = await Utility.getStringValue(RequestString.LONGITUDE);
+
+                              var formData = {
+                                RequestString.LATITUDE: lat,
+                                RequestString.LONGITUDE: long,
+
+                              };
+
                               final refreshedData = await restaurantsProvider
-                                  .getRestaurantsList(page: 1, dataId);
+                                  .getRestaurantsList(page: 1, dataId,formData);
 
                               if (refreshedData.data != null &&
                                   refreshedData.data!.isNotEmpty) {
@@ -604,8 +627,21 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
                             });
 
                             try {
+
+
+                              var lat = await Utility.getStringValue(RequestString.LATITUDE);
+                              var long = await Utility.getStringValue(RequestString.LONGITUDE);
+
+
+
+                              var formData = {
+                                RequestString.LATITUDE: lat,
+                                RequestString.LONGITUDE: long,
+
+                              };
+
                               final refreshedData = await restaurantsProvider
-                                  .getRestaurantsList(page: 1, dataId);
+                                  .getRestaurantsList(page: 1, dataId,formData);
 
                               if (refreshedData.data != null &&
                                   refreshedData.data!.isNotEmpty) {

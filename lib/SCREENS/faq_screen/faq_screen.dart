@@ -3,10 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../MULTI-PROVIDER/FaqProvider.dart';
 import '../../Response_Model/FaqResponse.dart';
-import 'package:takeaplate/CUSTOM_WIDGETS/custom_app_bar.dart';
-import 'package:takeaplate/CUSTOM_WIDGETS/custom_text_style.dart';
-import 'package:takeaplate/UTILS/app_color.dart';
-import 'package:takeaplate/UTILS/fontfamily_string.dart';
+import 'package:take_a_plate/CUSTOM_WIDGETS/custom_app_bar.dart';
+import 'package:take_a_plate/CUSTOM_WIDGETS/custom_text_style.dart';
+import 'package:take_a_plate/UTILS/app_color.dart';
+import 'package:take_a_plate/UTILS/fontfamily_string.dart';
 
 class FaqScreenScreen extends StatelessWidget {
   @override

@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:307471951857:android:4264b1e14db40964ba4650",
+        "mobilesdk_app_id": "1:307471951857:android:b6cd15aa43796155ba4650",
         "android_client_info": {
-          "package_name": "com.takeaplate"
+          "package_name": "com.take_a_plate"
         }
       },
       "oauth_client": [],

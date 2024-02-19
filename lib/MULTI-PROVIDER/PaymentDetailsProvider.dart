@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:takeaplate/Response_Model/CardDeleteResponse.dart';
+import 'package:take_a_plate/Response_Model/CardDeleteResponse.dart';
 
 import '../NETWORKS/network.dart';
 import '../Response_Model/AddPaymentCardResponse.dart';

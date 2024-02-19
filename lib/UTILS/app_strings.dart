@@ -1,4 +1,4 @@
-const String appName = "JobWish";
+const String appName = "TakeAPlate";
 //String of Onboarding screen
 const String skip = "SKIP";
 const String email = "Email";

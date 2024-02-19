@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:takeaplate/CUSTOM_WIDGETS/common_button.dart';
-import 'package:takeaplate/UTILS/app_color.dart';
-import 'package:takeaplate/UTILS/app_images.dart';
-import 'package:takeaplate/UTILS/app_strings.dart';
+import 'package:take_a_plate/CUSTOM_WIDGETS/common_button.dart';
+import 'package:take_a_plate/UTILS/app_color.dart';
+import 'package:take_a_plate/UTILS/app_images.dart';
+import 'package:take_a_plate/UTILS/app_strings.dart';
 
 class CreateOrLogInScreen extends StatelessWidget {
   @override

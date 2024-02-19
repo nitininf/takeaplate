@@ -1,10 +1,10 @@
 import 'package:custom_rating_bar/custom_rating_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:takeaplate/MULTI-PROVIDER/CartOperationProvider.dart';
-import 'package:takeaplate/MULTI-PROVIDER/OrderAndPayProvider.dart';
-import 'package:takeaplate/MULTI-PROVIDER/common_counter.dart';
-import 'package:takeaplate/Response_Model/RestaurantDealResponse.dart';
+import 'package:take_a_plate/MULTI-PROVIDER/CartOperationProvider.dart';
+import 'package:take_a_plate/MULTI-PROVIDER/OrderAndPayProvider.dart';
+import 'package:take_a_plate/MULTI-PROVIDER/common_counter.dart';
+import 'package:take_a_plate/Response_Model/RestaurantDealResponse.dart';
 import '../../CUSTOM_WIDGETS/common_button.dart';
 import '../../CUSTOM_WIDGETS/custom_app_bar.dart';
 import '../../CUSTOM_WIDGETS/custom_search_field.dart';
@@ -298,7 +298,7 @@ class OrderAndPayScreen extends StatelessWidget {
                   ],
                 ),
                 CustomText(
-                  text: orderAndPayProvider.foodData[0]["distance"],
+                  text:'${data.store?.distanceKm} Km'?? "NA",
                   color: editbgColor,
                   fontfamilly: montMedium,
                   sizeOfFont: 17,

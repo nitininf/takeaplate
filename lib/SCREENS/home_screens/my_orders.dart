@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:takeaplate/CUSTOM_WIDGETS/custom_app_bar.dart';
-import 'package:takeaplate/MULTI-PROVIDER/OrderProvider.dart';
+import 'package:take_a_plate/CUSTOM_WIDGETS/custom_app_bar.dart';
+import 'package:take_a_plate/MULTI-PROVIDER/OrderProvider.dart';
 import '../../CUSTOM_WIDGETS/custom_text_style.dart';
 import '../../MULTI-PROVIDER/FavoriteOperationProvider.dart';
 import '../../Response_Model/CurrentOrderResponse.dart';

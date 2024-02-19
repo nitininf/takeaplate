@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:takeaplate/CUSTOM_WIDGETS/common_button.dart';
-import 'package:takeaplate/CUSTOM_WIDGETS/common_edit_text.dart';
-import 'package:takeaplate/CUSTOM_WIDGETS/common_email_field.dart';
-import 'package:takeaplate/CUSTOM_WIDGETS/custom_app_bar.dart';
-import 'package:takeaplate/MULTI-PROVIDER/ContactUsProvider.dart';
-import 'package:takeaplate/Response_Model/ContactUsResponse.dart';
-import 'package:takeaplate/main.dart';
+import 'package:take_a_plate/CUSTOM_WIDGETS/common_button.dart';
+import 'package:take_a_plate/CUSTOM_WIDGETS/common_edit_text.dart';
+import 'package:take_a_plate/CUSTOM_WIDGETS/common_email_field.dart';
+import 'package:take_a_plate/CUSTOM_WIDGETS/custom_app_bar.dart';
+import 'package:take_a_plate/MULTI-PROVIDER/ContactUsProvider.dart';
+import 'package:take_a_plate/Response_Model/ContactUsResponse.dart';
+import 'package:take_a_plate/main.dart';
 
 import '../../CUSTOM_WIDGETS/custom_text_style.dart';
 import '../../UTILS/app_color.dart';

@@ -2,8 +2,8 @@ import 'package:custom_rating_bar/custom_rating_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:takeaplate/CUSTOM_WIDGETS/custom_app_bar.dart';
-import 'package:takeaplate/UTILS/app_strings.dart';
+import 'package:take_a_plate/CUSTOM_WIDGETS/custom_app_bar.dart';
+import 'package:take_a_plate/UTILS/app_strings.dart';
 import '../../CUSTOM_WIDGETS/custom_text_style.dart';
 import '../../MULTI-PROVIDER/FavoriteOperationProvider.dart';
 import '../../MULTI-PROVIDER/HomeDataListProvider.dart';
@@ -16,6 +16,8 @@ import '../../Response_Model/RestaurantDealResponse.dart';
 import '../../UTILS/app_color.dart';
 import '../../UTILS/app_images.dart';
 import '../../UTILS/fontfamily_string.dart';
+import '../../UTILS/request_string.dart';
+import '../../UTILS/utils.dart';
 import '../../main.dart';
 
 class LastMinuteDealScreen extends StatefulWidget {
@@ -82,8 +84,19 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
               isLoading = true;
             });
 
+
+            var lat = await Utility.getStringValue(RequestString.LATITUDE);
+            var long = await Utility.getStringValue(RequestString.LONGITUDE);
+
+
+            var formData = {
+              RequestString.LATITUDE: lat,
+              RequestString.LONGITUDE: long,
+
+            };
+
             final nextPageData = await restaurantsProvider
-                .getLastMinuteDealsList(page: currentPage, dataId);
+                .getLastMinuteDealsList(page: currentPage, dataId,formData);
 
             if (nextPageData.data != null && nextPageData.data!.isNotEmpty) {
               setState(() {
@@ -505,9 +518,9 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
                       const SizedBox(
                         width: 10,
                       ),
-                      const Expanded(
+                       Expanded(
                           child: CustomText(
-                              text: "84 Km",
+                              text: '${data.store?.distanceKm} Km' ?? "NA",
                               maxLin: 1,
                               color: graysColor,
                               sizeOfFont: 12,
@@ -608,10 +621,22 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
 
                               setState(() async {
                                 try {
-                                  final refreshedData =
-                                      await restaurantsProvider
-                                          .getLastMinuteDealsList(
-                                              page: 1, dataId);
+
+
+
+                                  var lat = await Utility.getStringValue(RequestString.LATITUDE);
+                                  var long = await Utility.getStringValue(RequestString.LONGITUDE);
+
+
+                                  var formData = {
+                                    RequestString.LATITUDE: lat,
+                                    RequestString.LONGITUDE: long,
+
+                                  };
+
+                                  final refreshedData = await restaurantsProvider
+                                      .getLastMinuteDealsList(page: 1, dataId,formData);
+
 
                                   if (refreshedData.data != null &&
                                       refreshedData.data!.isNotEmpty) {
@@ -682,10 +707,19 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
 
                               setState(() async {
                                 try {
-                                  final refreshedData =
-                                      await restaurantsProvider
-                                          .getLastMinuteDealsList(
-                                              page: 1, dataId);
+                                  var lat = await Utility.getStringValue(RequestString.LATITUDE);
+                                  var long = await Utility.getStringValue(RequestString.LONGITUDE);
+
+
+                                  var formData = {
+                                    RequestString.LATITUDE: lat,
+                                    RequestString.LONGITUDE: long,
+
+                                  };
+
+                                  final refreshedData = await restaurantsProvider
+                                      .getLastMinuteDealsList(page: 1, dataId,formData);
+
 
                                   if (refreshedData.data != null &&
                                       refreshedData.data!.isNotEmpty) {

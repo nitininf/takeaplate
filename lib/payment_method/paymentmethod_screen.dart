@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:path/path.dart';
 import 'package:provider/provider.dart';
-import 'package:takeaplate/CUSTOM_WIDGETS/common_button.dart';
-import 'package:takeaplate/CUSTOM_WIDGETS/custom_app_bar.dart';
-import 'package:takeaplate/MULTI-PROVIDER/common_counter.dart';
-import 'package:takeaplate/UTILS/dialog_helper.dart';
-import 'package:takeaplate/UTILS/fontfamily_string.dart';
-import 'package:takeaplate/main.dart';
+import 'package:take_a_plate/CUSTOM_WIDGETS/common_button.dart';
+import 'package:take_a_plate/CUSTOM_WIDGETS/custom_app_bar.dart';
+import 'package:take_a_plate/MULTI-PROVIDER/common_counter.dart';
+import 'package:take_a_plate/UTILS/dialog_helper.dart';
+import 'package:take_a_plate/UTILS/fontfamily_string.dart';
+import 'package:take_a_plate/main.dart';
 
 import '../CUSTOM_WIDGETS/custom_text_style.dart';
 import '../MULTI-PROVIDER/CartOperationProvider.dart';

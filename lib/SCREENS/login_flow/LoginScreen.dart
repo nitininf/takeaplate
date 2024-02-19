@@ -1,16 +1,16 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:takeaplate/CUSTOM_WIDGETS/common_button.dart';
-import 'package:takeaplate/CUSTOM_WIDGETS/common_pass_felds.dart';
-import 'package:takeaplate/MULTI-PROVIDER/AuthenticationProvider.dart';
-import 'package:takeaplate/Response_Model/LogInResponse.dart';
-import 'package:takeaplate/UTILS/app_color.dart';
-import 'package:takeaplate/UTILS/app_images.dart';
-import 'package:takeaplate/UTILS/app_strings.dart';
-import 'package:takeaplate/UTILS/fontfamily_string.dart';
+import 'package:take_a_plate/CUSTOM_WIDGETS/common_button.dart';
+import 'package:take_a_plate/CUSTOM_WIDGETS/common_pass_felds.dart';
+import 'package:take_a_plate/MULTI-PROVIDER/AuthenticationProvider.dart';
+import 'package:take_a_plate/Response_Model/LogInResponse.dart';
+import 'package:take_a_plate/UTILS/app_color.dart';
+import 'package:take_a_plate/UTILS/app_images.dart';
+import 'package:take_a_plate/UTILS/app_strings.dart';
+import 'package:take_a_plate/UTILS/fontfamily_string.dart';
 import '../../CUSTOM_WIDGETS/common_email_field.dart';
 import '../../CUSTOM_WIDGETS/custom_text_style.dart';
+import '../../UTILS/PushNotificationService.dart';
 import '../../UTILS/request_string.dart';
 import '../../UTILS/utils.dart';
 
@@ -103,91 +103,100 @@ class LogInScreen extends StatelessWidget {
                               if (emailController.text.isNotEmpty && passwordController.text.isNotEmpty) {
                                 try {
 
-                                  final fcmToken = await FirebaseMessaging.instance.getToken();
+                                  // final fcmToken = await FirebaseMessaging.instance.getToken();
 
 
-                                  var formData = {
-                                    RequestString.EMAIL: emailController.text,
-                                    RequestString.PASSWORD: passwordController.text,
-                                    RequestString.FCM_TOKEN: fcmToken,
+                                  // Get device token
+                                  PushNotificationService().getDeviceToken().then((token) async {
+                                    print('Device Token: $token');
+                                    var formData = {
+                                      RequestString.EMAIL: emailController.text,
+                                      RequestString.PASSWORD: passwordController.text,
+                                      RequestString.FCM_TOKEN: token,
 
-                                  };
+                                    };
 
 
-                                  LoginResponse data =
-                                      await Provider.of<AuthenticationProvider>(
-                                              context,
-                                              listen: false)
-                                          .loginUser(formData);
+                                    LoginResponse data =
+                                        await Provider.of<AuthenticationProvider>(
+                                        context,
+                                        listen: false)
+                                        .loginUser(formData);
 
-                                  if (data.status == true &&
-                                      data.message ==
-                                          "User login successfully") {
-                                    // Login successful
-                                    int? id = data.data?.id;
-                                    String? userToken = data.token;
-                                    String? userName = data.data?.name;
-                                    String? email = data.data?.email;
-                                    String? phoneNo =
-                                        data.data?.phoneNo.toString();
-                                    String? dataOfBirth = data.data?.dOB;
-                                    String? userImage =
-                                        data.data?.userImage ?? '';
-                                    String? gender = data.data?.gender;
+                                    if (data.status == true && data.message == "User login successfully") {
+                                      // Login successful
+                                      int? id = data.data?.id;
+                                      String? userToken = data.token;
+                                      String? userName = data.data?.name;
+                                      String? email = data.data?.email;
+                                      String? phoneNo =
+                                      data.data?.phoneNo.toString();
+                                      String? dataOfBirth = data.data?.dOB;
+                                      String? userImage =
+                                          data.data?.userImage ?? '';
+                                      String? gender = data.data?.gender;
 
-                                    // Save user data to SharedPreferences
+                                      // Save user data to SharedPreferences
 
-                                    await Utility.getSharedPreferences();
+                                      await Utility.getSharedPreferences();
 
-                                    await Utility.setIntValue(
-                                        RequestString.ID, id!);
-                                    await Utility.setStringValue(
-                                        RequestString.TOKEN, userToken!);
-                                    await Utility.setStringValue(
-                                        RequestString.NAME, userName!);
-                                    await Utility.setStringValue(
-                                        RequestString.EMAIL, email!);
-                                    await Utility.setStringValue(
-                                        RequestString.PHONE_NO, phoneNo!);
-                                    await Utility.setStringValue(
-                                        RequestString.DOB, dataOfBirth!);
-                                    await Utility.setStringValue(
-                                        RequestString.USER_IMAGE, userImage);
-                                    await Utility.setStringValue(
-                                        RequestString.GENDER, gender!);
+                                      await Utility.setIntValue(
+                                          RequestString.ID, id!);
+                                      await Utility.setStringValue(
+                                          RequestString.TOKEN, userToken!);
+                                      await Utility.setStringValue(
+                                          RequestString.NAME, userName!);
+                                      await Utility.setStringValue(
+                                          RequestString.EMAIL, email!);
+                                      await Utility.setStringValue(
+                                          RequestString.PHONE_NO, phoneNo!);
+                                      await Utility.setStringValue(
+                                          RequestString.DOB, dataOfBirth!);
+                                      await Utility.setStringValue(
+                                          RequestString.USER_IMAGE, userImage);
+                                      await Utility.setStringValue(
+                                          RequestString.GENDER, gender!);
 
-                                    emailController.text = '';
-                                    passwordController.text = '';
+                                      emailController.text = '';
+                                      passwordController.text = '';
 
-                                    Navigator.of(context)
-                                        .pushNamedAndRemoveUntil('/BaseHome',
-                                            (Route route) => false);
+                                      Navigator.of(context)
+                                          .pushNamedAndRemoveUntil('/BaseHome',
+                                              (Route route) => false);
 
-                                    // Print data to console
+                                      // Print data to console
 
-                                    // Navigate to the next screen or perform other actions after login
-                                  } else {
-                                    // Login failed
+                                      // Navigate to the next screen or perform other actions after login
+                                    }
 
-                                    final snackBar = SnackBar(
-                                      content: Text('${data.message}'),
-                                    );
+                                    else {
+                                      // Login failed
 
-                                    // Show the SnackBar
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(snackBar);
+                                      final snackBar = SnackBar(
+                                        content: Text('${data.message}'),
+                                      );
 
-                                    // Automatically hide the SnackBar after 1 second
-                                    Future.delayed(const Duration(milliseconds: 1000),
-                                        () {
+                                      // Show the SnackBar
                                       ScaffoldMessenger.of(context)
-                                          .hideCurrentSnackBar();
-                                    });
-                                  }
+                                          .showSnackBar(snackBar);
+
+                                      // Automatically hide the SnackBar after 1 second
+                                      Future.delayed(const Duration(milliseconds: 1000),
+                                              () {
+                                            ScaffoldMessenger.of(context)
+                                                .hideCurrentSnackBar();
+                                          });
+                                    }
+                                  });
+
+
+
+
                                 } catch (e) {
                                   // Display error message
                                 }
-                              } else {
+                              }
+                              else {
                                 // Show an error message or handle empty fields
                                 final snackBar = SnackBar(
                                   content: const Text(
@@ -205,7 +214,9 @@ class LogInScreen extends StatelessWidget {
                                 ScaffoldMessenger.of(context)
                                     .showSnackBar(snackBar);
                               }
-                            }),
+                            }
+
+                            ),
                         const SizedBox(
                           height: 20,
                         ),

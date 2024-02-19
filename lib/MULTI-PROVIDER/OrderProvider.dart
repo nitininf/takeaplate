@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:takeaplate/Response_Model/RestaurantDealResponse.dart';
+import 'package:take_a_plate/Response_Model/RestaurantDealResponse.dart';
 
 import '../NETWORKS/network.dart';
 

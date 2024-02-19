@@ -2,7 +2,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:takeaplate/Response_Model/NotificationListResponse.dart';
+import 'package:take_a_plate/Response_Model/NotificationListResponse.dart';
 import '../NETWORKS/network.dart';
 import '../Response_Model/GetNotificationPrefResponse.dart';
 import '../Response_Model/SendNotificationPrefResponse.dart';

@@ -2,7 +2,7 @@ import 'package:custom_rating_bar/custom_rating_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:takeaplate/CUSTOM_WIDGETS/custom_app_bar.dart';
+import 'package:take_a_plate/CUSTOM_WIDGETS/custom_app_bar.dart';
 import '../../MULTI-PROVIDER/FavoriteOperationProvider.dart';
 import '../../MULTI-PROVIDER/SearchProvider.dart';
 import '../../Response_Model/FavAddedResponse.dart';

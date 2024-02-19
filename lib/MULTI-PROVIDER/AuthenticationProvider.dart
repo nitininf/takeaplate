@@ -1,8 +1,7 @@
-
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:takeaplate/Response_Model/ForgotPasswordResponse.dart';
+import 'package:take_a_plate/Response_Model/ForgotPasswordResponse.dart';
 import '../NETWORKS/network.dart';
 import '../Response_Model/DeleteAccountResponse.dart';
 import '../Response_Model/EditProfileResponse.dart';
@@ -13,10 +12,10 @@ import '../UTILS/request_string.dart';
 import '../UTILS/utils.dart';
 
 class AuthenticationProvider extends ChangeNotifier {
+
   final Network _network = Network();
 
   Future<LoginResponse> loginUser(dynamic formData) async {
-
     try {
       final response = await _network.postRequest(
         endPoint: '/login', // Replace with your actual API endpoint
@@ -42,7 +41,6 @@ class AuthenticationProvider extends ChangeNotifier {
   }
 
   Future<RegisterResponse> registerUser(dynamic formData) async {
-
     try {
       final response = await _network.postRequest(
         endPoint: '/register', // Replace with your actual API endpoint
@@ -67,9 +65,7 @@ class AuthenticationProvider extends ChangeNotifier {
     }
   }
 
-
   Future<ForgotPasswordResponse> forgotPassword(dynamic formData) async {
-
     try {
       final response = await _network.postRequest(
         endPoint: '/forgot-password', // Replace with your actual API endpoint
@@ -94,15 +90,14 @@ class AuthenticationProvider extends ChangeNotifier {
     }
   }
 
-
   Future<DeleteAccountResponse> deleteAccount() async {
-
-    var ID =  await Utility.getIntValue(RequestString.ID);
+    var ID = await Utility.getIntValue(RequestString.ID);
     print("user_Id: $ID");
 
     try {
       final response = await _network.deleteRequest(
-        endPoint: '/delete-account/$ID', // Replace with your actual API endpoint
+        endPoint:
+            '/delete-account/$ID', // Replace with your actual API endpoint
       );
 
       print("my response : ${response}");
@@ -123,16 +118,14 @@ class AuthenticationProvider extends ChangeNotifier {
     }
   }
 
-
   Future<UploadImageResponse> uploadMultipartImage(File file, String type) async {
-
     try {
-      final response = await _network.uploadFile(file,type);
+      final response = await _network.uploadFile(file, type);
 
       print("my response : ${response}");
 
       if (response != null) {
-         var responseData = response.data;
+        var responseData = response.data;
 
         return UploadImageResponse.fromJson(responseData);
       } else {
@@ -148,7 +141,6 @@ class AuthenticationProvider extends ChangeNotifier {
   }
 
   Future<EditProfileResponse> editProfile(dynamic formData) async {
-
     try {
       final response = await _network.postRequest(
         endPoint: '/edit-profile', // Replace with your actual API endpoint
@@ -172,5 +164,4 @@ class AuthenticationProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
-
 }

@@ -4,9 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
-import 'package:takeaplate/SCREENS/onboarding_screen/onboarding_screens.dart';
+import 'package:take_a_plate/SCREENS/onboarding_screen/onboarding_screens.dart';
 import 'MULTI-PROVIDER/multiproviders.dart';
-import 'SCREENS/STRIPE/payment_screen.dart';
 import 'SCREENS/splash_screen/splash_screen.dart';
 import 'UTILS/PushNotificationService.dart';
 import 'firebase_options.dart';
@@ -37,7 +36,7 @@ main() async {
 
 
   runApp(const MyApp()); //MyUserList()
-// whenever your initialization is completed, remove the splash screen:
+  // whenever your initialization is completed, remove the splash screen:
   // FlutterNativeSplash.remove();
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
@@ -51,6 +50,27 @@ main() async {
   final fcmToken = await FirebaseMessaging.instance.getToken();
   await FirebaseMessaging.instance.setAutoInitEnabled(true);
   print("FCMToken $fcmToken");
+
+
+
+  await FirebaseMessaging.instance
+      .setForegroundNotificationPresentationOptions(
+    alert: true,
+    badge: true,
+    sound: true,
+  );
+
+  await FirebaseMessaging.instance.requestPermission(
+    alert: true,
+    announcement: false,
+    badge: true,
+    carPlay: false,
+    criticalAlert: false,
+    provisional: false,
+    sound: true,
+  );
+
+
 }
 
 class MyApp extends StatelessWidget {
@@ -88,7 +108,7 @@ class _AppRootState extends State<AppRoot> {
         builder: (context, snapshot) =>
             snapshot.connectionState != ConnectionState.done
                 ? SplashScreen() //OnBoardingScreen()
-                : PaymentScreen() //Screen1(),
+                : const OnBoardingScreen() //Screen1(),
         );
-  }
+    }
 }

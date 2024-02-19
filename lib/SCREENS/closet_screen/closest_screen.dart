@@ -1,8 +1,8 @@
 import 'package:custom_rating_bar/custom_rating_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:takeaplate/CUSTOM_WIDGETS/custom_app_bar.dart';
-import 'package:takeaplate/UTILS/app_strings.dart';
+import 'package:take_a_plate/CUSTOM_WIDGETS/custom_app_bar.dart';
+import 'package:take_a_plate/UTILS/app_strings.dart';
 import '../../CUSTOM_WIDGETS/custom_text_style.dart';
 import '../../MULTI-PROVIDER/FavoriteOperationProvider.dart';
 import '../../MULTI-PROVIDER/HomeDataListProvider.dart';
@@ -15,6 +15,8 @@ import '../../Response_Model/RestaurantsListResponse.dart';
 import '../../UTILS/app_color.dart';
 import '../../UTILS/app_images.dart';
 import '../../UTILS/fontfamily_string.dart';
+import '../../UTILS/request_string.dart';
+import '../../UTILS/utils.dart';
 import '../../main.dart';
 
 class ClosestScreen extends StatefulWidget {
@@ -80,9 +82,20 @@ class _ClosestScreenState extends State<ClosestScreen> {
             isLoading = true;
           });
 
+
+          var lat = await Utility.getStringValue(RequestString.LATITUDE);
+          var long = await Utility.getStringValue(RequestString.LONGITUDE);
+
+
+          var formData = {
+            RequestString.LATITUDE: lat,
+            RequestString.LONGITUDE: long,
+
+          };
+
           final nextPageData =
           await restaurantsProvider.getClosestRestaurantsList(
-            page: currentPage,dataId
+            page: currentPage,dataId,formData
           );
 
           if (nextPageData.data != null && nextPageData.data!.isNotEmpty) {
@@ -332,8 +345,19 @@ class _ClosestScreenState extends State<ClosestScreen> {
 
               dataId = filterList[index + 1].id!;
 
-              final nextPageData = await restaurantsProvider.getClosestRestaurantsList(
-                  page: currentPage,dataId
+              var lat = await Utility.getStringValue(RequestString.LATITUDE);
+              var long = await Utility.getStringValue(RequestString.LONGITUDE);
+
+
+              var formData = {
+                RequestString.LATITUDE: lat,
+                RequestString.LONGITUDE: long,
+
+              };
+
+              final nextPageData =
+              await restaurantsProvider.getClosestRestaurantsList(
+                  page: currentPage,dataId,formData
               );
 
               if (nextPageData.data != null && nextPageData.data!.isNotEmpty) {
@@ -495,8 +519,8 @@ class _ClosestScreenState extends State<ClosestScreen> {
                         color: editbgColor,
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      child: const CustomText(
-                        text: "4 km",
+                      child:  CustomText(
+                        text: '${item.distanceKm} Km' ?? "NA",
                         maxLin: 1,
                         sizeOfFont: 10,
                         fontfamilly: montHeavy,
@@ -577,8 +601,20 @@ class _ClosestScreenState extends State<ClosestScreen> {
 
                           setState(() async {
                             try {
-                              final refreshedData = await restaurantsProvider
-                                  .getClosestRestaurantsList(page: 1,dataId);
+                              var lat = await Utility.getStringValue(RequestString.LATITUDE);
+                              var long = await Utility.getStringValue(RequestString.LONGITUDE);
+
+
+                              var formData = {
+                                RequestString.LATITUDE: lat,
+                                RequestString.LONGITUDE: long,
+
+                              };
+
+                              final refreshedData =
+                              await restaurantsProvider.getClosestRestaurantsList(
+                                  page: 1,dataId,formData
+                              );
 
                               if (refreshedData.data != null &&
                                   refreshedData.data!.isNotEmpty) {
@@ -641,9 +677,20 @@ class _ClosestScreenState extends State<ClosestScreen> {
 
                           setState(() async {
                             try {
-                              final refreshedData = await restaurantsProvider
-                                  .getClosestRestaurantsList(page: 1,dataId);
+                              var lat = await Utility.getStringValue(RequestString.LATITUDE);
+                              var long = await Utility.getStringValue(RequestString.LONGITUDE);
 
+
+                              var formData = {
+                                RequestString.LATITUDE: lat,
+                                RequestString.LONGITUDE: long,
+
+                              };
+
+                              final refreshedData =
+                              await restaurantsProvider.getClosestRestaurantsList(
+                                  page: 1,dataId,formData
+                              );
                               if (refreshedData.data != null &&
                                   refreshedData.data!.isNotEmpty) {
                                 setState(() {

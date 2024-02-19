@@ -1,4 +1,4 @@
-import 'package:takeaplate/Response_Model/RestaurantDealResponse.dart';
+import 'package:take_a_plate/Response_Model/RestaurantDealResponse.dart';
 
 import 'ContactUsResponse.dart';
 import 'RestaurantsListResponse.dart';
@@ -41,12 +41,7 @@ class HomeItemsListingResponse {
         favoriteStores!.add(new StoreData.fromJson(v));
       });
     }
-    // if (json['favoriteDeals'] != null) {
-    //   favoriteDeals = <DealData>[];
-    //   json['favoriteDeals'].forEach((v) {
-    //     favoriteDeals!.add(new DealData.fromJson(v));
-    //   });
-    // }
+
     if (json['collectTomorrow'] != null) {
       collectTomorrow = <DealData>[];
       json['collectTomorrow'].forEach((v) {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:takeaplate/UTILS/fontfamily_string.dart';
+import 'package:take_a_plate/UTILS/fontfamily_string.dart';
 
 import '../UTILS/app_color.dart';
 
