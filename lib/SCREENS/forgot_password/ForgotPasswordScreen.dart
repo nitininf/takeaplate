@@ -1,16 +1,16 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:takeaplate/CUSTOM_WIDGETS/common_button.dart';
-import 'package:takeaplate/CUSTOM_WIDGETS/common_pass_felds.dart';
-import 'package:takeaplate/MULTI-PROVIDER/AuthenticationProvider.dart';
-import 'package:takeaplate/Response_Model/ForgotPasswordResponse.dart';
-import 'package:takeaplate/Response_Model/LogInResponse.dart';
-import 'package:takeaplate/UTILS/app_color.dart';
-import 'package:takeaplate/UTILS/app_images.dart';
-import 'package:takeaplate/UTILS/app_strings.dart';
-import 'package:takeaplate/UTILS/dialog_helper.dart';
-import 'package:takeaplate/UTILS/fontfamily_string.dart';
+import 'package:take_a_plate/CUSTOM_WIDGETS/common_button.dart';
+import 'package:take_a_plate/CUSTOM_WIDGETS/common_pass_felds.dart';
+import 'package:take_a_plate/MULTI-PROVIDER/AuthenticationProvider.dart';
+import 'package:take_a_plate/Response_Model/ForgotPasswordResponse.dart';
+import 'package:take_a_plate/Response_Model/LogInResponse.dart';
+import 'package:take_a_plate/UTILS/app_color.dart';
+import 'package:take_a_plate/UTILS/app_images.dart';
+import 'package:take_a_plate/UTILS/app_strings.dart';
+import 'package:take_a_plate/UTILS/dialog_helper.dart';
+import 'package:take_a_plate/UTILS/fontfamily_string.dart';
 
 import '../../CUSTOM_WIDGETS/common_email_field.dart';
 import '../../CUSTOM_WIDGETS/custom_text_style.dart';

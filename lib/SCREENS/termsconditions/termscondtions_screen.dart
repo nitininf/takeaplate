@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
-import 'package:takeaplate/CUSTOM_WIDGETS/custom_app_bar.dart';
-import 'package:takeaplate/MULTI-PROVIDER/TermsAndConditionsProvider.dart';
-import 'package:takeaplate/Response_Model/TermsAndConditionsResponse.dart';
+import 'package:take_a_plate/CUSTOM_WIDGETS/custom_app_bar.dart';
+import 'package:take_a_plate/MULTI-PROVIDER/TermsAndConditionsProvider.dart';
+import 'package:take_a_plate/Response_Model/TermsAndConditionsResponse.dart';
 
 import '../../CUSTOM_WIDGETS/custom_text_style.dart';
 import '../../UTILS/app_color.dart';

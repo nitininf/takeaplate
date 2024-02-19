@@ -2,12 +2,12 @@ import 'package:custom_rating_bar/custom_rating_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
-import 'package:takeaplate/CUSTOM_WIDGETS/custom_text_style.dart';
-import 'package:takeaplate/UTILS/app_color.dart';
-import 'package:takeaplate/UTILS/app_images.dart';
-import 'package:takeaplate/UTILS/app_strings.dart';
-import 'package:takeaplate/UTILS/fontfamily_string.dart';
-import 'package:takeaplate/main.dart';
+import 'package:take_a_plate/CUSTOM_WIDGETS/custom_text_style.dart';
+import 'package:take_a_plate/UTILS/app_color.dart';
+import 'package:take_a_plate/UTILS/app_images.dart';
+import 'package:take_a_plate/UTILS/app_strings.dart';
+import 'package:take_a_plate/UTILS/fontfamily_string.dart';
+import 'package:take_a_plate/main.dart';
 import '../../MULTI-PROVIDER/FavoriteOperationProvider.dart';
 import '../../MULTI-PROVIDER/HomeDataListProvider.dart';
 import '../../MULTI-PROVIDER/RestaurantsListProvider.dart';
@@ -100,6 +100,7 @@ class _HomeScreenState extends State<HomeScreen> {
       Position position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.best);
       setState(() async {
+
         _latitude = '${position.latitude}';
         _longitude = '${position.longitude}';
 
@@ -848,8 +849,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   const SizedBox(
                     width: 10,
                   ),
-                  const CustomText(
-                      text: '8KM',
+                   CustomText(
+                      text: '${lastMinuteDeal.store?.distanceKm} Km' ?? "NA",
                       color: graysColor,
                       sizeOfFont: 12,
                       fontfamilly: montSemiBold),
@@ -1465,8 +1466,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       color: editbgColor,
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    child: const CustomText(
-                      text: "4 km",
+                    child:  CustomText(
+                      text: '${favoriteStores.distanceKm} Km' ?? "NA",
                       maxLin: 1,
                       sizeOfFont: 10,
                       fontfamilly: montHeavy,

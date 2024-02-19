@@ -1,4 +1,4 @@
-name: takeaplate
+name: take_a_plate
 description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -58,7 +58,7 @@ dependencies:
   flutter_cache_manager: ^3.3.1
   flutter_stripe: ^5.0.0
   flutter_dotenv: ^5.0.2
-
+  flutter_local_notifications: ^16.3.2
 
 
 dev_dependencies:

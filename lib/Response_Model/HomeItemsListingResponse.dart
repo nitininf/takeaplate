@@ -1,4 +1,4 @@
-import 'package:takeaplate/Response_Model/RestaurantDealResponse.dart';
+import 'package:take_a_plate/Response_Model/RestaurantDealResponse.dart';
 
 import 'ContactUsResponse.dart';
 import 'RestaurantsListResponse.dart';

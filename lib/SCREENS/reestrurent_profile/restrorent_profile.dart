@@ -1,8 +1,8 @@
 import 'package:custom_rating_bar/custom_rating_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:takeaplate/CUSTOM_WIDGETS/custom_app_bar.dart';
-import 'package:takeaplate/main.dart';
+import 'package:take_a_plate/CUSTOM_WIDGETS/custom_app_bar.dart';
+import 'package:take_a_plate/main.dart';
 import '../../CUSTOM_WIDGETS/custom_text_style.dart';
 import '../../MULTI-PROVIDER/FavoriteOperationProvider.dart';
 import '../../MULTI-PROVIDER/RestaurantsListProvider.dart';
@@ -15,6 +15,7 @@ import '../../UTILS/app_color.dart';
 import '../../UTILS/app_images.dart';
 import '../../UTILS/fontfamily_string.dart';
 import '../../UTILS/request_string.dart';
+import '../../UTILS/utils.dart';
 
 class RestaurantsProfileScreen extends StatefulWidget {
   RestaurantsProfileScreen({super.key, required this.context});
@@ -74,9 +75,13 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
             isLoading = true;
           });
 
+          var lat = await Utility.getStringValue(RequestString.LATITUDE);
+          var long = await Utility.getStringValue(RequestString.LONGITUDE);
+
+
           var formData = {
-            RequestString.LATITUDE: "28.581823",
-            RequestString.LONGITUDE: "77.3197478",
+            RequestString.LATITUDE: lat,
+            RequestString.LONGITUDE: long,
 
           };
 
@@ -459,12 +464,15 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
     // Call your API here to refresh the data
     try {
 
+      var lat = await Utility.getStringValue(RequestString.LATITUDE);
+      var long = await Utility.getStringValue(RequestString.LONGITUDE);
+
+
       var formData = {
-        RequestString.LATITUDE: "28.581823",
-        RequestString.LONGITUDE: "77.3197478",
+        RequestString.LATITUDE: lat,
+        RequestString.LONGITUDE: long,
 
       };
-
 
 
 
@@ -719,10 +727,13 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
                               });
 
                               try {
+                                var lat = await Utility.getStringValue(RequestString.LATITUDE);
+                                var long = await Utility.getStringValue(RequestString.LONGITUDE);
+
 
                                 var formData = {
-                                  RequestString.LATITUDE: "28.581823",
-                                  RequestString.LONGITUDE: "77.3197478",
+                                  RequestString.LATITUDE: lat,
+                                  RequestString.LONGITUDE: long,
 
                                 };
 
@@ -814,9 +825,13 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
                               try {
 
 
+                                var lat = await Utility.getStringValue(RequestString.LATITUDE);
+                                var long = await Utility.getStringValue(RequestString.LONGITUDE);
+
+
                                 var formData = {
-                                  RequestString.LATITUDE: "28.581823",
-                                  RequestString.LONGITUDE: "77.3197478",
+                                  RequestString.LATITUDE: lat,
+                                  RequestString.LONGITUDE: long,
 
                                 };
                                 final refreshedData = await restaurantsProvider

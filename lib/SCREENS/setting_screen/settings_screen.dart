@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:takeaplate/CUSTOM_WIDGETS/common_button.dart';
-import 'package:takeaplate/CUSTOM_WIDGETS/common_edit_text.dart';
-import 'package:takeaplate/SCREENS/login_flow/CreateOrLoginScreen.dart';
-import 'package:takeaplate/UTILS/app_color.dart';
-import 'package:takeaplate/UTILS/fontfamily_string.dart';
-import 'package:takeaplate/main.dart';
+import 'package:take_a_plate/CUSTOM_WIDGETS/common_button.dart';
+import 'package:take_a_plate/CUSTOM_WIDGETS/common_edit_text.dart';
+import 'package:take_a_plate/SCREENS/login_flow/CreateOrLoginScreen.dart';
+import 'package:take_a_plate/UTILS/app_color.dart';
+import 'package:take_a_plate/UTILS/fontfamily_string.dart';
+import 'package:take_a_plate/main.dart';
 
 import '../../CUSTOM_WIDGETS/custom_app_bar.dart';
 import '../../CUSTOM_WIDGETS/custom_text_field.dart';

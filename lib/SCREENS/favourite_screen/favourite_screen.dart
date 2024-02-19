@@ -2,7 +2,7 @@ import 'package:custom_rating_bar/custom_rating_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:takeaplate/CUSTOM_WIDGETS/custom_app_bar.dart';
+import 'package:take_a_plate/CUSTOM_WIDGETS/custom_app_bar.dart';
 import '../../MULTI-PROVIDER/FavoriteOperationProvider.dart';
 import '../../MULTI-PROVIDER/HomeDataListProvider.dart';
 import '../../Response_Model/CategoryFilterResponse.dart';
@@ -16,6 +16,8 @@ import '../../MULTI-PROVIDER/common_counter.dart';
 import '../../UTILS/app_color.dart';
 import '../../UTILS/app_images.dart';
 import '../../UTILS/fontfamily_string.dart';
+import '../../UTILS/request_string.dart';
+import '../../UTILS/utils.dart';
 import '../../main.dart';
 
 class FavouriteScreen extends StatefulWidget {
@@ -79,9 +81,20 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
             isRestaurantLoading = true;
           });
 
+
+          var lat = await Utility.getStringValue(RequestString.LATITUDE);
+          var long = await Utility.getStringValue(RequestString.LONGITUDE);
+
+
+          var formData = {
+            RequestString.LATITUDE: lat,
+            RequestString.LONGITUDE: long,
+
+          };
+
           final nextPageRestaurantData =
           await restaurantsProvider.getFavRestaurantsList(
-            page: currentRestaurantPage,
+            page: currentRestaurantPage,formData
           );
 
           if (nextPageRestaurantData.data != null &&
@@ -117,8 +130,18 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
             isDealLoading = true;
           });
 
+          var lat = await Utility.getStringValue(RequestString.LATITUDE);
+          var long = await Utility.getStringValue(RequestString.LONGITUDE);
+
+
+          var formData = {
+            RequestString.LATITUDE: lat,
+            RequestString.LONGITUDE: long,
+
+          };
+
           final nextPageDealData = await restaurantsProvider.getFavDealsList(
-            page: currentDealPage,
+            page: currentDealPage,formData
           );
 
           if (nextPageDealData.data != null &&
@@ -419,8 +442,22 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
   Future<void> _refreshData() async {
     // Call your API here to refresh the data
     try {
-      final refreshedData = await restaurantsProvider.getFavRestaurantsList(page: 1);
-      final refreshedDealData = await restaurantsProvider.getFavDealsList(page: 1);
+
+      var lat = await Utility.getStringValue(RequestString.LATITUDE);
+      var long = await Utility.getStringValue(RequestString.LONGITUDE);
+
+
+      var formData = {
+        RequestString.LATITUDE: lat,
+        RequestString.LONGITUDE: long,
+
+      };
+
+
+
+
+      final refreshedData = await restaurantsProvider.getFavRestaurantsList(page: 1,formData);
+      final refreshedDealData = await restaurantsProvider.getFavDealsList(page: 1,formData);
 
       if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
         setState(() {
@@ -588,8 +625,19 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                               storeData.favourite = true;
                             });
                             try {
+                              var lat = await Utility.getStringValue(RequestString.LATITUDE);
+                              var long = await Utility.getStringValue(RequestString.LONGITUDE);
+
+
+                              var formData = {
+                                RequestString.LATITUDE: lat,
+                                RequestString.LONGITUDE: long,
+
+                              };
+
+
                               final refreshedData = await restaurantsProvider
-                                  .getFavRestaurantsList(page: 1);
+                                  .getFavRestaurantsList(page: 1,formData);
 
                               if (refreshedData.data != null &&
                                   refreshedData.data!.isNotEmpty) {
@@ -655,8 +703,20 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                             });
 
                             try {
+
+                              var lat = await Utility.getStringValue(RequestString.LATITUDE);
+                              var long = await Utility.getStringValue(RequestString.LONGITUDE);
+
+
+                              var formData = {
+                                RequestString.LATITUDE: lat,
+                                RequestString.LONGITUDE: long,
+
+                              };
+
+
                               final refreshedData = await restaurantsProvider
-                                  .getFavRestaurantsList(page: 1);
+                                  .getFavRestaurantsList(page: 1,formData);
 
                               if (refreshedData.data != null &&
                                   refreshedData.data!.isNotEmpty) {
@@ -903,7 +963,19 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
               
               
                               try {
-                                final refreshedData = await restaurantsProvider.getFavDealsList( page: 1);
+
+
+                                var lat = await Utility.getStringValue(RequestString.LATITUDE);
+                                var long = await Utility.getStringValue(RequestString.LONGITUDE);
+
+
+                                var formData = {
+                                  RequestString.LATITUDE: lat,
+                                  RequestString.LONGITUDE: long,
+
+                                };
+
+                                final refreshedData = await restaurantsProvider.getFavDealsList( page: 1,formData);
               
                                 if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
               
@@ -971,7 +1043,19 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                               });
               
                               try {
-                                final refreshedData = await restaurantsProvider.getFavDealsList( page: 1);
+
+                                var lat = await Utility.getStringValue(RequestString.LATITUDE);
+                                var long = await Utility.getStringValue(RequestString.LONGITUDE);
+
+
+                                var formData = {
+                                  RequestString.LATITUDE: lat,
+                                  RequestString.LONGITUDE: long,
+
+                                };
+
+
+                                final refreshedData = await restaurantsProvider.getFavDealsList( page: 1,formData);
               
                                 if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
               

@@ -2,7 +2,7 @@ import 'package:custom_rating_bar/custom_rating_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:takeaplate/UTILS/utils.dart';
+import 'package:take_a_plate/UTILS/utils.dart';
 import '../CUSTOM_WIDGETS/common_button.dart';
 import '../CUSTOM_WIDGETS/common_edit_text.dart';
 import '../CUSTOM_WIDGETS/custom_text_style.dart';

@@ -50,11 +50,11 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDyup8mWm5isLugPk9RQx4XTnx58sn6_bg',
-    appId: '1:562730144845:android:8907ec7a14f1c028f93804',
+    apiKey: 'AIzaSyBvbkawSrtn2KeKWZdzUN9EqjrY96QcLLA',
+    appId: '1:307471951857:android:13698c3f231089fcba4650',
     messagingSenderId: '562730144845',
-    projectId: 'take-a-plate-356e3',
-    storageBucket: 'take-a-plate-356e3.appspot.com',
+    projectId: 'takeaplate-2e5b5',
+    storageBucket: 'takeaplate-2e5b5.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
@@ -63,6 +63,6 @@ class DefaultFirebaseOptions {
     messagingSenderId: '562730144845',
     projectId: 'take-a-plate-356e3',
     storageBucket: 'take-a-plate-356e3.appspot.com',
-    iosBundleId: 'com.takeaplate',
+    iosBundleId: 'com.take_a_plate',
   );
 }

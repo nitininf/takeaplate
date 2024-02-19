@@ -1,12 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:takeaplate/CUSTOM_WIDGETS/custom_app_bar.dart';
-import 'package:takeaplate/CUSTOM_WIDGETS/custom_text_style.dart';
-import 'package:takeaplate/MULTI-PROVIDER/NotificationProvider.dart';
-import 'package:takeaplate/Response_Model/GetNotificationPrefResponse.dart';
-import 'package:takeaplate/UTILS/app_color.dart';
-import 'package:takeaplate/UTILS/fontfamily_string.dart';
+import 'package:take_a_plate/CUSTOM_WIDGETS/custom_app_bar.dart';
+import 'package:take_a_plate/CUSTOM_WIDGETS/custom_text_style.dart';
+import 'package:take_a_plate/MULTI-PROVIDER/NotificationProvider.dart';
+import 'package:take_a_plate/Response_Model/GetNotificationPrefResponse.dart';
+import 'package:take_a_plate/UTILS/app_color.dart';
+import 'package:take_a_plate/UTILS/fontfamily_string.dart';
 
 import '../../MULTI-PROVIDER/common_counter.dart';
 import '../../UTILS/app_images.dart';

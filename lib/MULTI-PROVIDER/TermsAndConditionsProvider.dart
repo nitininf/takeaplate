@@ -2,9 +2,9 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:takeaplate/Response_Model/ForgotPasswordResponse.dart';
-import 'package:takeaplate/Response_Model/PrivacyPolicyResponse.dart';
-import 'package:takeaplate/Response_Model/TermsAndConditionsResponse.dart';
+import 'package:take_a_plate/Response_Model/ForgotPasswordResponse.dart';
+import 'package:take_a_plate/Response_Model/PrivacyPolicyResponse.dart';
+import 'package:take_a_plate/Response_Model/TermsAndConditionsResponse.dart';
 import '../NETWORKS/network.dart';
 import '../Response_Model/DeleteAccountResponse.dart';
 import '../Response_Model/EditProfileResponse.dart';

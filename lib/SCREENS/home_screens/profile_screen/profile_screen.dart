@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:custom_rating_bar/custom_rating_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:takeaplate/UTILS/app_strings.dart';
+import 'package:take_a_plate/UTILS/app_strings.dart';
 import '../../../CUSTOM_WIDGETS/custom_text_style.dart';
 import '../../../MULTI-PROVIDER/FavoriteOperationProvider.dart';
 import '../../../MULTI-PROVIDER/HomeDataListProvider.dart';
