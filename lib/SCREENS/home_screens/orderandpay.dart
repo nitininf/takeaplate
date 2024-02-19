@@ -75,7 +75,8 @@ class OrderAndPayScreen extends StatelessWidget {
                             sizeOfFont: 18,
                             btnTextColor: offerColor.withOpacity(0.5),
                             btnText: "ADD TO CART",
-                            onClick: () async {
+                            onClick: () async
+                            {
 
 
 
@@ -151,7 +152,8 @@ class OrderAndPayScreen extends StatelessWidget {
                                 ScaffoldMessenger.of(context)
                                     .showSnackBar(snackBar);
                               }
-                            }),
+                            }
+                            ),
                       ),
                     ],
                   ),

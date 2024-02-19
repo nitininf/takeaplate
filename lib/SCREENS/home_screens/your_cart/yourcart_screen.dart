@@ -12,6 +12,15 @@ import '../../../Response_Model/AddToCartResponse.dart';
 import '../../../Response_Model/CartListingResponse.dart';
 import '../../../UTILS/app_images.dart';
 import '../../../UTILS/fontfamily_string.dart';
+import 'dart:convert';
+import 'dart:developer';
+import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:http/http.dart' as http;
+import 'package:flutter_stripe/flutter_stripe.dart';
+
+import '../../../UTILS/request_string.dart';
+import '../../../UTILS/utils.dart';
 
 class YourCardScreen extends StatefulWidget {
   const YourCardScreen({super.key});
@@ -27,7 +36,8 @@ class _YourCardScreenState extends State<YourCardScreen> {
   bool hasMoreData = true;
   List<CartItems> cartItemsData = [];
   var totalPrice = 0;
-
+  Map<String, dynamic>? paymentIntent;
+  String dealids="";
   @override
   void initState() {
     super.initState();
@@ -54,6 +64,15 @@ class _YourCardScreenState extends State<YourCardScreen> {
             if (mounted) {
               cartItemsData = nextPageData.cartItems!;
 
+           const dealids=  cartItemsData.map((e) => {
+              r e.dealId.toString()
+
+
+             });
+
+
+
+
               // cartItemsData.addAll(nextPageData.cartItems!);
               // currentPage++;
             }
@@ -77,10 +96,25 @@ class _YourCardScreenState extends State<YourCardScreen> {
     }
   }
 
+  void _stripePayment() async{
+    Map<String,dynamic> formData={
+      "user_id":  await Utility.getIntValue(RequestString.ID) ?? 0,
+      "cart_id":"333",
+      "status":"",
+      "total_amount":totalPrice.toString(),
+      "payment_id":232
+    };
+   AddToCartResponse  _stripePayment= await cartOperationProvider.stripePayment(formData);
+
+   if(_stripePayment.status==200){
+     print("_myy stripe payment status ${_stripePayment.message}");
+   }
+  }
+
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
-
+    print("dsdffg$dealids");
     return Stack(
       children: [
         Scaffold(
@@ -183,11 +217,10 @@ class _YourCardScreenState extends State<YourCardScreen> {
                         btnBgColor: btnbgColor,
                         sizeOfFont: 18,
                         btnText: "GO TO CHECKOUT",
-                        onClick: () {
+                        onClick: () async {
                           // print("Total Price: \$${totalPrice.toStringAsFixed(2)}");
-
-                          Navigator.pushNamed(
-                              navigatorKey.currentContext!, '/OrderSummeryScreen');
+                       await makePayment(totalPrice.toString());
+                        //  Navigator.pushNamed(navigatorKey.currentContext!, '/OrderSummeryScreen');
                         }),
                   ),
                 ),
@@ -208,7 +241,111 @@ class _YourCardScreenState extends State<YourCardScreen> {
       ),
     );
   }
+  Future<void> makePayment(String amount) async {
+    try {
+      print("saddfd${amount}");
+      paymentIntent = await createPaymentIntent(amount, 'USD');
 
+      //STEP 2: Initialize Payment Sheet
+      await Stripe.instance
+          .initPaymentSheet(
+          paymentSheetParameters: SetupPaymentSheetParameters(
+              paymentIntentClientSecret: paymentIntent![
+              'client_secret'], //Gotten from payment intent
+              style: ThemeMode.light,
+              merchantDisplayName: 'Ikay'))
+          .then((value) {
+      });
+
+      //STEP 3: Display Payment sheet
+      displayPaymentSheet();
+    } catch (err) {
+      throw Exception(err);
+    }
+  }
+
+  displayPaymentSheet() async {
+    try {
+      await Stripe.instance.presentPaymentSheet().then((value) {
+        // print("bvbvbbvb ${value} ");
+        showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.check_circle,
+                    color: Colors.green,
+                    size: 100.0,
+                  ),
+                  SizedBox(height: 10.0),
+                  Text("Payment Successful!"),
+
+                ],
+              ),
+            ));
+
+        paymentIntent = null;
+      }).onError((error, stackTrace) {
+        throw Exception(error);
+      });
+    } on StripeException catch (e) {
+      print('Error is:---> $e');
+      AlertDialog(
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              children: const [
+                Icon(
+                  Icons.cancel,
+                  color: Colors.red,
+                ),
+                Text("Payment Failed"),
+              ],
+            ),
+          ],
+        ),
+      );
+    } catch (e) {
+      print('$e');
+    }
+  }
+
+  createPaymentIntent(String amount, String currency) async {
+    try {
+      //Request body
+      Map<String, dynamic> body = {
+        'amount': calculateAmount(amount),
+        'currency': currency,
+      };
+
+      //Make post request to Stripe
+      var response = await http.post(
+        Uri.parse('https://api.stripe.com/v1/payment_intents'),
+        headers: {
+          'Authorization': 'Bearer ${dotenv.env['STRIPE_SECRET']}',
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: body,
+      );
+      if(response.body.isNotEmpty)
+        print("nbgff ${response.statusCode}");
+      else
+        print("body not gert");
+
+      print("dfv${response.body}");
+      return json.decode(response.body);
+    } catch (err) {
+      throw Exception(err.toString());
+    }
+  }
+
+  calculateAmount(String amount) {
+    final calculatedAmout = (int.parse(amount)) * 100;
+    return calculatedAmout.toString();
+  }
   Widget getVerticalItemList() {
 
     if (cartItemsData.isEmpty) {

@@ -40,6 +40,11 @@ class NetworkStrings {
   static const String JOB_APPLY='job-apply';
   static const String JOB_FOR_CANDIDATE='job-for-candidate';
   static const String USER_SUMMERY='user-summary';
+  static const String ADD_PAYMENT_DETAIL='add-payment-detail';
+
+
+
+
 
 
 

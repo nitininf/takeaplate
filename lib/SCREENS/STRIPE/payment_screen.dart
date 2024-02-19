@@ -47,9 +47,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
           paymentSheetParameters: SetupPaymentSheetParameters(
               paymentIntentClientSecret: paymentIntent![
               'client_secret'], //Gotten from payment intent
-              style: ThemeMode.dark,
+              style: ThemeMode.light,
               merchantDisplayName: 'Ikay'))
-          .then((value) {});
+          .then((value) {
+      });
 
       //STEP 3: Display Payment sheet
       displayPaymentSheet();
@@ -61,6 +62,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
   displayPaymentSheet() async {
     try {
       await Stripe.instance.presentPaymentSheet().then((value) {
+       // print("bvbvbbvb ${value} ");
         showDialog(
             context: context,
             builder: (_) => AlertDialog(
@@ -74,6 +76,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                   ),
                   SizedBox(height: 10.0),
                   Text("Payment Successful!"),
+
                 ],
               ),
             ));
@@ -122,6 +125,10 @@ class _PaymentScreenState extends State<PaymentScreen> {
         },
         body: body,
       );
+      if(response.body.isNotEmpty)
+      print("nbgff ${response.body}");
+      else
+        print("body not gert");
       return json.decode(response.body);
     } catch (err) {
       throw Exception(err.toString());
