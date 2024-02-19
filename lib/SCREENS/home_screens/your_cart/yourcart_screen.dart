@@ -64,12 +64,12 @@ class _YourCardScreenState extends State<YourCardScreen> {
             if (mounted) {
               cartItemsData = nextPageData.cartItems!;
 
-           const dealids=  cartItemsData.map((e) => {
-              r e.dealId.toString()
+           /*const dealids=  cartItemsData.map((e) => {
+               e.dealId.toString()
 
 
              });
-
+*/
 
 
 

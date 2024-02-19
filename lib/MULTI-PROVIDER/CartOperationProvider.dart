@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:takeaplate/UTILS/network_strings.dart';
-
 import '../NETWORKS/network.dart';
 import '../Response_Model/AddToCartResponse.dart';
 import '../Response_Model/CartListingResponse.dart';
@@ -65,7 +63,7 @@ class CartOperationProvider extends ChangeNotifier {
 
     try {
       final response = await _network.postRequest(
-        endPoint: NetworkStrings.ADD_PAYMENT_DETAIL, // Replace with your actual API endpoint
+        endPoint: "/add-payment-detail", // Replace with your actual API endpoint
         formData: formData,
       );
 
