@@ -111,20 +111,24 @@ class _YourCardScreenState extends State<YourCardScreen> {
     }
   }
 
-  void _stripePayment() async {
+  Future<bool> _stripePayment(orderId) async {
     Map<String, dynamic> formData = {
       "user_id": await Utility.getIntValue(RequestString.ID) ?? 0,
-      "cart_id": "333",
-      "status": "",
+      "deal_id": dealIdsBuffer.toString(),
+      "status": "Success",
       "total_amount": totalPrice.toString(),
-      "payment_id": 232
+      "payment_id": orderId,
+      "store_id": storeIdsBuffer.toString(),
     };
     AddToCartResponse _stripePayment =
         await cartOperationProvider.stripePayment(formData);
 
-    if (_stripePayment.status == 200) {
+    if (_stripePayment.status == true) {
       print("_myy stripe payment status ${_stripePayment.message}");
+      return true;
     }
+    return false;
+
   }
 
   @override
@@ -133,6 +137,8 @@ class _YourCardScreenState extends State<YourCardScreen> {
 
     String dealIdResult = dealIdsBuffer.toString();
     String storeIdResult = storeIdsBuffer.toString();
+
+
     print("DealIds:  $dealIdResult \n StoreIds: $storeIdResult");
     return Stack(
       children: [
@@ -287,8 +293,11 @@ class _YourCardScreenState extends State<YourCardScreen> {
 
   displayPaymentSheet() async {
     try {
-      await Stripe.instance.presentPaymentSheet().then((value) {
-        // print("bvbvbbvb ${value} ");
+      await Stripe.instance.presentPaymentSheet().then((value) async {
+
+        var orderId = paymentIntent?['id'];
+
+
         showDialog(
             context: context,
             builder: (_) => AlertDialog(
@@ -302,11 +311,20 @@ class _YourCardScreenState extends State<YourCardScreen> {
                       ),
                       SizedBox(height: 10.0),
                       Text("Payment Successful!"),
+
                     ],
                   ),
                 ));
 
-        paymentIntent = null;
+        Future.delayed(const Duration(seconds: 1), () async {
+          var status = await _stripePayment(orderId);
+          if(status == true) {
+            paymentIntent = null;
+            Navigator.of(context).pushNamedAndRemoveUntil('/BaseHome', (Route route) => false);
+          }
+        });
+
+
       }).onError((error, stackTrace) {
         throw Exception(error);
       });
@@ -350,8 +368,14 @@ class _YourCardScreenState extends State<YourCardScreen> {
         },
         body: body,
       );
-      if (response.body.isNotEmpty)
+      if (response.body.isNotEmpty) {
         print("nbgff ${response.statusCode}");
+        var jsonCode = jsonDecode(response.body);
+
+        print("Status : ${jsonCode["status"]}");
+
+      }
+
       else
         print("body not gert");
 

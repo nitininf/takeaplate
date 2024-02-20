@@ -334,8 +334,20 @@ class _LastMinuteDealScreenState extends State<LastMinuteDealScreen> {
 
               dataId = filterList[index + 1].id!;
 
+
+              var lat = await Utility.getStringValue(RequestString.LATITUDE);
+              var long = await Utility.getStringValue(RequestString.LONGITUDE);
+
+
+              var formData = {
+                RequestString.LATITUDE: lat,
+                RequestString.LONGITUDE: long,
+
+              };
+
+
               final nextPageData = await restaurantsProvider
-                  .getCollectTomorrowList(page: currentPage, dataId);
+                  .getLastMinuteDealsList(page: currentPage, dataId,formData);
 
               if (nextPageData.data != null && nextPageData.data!.isNotEmpty) {
                 setState(() {

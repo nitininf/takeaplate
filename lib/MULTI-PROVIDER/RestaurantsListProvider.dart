@@ -138,11 +138,11 @@ formData: formData
   }
 
   Future<RestaurentDealResponse> getCollectTomorrowList(int filterId,
-      {int page = 1}) async {
+      dynamic formData,{int page = 1}) async {
     try {
-      final response = await _network.getRequest(
-        endPoint:
-            '/tomorrow-deal-data/$filterId/$page', // Replace with your actual API endpoint
+      final response = await _network.postRequest(
+        endPoint: '/tomorrow-deal-data/$filterId/$page', // Replace with your actual API endpoint
+      formData: formData
       );
 
       print("Collect Tomorrow's Deal response : ${response}");

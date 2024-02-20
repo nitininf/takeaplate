@@ -16,6 +16,8 @@ import '../../Response_Model/RestaurantDealResponse.dart';
 import '../../UTILS/app_color.dart';
 import '../../UTILS/app_images.dart';
 import '../../UTILS/fontfamily_string.dart';
+import '../../UTILS/request_string.dart';
+import '../../UTILS/utils.dart';
 import '../../main.dart';
 
 class CollectTomorrowScreen extends StatefulWidget {
@@ -82,8 +84,19 @@ class _CollectTomorrowScreenState extends State<CollectTomorrowScreen> {
             isLoading = true;
           });
 
+          var lat = await Utility.getStringValue(RequestString.LATITUDE);
+          var long = await Utility.getStringValue(RequestString.LONGITUDE);
+
+
+          var formData = {
+            RequestString.LATITUDE: lat,
+            RequestString.LONGITUDE: long,
+
+          };
+
+
           final nextPageData = await restaurantsProvider.getCollectTomorrowList(
-            page: currentPage,dataId
+            page: currentPage,dataId,formData
           );
 
           if (nextPageData.data != null && nextPageData.data!.isNotEmpty) {
@@ -327,8 +340,19 @@ class _CollectTomorrowScreenState extends State<CollectTomorrowScreen> {
 
               dataId = filterList[index + 1].id!;
 
+
+              var lat = await Utility.getStringValue(RequestString.LATITUDE);
+              var long = await Utility.getStringValue(RequestString.LONGITUDE);
+
+
+              var formData = {
+                RequestString.LATITUDE: lat,
+                RequestString.LONGITUDE: long,
+
+              };
+
               final nextPageData = await restaurantsProvider.getCollectTomorrowList(
-                  page: currentPage,dataId
+                  page: currentPage,dataId,formData
               );
 
               if (nextPageData.data != null && nextPageData.data!.isNotEmpty) {
@@ -629,7 +653,20 @@ class _CollectTomorrowScreenState extends State<CollectTomorrowScreen> {
 
                               setState(() async {
                                 try {
-                                  final refreshedData = await restaurantsProvider.getCollectTomorrowList( page: 1,dataId);
+
+
+                                  var lat = await Utility.getStringValue(RequestString.LATITUDE);
+                                  var long = await Utility.getStringValue(RequestString.LONGITUDE);
+
+
+                                  var formData = {
+                                    RequestString.LATITUDE: lat,
+                                    RequestString.LONGITUDE: long,
+
+                                  };
+
+
+                                  final refreshedData = await restaurantsProvider.getCollectTomorrowList( page: 1,dataId,formData);
 
                                   if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
                                     setState(() {
@@ -688,7 +725,18 @@ class _CollectTomorrowScreenState extends State<CollectTomorrowScreen> {
                               setState(() async {
 
                                 try {
-                                  final refreshedData = await restaurantsProvider.getCollectTomorrowList( page: 1,dataId);
+                                  var lat = await Utility.getStringValue(RequestString.LATITUDE);
+                                  var long = await Utility.getStringValue(RequestString.LONGITUDE);
+
+
+                                  var formData = {
+                                    RequestString.LATITUDE: lat,
+                                    RequestString.LONGITUDE: long,
+
+                                  };
+
+
+                                  final refreshedData = await restaurantsProvider.getCollectTomorrowList( page: 1,dataId,formData);
 
                                   if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
                                     setState(() {

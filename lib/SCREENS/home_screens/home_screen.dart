@@ -61,6 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   String _latitude = '';
   String _postalCode = '';
+  String _city = '';
   String _longitude = '';
 
   @override
@@ -127,9 +128,11 @@ class _HomeScreenState extends State<HomeScreen> {
           Placemark place = placemarks[0];
           print('PostalCode${place.postalCode}');
           _postalCode = '${place.postalCode}';
+          _city = '${place.locality}';
           _loadData(dataId);
-          await Utility.setStringValue(
-              RequestString.POSTAL_CODE, _latitude);
+
+          await Utility.setStringValue(RequestString.POSTAL_CODE, _postalCode);
+          await Utility.setStringValue(RequestString.CITY, _city);
 
         } catch (e) {
          print(e);
@@ -162,6 +165,7 @@ class _HomeScreenState extends State<HomeScreen> {
               RequestString.LATITUDE: _latitude,
               RequestString.LONGITUDE: _longitude,
               RequestString.POSTAL_CODE: _postalCode,
+              RequestString.CITY: _city,
 
             };
 
