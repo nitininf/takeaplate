@@ -81,6 +81,7 @@ class RequestString{
 
   static const String LATITUDE = "latitude";
   static const String LONGITUDE = "longitude";
+  static const String POSTAL_CODE = "postal_code";
 
 
 

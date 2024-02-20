@@ -1,5 +1,6 @@
 import 'package:custom_rating_bar/custom_rating_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 import 'package:take_a_plate/CUSTOM_WIDGETS/custom_text_style.dart';
@@ -59,6 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int dataId = 0;
 
   String _latitude = '';
+  String _postalCode = '';
   String _longitude = '';
 
   @override
@@ -99,10 +101,16 @@ class _HomeScreenState extends State<HomeScreen> {
       // Get the current location
       Position position = await Geolocator.getCurrentPosition(
           desiredAccuracy: LocationAccuracy.best);
+
+      // List<Placemark> placemarks = await placemarkFromCoordinates(position.latitude,position.longitude);
+      // Placemark place = placemarks[0];
+      // print('PostalCode${place.postalCode}');
+
       setState(() async {
 
         _latitude = '${position.latitude}';
         _longitude = '${position.longitude}';
+
 
         await Utility.getSharedPreferences();
 
@@ -113,8 +121,19 @@ class _HomeScreenState extends State<HomeScreen> {
             RequestString.LONGITUDE, _longitude);
 
 
-        _loadData(dataId);
 
+        try {
+          List<Placemark> placemarks = await placemarkFromCoordinates(position.latitude, position.longitude);
+          Placemark place = placemarks[0];
+          print('PostalCode${place.postalCode}');
+          _postalCode = '${place.postalCode}';
+          _loadData(dataId);
+          await Utility.setStringValue(
+              RequestString.POSTAL_CODE, _latitude);
+
+        } catch (e) {
+         print(e);
+        }
 
       });
 
@@ -142,6 +161,7 @@ class _HomeScreenState extends State<HomeScreen> {
             var formData = {
               RequestString.LATITUDE: _latitude,
               RequestString.LONGITUDE: _longitude,
+              RequestString.POSTAL_CODE: _postalCode,
 
             };
 
