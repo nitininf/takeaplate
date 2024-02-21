@@ -113,6 +113,9 @@ class _HomeScreenState extends State<HomeScreen> {
         _longitude = '${position.longitude}';
 
 
+        // _latitude = '28.575771371227113';
+        // _longitude = '77.32073524287385';
+
         await Utility.getSharedPreferences();
 
 
@@ -129,6 +132,10 @@ class _HomeScreenState extends State<HomeScreen> {
           print('PostalCode${place.postalCode}');
           _postalCode = '${place.postalCode}';
           _city = '${place.locality}';
+
+
+          // _postalCode = '201301';
+          // _city = 'Noida';
           _loadData(dataId);
 
           await Utility.setStringValue(RequestString.POSTAL_CODE, _postalCode);
