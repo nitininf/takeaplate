@@ -1,22 +1,32 @@
+import 'dart:convert';
+
 import 'package:custom_rating_bar/custom_rating_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:provider/provider.dart';
 import 'package:take_a_plate/CUSTOM_WIDGETS/common_button.dart';
 import 'package:take_a_plate/CUSTOM_WIDGETS/custom_text_style.dart';
+import 'package:http/http.dart' as http;
+
+import 'package:take_a_plate/SCREENS/notification/NotifcattionTurnOnScreen.dart';
 import 'package:take_a_plate/UTILS/app_color.dart';
 import 'package:take_a_plate/UTILS/app_images.dart';
 import 'package:take_a_plate/UTILS/app_strings.dart';
 import 'package:take_a_plate/UTILS/fontfamily_string.dart';
 import '../../CUSTOM_WIDGETS/custom_app_bar.dart';
 import '../../CUSTOM_WIDGETS/custom_search_field.dart';
+import '../../MULTI-PROVIDER/CartOperationProvider.dart';
 import '../../MULTI-PROVIDER/FavoriteOperationProvider.dart';
 import '../../MULTI-PROVIDER/PaymentDetailsProvider.dart';
 import '../../Response_Model/AddPaymentCardResponse.dart';
+import '../../Response_Model/AddToCartResponse.dart';
 import '../../Response_Model/FavAddedResponse.dart';
 import '../../Response_Model/FavDeleteResponse.dart';
 import '../../Response_Model/RestaurantDealResponse.dart';
 import '../../UTILS/request_string.dart';
+import '../../UTILS/utils.dart';
 
 class PaymentDetailsScreen extends StatefulWidget {
   const PaymentDetailsScreen({super.key});
@@ -55,6 +65,34 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
 
     return "";
   }
+  Map<String, dynamic>? paymentIntent;
+  String dealIds = "";
+
+  StringBuffer dealIdsBuffer = StringBuffer();
+  StringBuffer storeIdsBuffer = StringBuffer();
+  var totalPrice = "";
+  final CartOperationProvider cartOperationProvider = CartOperationProvider();
+
+  Future<bool> _stripePayment(orderId, StringBuffer dealIdsBuffer, StringBuffer storeIdsBuffer) async {
+    Map<String, dynamic> formData = {
+      "user_id": await Utility.getIntValue(RequestString.ID) ?? 0,
+      "deal_id": dealIdsBuffer.toString(),
+      "status": "Success",
+      "total_amount": totalPrice.toString(),
+      "payment_id": orderId,
+      "store_id": storeIdsBuffer.toString(),
+    };
+    AddToCartResponse _stripePayment =
+    await cartOperationProvider.stripePayment(formData);
+
+    if (_stripePayment.status == true) {
+      print("_myy stripe payment status ${_stripePayment.message}");
+      return true;
+    }
+    return false;
+
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -86,15 +124,21 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
                       ),
                       getLastMinuteDealsData(data, context),
                       buildSection(total, "\$ ${data.price ?? "NA"}"),
-                      paymentDetails(),
+                    //  paymentDetails(),
                       Padding(
                         padding: const EdgeInsets.only(
                             left: 30.0, right: 30, bottom: 20),
                         child: CommonButton(
                             btnBgColor: btnbgColor,
                             btnText: orderAndPay,
-                            onClick: () {
-                              Navigator.pushNamed(context, '/BaseHome');
+                            onClick: () async {
+                              dealIdsBuffer.write(data.id);
+                              storeIdsBuffer.write(data.storeId);
+                              totalPrice = data.price!;
+                              await makePayment(totalPrice , dealIdsBuffer,storeIdsBuffer);
+                              
+
+                              //Navigator.pushNamed(context, '/BaseHome');
                             }),
                       )
                     ],
@@ -106,6 +150,128 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> makePayment(String amount, StringBuffer dealIdsBuffer, StringBuffer storeIdsBuffer) async {
+    try {
+      print("saddfd${amount}");
+      paymentIntent = await createPaymentIntent(amount, 'USD');
+
+      //STEP 2: Initialize Payment Sheet
+      await Stripe.instance
+          .initPaymentSheet(
+          paymentSheetParameters: SetupPaymentSheetParameters(
+              paymentIntentClientSecret: paymentIntent![
+              'client_secret'], //Gotten from payment intent
+              style: ThemeMode.light,
+              merchantDisplayName: 'Ikay'))
+          .then((value) {});
+
+      //STEP 3: Display Payment sheet
+      displayPaymentSheet(dealIdsBuffer,storeIdsBuffer);
+    } catch (err) {
+      throw Exception(err);
+    }
+  }
+
+  displayPaymentSheet(StringBuffer dealIdsBuffer, StringBuffer storeIdsBuffer) async {
+    try {
+      await Stripe.instance.presentPaymentSheet().then((value) async {
+
+        var orderId = paymentIntent?['id'];
+
+
+        showDialog(
+            context: context,
+            builder: (_) => AlertDialog(
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.check_circle,
+                    color: Colors.green,
+                    size: 100.0,
+                  ),
+                  SizedBox(height: 10.0),
+                  Text("Payment Successful!"),
+
+                ],
+              ),
+            ));
+
+        Future.delayed(const Duration(seconds: 1), () async {
+          var status = await _stripePayment(orderId,dealIdsBuffer,storeIdsBuffer);
+          if(status == true) {
+            paymentIntent = null;
+            Navigator.of(context).pushNamedAndRemoveUntil('/BaseHome', (Route route) => false);
+          }
+        });
+
+
+      }).onError((error, stackTrace) {
+        throw Exception(error);
+      });
+    } on StripeException catch (e) {
+      print('Error is:---> $e');
+      AlertDialog(
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              children: const [
+                Icon(
+                  Icons.cancel,
+                  color: Colors.red,
+                ),
+                Text("Payment Failed"),
+              ],
+            ),
+          ],
+        ),
+      );
+    } catch (e) {
+      print('$e');
+    }
+  }
+
+  createPaymentIntent(String amount, String currency) async {
+    try {
+      //Request body
+      Map<String, dynamic> body = {
+        'amount': calculateAmount(amount),
+        'currency': currency,
+      };
+
+      //Make post request to Stripe
+      var response = await http.post(
+        Uri.parse('https://api.stripe.com/v1/payment_intents'),
+        headers: {
+          'Authorization': 'Bearer ${dotenv.env['STRIPE_SECRET']}',
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: body,
+      );
+      if (response.body.isNotEmpty) {
+        print("nbgff ${response.statusCode}");
+        var jsonCode = jsonDecode(response.body);
+
+        print("Status : ${jsonCode["status"]}");
+
+      }
+
+      else
+        print("body not gert");
+
+      print("dfv${response.body}");
+      return json.decode(response.body);
+    } catch (err) {
+      throw Exception(err.toString());
+    }
+  }
+
+  calculateAmount(String amount) {
+    final calculatedAmout = (int.parse(amount)) * 100;
+    return calculatedAmout.toString();
   }
 
   Widget buildSection(String title, String viewAllText) {
