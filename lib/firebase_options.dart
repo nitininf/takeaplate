@@ -24,7 +24,10 @@ class DefaultFirebaseOptions {
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
-        return android;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for android - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
@@ -49,20 +52,12 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBvbkawSrtn2KeKWZdzUN9EqjrY96QcLLA',
-    appId: '1:307471951857:android:13698c3f231089fcba4650',
-    messagingSenderId: '562730144845',
+  static const FirebaseOptions ios = FirebaseOptions(
+    apiKey: 'AIzaSyAuJVM5LA7sdQTRZAceM8ZEb7cjqJpHYpk',
+    appId: '1:307471951857:ios:d17ae4df7e6b15caba4650',
+    messagingSenderId: '307471951857',
     projectId: 'takeaplate-2e5b5',
     storageBucket: 'takeaplate-2e5b5.appspot.com',
-  );
-
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCV8GwRohvTqHhej84MLX2gf27VJlKTIig',
-    appId: '1:562730144845:ios:cbc453f68d6fc37ff93804',
-    messagingSenderId: '562730144845',
-    projectId: 'take-a-plate-356e3',
-    storageBucket: 'take-a-plate-356e3.appspot.com',
-    iosBundleId: 'com.take_a_plate',
+    iosBundleId: 'com.takeaplate',
   );
 }
