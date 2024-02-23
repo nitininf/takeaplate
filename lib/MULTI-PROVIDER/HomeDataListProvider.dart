@@ -38,10 +38,11 @@ class HomeDataListProvider extends ChangeNotifier {
     }
   }
 
-  Future<ProfilePageResponse> getProfilePageData({int page = 1}) async {
+  Future<ProfilePageResponse> getProfilePageData(dynamic formData ,{int page = 1}) async {
     try {
-      final response = await _network.getRequest(
+      final response = await _network.postRequest(
         endPoint: '/profile-data', // Replace with your actual API endpoint
+        formData: formData
       );
 
       print("Profile Page's response : ${response}");

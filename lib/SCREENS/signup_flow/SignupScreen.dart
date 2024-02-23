@@ -165,8 +165,7 @@ final DateProvider dateProvider = DateProvider();
                     height: screenHeight * 0.170,
                   ),
                   Padding(
-                    padding:
-                        const EdgeInsets.only(left: 40, right: 40, bottom: 20),
+                    padding: const EdgeInsets.only(left: 40, right: 40, bottom: 20),
                     child: CommonButton(
                       btnBgColor: btnbgColor,
                       btnText: next,

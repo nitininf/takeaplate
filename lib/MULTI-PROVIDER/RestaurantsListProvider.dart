@@ -4,6 +4,8 @@ import 'package:take_a_plate/Response_Model/RestaurantDealResponse.dart';
 import '../NETWORKS/network.dart';
 
 import '../Response_Model/HomeItemsListingResponse.dart';
+import '../Response_Model/RateDealResponse.dart';
+import '../Response_Model/ReportDealResponse.dart';
 import '../Response_Model/RestaurantsListResponse.dart';
 
 class RestaurantsListProvider extends ChangeNotifier {
@@ -186,4 +188,58 @@ formData: formData
       notifyListeners();
     }
   }
+
+  Future<ReportDealResponse> reportDeal(dynamic formData) async {
+
+    try {
+      final response = await _network.postRequest(
+        endPoint: '/report-deal', // Replace with your actual API endpoint
+        formData: formData
+      );
+
+      print("my response : ${response}");
+
+      if (response != null && response.data is Map<String, dynamic>) {
+        final Map<String, dynamic> responseData = response.data;
+
+        return ReportDealResponse.fromJson(responseData);
+      } else {
+        throw Exception('Failed to parse API response');
+      }
+    } catch (error) {
+      // Handle network errors or any other exceptions
+      print('Error: $error');
+      rethrow; // Re-throw the error to the caller
+    } finally {
+      notifyListeners();
+    }
+  }
+
+  Future<RateDealResponse> rateDeal(dynamic formData) async {
+
+    try {
+      final response = await _network.postRequest(
+          endPoint: '/deal-rating', // Replace with your actual API endpoint
+          formData: formData
+      );
+
+      print("my response : ${response}");
+
+      if (response != null && response.data is Map<String, dynamic>) {
+        final Map<String, dynamic> responseData = response.data;
+
+        return RateDealResponse.fromJson(responseData);
+      } else {
+        throw Exception('Failed to parse API response');
+      }
+    } catch (error) {
+      // Handle network errors or any other exceptions
+      print('Error: $error');
+      rethrow; // Re-throw the error to the caller
+    } finally {
+      notifyListeners();
+    }
+  }
+
+
 }

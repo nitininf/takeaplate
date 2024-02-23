@@ -147,9 +147,7 @@ class _ClosestScreenState extends State<ClosestScreen> {
           isFilterLoading = true;
         });
 
-        final filterData = await homeProvider.getCategoryFilterData(
-
-        );
+        final filterData = await homeProvider.getCategoryFilterData();
 
         if (filterData.data != null && filterData.data!.isNotEmpty) {
 

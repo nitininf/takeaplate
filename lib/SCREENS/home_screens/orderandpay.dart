@@ -9,7 +9,9 @@ import '../../CUSTOM_WIDGETS/common_button.dart';
 import '../../CUSTOM_WIDGETS/custom_app_bar.dart';
 import '../../CUSTOM_WIDGETS/custom_search_field.dart';
 import '../../CUSTOM_WIDGETS/custom_text_style.dart';
+import '../../MULTI-PROVIDER/RestaurantsListProvider.dart';
 import '../../Response_Model/AddToCartResponse.dart';
+import '../../Response_Model/ReportDealResponse.dart';
 import '../../UTILS/app_color.dart';
 import '../../UTILS/app_images.dart';
 import '../../UTILS/app_strings.dart';
@@ -60,7 +62,8 @@ class OrderAndPayScreen extends StatelessWidget {
                           onClick: () {
                             Navigator.pushNamed(
                                 arguments: data,
-                                context, '/PaymentDetailsScreen');
+                                context,
+                                '/PaymentDetailsScreen');
                           },
                         ),
                       ),
@@ -75,14 +78,8 @@ class OrderAndPayScreen extends StatelessWidget {
                             sizeOfFont: 18,
                             btnTextColor: offerColor.withOpacity(0.5),
                             btnText: "ADD TO CART",
-                            onClick: () async
-                            {
-
-
-
-                              if (dealId !=0 || dealId != null) {
-
-
+                            onClick: () async {
+                              if (dealId != 0 || dealId != null) {
                                 try {
                                   var formData = {
                                     RequestString.DEAL_ID: dealId,
@@ -97,7 +94,6 @@ class OrderAndPayScreen extends StatelessWidget {
                                   if (data.status == true &&
                                       data.message ==
                                           "Item added to the cart successfully.") {
-
                                     final snackBar = SnackBar(
                                       content: Text('${data.message}'),
                                     );
@@ -107,8 +103,8 @@ class OrderAndPayScreen extends StatelessWidget {
                                         .showSnackBar(snackBar);
 
                                     // Automatically hide the SnackBar after 1 second
-                                    Future.delayed(const Duration(milliseconds: 1000),
-                                        () {
+                                    Future.delayed(
+                                        const Duration(milliseconds: 1000), () {
                                       ScaffoldMessenger.of(context)
                                           .hideCurrentSnackBar();
                                     });
@@ -126,8 +122,8 @@ class OrderAndPayScreen extends StatelessWidget {
                                         .showSnackBar(snackBar);
 
                                     // Automatically hide the SnackBar after 1 second
-                                    Future.delayed(const Duration(milliseconds: 1000),
-                                        () {
+                                    Future.delayed(
+                                        const Duration(milliseconds: 1000), () {
                                       ScaffoldMessenger.of(context)
                                           .hideCurrentSnackBar();
                                     });
@@ -152,8 +148,7 @@ class OrderAndPayScreen extends StatelessWidget {
                                 ScaffoldMessenger.of(context)
                                     .showSnackBar(snackBar);
                               }
-                            }
-                            ),
+                            }),
                       ),
                     ],
                   ),
@@ -188,7 +183,8 @@ class OrderAndPayScreen extends StatelessWidget {
     );
   }
 
-  Widget getCards(BuildContext context, OrderAndPayProvider orderAndPayProvider, CommonCounter commonProvider, DealData data) {
+  Widget getCards(BuildContext context, OrderAndPayProvider orderAndPayProvider,
+      CommonCounter commonProvider, DealData data) {
     return Consumer<OrderAndPayProvider>(
         builder: ((context, orderAndPayProvider, child) {
       return Container(
@@ -202,7 +198,8 @@ class OrderAndPayScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              child: data.profileImage != null && !(data.profileImage)!.contains("SocketException")
+              child: data.profileImage != null &&
+                      !(data.profileImage)!.contains("SocketException")
                   ? ClipRRect(
                       borderRadius: BorderRadius.circular(15.0),
                       child: Image.network(
@@ -237,14 +234,21 @@ class OrderAndPayScreen extends StatelessWidget {
                                   bottomLeft: Radius.circular(30.0)),
                               border: Border.all(width: 1, color: Colors.white),
                             ),
-                            child: const CustomText(
-                              text: "Report",
-                              color: hintColor,
-                              fontfamilly: montLight,
-                              sizeOfFont: 11,
+                            child: GestureDetector(
+                              onTap: () {
+                                reportDeal(context, data.id);
+                              },
+                              child: CustomText(
+                                text: "Report",
+                                color: hintColor,
+                                fontfamilly: montLight,
+                                sizeOfFont: 11,
+                              ),
                             ))
                         : const Text(" "),
-                    const SizedBox(width: 5,),
+                    const SizedBox(
+                      width: 5,
+                    ),
                     Padding(
                       padding: const EdgeInsets.only(left: 2.0, top: 20),
                       child: Image.asset(
@@ -298,7 +302,7 @@ class OrderAndPayScreen extends StatelessWidget {
                   ],
                 ),
                 CustomText(
-                  text:'${data.store?.distanceKm} Km'?? "NA",
+                  text: '${data.store?.distanceKm} Km' ?? "NA",
                   color: editbgColor,
                   fontfamilly: montMedium,
                   sizeOfFont: 17,
@@ -359,7 +363,6 @@ class OrderAndPayScreen extends StatelessWidget {
                 ),
                 Column(
                   children: [
-
                     featureImage(data.allergens ?? ""),
                     const SizedBox(
                       height: 5,
@@ -447,5 +450,50 @@ class OrderAndPayScreen extends StatelessWidget {
     }
 
     return Image.asset(imagePath, height: 30, width: 30);
+  }
+
+  Future<void> reportDeal(BuildContext context, int? id) async {
+
+      try {
+
+        var formData = {
+          RequestString.DEAL_ID: id,
+
+        };
+
+
+        ReportDealResponse data = await Provider.of<RestaurantsListProvider>(
+            context,
+            listen: false)
+            .reportDeal(formData);
+
+        if (data.status == true) {
+
+
+          final snackBar = SnackBar(
+            content: Text(
+                data.message ?? ""),
+          );
+
+// Show the SnackBar
+          ScaffoldMessenger.of(context)
+              .showSnackBar(snackBar);
+
+// Automatically hide the SnackBar after 1 second
+          Future.delayed(Duration(milliseconds: 500), () {
+            ScaffoldMessenger.of(context)
+                .hideCurrentSnackBar();
+          });
+
+          // Navigate to the next screen or perform other actions after login
+        } else {
+          // Login failed
+          print("Something went wrong: ${data.message}");
+        }
+      } catch (e) {
+        // Display error message
+        print("Error: $e");
+      }
+
   }
 }

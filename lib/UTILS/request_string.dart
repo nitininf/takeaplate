@@ -63,6 +63,7 @@ class RequestString{
   static const String UPDATED_AT = "updated_at";
   static const String COMMENTS = "comments";
   static const String DEAL_ID = "deal_id";
+  static const String RATING = "rating";
   static const String QUANTITY = "quantity";
 
   static const String NAME_ON_CARD = "card_name";

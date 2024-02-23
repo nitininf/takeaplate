@@ -206,6 +206,8 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
   }
 
   Widget getCards(CommonCounter commonCounter, StoreData data) {
+
+    double width = MediaQuery.of(context).size.width;
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -219,7 +221,8 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
                     borderRadius: BorderRadius.circular(15.0),
                     child: Image.network(
                       data.bannerImage!,
-                      fit: BoxFit.contain,
+                      fit: BoxFit.cover,
+                      width: width,
                       height: 200,
                     ),
                   )
@@ -227,22 +230,16 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
             Positioned(
               bottom: -60,
               right: 10,
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(
-                      navigatorKey.currentContext!, '/OrderAndPayScreen');
-                },
-                child: Container(
-                  width: 120,
-                  height: 120,
-                  decoration: BoxDecoration(
-                    color: imgbgColor,
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(width: 0, color: Colors.grey),
-                  ),
-                  child: Center(
-                      child: Image.asset(restrorent_img, fit: BoxFit.fill)),
+              child: Container(
+                width: 120,
+                height: 120,
+                decoration: BoxDecoration(
+                  color: imgbgColor,
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(width: 0, color: Colors.grey),
                 ),
+                child: Center(
+                    child: Image.asset(restrorent_img, fit: BoxFit.fill)),
               ),
             ),
           ],
@@ -278,17 +275,7 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
                   ],
                 ),
               ),
-              GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(
-                      navigatorKey.currentContext!, '/OrderAndPayScreen');
-                },
-                child: const SizedBox(
-                  width: 120,
-                  height: 60,
-                  child: Text(""),
-                ),
-              ),
+
             ],
           ),
         ),

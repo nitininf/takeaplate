@@ -293,8 +293,7 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
 
   Widget buildHorizontalList(List<FilterData> filterList) {
     if (filterList.length <= 1) {
-      return const SizedBox
-          .shrink(); // Return an empty widget if there's only 1 or no items
+      return const SizedBox.shrink(); // Return an empty widget if there's only 1 or no items
     }
 
     return SingleChildScrollView(
@@ -303,15 +302,51 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
         mainAxisSize: MainAxisSize.min,
         children: List.generate(
           filterList.length - 1,
-          (index) => GestureDetector(
+              (index) => GestureDetector(
             onTap: () async {
+
+              currentPage = 1;
+
               setState(() {
                 selectedCardIndex = index;
               });
               print('filterId - ${filterList[index + 1].id!}');
 
               dataId = filterList[index + 1].id!;
-              await _refreshData();
+
+              var lat = await Utility.getStringValue(RequestString.LATITUDE);
+              var long = await Utility.getStringValue(RequestString.LONGITUDE);
+
+
+              var formData = {
+                RequestString.LATITUDE: lat,
+                RequestString.LONGITUDE: long,
+
+              };
+
+              final nextPageData =
+              await restaurantsProvider.getClosestRestaurantsList(
+                  page: currentPage,dataId,formData
+              );
+
+              if (nextPageData.data != null && nextPageData.data!.isNotEmpty) {
+                setState(() {
+                  if (mounted) {
+
+                    restaurantData = nextPageData.data!;
+                    currentPage++;
+
+                  }
+                });
+
+              } else {
+                setState(() {
+                  if (mounted) {
+                    hasMoreData = false;
+                    restaurantData.clear();
+                  }
+                });
+              }
             },
             child: Container(
               margin: const EdgeInsets.symmetric(horizontal: 3, vertical: 10),
@@ -332,7 +367,9 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
         ),
       ),
     );
+
   }
+
 
   Widget buildVerticalCards() {
     return Expanded(

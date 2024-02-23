@@ -1,5 +1,6 @@
 import 'package:custom_rating_bar/custom_rating_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 import 'package:take_a_plate/CUSTOM_WIDGETS/common_button.dart';
 import 'package:take_a_plate/CUSTOM_WIDGETS/custom_text_style.dart';
@@ -9,8 +10,12 @@ import 'package:take_a_plate/UTILS/dialog_helper.dart';
 import 'package:take_a_plate/UTILS/fontfamily_string.dart';
 import 'package:take_a_plate/main.dart';
 import '../../../CUSTOM_WIDGETS/custom_app_bar.dart';
+import '../../MULTI-PROVIDER/RestaurantsListProvider.dart';
 import '../../MULTI-PROVIDER/common_counter.dart';
 import '../../Response_Model/CurrentOrderResponse.dart';
+import '../../Response_Model/RateDealResponse.dart';
+import '../../UTILS/app_strings.dart';
+import '../../UTILS/request_string.dart';
 class YourOrderScreen extends StatelessWidget {
 
   @override
@@ -36,7 +41,7 @@ class YourOrderScreen extends StatelessWidget {
                   child: Column(
                     children: [
                       buildSection("YOUR ORDER", "",commonProvider),
-                      getCards(data,commonProvider),
+                      getCards(data,commonProvider,context),
                     ],
                   ),
                 ),
@@ -63,7 +68,7 @@ class YourOrderScreen extends StatelessWidget {
     );
   }
 
-  Widget getCards(CurrentOrderData data, CommonCounter commonProvider) {
+  Widget getCards(CurrentOrderData data, CommonCounter commonProvider, BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
@@ -134,13 +139,7 @@ class YourOrderScreen extends StatelessWidget {
          /* CommonButton(btnBgColor: onboardingBtn,sizeOfFont: 17, btnTextColor:pickuptColor.withOpacity(0.54),btnText: "PICK UP AT 11 AM", onClick: (){
           }),*/
           CommonButton(btnBgColor: onboardingBtn,sizeOfFont: 17, btnTextColor:pickuptColor,btnText:data.status == 0 ? "PENDING" : "READY FOR PICKUP", onClick: (){
-            data.status == 0 ?
-
-            ""
-
-
-
-                : DialogHelper.showCommonPopup(navigatorKey.currentContext!,title: "RATE YOUR EXPERIENCE",subtitle: null,isDelete: false);
+            data.status == 0 ?"": showCommonPopup(context,data.id??0,title: "RATE YOUR EXPERIENCE");
           }),
           SizedBox(height: 10,),
           CustomText(text: "Order N. #2134445`", color: viewallColor, sizeOfFont:16,fontfamilly: montLight),
@@ -268,6 +267,172 @@ class YourOrderScreen extends StatelessWidget {
     }
 
     return Image.asset(imagePath, height: 30, width: 30);
+  }
+
+  static Future<void> showCommonPopup(BuildContext context , int id, {required String title}) async {
+
+     double screenHeight =
+        MediaQuery.of(navigatorKey.currentContext!).size.height;
+     double screenWidth =
+        MediaQuery.of(navigatorKey.currentContext!).size.width;
+
+
+
+     showDialog(
+       context: context,
+       useSafeArea: false,
+       useRootNavigator: false,
+       barrierDismissible: false,
+       builder: (BuildContext context) {
+         double _rating = 4; // Variable to store the rating value
+         return Dialog.fullscreen(
+           backgroundColor: Colors.transparent,
+           child: Stack(
+             children: [
+               Container(
+                 color: dailogColor.withOpacity(0.75),
+                 height: double.infinity,
+                 width: double.infinity,
+               ),
+               Column(
+                 children: <Widget>[
+                   SizedBox(
+                     height: screenHeight * 0.16,
+                   ),
+                   Padding(
+                     padding: const EdgeInsets.only(
+                         left: 0.0, right: 0.0, top: 30.0, bottom: 10),
+                     child: Container(
+                       margin: const EdgeInsets.symmetric(
+                           horizontal: 40, vertical: 40),
+                       padding: const EdgeInsets.symmetric(
+                           horizontal: 16, vertical: 12),
+                       decoration: BoxDecoration(
+                           color: onboardingbgColor,
+                           borderRadius: BorderRadius.circular(16),
+                           border: Border.all(width: 1, color: hintColor)),
+                       child: Column(
+                         crossAxisAlignment: CrossAxisAlignment.center,
+                         mainAxisAlignment: MainAxisAlignment.center,
+                         children: [
+                           SizedBox(
+                             height: screenHeight * 0.03,
+                           ),
+                           Image.asset(
+                             appLogo,
+                             height: 100,
+                             width: 100,
+                           ),
+                           const SizedBox(
+                             height: 20,
+                           ),
+                           Align(
+                             alignment: Alignment.center,
+                             child: CustomText(
+                               text: title ?? "",
+                               sizeOfFont: 21,
+                               color: hintColor,
+                               fontfamilly: montHeavy,
+                               isAlign: true,
+                             ),
+                           ),
+                           const SizedBox(
+                             height: 20,
+                           ),
+                           // Rating bar
+                           RatingBar(
+                             filledIcon: Icons.star,
+                             emptyIcon: Icons.star_border,
+                             onRatingChanged: (value) => _rating = value,
+                             initialRating: _rating,
+                             halfFilledIcon: Icons.star_half,
+                             isHalfAllowed: true,
+                             halfFilledColor: btnbgColor,
+                             alignment: Alignment.center,
+                             emptyColor: btnbgColor,
+                             filledColor: btnbgColor,
+                             maxRating: 5,
+                           ),
+                           SizedBox(
+                             height: screenHeight * 0.05,
+                           ),
+                           Padding(
+                             padding: const EdgeInsets.only(
+                                 left: 15.0,
+                                 right: 15,
+                                 top: 6,
+                                 bottom: 20),
+                             child: CommonButton(
+                                 btnBgColor: onboardingBtn,
+                                 btnText: "RATE",
+                                 onClick: () async {
+                                   // Use the rating value here
+                                   print('Rating: $_rating');
+
+                                   try {
+
+                                     var formData = {
+                                       RequestString.DEAL_ID: id,
+                                       RequestString.RATING: _rating,
+
+                                     };
+
+
+                                     RateDealResponse data = await Provider.of<RestaurantsListProvider>(
+                                         context,
+                                         listen: false)
+                                         .rateDeal(formData);
+
+                                     if (data.status == true) {
+
+                                       Navigator.pop(context);
+
+                                       final snackBar = SnackBar(
+                                         content: Text(
+                                             data.message ?? ""),
+                                       );
+
+// Show the SnackBar
+                                       ScaffoldMessenger.of(context)
+                                           .showSnackBar(snackBar);
+
+// Automatically hide the SnackBar after 1 second
+                                       Future.delayed(Duration(milliseconds: 500), () {
+                                         ScaffoldMessenger.of(context)
+                                             .hideCurrentSnackBar();
+                                       });
+
+                                       // Navigate to the next screen or perform other actions after login
+                                     } else {
+                                       // Login failed
+
+                                       Navigator.pop(context);
+                                       print("Something went wrong: ${data.message}");
+                                     }
+                                   } catch (e) {
+                                     // Display error message
+                                     print("Error: $e");
+                                   }
+
+
+
+                                 }),
+                           ),
+                           SizedBox(
+                             height: 10,
+                           )
+                         ],
+                       ),
+                     ),
+                   ),
+                 ],
+               ),
+             ],
+           ),
+         );
+       },
+     );
+
   }
 
 }

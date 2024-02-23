@@ -11,6 +11,8 @@ import '../../Response_Model/FavDeleteResponse.dart';
 import '../../UTILS/app_color.dart';
 import '../../UTILS/app_images.dart';
 import '../../UTILS/fontfamily_string.dart';
+import '../../UTILS/request_string.dart';
+import '../../UTILS/utils.dart';
 import '../../main.dart';
 
 class MyOrdersScreen extends StatefulWidget {
@@ -61,7 +63,17 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
             isLoading = true;
           });
 
-          final nextPageData = await orderProvider.getCurrentOrderList(
+          var lat = await Utility.getStringValue(RequestString.LATITUDE);
+          var long = await Utility.getStringValue(RequestString.LONGITUDE);
+
+
+          var formData = {
+            RequestString.LATITUDE: lat,
+            RequestString.LONGITUDE: long,
+
+          };
+
+          final nextPageData = await orderProvider.getCurrentOrderList(formData,
             page: currentPage,
           );
 
@@ -358,7 +370,18 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
 
                             setState(() async {
                               try {
-                                final refreshedData = await orderProvider.getCurrentOrderList( page: 1);
+
+                                var lat = await Utility.getStringValue(RequestString.LATITUDE);
+                                var long = await Utility.getStringValue(RequestString.LONGITUDE);
+
+
+                                var formData = {
+                                  RequestString.LATITUDE: lat,
+                                  RequestString.LONGITUDE: long,
+
+                                };
+
+                                final refreshedData = await orderProvider.getCurrentOrderList( page: 1,formData);
 
                                 if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
                                   setState(() {
@@ -414,7 +437,18 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                             setState(() async {
 
                               try {
-                                final refreshedData = await orderProvider.getCurrentOrderList( page: 1);
+
+                                var lat = await Utility.getStringValue(RequestString.LATITUDE);
+                                var long = await Utility.getStringValue(RequestString.LONGITUDE);
+
+
+                                var formData = {
+                                  RequestString.LATITUDE: lat,
+                                  RequestString.LONGITUDE: long,
+
+                                };
+
+                                final refreshedData = await orderProvider.getCurrentOrderList( page: 1,formData);
 
                                 if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
                                   setState(() {

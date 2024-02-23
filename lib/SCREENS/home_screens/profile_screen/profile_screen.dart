@@ -16,6 +16,8 @@ import '../../../Response_Model/RestaurantDealResponse.dart';
 import '../../../UTILS/app_color.dart';
 import '../../../UTILS/app_images.dart';
 import '../../../UTILS/fontfamily_string.dart';
+import '../../../UTILS/request_string.dart';
+import '../../../UTILS/utils.dart';
 import '../../../main.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -65,8 +67,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
             isLoading = true;
           });
 
+          var lat = await Utility.getStringValue(RequestString.LATITUDE);
+          var long = await Utility.getStringValue(RequestString.LONGITUDE);
+
+
+          var formData = {
+            RequestString.LATITUDE: lat,
+            RequestString.LONGITUDE: long,
+
+          };
+
+
+
+
           final nextPageData = await homeProvider.getProfilePageData(
+            formData,
             page: currentPage,
+
           );
 
           if (nextPageData.currentDeal != null &&
@@ -1338,7 +1355,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Future<void> refreshData() async {
+
+
+    var lat = await Utility.getStringValue(RequestString.LATITUDE);
+    var long = await Utility.getStringValue(RequestString.LONGITUDE);
+
+
+    var formData = {
+      RequestString.LATITUDE: lat,
+      RequestString.LONGITUDE: long,
+
+    };
+
+
     final nextPageData = await homeProvider.getProfilePageData(
+      formData,
       page: currentPage,
     );
 

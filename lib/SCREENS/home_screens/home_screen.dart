@@ -69,7 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
 
     _getLocation();
-
+    _loadData(dataId);
 
     _loadFilterData();
   }
@@ -136,7 +136,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
           _postalCode = '201301';
           _city = 'Noida';
+          // _loadData(dataId);
+
           _loadData(dataId);
+
 
           await Utility.setStringValue(RequestString.POSTAL_CODE, _postalCode);
           await Utility.setStringValue(RequestString.CITY, _city);

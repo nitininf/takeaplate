@@ -8,6 +8,8 @@ import 'package:take_a_plate/SCREENS/onboarding_screen/onboarding_screens.dart';
 import 'MULTI-PROVIDER/multiproviders.dart';
 import 'SCREENS/splash_screen/splash_screen.dart';
 import 'UTILS/PushNotificationService.dart';
+import 'UTILS/request_string.dart';
+import 'UTILS/utils.dart';
 import 'firebase_options.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -49,6 +51,12 @@ main() async {
   );
   final fcmToken = await FirebaseMessaging.instance.getToken();
   await FirebaseMessaging.instance.setAutoInitEnabled(true);
+
+  await Utility.getSharedPreferences();
+
+  await Utility.setStringValue(
+      RequestString.FCM_TOKEN, fcmToken!);
+
   print("FCMToken $fcmToken");
 
 
