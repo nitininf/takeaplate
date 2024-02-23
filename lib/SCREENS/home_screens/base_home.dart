@@ -9,6 +9,7 @@ import 'package:take_a_plate/SCREENS/home_screens/search_screen.dart';
 import 'package:take_a_plate/SCREENS/home_screens/your_cart/yourcart_screen.dart';
 import 'package:take_a_plate/UTILS/app_color.dart';
 import 'package:take_a_plate/UTILS/app_images.dart';
+import 'package:take_a_plate/UTILS/dialog_helper.dart';
 import 'package:take_a_plate/UTILS/fontfamily_string.dart';
 import '../../CUSTOM_WIDGETS/custom_text_style.dart';
 import '../../MULTI-PROVIDER/common_counter.dart';
@@ -125,8 +126,10 @@ class _BaseHomeScreen extends State<BaseHome> {
                   },
                   onTap_one: () {
                     if (_selectedIndex == 2) {
-                      SystemNavigator.pop();
+                      DialogHelper.showExitDialog(context, "Exit !", "Do You want to Exit ?");
+                     // SystemNavigator.pop();
                     }
+
                     setState(() {
                       _selectedIndex = 2;
                     });

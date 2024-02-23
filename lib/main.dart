@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:take_a_plate/SCREENS/home_screens/base_home.dart';
 import 'package:take_a_plate/SCREENS/onboarding_screen/onboarding_screens.dart';
 import 'MULTI-PROVIDER/multiproviders.dart';
 import 'SCREENS/splash_screen/splash_screen.dart';
@@ -108,14 +109,28 @@ class _AppRootState extends State<AppRoot> {
     );
   }
 
+
+  void checkLogin() {
+    Future.delayed(
+      Duration.zero,
+          () async {
+            int? userId =await Utility.getIntValue(RequestString.ID);
+        status = userId.toString() ?? "";
+      },
+    );
+  }
+
+
   @override
   Widget build(BuildContext context) {
     showImage(context);
+    checkLogin();
     return FutureBuilder(
         future: Future.delayed(const Duration(seconds: 2)),
         builder: (context, snapshot) =>
             snapshot.connectionState != ConnectionState.done
-                ? SplashScreen() //OnBoardingScreen()
+                ? SplashScreen()
+            :status.isNotEmpty ? BaseHome()//OnBoardingScreen()
                 : const OnBoardingScreen() //Screen1(),
         );
     }

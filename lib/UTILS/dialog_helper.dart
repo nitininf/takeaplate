@@ -1,6 +1,7 @@
 import 'package:custom_rating_bar/custom_rating_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:take_a_plate/UTILS/utils.dart';
 import '../CUSTOM_WIDGETS/common_button.dart';
@@ -18,6 +19,81 @@ class DialogHelper {
       MediaQuery.of(navigatorKey.currentContext!).size.height;
   static double screenWidth =
       MediaQuery.of(navigatorKey.currentContext!).size.width;
+
+
+
+
+ static Future<void> showExitDialog(
+      BuildContext context, String title, String description) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // Prevent dismissing by tapping outside
+      builder: (BuildContext context) {
+        return Dialog(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  description ?? '',
+                  style: TextStyle(fontSize: 16),
+                  textAlign: TextAlign.center, // Use textAlign property
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Flexible(
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 10),
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            Navigator.of(context).pop();
+                          },
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors
+                                .deepOrangeAccent, // Customize the color as needed
+                          ),
+                          child: const Text('NO'),
+                        ),
+                      ),
+                    ),
+
+                    Flexible(
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 10),
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            //Navigator.of(context).pop();
+                            SystemNavigator.pop();
+                          },
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors
+                                .green, // Customize the color as needed
+                          ),
+                          child: const Text('Yes'),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
 
   static Future<void> selectDate(
       BuildContext context, CommonCounter commonCounter,
