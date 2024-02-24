@@ -85,132 +85,144 @@ class _BaseHomeScreen extends State<BaseHome> {
       });
 
     }
-    return Scaffold(
-      key: _scaffoldKey,
-      extendBody: true,
-      resizeToAvoidBottomInset: false,
-      endDrawer: Drawer(
-        elevation: 3.0,
-        width: screenWidth,
-        child: RightDrawerMenuWidget(onClick: (index1) {
-          setState(() {
-            _selectedIndex = index1;
+    return WillPopScope(
+      onWillPop: () async {
 
-            if (_selectedIndex == 5) {
-              _selectedIndex = 4;
-              _widgetOptions[4] = YourNotificationScreen();
-            } else if (_selectedIndex == 6) {
-              _selectedIndex = 4;
-              _widgetOptions[4] = const SettingScreen();
-            } else if (_selectedIndex == 7) {
-              _selectedIndex = 4;
-              _widgetOptions[4] = ContactUs();
-            }
-            else if(_selectedIndex==4){
-              _selectedIndex = 4;
-              _widgetOptions[4] = const ProfileScreen();
-            }
-          });
-        }),
-      ),
-      body: Scaffold(
-        backgroundColor: bgColor,
-        body: SafeArea(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 28.0, right: 30, top: 6),
-                child: CustomAppBar(
-                  onTap: () {
-                    _scaffoldKey.currentState!.openEndDrawer();
-                  },
-                  onTap_one: () {
-                    if (_selectedIndex == 2) {
-                      DialogHelper.showExitDialog(context, "Exit !", "Do You want to Exit ?");
-                     // SystemNavigator.pop();
-                    }
+        return false; // Let the back button handle navigation normally
+      },
+      child: Scaffold(
+        key: _scaffoldKey,
+        extendBody: true,
+        resizeToAvoidBottomInset: false,
+        endDrawer: Drawer(
+          elevation: 3.0,
+          width: screenWidth,
+          child: RightDrawerMenuWidget(onClick: (index1) {
+            setState(() {
+              _selectedIndex = index1;
 
-                    setState(() {
-                      _selectedIndex = 2;
-                    });
-                  },
-                ),
+              if (_selectedIndex == 5) {
+                _selectedIndex = 4;
+                _widgetOptions[4] = YourNotificationScreen();
+              } else if (_selectedIndex == 6) {
+                _selectedIndex = 4;
+                _widgetOptions[4] = const SettingScreen();
+              } else if (_selectedIndex == 7) {
+                _selectedIndex = 4;
+                _widgetOptions[4] = ContactUs();
+              }
+              else if(_selectedIndex==4){
+                _selectedIndex = 4;
+                _widgetOptions[4] = const ProfileScreen();
+              }
+            });
+          }),
+        ),
+        body: WillPopScope(
+          onWillPop: () async {
+
+            return false; // Let the back button handle navigation normally
+          },
+          child: Scaffold(
+            backgroundColor: bgColor,
+            body: SafeArea(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 28.0, right: 30, top: 6),
+                    child: CustomAppBar(
+                      onTap: () {
+                        _scaffoldKey.currentState!.openEndDrawer();
+                      },
+                      onTap_one: () {
+                        if (_selectedIndex == 2) {
+                          DialogHelper.showExitDialog(context, "Exit !", "Do You want to Exit ?");
+                         // SystemNavigator.pop();
+                        }
+
+                        setState(() {
+                          _selectedIndex = 2;
+                        });
+                      },
+                    ),
+                  ),
+                  Expanded(
+                    flex: 2,
+                    child: Center(
+                      child: _widgetOptions.elementAt(_selectedIndex),
+                    ),
+                  ),
+                ],
               ),
-              Expanded(
-                flex: 2,
-                child: Center(
-                  child: _widgetOptions.elementAt(_selectedIndex),
-                ),
-              ),
-            ],
+            ),
           ),
         ),
-      ),
-      bottomNavigationBar: SafeArea(
-        child: Container(
+        bottomNavigationBar: SafeArea(
+          child: Container(
 
-          padding: const EdgeInsets.only(left: 8, right: 8, top: 4),
-          decoration: BoxDecoration(
-            color: hintColor,
-            borderRadius: const BorderRadius.only(
-                topRight: Radius.circular(20), topLeft: Radius.circular(20)),
-            border: Border.all(width: 0, color: hintColor),
-          ),
-          child: BottomNavigationBar(
-            type: BottomNavigationBarType.fixed,
-            items: <BottomNavigationBarItem>[
-              BottomNavigationBarItem(
-                icon: Image.asset(
-                  search_icon,
-                  height: 25,
-                  width: 25,
-                  color: _selectedIndex == 0 ? btnbgColor : viewallColor,
+            padding: const EdgeInsets.only(left: 8, right: 8, top: 4),
+            decoration: BoxDecoration(
+              color: hintColor,
+              borderRadius: const BorderRadius.only(
+                  topRight: Radius.circular(20), topLeft: Radius.circular(20)),
+              border: Border.all(width: 0, color: hintColor),
+            ),
+            child: BottomNavigationBar(
+              type: BottomNavigationBarType.fixed,
+              items: <BottomNavigationBarItem>[
+                BottomNavigationBarItem(
+                  icon: Image.asset(
+                    search_icon,
+                    height: 25,
+                    width: 25,
+                    color: _selectedIndex == 0 ? btnbgColor : viewallColor,
+                  ),
+                  label: '',
                 ),
-                label: '',
-              ),
-              BottomNavigationBarItem(
-                icon: Image.asset(
-                  bag_icon,
-                  height: 25,
-                  width: 25,
-                  color: _selectedIndex == 1 ? btnbgColor : viewallColor,
+                BottomNavigationBarItem(
+                  icon: Image.asset(
+                    bag_icon,
+                    height: 25,
+                    width: 25,
+                    color: _selectedIndex == 1 ? btnbgColor : viewallColor,
+                  ),
+                  label: '',
                 ),
-                label: '',
-              ),
-              BottomNavigationBarItem(
-                icon: Image.asset(
-                  home_icon,
-                  height: 25,
-                  width: 25,
-                  color: _selectedIndex == 2 ? btnbgColor : viewallColor,
+                BottomNavigationBarItem(
+                  icon: Image.asset(
+                    home_icon,
+                    height: 25,
+                    width: 25,
+                    color: _selectedIndex == 2 ? btnbgColor : viewallColor,
+                  ),
+                  label: '',
                 ),
-                label: '',
-              ),
-              BottomNavigationBarItem(
-                icon: Image.asset(
-                  restrureent_icon,
-                  height: 25,
-                  width: 25,
-                  color: _selectedIndex == 3 ? btnbgColor : viewallColor,
+                BottomNavigationBarItem(
+                  icon: Image.asset(
+                    restrureent_icon,
+                    height: 25,
+                    width: 25,
+                    color: _selectedIndex == 3 ? btnbgColor : viewallColor,
+                  ),
+                  label: '',
                 ),
-                label: '',
-              ),
-              BottomNavigationBarItem(
-                icon: Image.asset(
-                  profile_icon,
-                  height: 25,
-                  width: 25,
-                  color: _selectedIndex == 4 ? btnbgColor : viewallColor,
+                BottomNavigationBarItem(
+                  icon: Image.asset(
+                    profile_icon,
+                    height: 25,
+                    width: 25,
+                    color: _selectedIndex == 4 ? btnbgColor : viewallColor,
+                  ),
+                  label: '',
                 ),
-                label: '',
-              ),
-            ],
+              ],
 
-            currentIndex: _selectedIndex,
-            // selectedItemColor: btnbgColor,
-            backgroundColor: Colors.transparent,
-            onTap: _onItemTapped,
-            elevation: 0,
+              currentIndex: _selectedIndex,
+              // selectedItemColor: btnbgColor,
+              backgroundColor: Colors.transparent,
+              onTap: _onItemTapped,
+              elevation: 0,
+            ),
           ),
         ),
       ),

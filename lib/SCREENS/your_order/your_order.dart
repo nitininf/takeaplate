@@ -13,6 +13,7 @@ import '../../../CUSTOM_WIDGETS/custom_app_bar.dart';
 import '../../MULTI-PROVIDER/RestaurantsListProvider.dart';
 import '../../MULTI-PROVIDER/common_counter.dart';
 import '../../Response_Model/CurrentOrderResponse.dart';
+import '../../Response_Model/ProfilePageResponse.dart';
 import '../../Response_Model/RateDealResponse.dart';
 import '../../UTILS/app_strings.dart';
 import '../../UTILS/request_string.dart';
@@ -21,7 +22,7 @@ class YourOrderScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    final CurrentOrderData data = ModalRoute.of(context)!.settings.arguments as CurrentOrderData;
+    final CurrentDeal data = ModalRoute.of(context)!.settings.arguments as CurrentDeal;
     var commonProvider = Provider.of<CommonCounter>(context, listen: false);
 
     
@@ -68,7 +69,7 @@ class YourOrderScreen extends StatelessWidget {
     );
   }
 
-  Widget getCards(CurrentOrderData data, CommonCounter commonProvider, BuildContext context) {
+  Widget getCards(CurrentDeal data, CommonCounter commonProvider, BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
@@ -103,7 +104,7 @@ class YourOrderScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
             children: [
-              CustomText(text: data.category ?? "", color: viewallColor, sizeOfFont:17,fontfamilly: montLight),
+              CustomText(text: data.category ?? "", color: viewallColor, sizeOfFont:14,fontfamilly: montLight),
               Padding(
                 padding: EdgeInsets.only(top: 10.0),
                 child: CustomText(text:  'Pickup time - ${data.store?.pickupTime?.startTime ?? ""}', sizeOfFont: 11,color: viewallColor, fontfamilly: montLight),
@@ -114,7 +115,7 @@ class YourOrderScreen extends StatelessWidget {
           ),
 
           const SizedBox(height: 3,),
-          const Row(
+           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Row(
@@ -124,14 +125,14 @@ class YourOrderScreen extends StatelessWidget {
                     filledIcon: Icons.star,
                     emptyIcon: Icons.star_border,
                     filledColor: btnbgColor,
-                    initialRating: 4,
+                    initialRating: double.parse(data.averageRating ?? '0'),
                     size: 20,
                     maxRating: 5,
 
                   ),
                 ],
               ),
-              CustomText(text: "84 Km", color: viewallColor, fontfamilly: montLight),
+              CustomText(text: '${data.store?.distanceKm} Km' ?? "NA", color: viewallColor, fontfamilly: montLight),
             ],
           ),
           SizedBox(height: 10,),
@@ -142,7 +143,9 @@ class YourOrderScreen extends StatelessWidget {
             data.status == 0 ?"": showCommonPopup(context,data.id??0,title: "RATE YOUR EXPERIENCE");
           }),
           SizedBox(height: 10,),
-          CustomText(text: "Order N. #2134445`", color: viewallColor, sizeOfFont:16,fontfamilly: montLight),
+          CustomText(text: 'Order No.: ${data.paymentId} ', color: viewallColor, sizeOfFont:14,fontfamilly: montLight),
+          SizedBox(height: 10,),
+
            CustomText(text: data.store?.address ?? '', sizeOfFont: 14, color: offerColor, fontfamilly: montBold),
           SizedBox(height: 10,),
            Row(
@@ -161,7 +164,7 @@ class YourOrderScreen extends StatelessWidget {
   }
 
   Widget viewMore(CommonCounter commonCounter,
-      CurrentOrderData data) {
+      CurrentDeal data) {
     return Consumer<CommonCounter>(builder: (context, commonCounter, child) {
       return commonCounter.isViewMore
           ? Column(
@@ -179,16 +182,8 @@ class YourOrderScreen extends StatelessWidget {
           Column(
             children: [
 
-              featureImage(data.allergens ?? ""),
-              SizedBox(
-                height: 5,
-              ),
-              CustomText(
-                text: data.allergens ?? "",
-                fontfamilly: montRegular,
-                sizeOfFont: 10,
-                color: cardTextColor,
-              ),
+              getAllergenes(data)
+
               // for (var feature in orderAndPayProvider.foodData[0]["features"])
               //   featureImage(feature),
             ],
@@ -251,7 +246,7 @@ class YourOrderScreen extends StatelessWidget {
       case "GMO Free":
         imagePath = gmo_freee;
         break;
-      case "Shellfish Free":
+      case "Shelfish Free":
         imagePath = shellfish_freee;
         break;
       case "Tree Nuts Free":
@@ -434,5 +429,31 @@ class YourOrderScreen extends StatelessWidget {
      );
 
   }
+
+  Widget getAllergenes(CurrentDeal data) {
+    return Wrap(
+      direction: Axis.horizontal,
+      spacing: 10,
+      children: [
+        for (var allergen in data.allergens ?? [])
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              featureImage(allergen.title ?? ""), // Assuming featureImage expects a String
+              const SizedBox(
+                height: 5,
+              ),
+              CustomText(
+                text: allergen.title ?? "", // Assuming CustomText expects a String
+                fontfamilly: montRegular,
+                sizeOfFont: 10,
+                color: cardTextColor,
+              ),
+            ],
+          ),
+      ],
+    );
+  }
+
 
 }

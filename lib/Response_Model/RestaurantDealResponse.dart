@@ -6,8 +6,8 @@ class RestaurentDealResponse {
   int? perPage;
   int? total;
   int? lastPage;
-  String? nextPageUrl;
-  String? prevPageUrl;
+  Null? nextPageUrl;
+  Null? prevPageUrl;
 
   RestaurentDealResponse(
       {this.status,
@@ -61,21 +61,21 @@ class DealData {
   String? category;
   String? price;
   String? description;
-  String? allergens;
+  List<Allergens>? allergens;
   String? profileImage;
-  String? frequency;
+  Null? frequency;
   String? recurrentOrder;
   String? pickupTime;
-  String? deletedAt;
+  Null? deletedAt;
   String? createdAt;
   String? updatedAt;
   int? collectTomorrow;
   int? status;
   int? reported;
-  String? oneTimeDate;
+  Null? oneTimeDate;
   bool? favourite;
   String? averageRating;
-  String? customTime;
+  Null? customTime;
   Store? store;
 
   DealData(
@@ -109,7 +109,12 @@ class DealData {
     category = json['category'];
     price = json['price'];
     description = json['description'];
-    allergens = json['allergens'];
+    if (json['allergens'] != null) {
+      allergens = <Allergens>[];
+      json['allergens'].forEach((v) {
+        allergens!.add(new Allergens.fromJson(v));
+      });
+    }
     profileImage = json['profile_image'];
     frequency = json['frequency'];
     recurrentOrder = json['recurrent_order'];
@@ -135,7 +140,9 @@ class DealData {
     data['category'] = this.category;
     data['price'] = this.price;
     data['description'] = this.description;
-    data['allergens'] = this.allergens;
+    if (this.allergens != null) {
+      data['allergens'] = this.allergens!.map((v) => v.toJson()).toList();
+    }
     data['profile_image'] = this.profileImage;
     data['frequency'] = this.frequency;
     data['recurrent_order'] = this.recurrentOrder;
@@ -157,6 +164,22 @@ class DealData {
   }
 }
 
+class Allergens {
+  String? title;
+
+  Allergens({this.title});
+
+  Allergens.fromJson(Map<String, dynamic> json) {
+    title = json['title'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['title'] = this.title;
+    return data;
+  }
+}
+
 class Store {
   int? id;
   String? name;
@@ -170,7 +193,7 @@ class Store {
   String? pin;
   OpeningHour? openingHour;
   PickupTime? pickupTime;
-  String? deletedAt;
+  Null? deletedAt;
   String? createdAt;
   String? updatedAt;
   int? status;
@@ -178,6 +201,9 @@ class Store {
   String? accountStatus;
   int? isActive;
   String? commission;
+  Null? latitude;
+  Null? longitude;
+  Null? zipCode;
   String? distanceKm;
 
   Store(
@@ -201,9 +227,10 @@ class Store {
         this.accountStatus,
         this.isActive,
         this.commission,
+        this.latitude,
+        this.longitude,
+        this.zipCode,
         this.distanceKm});
-
-
 
   Store.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -230,13 +257,10 @@ class Store {
     accountStatus = json['account_status'];
     isActive = json['is_active'];
     commission = json['commission'];
+    latitude = json['latitude'];
+    longitude = json['longitude'];
+    zipCode = json['zip_code'];
     distanceKm = json['distance_km'];
-  }
-
-
-  @override
-  String toString() {
-    return 'Store: { id: $id, name: $name, address: $address, email: $email, phoneNo: $phoneNo, category: $category, profileImage: $profileImage, description: $description, bannerImage: $bannerImage, pin: $pin, openingHour: $openingHour, pickupTime: $pickupTime, deletedAt: $deletedAt, createdAt: $createdAt, updatedAt: $updatedAt, status: $status, password: $password, accountStatus: $accountStatus, isActive: $isActive, commission: $commission, distanceKm: $distanceKm }';
   }
 
   Map<String, dynamic> toJson() {
@@ -265,6 +289,9 @@ class Store {
     data['account_status'] = this.accountStatus;
     data['is_active'] = this.isActive;
     data['commission'] = this.commission;
+    data['latitude'] = this.latitude;
+    data['longitude'] = this.longitude;
+    data['zip_code'] = this.zipCode;
     data['distance_km'] = this.distanceKm;
     return data;
   }

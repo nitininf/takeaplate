@@ -10,11 +10,11 @@ import '../Response_Model/RestaurantsListResponse.dart';
 class OrderProvider extends ChangeNotifier {
   final Network _network = Network();
 
-  Future<RestaurentDealResponse> getPreviousOrderList({int page = 1}) async {
+  Future<RestaurentDealResponse> getPreviousOrderList(dynamic formData , {int page = 1}) async {
     try {
-      final response = await _network.getRequest(
-        endPoint:
-            '/previous-order-deal/$page', // Replace with your actual API endpoint
+      final response = await _network.postRequest(
+        endPoint: '/previous-order-deal/$page', // Replace with your actual API endpoint
+        formData: formData
       );
 
       print("Previous Order response : ${response}");

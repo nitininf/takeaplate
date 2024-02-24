@@ -1204,8 +1204,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   const SizedBox(
                     width: 10,
                   ),
-                  const CustomText(
-                      text: '8KM',
+                   CustomText(
+                      text: '${collectTomorrowData.store?.distanceKm} Km',
                       color: graysColor,
                       sizeOfFont: 12,
                       fontfamilly: montSemiBold),

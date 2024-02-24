@@ -22,9 +22,11 @@ class OrderAndPayScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var commonProvider = Provider.of<CommonCounter>(context, listen: false);
-    var orderAndPayProvider = Provider.of<OrderAndPayProvider>(context, listen: false);
+    var orderAndPayProvider =
+        Provider.of<OrderAndPayProvider>(context, listen: false);
 
-    final DealData data = ModalRoute.of(context)!.settings.arguments as DealData;
+    final DealData data =
+        ModalRoute.of(context)!.settings.arguments as DealData;
 
     var dealId = data.id;
     return Scaffold(
@@ -204,7 +206,7 @@ class OrderAndPayScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(15.0),
                       child: Image.network(
                         data.profileImage!,
-                        fit: BoxFit.contain,
+                        fit: BoxFit.cover,
                       ),
                     )
                   : Image.asset(restrorent_food),
@@ -363,16 +365,7 @@ class OrderAndPayScreen extends StatelessWidget {
                 ),
                 Column(
                   children: [
-                    featureImage(data.allergens ?? ""),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    CustomText(
-                      text: data.allergens ?? "",
-                      fontfamilly: montRegular,
-                      sizeOfFont: 10,
-                      color: cardTextColor,
-                    ),
+                    getAllergenes(data)
                     // for (var feature in orderAndPayProvider.foodData[0]["features"])
                     //   featureImage(feature),
                   ],
@@ -434,7 +427,7 @@ class OrderAndPayScreen extends StatelessWidget {
       case "GMO Free":
         imagePath = gmo_freee;
         break;
-      case "Shellfish Free":
+      case "Shelfish Free":
         imagePath = shellfish_freee;
         break;
       case "Tree Nuts Free":
@@ -453,47 +446,62 @@ class OrderAndPayScreen extends StatelessWidget {
   }
 
   Future<void> reportDeal(BuildContext context, int? id) async {
+    try {
+      var formData = {
+        RequestString.DEAL_ID: id,
+      };
 
-      try {
+      ReportDealResponse data =
+          await Provider.of<RestaurantsListProvider>(context, listen: false)
+              .reportDeal(formData);
 
-        var formData = {
-          RequestString.DEAL_ID: id,
-
-        };
-
-
-        ReportDealResponse data = await Provider.of<RestaurantsListProvider>(
-            context,
-            listen: false)
-            .reportDeal(formData);
-
-        if (data.status == true) {
-
-
-          final snackBar = SnackBar(
-            content: Text(
-                data.message ?? ""),
-          );
+      if (data.status == true) {
+        final snackBar = SnackBar(
+          content: Text(data.message ?? ""),
+        );
 
 // Show the SnackBar
-          ScaffoldMessenger.of(context)
-              .showSnackBar(snackBar);
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
 
 // Automatically hide the SnackBar after 1 second
-          Future.delayed(Duration(milliseconds: 500), () {
-            ScaffoldMessenger.of(context)
-                .hideCurrentSnackBar();
-          });
+        Future.delayed(Duration(milliseconds: 500), () {
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        });
 
-          // Navigate to the next screen or perform other actions after login
-        } else {
-          // Login failed
-          print("Something went wrong: ${data.message}");
-        }
-      } catch (e) {
-        // Display error message
-        print("Error: $e");
+        // Navigate to the next screen or perform other actions after login
+      } else {
+        // Login failed
+        print("Something went wrong: ${data.message}");
       }
-
+    } catch (e) {
+      // Display error message
+      print("Error: $e");
+    }
   }
+
+  Widget getAllergenes(DealData data) {
+    return Wrap(
+      direction: Axis.horizontal,
+      spacing: 10,
+      children: [
+        for (var allergen in data.allergens ?? [])
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              featureImage(allergen.title ?? ""), // Assuming featureImage expects a String
+              const SizedBox(
+                height: 5,
+              ),
+              CustomText(
+                text: allergen.title ?? "", // Assuming CustomText expects a String
+                fontfamilly: montRegular,
+                sizeOfFont: 10,
+                color: cardTextColor,
+              ),
+            ],
+          ),
+      ],
+    );
+  }
+
 }

@@ -47,37 +47,7 @@ main() async {
       statusBarBrightness: Brightness.dark));
 
 
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
-  final fcmToken = await FirebaseMessaging.instance.getToken();
-  await FirebaseMessaging.instance.setAutoInitEnabled(true);
-
-  await Utility.getSharedPreferences();
-
-  await Utility.setStringValue(
-      RequestString.FCM_TOKEN, fcmToken!);
-
-  print("FCMToken $fcmToken");
-
-
-
-  await FirebaseMessaging.instance
-      .setForegroundNotificationPresentationOptions(
-    alert: true,
-    badge: true,
-    sound: true,
-  );
-
-  await FirebaseMessaging.instance.requestPermission(
-    alert: true,
-    announcement: false,
-    badge: true,
-    carPlay: false,
-    criticalAlert: false,
-    provisional: false,
-    sound: true,
-  );
+  await Firebase.initializeApp();
 
 
 }
@@ -115,7 +85,8 @@ class _AppRootState extends State<AppRoot> {
       Duration.zero,
           () async {
             int? userId =await Utility.getIntValue(RequestString.ID);
-        status = userId.toString() ?? "";
+
+        status = userId.toString();
       },
     );
   }
@@ -123,6 +94,8 @@ class _AppRootState extends State<AppRoot> {
 
   @override
   Widget build(BuildContext context) {
+
+    print('print: $status');
     showImage(context);
     checkLogin();
     return FutureBuilder(
@@ -130,7 +103,7 @@ class _AppRootState extends State<AppRoot> {
         builder: (context, snapshot) =>
             snapshot.connectionState != ConnectionState.done
                 ? SplashScreen()
-            :status.isNotEmpty ? BaseHome()//OnBoardingScreen()
+            :status == "" ? BaseHome()//OnBoardingScreen()
                 : const OnBoardingScreen() //Screen1(),
         );
     }

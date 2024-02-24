@@ -244,7 +244,7 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
             ),
           ],
         ),
-        // const SizedBox(height: 5,),
+        const SizedBox(height: 10,),
         Padding(
           padding: const EdgeInsets.only(right: 9.0),
           child: Row(
@@ -621,7 +621,7 @@ class _RestaurantsProfileScreenState extends State<RestaurantsProfileScreen> {
                     ],
                   ),
                   CustomText(
-                    text: '\$ ${dealData.price ?? ""}',
+                    text: '\$ ${dealData.store?.distanceKm ?? ""}',
                     color: dolorColor,
                     sizeOfFont: 20,
                     fontfamilly: montHeavy,

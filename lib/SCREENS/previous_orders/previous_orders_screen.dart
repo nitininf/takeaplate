@@ -15,6 +15,8 @@ import '../../Response_Model/RestaurantDealResponse.dart';
 import '../../UTILS/app_color.dart';
 import '../../UTILS/app_images.dart';
 import '../../UTILS/fontfamily_string.dart';
+import '../../UTILS/request_string.dart';
+import '../../UTILS/utils.dart';
 import '../../main.dart';
 
 class PreviousOrderScreen extends StatefulWidget {
@@ -65,7 +67,19 @@ class _PreviousOrderScreenState extends State<PreviousOrderScreen> {
             isLoading = true;
           });
 
+          var lat = await Utility.getStringValue(RequestString.LATITUDE);
+          var long = await Utility.getStringValue(RequestString.LONGITUDE);
+
+
+          var formData = {
+            RequestString.LATITUDE: lat,
+            RequestString.LONGITUDE: long,
+
+          };
+
+
           final nextPageData = await orderProvider.getPreviousOrderList(
+            formData,
             page: currentPage,
           );
 
@@ -309,7 +323,7 @@ class _PreviousOrderScreenState extends State<PreviousOrderScreen> {
                       ),
                       Expanded(
                           child: CustomText(
-                              text: "84 Km",
+                              text: '${data.store?.distanceKm} Km' ,
                               maxLin: 1,
                               color: graysColor,
                               sizeOfFont: 12,
@@ -399,7 +413,17 @@ class _PreviousOrderScreenState extends State<PreviousOrderScreen> {
 
                               setState(() async {
                                 try {
-                                  final refreshedData = await orderProvider.getPreviousOrderList( page: 1);
+
+                                  var lat = await Utility.getStringValue(RequestString.LATITUDE);
+                                  var long = await Utility.getStringValue(RequestString.LONGITUDE);
+
+
+                                  var formData = {
+                                    RequestString.LATITUDE: lat,
+                                    RequestString.LONGITUDE: long,
+
+                                  };
+                                  final refreshedData = await orderProvider.getPreviousOrderList( formData,page: 1);
 
                                   if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
                                     setState(() {
@@ -458,7 +482,19 @@ class _PreviousOrderScreenState extends State<PreviousOrderScreen> {
                               setState(() async {
 
                                 try {
-                                  final refreshedData = await orderProvider.getPreviousOrderList( page: 1);
+
+                                  var lat = await Utility.getStringValue(RequestString.LATITUDE);
+                                  var long = await Utility.getStringValue(RequestString.LONGITUDE);
+
+
+                                  var formData = {
+                                    RequestString.LATITUDE: lat,
+                                    RequestString.LONGITUDE: long,
+
+                                  };
+
+
+                                  final refreshedData = await orderProvider.getPreviousOrderList( formData,page: 1);
 
                                   if (refreshedData.data != null && refreshedData.data!.isNotEmpty) {
                                     setState(() {

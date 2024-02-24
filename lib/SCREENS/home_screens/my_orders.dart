@@ -8,6 +8,7 @@ import '../../MULTI-PROVIDER/FavoriteOperationProvider.dart';
 import '../../Response_Model/CurrentOrderResponse.dart';
 import '../../Response_Model/FavAddedResponse.dart';
 import '../../Response_Model/FavDeleteResponse.dart';
+import '../../Response_Model/ProfilePageResponse.dart';
 import '../../UTILS/app_color.dart';
 import '../../UTILS/app_images.dart';
 import '../../UTILS/fontfamily_string.dart';
@@ -31,7 +32,7 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
   bool hasMoreData = true;
   bool isRefresh = false;
 
-  List<CurrentOrderData> currentOrderData = [];
+  List<CurrentDeal> currentOrderData = [];
 
   ScrollController _scrollController = ScrollController();
 
@@ -192,7 +193,7 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
 
 
 
-  Widget getFavCards(int index, CurrentOrderData data) {
+  Widget getFavCards(int index, CurrentDeal data) {
 
     var pickupTime = 'Pick up Time: ${data.store?.pickupTime?.startTime ?? 'NA'}';
 
@@ -281,9 +282,9 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                     const SizedBox(
                       width: 5,
                     ),
-                    const Expanded(
+                     Expanded(
                       child: CustomText(
-                          text: "84 Km",
+                          text: '${data.store?.distanceKm} Km' ,
                           maxLin: 1,
                           color: graysColor,
                           sizeOfFont: 11,

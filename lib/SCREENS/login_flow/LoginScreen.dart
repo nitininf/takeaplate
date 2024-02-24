@@ -109,18 +109,25 @@ class _LogInScreenState extends State<LogInScreen> {
                             onClick: () async {
 
 
+
+
+
+
                             var fcmToken =  await Utility.getStringValue(RequestString.FCM_TOKEN);
 
                              FocusScope.of(context).unfocus();
 
 
+
+                            PushNotificationService().getDeviceToken().then((token) async {
+                              print('Device Token: $token');
                               if (emailController.text.isNotEmpty && passwordController.text.isNotEmpty) {
                                 try {
 
                                   var formData = {
                                     RequestString.EMAIL: emailController.text,
                                     RequestString.PASSWORD: passwordController.text,
-                                    RequestString.FCM_TOKEN: fcmToken,
+                                    RequestString.FCM_TOKEN: token,
 
                                   };
 
@@ -218,6 +225,10 @@ class _LogInScreenState extends State<LogInScreen> {
                                 ScaffoldMessenger.of(context)
                                     .showSnackBar(snackBar);
                               }
+                            });
+
+
+
                             }
 
                         ),

@@ -12,6 +12,7 @@ import '../../../Response_Model/CardListResponse.dart';
 import '../../../Response_Model/CurrentOrderResponse.dart';
 import '../../../Response_Model/FavAddedResponse.dart';
 import '../../../Response_Model/FavDeleteResponse.dart';
+import '../../../Response_Model/ProfilePageResponse.dart';
 import '../../../Response_Model/RestaurantDealResponse.dart';
 import '../../../UTILS/app_color.dart';
 import '../../../UTILS/app_images.dart';
@@ -46,9 +47,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   bool isDateSelected =
       false; // Add a flag to check if the date is already selected
   List<DealData> favoriteStoresAndDeals = [];
-  List<CurrentOrderData> currentOrderDeals = [];
+  List<CurrentDeal> currentOrderDeals = [];
   List<DealData> previousOrderDeals = [];
-  List<CardData> cardListData = [];
+  List<PaymentCard> cardListData = [];
 
   @override
   void initState() {
@@ -381,7 +382,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget getCurrentDealsDataData(int index, CurrentOrderData lastMinuteDeal) {
+  Widget getCurrentDealsDataData(int index, CurrentDeal lastMinuteDeal) {
     var currentDay = DateTime.now().weekday;
     var startTiming = '';
     var endTiming = '';
@@ -469,8 +470,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     const SizedBox(
                       width: 5,
                     ),
-                    const CustomText(
-                        text: '8KM',
+                     CustomText(
+                        text: '${lastMinuteDeal.store?.distanceKm} Km',
                         color: graysColor,
                         sizeOfFont: 12,
                         fontfamilly: montSemiBold),
@@ -702,7 +703,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget getMasterCardData(int index, CardData cardListData) {
+  Widget getMasterCardData(int index, PaymentCard cardListData) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
       padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
@@ -845,8 +846,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   const SizedBox(
                     width: 10,
                   ),
-                  const CustomText(
-                      text: '8KM',
+                   CustomText(
+                      text: '${lastMinuteDeal.store?.distanceKm} Km',
                       color: graysColor,
                       sizeOfFont: 12,
                       fontfamilly: montSemiBold),
@@ -1151,8 +1152,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   const SizedBox(
                     width: 10,
                   ),
-                  const CustomText(
-                      text: '8KM',
+                   CustomText(
+                      text: '${lastMinuteDeal.store?.distanceKm} Km',
                       color: graysColor,
                       sizeOfFont: 12,
                       fontfamilly: montSemiBold),
