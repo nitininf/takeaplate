@@ -197,17 +197,17 @@ class CurrentDeal {
 }
 
 class Allergens {
-  String? name;
+  String? title;
 
-  Allergens({this.name});
+  Allergens({this.title});
 
   Allergens.fromJson(Map<String, dynamic> json) {
-    name = json['name'];
+    title = json['title'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.name;
+    data['name'] = this.title;
     return data;
   }
 }
