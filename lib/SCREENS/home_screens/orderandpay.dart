@@ -75,7 +75,9 @@ class OrderAndPayScreen extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(
                             top: 10.0, left: 30, right: 30, bottom: 20),
-                        child: CommonButton(
+                        child:
+
+                        CommonButton(
                             btnBgColor: onboardingBtn.withOpacity(1),
                             sizeOfFont: 18,
                             btnTextColor: offerColor.withOpacity(0.5),

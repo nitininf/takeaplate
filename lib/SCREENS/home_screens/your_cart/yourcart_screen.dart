@@ -113,7 +113,7 @@ class _YourCardScreenState extends State<YourCardScreen> {
 
   Future<bool> _stripePayment(orderId) async {
     Map<String, dynamic> formData = {
-      "user_id": await Utility.getIntValue(RequestString.ID) ?? 0,
+      // "user_id": await Utility.getIntValue(RequestString.ID) ?? 0,
       "deal_id": dealIdsBuffer.toString(),
       "status": "Success",
       "total_amount": totalPrice.toString(),
@@ -259,7 +259,10 @@ class _YourCardScreenState extends State<YourCardScreen> {
                       sizeOfFont: 18,
                       btnTextColor: offerColor.withOpacity(0.5),
                       btnText: "ADD MORE ITEMS",
-                      onClick: () {}),
+                      onClick: () {
+                        Navigator.of(context).pushNamedAndRemoveUntil(
+                            '/BaseHome', (Route route) => false);
+                      }),
                 ),
               ],
             )

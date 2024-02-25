@@ -15,7 +15,7 @@ class EditProfileResponse {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['message'] = this.message;
     data['status'] = this.status;
-    if (this.data != null) {
+    if (this.data != String) {
       data['data'] = this.data!.toJson();
     }
     return data;
@@ -26,14 +26,14 @@ class Data {
   int? id;
   String? name;
   String? email;
-  Null? emailVerifiedAt;
+  String? emailVerifiedAt;
   int? userType;
   int? phoneNo;
   String? dOB;
   String? gender;
   String? userImage;
   int? status;
-  Null? fcmToken;
+  String? fcmToken;
   String? createdAt;
   String? updatedAt;
 

@@ -75,7 +75,6 @@ class _PaymentDetailsScreenState extends State<PaymentDetailsScreen> {
 
   Future<bool> _stripePayment(orderId, StringBuffer dealIdsBuffer, StringBuffer storeIdsBuffer) async {
     Map<String, dynamic> formData = {
-      "user_id": await Utility.getIntValue(RequestString.ID) ?? 0,
       "deal_id": dealIdsBuffer.toString(),
       "status": "Success",
       "total_amount": totalPrice.toString(),
