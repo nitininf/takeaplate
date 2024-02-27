@@ -395,18 +395,6 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
                 },
                 child: getFavCards(index, restaurantData[index]),
               );
-            } else {
-              // Display loading indicator while fetching more data
-              return FutureBuilder(
-                future: Future.delayed(const Duration(seconds: 1)),
-                builder: (context, snapshot) =>
-                    snapshot.connectionState == ConnectionState.done
-                        ? const SizedBox()
-                        : const Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Center(child: CircularProgressIndicator()),
-                          ),
-              );
             }
           },
         ),
