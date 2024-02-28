@@ -122,7 +122,7 @@ class SettingScreen extends StatelessWidget {
                 height: 15,
               ),
               CommonTextField(
-                hintText: "Frequently Asked Questions",
+                hintText: "FAQs",
                 onTap: () {
                   Navigator.pushNamed(
                       navigatorKey.currentContext!, '/FaqScreenScreen');

@@ -720,7 +720,9 @@ class _OrderSummeryScreenState extends State<OrderSummeryScreen> {
     }
 
     return SingleChildScrollView(
-      child: Column(
+      child:
+
+      Column(
         children: <Widget>[
           SizedBox(
             height: screenHeight * 0.16,

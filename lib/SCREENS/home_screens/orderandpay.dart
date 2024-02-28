@@ -277,7 +277,7 @@ class OrderAndPayScreen extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 10.0),
                   child: CustomText(
                       text:
-                          'Pickup time - ${data.store?.pickupTime?.startTime ?? ""}',
+                          'Pickup time: \n${data.store?.pickupTime?.startTime ?? ""}',
                       sizeOfFont: 11,
                       color: viewallColor,
                       fontfamilly: montLight),

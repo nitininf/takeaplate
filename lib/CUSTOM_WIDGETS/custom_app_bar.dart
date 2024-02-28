@@ -6,16 +6,20 @@ class CustomAppBar extends StatelessWidget {
   const CustomAppBar(
       {super.key,
       this.logoColor,
+      this.index,
       this.textColor,
       this.isMenu,
       this.onTap,
-      this.onTap_one});
+      this.onTap_one,
+      this.onIconTap});
 
   final bool? isMenu;
+  final int? index;
   final Color? logoColor;
   final Color? textColor;
   final VoidCallback? onTap;
   final VoidCallback? onTap_one;
+  final VoidCallback? onIconTap;
 
   @override
   Widget build(BuildContext context) {
@@ -25,24 +29,37 @@ class CustomAppBar extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            GestureDetector(
-              onTap: onTap_one ??
-                  () {
-                    Navigator.pop(context);
-                  },
-              child: Image.asset(
-                back_arrow,
-                height: 27,
+            Visibility(
+              visible: index!=2,
+              child: GestureDetector(
+                onTap: onTap_one ??
+                    () {
+                      Navigator.pop(context);
+                    },
+                child: Image.asset(
+                  back_arrow,
+                  height: 27,
+                  width: 17,
+                ),
+              ),
+            ),if (index == 2)
+              SizedBox(
                 width: 17,
               ),
-            ),
             Expanded(
               child: Align(
                 alignment: Alignment.center,
-                child: Image.asset(
-                  appLogo,
-                  height: 56,
-                  width: 60,
+                child: GestureDetector(
+                  onTap: onIconTap ??
+                      (){
+                        Navigator.pushReplacementNamed(context, '/BaseHome');
+
+                      },
+                  child: Image.asset(
+                    appLogo,
+                    height: 56,
+                    width: 60,
+                  ),
                 ),
               ),
             ),

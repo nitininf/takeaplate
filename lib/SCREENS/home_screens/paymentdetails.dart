@@ -613,9 +613,11 @@ if(nameController.text.isNotEmpty && cardNumberController.text.isNotEmpty && exp
       endTiming = lastMinuteDeal.store?.openingHour?.sunday?.end ?? '';
     }
 
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+    return
+
+      Container(
+      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         border: Border.all(
@@ -664,7 +666,7 @@ if(nameController.text.isNotEmpty && cardNumberController.text.isNotEmpty && exp
                     maxRating: 5,
                   ),
                   const SizedBox(
-                    width: 10,
+                    width: 5,
                   ),
                    CustomText(
                       text: '${lastMinuteDeal.store?.distanceKm} Km',
@@ -685,12 +687,11 @@ if(nameController.text.isNotEmpty && cardNumberController.text.isNotEmpty && exp
             ],
           ),
           const SizedBox(
-            width: 18,
+            width: 15,
           ),
-          Align(
-            alignment: Alignment.centerRight,
+          Expanded(
             child: Stack(
-              alignment: Alignment.topRight,
+              alignment: Alignment.centerRight,
               clipBehavior: Clip.none,
               children: [
                 // lastMinuteDeal.profileImage != null ? ClipRRect(
@@ -736,6 +737,7 @@ if(nameController.text.isNotEmpty && cardNumberController.text.isNotEmpty && exp
                   ),
                 ),
                 Positioned(
+                top: 0,
                   right: -4,
                   child: GestureDetector(
                     onTap: () async {

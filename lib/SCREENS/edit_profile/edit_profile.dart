@@ -54,7 +54,19 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           emailController.text = data["email"]!;
           phoneNumberController.text = data["phoneNumber"]!;
           dobController.text = data["dob"]!;
-          genderController.text = data["gender"]!.toUpperCase();
+
+          if(data["gender"]! == "male" || data["gender"]! == "MALE"){
+            genderController.text = "Male";
+
+          }else if(data["gender"]! == "female" || data["gender"]! == "FEMALE"){
+            genderController.text = "Female";
+
+          }else if(data["gender"]! == "other" || data["gender"]! == "OTHER"){
+            genderController.text = "Other";
+
+          }
+
+
           selectedImagePathController.text = data["selectedImagePath"]! ??"";
           isInitialized = true;
         });
@@ -190,15 +202,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           // You can use a provider to manage the selected image state
                           Consumer<SelectImageProvider>(
                             builder: (context, provider, child) {
-                              return Visibility(
-                                visible:
-                                    selectedImagePathController.text.isEmpty,
-                                child: Image.asset(
-                                  appLogo,
-                                  width: 146,
-                                  height: 79,
-                                  fit: BoxFit.contain,
-                                ),
+                              return Image.asset(
+                                appLogo,
+                                width: 146,
+                                height: 79,
+                                fit: BoxFit.contain,
                               );
                             },
                           ),
@@ -477,7 +485,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         title: Text(genders[index]),
                         onTap: () {
                           Navigator.of(context).pop();
-                          genderController.text = genders[index].toUpperCase();
+                          genderController.text = genders[index];
                         },
                       );
                     },
@@ -495,8 +503,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     final picker = ImagePicker();
     final pickedFile = await showDialog<PickedFile?>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text("Select Image Source"),
+      builder: (context) =>   AlertDialog(
+      backgroundColor:onboardingbgColor,
+        title: const Text("Select Image Source",style: TextStyle(
+          color: Colors.white
+        ),),
         actions: [
           TextButton(
             onPressed: () async {

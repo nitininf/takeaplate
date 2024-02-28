@@ -16,6 +16,7 @@ class CommonEditText extends StatelessWidget {
   final VoidCallback? onTap; // Corrected the callback type to VoidCallback
   FocusNode? focusNode;
   final String? fontfamilly;
+
   CommonEditText({
     Key? key, // Added Key parameter
     this.controller,
@@ -36,53 +37,79 @@ class CommonEditText extends StatelessWidget {
     return // Use the provided onTap callback
 
         TextFormField(
-          onTap: onTap,
-         readOnly: isSelection,
+      onTap: onTap,
+      readOnly: isSelection,
 
-         // keyboardType: isPassword ? TextInputType.name : TextInputType.datetime,
-         /* inputFormatters:!isPassword? <TextInputFormatter>[
+      // keyboardType: isPassword ? TextInputType.name : TextInputType.datetime,
+      /* inputFormatters:!isPassword? <TextInputFormatter>[
             FilteringTextInputFormatter.allow(RegExp(r'^[+-]?[\d]+\.?[\d]*$')),
           ]: null,*/
-         // focusNode: focusNode,
-          validator: FormValidator.validateEmpty,
-          maxLength: 15,
-          controller: controller,
-          // focusNode: focusNode,
-          autofocus: !isSelection, // Set autofocus based on isCalender value
-          style:  TextStyle(
-            decoration: TextDecoration.none,
-            decorationThickness: 0,
-            fontSize: isnewCard ? 16 : 18,
-            fontFamily: fontfamilly ?? montBook,
-            color: isbgColor ? editbgColor :isnewCard ? onboardingBtn : readybgColor, // Make sure to define your colors properly
-          ),
-          decoration: InputDecoration(
-            counterText: '',
-            filled: true,
-            fillColor: isbgColor ? hintColor  : isnewCard ? newcardbgColor  : editbgColor,
-            focusedBorder: !isbgColor ? OutlineInputBorder(borderRadius: BorderRadius.circular(20),borderSide: BorderSide.none)
-            : OutlineInputBorder(borderRadius: BorderRadius.circular(20),borderSide: BorderSide(color:editbgColor,style:BorderStyle.solid )),
-
-            enabledBorder: !isbgColor ? OutlineInputBorder(borderRadius: BorderRadius.circular(20),borderSide: BorderSide.none)
-                : OutlineInputBorder(borderRadius: BorderRadius.circular(20),borderSide: BorderSide(color:editbgColor,style:BorderStyle.solid )),
-
-            suffixIcon: isIconShow
-                ? (isPassword
+      // focusNode: focusNode,
+      validator: FormValidator.validateEmpty,
+      maxLength: 15,
+      controller: controller,
+      // focusNode: focusNode,
+      autofocus: !isSelection,
+      // Set autofocus based on isCalender value
+      style: TextStyle(
+        decoration: TextDecoration.none,
+        decorationThickness: 0,
+        fontSize: isnewCard ? 16 : 18,
+        fontFamily: fontfamilly ?? montBook,
+        color: isbgColor
+            ? editbgColor
+            : isnewCard
+                ? onboardingBtn
+                : readybgColor, // Make sure to define your colors properly
+      ),
+      decoration: InputDecoration(
+        counterText: '',
+        filled: true,
+        fillColor: isbgColor
+            ? hintColor
+            : isnewCard
+                ? newcardbgColor
+                : editbgColor,
+        focusedBorder: !isbgColor
+            ? OutlineInputBorder(
+                borderRadius: BorderRadius.circular(20),
+                borderSide: BorderSide.none)
+            : OutlineInputBorder(
+                borderRadius: BorderRadius.circular(20),
+                borderSide:
+                    BorderSide(color: editbgColor, style: BorderStyle.solid)),
+        enabledBorder: !isbgColor
+            ? OutlineInputBorder(
+                borderRadius: BorderRadius.circular(20),
+                borderSide: BorderSide.none)
+            : OutlineInputBorder(
+                borderRadius: BorderRadius.circular(20),
+                borderSide:
+                    BorderSide(color: editbgColor, style: BorderStyle.solid)),
+        suffixIcon: isIconShow
+            ? (isPassword
                 ? IconButton(
-              onPressed: () {},
-              icon: Image.asset(down_arrow, height: 16, width: 12),
-            )
+                    onPressed: () {},
+                    icon: Image.asset(down_arrow, height: 16, width: 12),
+                  )
                 : null) // Conditionally set suffixIcon to null if isIconShow is true and isPassword is false
-                : const SizedBox(),
-            contentPadding: isbgColor ?const EdgeInsets.symmetric(horizontal: 20, vertical: 16)  : isnewCard ?const EdgeInsets.symmetric(horizontal: 20, vertical: 10):const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-            hintStyle:  TextStyle(
-              fontFamily: fontfamilly ?? montBook,
-              fontSize: isnewCard ? 16 : 18,
-              color: isbgColor ? editbgColor :isnewCard ? onboardingBtn : readybgColor, // Define your hint color properly
-            ),
-            hintText: hintText,
-          ),
-        );
-
+            : const SizedBox(),
+        contentPadding: isbgColor
+            ? const EdgeInsets.symmetric(horizontal: 15, vertical: 16)
+            : isnewCard
+                ? const EdgeInsets.symmetric(horizontal: 15, vertical: 10)
+                : const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+        hintStyle: TextStyle(
+          fontFamily: fontfamilly ?? montBook,
+          fontSize: isnewCard ? 16 : 18,
+          color: isbgColor
+              ? editbgColor
+              : isnewCard
+                  ? onboardingBtn
+                  : readybgColor, // Define your hint color properly
+        ),
+        hintText: hintText,
+      ),
+    );
   }
 }

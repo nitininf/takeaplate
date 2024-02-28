@@ -75,7 +75,6 @@ class _BaseHomeScreen extends State<BaseHome> {
   @override
   Widget build(BuildContext context) {
 
-    double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     var counterProvider=Provider.of<CommonCounter>(navigatorKey.currentContext!, listen: false);
     if(counterProvider.count=="Click"){
@@ -131,6 +130,7 @@ class _BaseHomeScreen extends State<BaseHome> {
                   Padding(
                     padding: const EdgeInsets.only(left: 28.0, right: 30, top: 6),
                     child: CustomAppBar(
+                      index: 2,
                       onTap: () {
                         _scaffoldKey.currentState!.openEndDrawer();
                       },

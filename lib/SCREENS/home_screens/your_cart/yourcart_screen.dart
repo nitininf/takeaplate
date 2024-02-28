@@ -275,7 +275,7 @@ class _YourCardScreenState extends State<YourCardScreen> {
   Future<void> makePayment(String amount) async {
     try {
       print("saddfd${amount}");
-      paymentIntent = await createPaymentIntent(amount, 'USD');
+      paymentIntent = await createPaymentIntent(amount, 'AUD');
 
       //STEP 2: Initialize Payment Sheet
       await Stripe.instance
@@ -396,34 +396,41 @@ class _YourCardScreenState extends State<YourCardScreen> {
 
   Widget getVerticalItemList() {
     if (cartItemsData.isEmpty) {
-      return const Padding(
-        padding: EdgeInsets.all(20.0),
-        child: CustomText(
-          text: 'No Item Found',
-          maxLin: 1,
-          color: btntxtColor,
-          fontfamilly: montBold,
-          sizeOfFont: 15,
+      return Container(
+        height: MediaQuery.of(context).size.height /3,
+        child: const Padding(
+          padding: EdgeInsets.all(20.0),
+          child: CustomText(
+            text: 'No Item Found',
+            maxLin: 1,
+            color: btntxtColor,
+            fontfamilly: montBold,
+            sizeOfFont: 15,
+          ),
         ),
       );
     }
-    return ListView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: cartItemsData.length,
-      itemBuilder: (context, index) {
-        if (index < cartItemsData.length) {
-          return getCardViews(index, cartItemsData[index]);
-        } else {
-          return FutureBuilder(
-            future: Future.delayed(const Duration(milliseconds: 500)),
-            builder: (context, snapshot) =>
-                snapshot.connectionState == ConnectionState.done
-                    ? const SizedBox()
-                    : const Center(child: CircularProgressIndicator()),
-          );
-        }
-      },
+    return Container(
+      height: MediaQuery.of(context).size.height /4,
+
+      child: ListView.builder(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: cartItemsData.length,
+        itemBuilder: (context, index) {
+          if (index < cartItemsData.length) {
+            return getCardViews(index, cartItemsData[index]);
+          } else {
+            return FutureBuilder(
+              future: Future.delayed(const Duration(milliseconds: 500)),
+              builder: (context, snapshot) =>
+                  snapshot.connectionState == ConnectionState.done
+                      ?  SizedBox()
+                      : const Center(child: CircularProgressIndicator()),
+            );
+          }
+        },
+      ),
     );
   }
 

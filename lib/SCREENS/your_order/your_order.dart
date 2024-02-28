@@ -107,7 +107,7 @@ class YourOrderScreen extends StatelessWidget {
               CustomText(text: data.category ?? "", color: viewallColor, sizeOfFont:14,fontfamilly: montLight),
               Padding(
                 padding: EdgeInsets.only(top: 10.0),
-                child: CustomText(text:  'Pickup time - ${data.store?.pickupTime?.startTime ?? ""}', sizeOfFont: 11,color: viewallColor, fontfamilly: montLight),
+                child: CustomText(text:  'Pickup time: \n${data.store?.pickupTime?.startTime ?? ""}', sizeOfFont: 11,color: viewallColor, fontfamilly: montLight),
               ),
 
 

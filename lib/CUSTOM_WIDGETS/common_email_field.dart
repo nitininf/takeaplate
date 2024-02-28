@@ -60,7 +60,7 @@ class CommonEmailField extends StatelessWidget {
       maxLines: maxLine ?? 1,
       controller: controller,
       style: TextStyle(
-        fontSize: 20,
+        fontSize: 18,
         fontFamily: montBook,
         color: isbgColor ? btntxtColor : hintColor,
         // color: isbgColor ? btntxtColor : readybgColor,
@@ -93,8 +93,8 @@ class CommonEmailField extends StatelessWidget {
         // )
         //     : const SizedBox(),
         contentPadding: isbgColor
-            ? const EdgeInsets.symmetric(horizontal: 20, vertical: 16)
-            : const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+            ? const EdgeInsets.symmetric(horizontal: 15, vertical: 15)
+            : const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
         hintStyle: TextStyle(
           fontSize: 18,
           fontFamily: montBook,

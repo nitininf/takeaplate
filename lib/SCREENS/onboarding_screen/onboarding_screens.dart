@@ -243,7 +243,7 @@ class SliderWidget extends StatelessWidget {
             title.toUpperCase(),
             style: TextStyle(
               fontFamily: montHeavy,
-              fontSize: 20,
+              fontSize: 18,
               color: headingColor,
             ),
             textAlign: TextAlign.center,
@@ -256,10 +256,12 @@ class SliderWidget extends StatelessWidget {
             child: Text(
               description,
               textAlign: TextAlign.center,
+              // maxLines: 4,
+                overflow: TextOverflow.clip,
               style: const TextStyle(
                   color: Colors.white,
                   height: 1.4,
-                  fontSize: 18,
+                  fontSize: 16,
                   fontFamily: montRegular),
             ),
           ),
