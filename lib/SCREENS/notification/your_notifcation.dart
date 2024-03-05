@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:take_a_plate/CUSTOM_WIDGETS/custom_app_bar.dart';
 import 'package:take_a_plate/CUSTOM_WIDGETS/custom_text_style.dart';
 import 'package:take_a_plate/MULTI-PROVIDER/NotificationProvider.dart';
@@ -10,7 +12,7 @@ import '../../Response_Model/GetNotificationPrefResponse.dart';
 import '../../Response_Model/NotificationListResponse.dart';
 
 class YourNotificationScreen extends StatefulWidget {
-  const YourNotificationScreen({super.key});
+  const YourNotificationScreen({Key? key}) : super(key: key);
 
   @override
   State<YourNotificationScreen> createState() => _YourNotificationScreenState();
@@ -28,16 +30,22 @@ class _YourNotificationScreenState extends State<YourNotificationScreen> {
   List<NotificationListData> notificationList = [];
 
   ScrollController _scrollController = ScrollController();
+  late SharedPreferences _prefs;
 
   @override
   void initState() {
     super.initState();
     _scrollController.addListener(_scrollListener);
+    _initPrefs();
     _loadData();
   }
 
+  void _initPrefs() async {
+    _prefs = await SharedPreferences.getInstance();
+  }
+
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
-      GlobalKey<RefreshIndicatorState>();
+  GlobalKey<RefreshIndicatorState>();
 
   void _scrollListener() {
     if (_scrollController.position.pixels ==
@@ -50,7 +58,7 @@ class _YourNotificationScreenState extends State<YourNotificationScreen> {
   void _loadData() async {
     Future.delayed(
       Duration.zero,
-      () async {
+          () async {
         if (!isNotificationDataLoading && hasMoreData) {
           try {
             setState(() {
@@ -58,7 +66,7 @@ class _YourNotificationScreenState extends State<YourNotificationScreen> {
             });
 
             final nextPageRestaurantData =
-                await notificationProvider.getNotificationList(
+            await notificationProvider.getNotificationList(
               page: currentPage,
             );
 
@@ -96,7 +104,7 @@ class _YourNotificationScreenState extends State<YourNotificationScreen> {
       body: SafeArea(
         child: Padding(
           padding:
-              const EdgeInsets.only(top: 0.0, bottom: 20, left: 25, right: 25),
+          const EdgeInsets.only(top: 0.0, bottom: 20, left: 25, right: 25),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -153,12 +161,12 @@ class _YourNotificationScreenState extends State<YourNotificationScreen> {
               return FutureBuilder(
                 future: Future.delayed(Duration(seconds: 1)),
                 builder: (context, snapshot) =>
-                    snapshot.connectionState == ConnectionState.done
-                        ? SizedBox()
-                        : Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Center(child: CircularProgressIndicator()),
-                          ),
+                snapshot.connectionState == ConnectionState.done
+                    ? SizedBox()
+                    : Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Center(child: CircularProgressIndicator()),
+                ),
               );
             }
           },
@@ -171,19 +179,30 @@ class _YourNotificationScreenState extends State<YourNotificationScreen> {
     setState(() {
       isRefresh = true;
 
-      currentPage = 1; // Reset the page to 1 as you loaded the first page.
-      // hasMoreData = true; // Reset the flag for more data.
-      // restaurantData=refreshedData.data!;
-
+      currentPage = 1;
       _loadData();
     });
   }
 
-  Widget getView(int index, NotificationListData notificationList) {
+  Widget getView(int index, NotificationListData notificationListData) {
+    bool isNew = _prefs.getBool('notification_$index') ?? true;
+
+    // Apply different background colors based on the read status
+    Color backgroundColor = isNew ? Colors.orange.withOpacity(0.2) : Colors.transparent;
+
+    // Mark notification as read after a few seconds if it's new
+    if (isNew) {
+      Timer(Duration(seconds: 3), () {
+        _prefs.setBool('notification_$index', false);
+        setState(() {});
+      });
+    }
+
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
       decoration: BoxDecoration(
+        color: backgroundColor,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(width: 0, color: Colors.grey),
       ),
@@ -192,7 +211,7 @@ class _YourNotificationScreenState extends State<YourNotificationScreen> {
           Expanded(
               flex: 1,
               child: CustomText(
-                text: notificationList.title ?? '',
+                text: notificationListData.title ?? '',
                 color: editbgColor,
                 sizeOfFont: 14,
                 fontfamilly: montSemiBold,
@@ -200,7 +219,7 @@ class _YourNotificationScreenState extends State<YourNotificationScreen> {
           Expanded(
               flex: 0,
               child: CustomText(
-                text: "${notificationList.time} \n ${notificationList.date}",
+                text: "${notificationListData.time} \n ${notificationListData.date}",
                 color: btnbgColor,
                 sizeOfFont: 11,
                 fontfamilly: montSemiBold,

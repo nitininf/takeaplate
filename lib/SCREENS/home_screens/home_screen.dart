@@ -109,12 +109,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
       setState(() async {
 
-        // _latitude = '${position.latitude}';
-        // _longitude = '${position.longitude}';
+        _latitude = '${position.latitude}';
+        _longitude = '${position.longitude}';
 
 
-        _latitude = '28.575771371227113';
-        _longitude = '77.32073524287385';
+        // _latitude = '28.575771371227113';
+        // _longitude = '77.32073524287385';
 
         await Utility.getSharedPreferences();
 
@@ -130,12 +130,12 @@ class _HomeScreenState extends State<HomeScreen> {
           List<Placemark> placemarks = await placemarkFromCoordinates(position.latitude, position.longitude);
           Placemark place = placemarks[0];
           print('PostalCode${place.postalCode}');
-          // _postalCode = '${place.postalCode}';
-          // _city = '${place.locality}';
+          _postalCode = '${place.postalCode}';
+          _city = '${place.locality}';
 
 
-          _postalCode = '201301';
-          _city = 'Noida';
+          // _postalCode = '201301';
+          // _city = 'Noida';
           // _loadData(dataId);
 
           _loadData(dataId);
