@@ -12,7 +12,6 @@ class ProfilePageResponse {
   List<CurrentDeal>? currentDeal;
   List<DealData>? previousDeal;
   List<DealData>? favoriteDeals;
-  List<PaymentCard>? paymentCard;
 
   ProfilePageResponse(
       {this.message,
@@ -22,8 +21,7 @@ class ProfilePageResponse {
         this.address,
         this.currentDeal,
         this.previousDeal,
-        this.favoriteDeals,
-        this.paymentCard});
+        this.favoriteDeals});
 
   ProfilePageResponse.fromJson(Map<String, dynamic> json) {
     message = json['message'];
@@ -31,30 +29,25 @@ class ProfilePageResponse {
     name = json['name'];
     email = json['email'];
     address = json['address'];
-    if (json['currentDeal'] != String) {
+    if (json['currentDeal'] != null) {
       currentDeal = <CurrentDeal>[];
       json['currentDeal'].forEach((v) {
         currentDeal!.add(new CurrentDeal.fromJson(v));
       });
     }
-    if (json['previousDeal'] != String) {
+    if (json['previousDeal'] != null) {
       previousDeal = <DealData>[];
       json['previousDeal'].forEach((v) {
         previousDeal!.add(new DealData.fromJson(v));
       });
     }
-    if (json['favoriteDeals'] != String) {
+    if (json['favoriteDeals'] != null) {
       favoriteDeals = <DealData>[];
       json['favoriteDeals'].forEach((v) {
         favoriteDeals!.add(new DealData.fromJson(v));
       });
     }
-    if (json['paymentCard'] != String) {
-      paymentCard = <PaymentCard>[];
-      json['paymentCard'].forEach((v) {
-        paymentCard!.add(new PaymentCard.fromJson(v));
-      });
-    }
+
   }
 
   Map<String, dynamic> toJson() {
@@ -64,19 +57,17 @@ class ProfilePageResponse {
     data['name'] = this.name;
     data['email'] = this.email;
     data['address'] = this.address;
-    if (this.currentDeal != String) {
+    if (this.currentDeal != null) {
       data['currentDeal'] = this.currentDeal!.map((v) => v.toJson()).toList();
     }
-    if (this.previousDeal != String) {
+    if (this.previousDeal != null) {
       data['previousDeal'] = this.previousDeal!.map((v) => v.toJson()).toList();
     }
-    if (this.favoriteDeals != String) {
+    if (this.favoriteDeals != null) {
       data['favoriteDeals'] =
           this.favoriteDeals!.map((v) => v.toJson()).toList();
     }
-    if (this.paymentCard != String) {
-      data['paymentCard'] = this.paymentCard!.map((v) => v.toJson()).toList();
-    }
+
     return data;
   }
 }
@@ -100,6 +91,7 @@ class CurrentDeal {
   int? status;
   int? reported;
   String? oneTimeDate;
+  String? orderType;
   String? paymentId;
   bool? favourite;
   String? averageRating;
@@ -125,6 +117,7 @@ class CurrentDeal {
         this.status,
         this.reported,
         this.oneTimeDate,
+        this.orderType,
         this.paymentId,
         this.favourite,
         this.averageRating,
@@ -138,7 +131,7 @@ class CurrentDeal {
     category = json['category'];
     price = json['price'];
     description = json['description'];
-    if (json['allergens'] != String) {
+    if (json['allergens'] != null) {
       allergens = <Allergens>[];
       json['allergens'].forEach((v) {
         allergens!.add(new Allergens.fromJson(v));
@@ -155,12 +148,12 @@ class CurrentDeal {
     status = json['status'];
     reported = json['reported'];
     oneTimeDate = json['one_time_date'];
+    orderType = json['order_type'];
     paymentId = json['payment_id'];
     favourite = json['favourite'];
     averageRating = json['average_rating'];
     customTime = json['custom_time'];
     store = json['store'] != null ? new Store.fromJson(json['store']) : null;
-
   }
 
   Map<String, dynamic> toJson() {
@@ -171,7 +164,7 @@ class CurrentDeal {
     data['category'] = this.category;
     data['price'] = this.price;
     data['description'] = this.description;
-    if (this.allergens != String) {
+    if (this.allergens != null) {
       data['allergens'] = this.allergens!.map((v) => v.toJson()).toList();
     }
     data['profile_image'] = this.profileImage;
@@ -185,11 +178,12 @@ class CurrentDeal {
     data['status'] = this.status;
     data['reported'] = this.reported;
     data['one_time_date'] = this.oneTimeDate;
+    data['order_type'] = this.orderType;
     data['payment_id'] = this.paymentId;
     data['favourite'] = this.favourite;
     data['average_rating'] = this.averageRating;
     data['custom_time'] = this.customTime;
-    if (this.store != String) {
+    if (this.store != null) {
       data['store'] = this.store!.toJson();
     }
     return data;
@@ -207,7 +201,7 @@ class Allergens {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['name'] = this.title;
+    data['title'] = this.title;
     return data;
   }
 }
@@ -236,7 +230,12 @@ class Store {
   String? latitude;
   String? longitude;
   String? zipCode;
+  int? step1;
+  int? step2;
+  int? step3;
+  int? step4;
   String? distanceKm;
+
 
   Store(
       {this.id,
@@ -262,6 +261,10 @@ class Store {
         this.latitude,
         this.longitude,
         this.zipCode,
+        this.step1,
+        this.step2,
+        this.step3,
+        this.step4,
         this.distanceKm});
 
   Store.fromJson(Map<String, dynamic> json) {
@@ -292,7 +295,12 @@ class Store {
     latitude = json['latitude'];
     longitude = json['longitude'];
     zipCode = json['zip_code'];
+    step1 = json['step_1'];
+    step2 = json['step_2'];
+    step3 = json['step_3'];
+    step4 = json['step_4'];
     distanceKm = json['distance_km'];
+
   }
 
   Map<String, dynamic> toJson() {
@@ -307,10 +315,10 @@ class Store {
     data['description'] = this.description;
     data['banner_image'] = this.bannerImage;
     data['pin'] = this.pin;
-    if (this.openingHour != String) {
+    if (this.openingHour != null) {
       data['opening_hour'] = this.openingHour!.toJson();
     }
-    if (this.pickupTime != String) {
+    if (this.pickupTime != null) {
       data['pickup_time'] = this.pickupTime!.toJson();
     }
     data['deleted_at'] = this.deletedAt;
@@ -324,7 +332,12 @@ class Store {
     data['latitude'] = this.latitude;
     data['longitude'] = this.longitude;
     data['zip_code'] = this.zipCode;
+    data['step_1'] = this.step1;
+    data['step_2'] = this.step2;
+    data['step_3'] = this.step3;
+    data['step_4'] = this.step4;
     data['distance_km'] = this.distanceKm;
+
     return data;
   }
 }
@@ -364,27 +377,28 @@ class OpeningHour {
         ? new Friday.fromJson(json['Wednesday'])
         : null;
   }
+
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.friday != String) {
+    if (this.friday != null) {
       data['Friday'] = this.friday!.toJson();
     }
-    if (this.monday != String) {
+    if (this.monday != null) {
       data['Monday'] = this.monday!.toJson();
     }
-    if (this.sunday != String) {
+    if (this.sunday != null) {
       data['Sunday'] = this.sunday!.toJson();
     }
-    if (this.tuesday != String) {
+    if (this.tuesday != null) {
       data['Tuesday'] = this.tuesday!.toJson();
     }
-    if (this.saturday != String) {
+    if (this.saturday != null) {
       data['Saturday'] = this.saturday!.toJson();
     }
-    if (this.thursday != String) {
+    if (this.thursday != null) {
       data['Thursday'] = this.thursday!.toJson();
     }
-    if (this.wednesday != String) {
+    if (this.wednesday != null) {
       data['Wednesday'] = this.wednesday!.toJson();
     }
     return data;
@@ -434,31 +448,6 @@ class PickupTime {
     data['end_time'] = this.endTime;
     data['start_time'] = this.startTime;
     data['enable_pickup_time'] = this.enablePickupTime;
-    return data;
-  }
-}
-
-class PaymentCard {
-  int? id;
-  String? cardNumber;
-  String? imagePath;
-  String? cardType;
-
-  PaymentCard({this.id, this.cardNumber, this.imagePath, this.cardType});
-
-  PaymentCard.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    cardNumber = json['card_number'];
-    imagePath = json['image_path'];
-    cardType = json['card_type'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['card_number'] = this.cardNumber;
-    data['image_path'] = this.imagePath;
-    data['card_type'] = this.cardType;
     return data;
   }
 }

@@ -49,7 +49,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   List<DealData> favoriteStoresAndDeals = [];
   List<CurrentDeal> currentOrderDeals = [];
   List<DealData> previousOrderDeals = [];
-  List<PaymentCard> cardListData = [];
+  // List<PaymentCard> cardListData = [];
 
   @override
   void initState() {
@@ -137,21 +137,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
             });
           }
 
-          if (nextPageData.paymentCard != null &&
-              nextPageData.paymentCard!.isNotEmpty) {
-            setState(() {
-              if (mounted) {
-                cardListData = nextPageData.paymentCard!;
-              }
-            });
-          } else {
-            setState(() {
-              if (mounted) {
-                hasMoreData = false;
-                cardListData.clear();
-              }
-            });
-          }
+          // if (nextPageData.paymentCard != null &&
+          //     nextPageData.paymentCard!.isNotEmpty) {
+          //   setState(() {
+          //     if (mounted) {
+          //       cardListData = nextPageData.paymentCard!;
+          //     }
+          //   });
+          // } else {
+          //   setState(() {
+          //     if (mounted) {
+          //       hasMoreData = false;
+          //       cardListData.clear();
+          //     }
+          //   });
+          // }
         } catch (error) {
           // Display error message
         } finally {
@@ -344,11 +344,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             buildMyFavoriteCards(),
 
-            buildSection("PAYMENT METHOD", viewAll),
+            // buildSection("PAYMENT METHOD", viewAll),
             const SizedBox(
               height: 5,
             ),
-            getMasterCard()
+            // getMasterCard()
           ],
         ),
       ),
@@ -687,83 +687,83 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget getMasterCard() {
-    return SingleChildScrollView(
-      scrollDirection: Axis.vertical,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: List.generate(
-          // Limit the number of items to 2
-          min(2, cardListData.length),
-          (index) => GestureDetector(
-            child: getMasterCardData(index, cardListData[index]),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget getMasterCardData(int index, PaymentCard cardListData) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
-      padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          width: 0,
-          color: editbgColor.withOpacity(0.25),
-        ),
-      ),
-      child: Row(
-        children: [
-          cardListData.imagePath != null &&
-                  !(cardListData.imagePath)!.contains("SocketException")
-              ? Container(
-                  child: ClipRRect(
-                    child: Container(
-                      padding: const EdgeInsets.all(2),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.rectangle,
-                        border: Border.all(
-                          color: Colors.black,
-                          width: 1.0, // Adjust the width as needed
-                        ),
-                      ),
-                      child: Image.network(
-                        cardListData.imagePath!,
-                        fit: BoxFit.cover,
-                        height: 30,
-                        width: 30,
-                      ),
-                    ),
-                  ),
-                )
-              : Image.asset(
-                  food_image,
-                  height: 40,
-                  width: 70,
-                ),
-          const SizedBox(
-            width: 10,
-          ),
-          Expanded(
-              child: CustomText(
-            text: cardListData.cardType ?? "",
-            color: viewallColor,
-            sizeOfFont: 14,
-            fontfamilly: montBold,
-          )),
-          CustomText(
-            text:
-                '- ${cardListData.cardNumber?.substring(cardListData.cardNumber!.length - 4, cardListData.cardNumber!.length)}',
-            color: viewallColor,
-            sizeOfFont: 14,
-            fontfamilly: montRegular,
-          ),
-        ],
-      ),
-    );
-  }
+  // Widget getMasterCard() {
+  //   return SingleChildScrollView(
+  //     scrollDirection: Axis.vertical,
+  //     child: Column(
+  //       mainAxisSize: MainAxisSize.min,
+  //       children: List.generate(
+  //         // Limit the number of items to 2
+  //         min(2, cardListData.length),
+  //         (index) => GestureDetector(
+  //           child: getMasterCardData(index, cardListData[index]),
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
+  //
+  // Widget getMasterCardData(int index, PaymentCard cardListData) {
+  //   return Container(
+  //     margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+  //     padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+  //     decoration: BoxDecoration(
+  //       borderRadius: BorderRadius.circular(20),
+  //       border: Border.all(
+  //         width: 0,
+  //         color: editbgColor.withOpacity(0.25),
+  //       ),
+  //     ),
+  //     child: Row(
+  //       children: [
+  //         cardListData.imagePath != null &&
+  //                 !(cardListData.imagePath)!.contains("SocketException")
+  //             ? Container(
+  //                 child: ClipRRect(
+  //                   child: Container(
+  //                     padding: const EdgeInsets.all(2),
+  //                     decoration: BoxDecoration(
+  //                       shape: BoxShape.rectangle,
+  //                       border: Border.all(
+  //                         color: Colors.black,
+  //                         width: 1.0, // Adjust the width as needed
+  //                       ),
+  //                     ),
+  //                     child: Image.network(
+  //                       cardListData.imagePath!,
+  //                       fit: BoxFit.cover,
+  //                       height: 30,
+  //                       width: 30,
+  //                     ),
+  //                   ),
+  //                 ),
+  //               )
+  //             : Image.asset(
+  //                 food_image,
+  //                 height: 40,
+  //                 width: 70,
+  //               ),
+  //         const SizedBox(
+  //           width: 10,
+  //         ),
+  //         Expanded(
+  //             child: CustomText(
+  //           text: cardListData.cardType ?? "",
+  //           color: viewallColor,
+  //           sizeOfFont: 14,
+  //           fontfamilly: montBold,
+  //         )),
+  //         CustomText(
+  //           text:
+  //               '- ${cardListData.cardNumber?.substring(cardListData.cardNumber!.length - 4, cardListData.cardNumber!.length)}',
+  //           color: viewallColor,
+  //           sizeOfFont: 14,
+  //           fontfamilly: montRegular,
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Widget getPreviousOrderData(int index, DealData lastMinuteDeal) {
     var currentDay = DateTime.now().weekday;
@@ -1424,20 +1424,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
       });
     }
 
-    if (nextPageData.paymentCard != null &&
-        nextPageData.paymentCard!.isNotEmpty) {
-      setState(() {
-        if (mounted) {
-          cardListData = nextPageData.paymentCard!;
-        }
-      });
-    } else {
-      setState(() {
-        if (mounted) {
-          hasMoreData = false;
-          cardListData.clear();
-        }
-      });
-    }
+    // if (nextPageData.paymentCard != null &&
+    //     nextPageData.paymentCard!.isNotEmpty) {
+    //   setState(() {
+    //     if (mounted) {
+    //       cardListData = nextPageData.paymentCard!;
+    //     }
+    //   });
+    // } else {
+    //   setState(() {
+    //     if (mounted) {
+    //       hasMoreData = false;
+    //       cardListData.clear();
+    //     }
+    //   });
+    // }
   }
 }

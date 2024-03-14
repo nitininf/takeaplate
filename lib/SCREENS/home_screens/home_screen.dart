@@ -2,6 +2,7 @@ import 'package:custom_rating_bar/custom_rating_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:take_a_plate/CUSTOM_WIDGETS/custom_text_style.dart';
 import 'package:take_a_plate/UTILS/app_color.dart';
@@ -17,6 +18,7 @@ import '../../Response_Model/FavAddedResponse.dart';
 import '../../Response_Model/FavDeleteResponse.dart';
 import '../../Response_Model/RestaurantDealResponse.dart';
 import '../../Response_Model/RestaurantsListResponse.dart';
+import '../../UTILS/permission_services.dart';
 import '../../UTILS/request_string.dart';
 import '../../UTILS/utils.dart';
 import 'base_home.dart';
@@ -66,73 +68,88 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
+    getCurrentPosition();
+    _loadFilterData();
+
     super.initState();
 
-    _getLocation();
-    _loadData(dataId);
-
-    _loadFilterData();
+    // _getLocation();
+    // _loadData(dataId);
   }
 
-  void _getLocation() async {
+  Future<bool> handleLocationPermission() async {
     bool serviceEnabled;
     LocationPermission permission;
 
-    // Check if location services are enabled
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      return;
-    }
+      await Geolocator.requestPermission();
+      const snackBar = SnackBar(
+        content:
+            Text('Location services are disabled. Please enable the services!'),
+      );
 
-    // Request location permission
+      // Show the SnackBar
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+      // Automatically hide the SnackBar after 1 second
+      Future.delayed(const Duration(milliseconds: 3000), () {
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      });
+      return false;
+    }
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        return;
+        const snackBar = SnackBar(
+          content: Text('Location permissions are denied'),
+        );
+
+        // Show the SnackBar
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+        // Automatically hide the SnackBar after 1 second
+        Future.delayed(const Duration(milliseconds: 3000), () {
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        });
+        //openAppSettings();
+        return false;
       }
     }
-
     if (permission == LocationPermission.deniedForever) {
-      // Permissions are denied forever, handle appropriately.
-      return;
+      await showAllowLocationPermissionDialog(context);
+      //openAppSettings();
+      return false;
     }
+    return true;
+  }
 
-    try {
-      // Get the current location
-      Position position = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.best);
-
-      // List<Placemark> placemarks = await placemarkFromCoordinates(position.latitude,position.longitude);
-      // Placemark place = placemarks[0];
-      // print('PostalCode${place.postalCode}');
-
+  Future<void> getCurrentPosition() async {
+    final hasPermission = await handleLocationPermission();
+    await PermissionService().askLocation();
+    if (!hasPermission) return;
+    await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high)
+        .then((Position position) {
       setState(() async {
-
         _latitude = '${position.latitude}';
         _longitude = '${position.longitude}';
-
 
         // _latitude = '28.575771371227113';
         // _longitude = '77.32073524287385';
 
         await Utility.getSharedPreferences();
 
-
-        await Utility.setStringValue(
-            RequestString.LATITUDE, _latitude);
-        await Utility.setStringValue(
-            RequestString.LONGITUDE, _longitude);
-
-
+        await Utility.setStringValue(RequestString.LATITUDE, _latitude);
+        await Utility.setStringValue(RequestString.LONGITUDE, _longitude);
 
         try {
-          List<Placemark> placemarks = await placemarkFromCoordinates(position.latitude, position.longitude);
+          List<Placemark> placemarks = await placemarkFromCoordinates(
+              position.latitude, position.longitude);
           Placemark place = placemarks[0];
           print('PostalCode${place.postalCode}');
           _postalCode = '${place.postalCode}';
           _city = '${place.locality}';
-
 
           // _postalCode = '201301';
           // _city = 'Noida';
@@ -140,21 +157,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
           _loadData(dataId);
 
-
           await Utility.setStringValue(RequestString.POSTAL_CODE, _postalCode);
           await Utility.setStringValue(RequestString.CITY, _city);
-
         } catch (e) {
-         print(e);
+          print(e);
         }
-
       });
-
-      print(
-          'Coordinates : \n _________\n Latitude: $_latitude \n Longitude: $_longitude');
-    } catch (e) {
-      print(e);
-    }
+    }).catchError((e) {
+      debugPrint(e);
+    });
   }
 
   void _loadData(int dataId) async {
@@ -167,26 +178,21 @@ class _HomeScreenState extends State<HomeScreen> {
               isLoading = true;
             });
 
-
-
-
-
             var formData = {
               RequestString.LATITUDE: _latitude,
               RequestString.LONGITUDE: _longitude,
               RequestString.POSTAL_CODE: _postalCode,
               RequestString.CITY: _city,
-
             };
 
-            final nextPageData = await homeProvider.getHomePageList(page: currentPage, dataId,formData);
+            final nextPageData = await homeProvider.getHomePageList(
+                page: currentPage, dataId, formData);
 
             if (nextPageData.data != null && nextPageData.data!.isNotEmpty) {
               currentPage++;
 
               setState(() {
                 if (mounted) {
-
                   closestRestaurants = nextPageData.data!;
                 }
               });
@@ -594,8 +600,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       color: editbgColor,
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    child:  CustomText(
-                      text: '${storeData.distanceKm} km'?? "NA",
+                    child: CustomText(
+                      text: '${storeData.distanceKm} km',
                       maxLin: 1,
                       sizeOfFont: 10,
                       fontfamilly: montHeavy,
@@ -883,8 +889,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   const SizedBox(
                     width: 10,
                   ),
-                   CustomText(
-                      text: '${lastMinuteDeal.store?.distanceKm} Km' ?? "NA",
+                  CustomText(
+                      text: '${lastMinuteDeal.store?.distanceKm} Km',
                       color: graysColor,
                       sizeOfFont: 12,
                       fontfamilly: montSemiBold),
@@ -1204,7 +1210,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   const SizedBox(
                     width: 10,
                   ),
-                   CustomText(
+                  CustomText(
                       text: '${collectTomorrowData.store?.distanceKm} Km',
                       color: graysColor,
                       sizeOfFont: 12,
@@ -1500,8 +1506,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       color: editbgColor,
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    child:  CustomText(
-                      text: '${favoriteStores.distanceKm} Km' ?? "NA",
+                    child: CustomText(
+                      text: '${favoriteStores.distanceKm} Km',
                       maxLin: 1,
                       sizeOfFont: 10,
                       fontfamilly: montHeavy,
@@ -1677,15 +1683,13 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Future<void> refreshData() async {
-
     var formData = {
       RequestString.LATITUDE: _latitude,
       RequestString.LONGITUDE: _longitude,
-
     };
 
     final nextPageData =
-        await homeProvider.getHomePageList(page: currentPage, dataId,formData);
+        await homeProvider.getHomePageList(page: currentPage, dataId, formData);
 
     if (nextPageData.data != null && nextPageData.data!.isNotEmpty) {
       currentPage++;
@@ -1751,4 +1755,202 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     }
   }
+
+  static Future<void> showAllowLocationPermissionDialog(
+      BuildContext context) async {
+    showDialog(
+      context: context,
+      useSafeArea: false,
+      useRootNavigator: false,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return Dialog.fullscreen(
+            backgroundColor: Colors.transparent,
+            child: Stack(
+              children: [
+                Container(
+                  color: dailogColor.withOpacity(0.75),
+                  height: double.infinity,
+                  width: double.infinity,
+                ),
+                Center(child: locationContent())
+              ],
+            ));
+      },
+    );
+  }
+
+  static Widget locationContent() {
+    double screenHeight =
+        MediaQuery.of(navigatorKey.currentContext!).size.height;
+
+    return SingleChildScrollView(
+      child: Column(
+        children: <Widget>[
+          SizedBox(
+            height: screenHeight * 0.16,
+          ),
+          Padding(
+            padding: const EdgeInsets.only(
+                left: 0.0, right: 0.0, top: 30.0, bottom: 10),
+            child: Container(
+              margin: const EdgeInsets.symmetric(
+                horizontal: 40,
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              decoration: BoxDecoration(
+                  color: onboardingbgColor,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(width: 1, color: hintColor)),
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      height: screenHeight * 0.03,
+                    ),
+                    const Center(
+                      child: CustomText(
+                        text: "Enable Permission",
+                        color: btnbgColor,
+                        fontfamilly: montBold,
+                        sizeOfFont: 20,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 25,
+                    ),
+                    const Center(
+                      child: CustomText(
+                        text:
+                            "Please enable location permission to proceed further...",
+                        color: Colors.white,
+                        fontfamilly: montBold,
+                        sizeOfFont: 15,
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.center,
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Container(
+                              margin: const EdgeInsets.symmetric(
+                                  horizontal: 8, vertical: 20),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 30, vertical: 10),
+                              decoration: BoxDecoration(
+                                color: btnbgColor,
+                                borderRadius: BorderRadius.circular(30),
+                                border: Border.all(width: 1, color: btnbgColor),
+                              ),
+                              child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.pop(navigatorKey.currentContext!);
+                                  },
+                                  child: const CustomText(
+                                    text: "No",
+                                    color: btntxtColor,
+                                    fontfamilly: montHeavy,
+                                    sizeOfFont: 20,
+                                  ))),
+                          Container(
+                              margin: const EdgeInsets.symmetric(
+                                  horizontal: 8, vertical: 20),
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 30, vertical: 10),
+                              decoration: BoxDecoration(
+                                color: btnbgColor,
+                                borderRadius: BorderRadius.circular(30),
+                                border: Border.all(width: 1, color: btnbgColor),
+                              ),
+                              child: GestureDetector(
+                                  onTap: () {
+                                    openAppSettings();
+                                    Navigator.pop(navigatorKey.currentContext!);
+                                  },
+                                  child: const CustomText(
+                                    text: "Yes",
+                                    color: btntxtColor,
+                                    fontfamilly: montHeavy,
+                                    sizeOfFont: 20,
+                                  ))),
+                        ],
+                      ),
+                    ),
+                  ]),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+// Future<void> showAllowLocationPermissionDialog(
+//     BuildContext context, String title, String description) async {
+//   return showDialog<void>(
+//     context: context,
+//     barrierDismissible: false, // Prevent dismissing by tapping outside
+//     builder: (BuildContext context) {
+//       return Dialog(
+//         child: Padding(
+//           padding: const EdgeInsets.all(16.0),
+//           child: Column(
+//             mainAxisSize: MainAxisSize.min,
+//             children: [
+//               Text(
+//                 title,
+//                 style: const TextStyle(
+//                     fontSize: 20, fontWeight: FontWeight.bold),
+//               ),
+//               const SizedBox(height: 10),
+//               Text(
+//                 description ?? '',
+//                 style: TextStyle(fontSize: 16),
+//                 textAlign: TextAlign.center, // Use textAlign property
+//               ),
+//               SizedBox(
+//                 height: 10,
+//               ),
+//               Row(
+//                 mainAxisAlignment: MainAxisAlignment.center,
+//                 children: [
+//                   Flexible(
+//                     child: Padding(
+//                       padding: const EdgeInsets.only(right: 10),
+//                       child: ElevatedButton(
+//                         onPressed: () async {
+//                           Navigator.of(context).pop();
+//                         },
+//                         style: ElevatedButton.styleFrom(
+//                           primary: Colors
+//                               .deepOrangeAccent, // Customize the color as needed
+//                         ),
+//                         child: const Text('NO'),
+//                       ),
+//                     ),
+//                   ),
+//                   Flexible(
+//                     child: ElevatedButton(
+//                       onPressed: () async {
+//                      openAppSettings();
+//                      Navigator.of(context).pop();
+//
+//                       },
+//                       style: ElevatedButton.styleFrom(
+//                         primary:
+//                         Colors.green, // Customize the color as needed
+//                       ),
+//                       child: const Text('YES'),
+//                     ),
+//                   ),
+//                 ],
+//               ),
+//             ],
+//           ),
+//         ),
+//       );
+//     },
+//   );
+// }
 }

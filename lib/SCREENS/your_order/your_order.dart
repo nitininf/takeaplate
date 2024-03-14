@@ -140,7 +140,7 @@ class YourOrderScreen extends StatelessWidget {
          /* CommonButton(btnBgColor: onboardingBtn,sizeOfFont: 17, btnTextColor:pickuptColor.withOpacity(0.54),btnText: "PICK UP AT 11 AM", onClick: (){
           }),*/
           CommonButton(btnBgColor: onboardingBtn,sizeOfFont: 17, btnTextColor:pickuptColor,btnText:data.status == 0 ? "PENDING" : "READY FOR PICKUP", onClick: (){
-            data.status == 0 ?"": showCommonPopup(context,data.id??0,title: "RATE YOUR EXPERIENCE");
+            data.status == 1 ?"": showCommonPopup(context,data.id??0,title: "RATE YOUR EXPERIENCE");
           }),
           SizedBox(height: 10,),
           CustomText(text: 'Order No.: ${data.paymentId} ', color: viewallColor, sizeOfFont:14,fontfamilly: montLight),

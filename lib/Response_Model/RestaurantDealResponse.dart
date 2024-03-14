@@ -6,8 +6,8 @@ class RestaurentDealResponse {
   int? perPage;
   int? total;
   int? lastPage;
-  Null? nextPageUrl;
-  Null? prevPageUrl;
+  String? nextPageUrl;
+  String? prevPageUrl;
 
   RestaurentDealResponse(
       {this.status,
@@ -63,19 +63,19 @@ class DealData {
   String? description;
   List<Allergens>? allergens;
   String? profileImage;
-  Null? frequency;
+  String? frequency;
   String? recurrentOrder;
   String? pickupTime;
-  Null? deletedAt;
+  String? deletedAt;
   String? createdAt;
   String? updatedAt;
   int? collectTomorrow;
   int? status;
   int? reported;
-  Null? oneTimeDate;
+  String? oneTimeDate;
   bool? favourite;
   String? averageRating;
-  Null? customTime;
+  String? customTime;
   Store? store;
 
   DealData(
@@ -193,7 +193,7 @@ class Store {
   String? pin;
   OpeningHour? openingHour;
   PickupTime? pickupTime;
-  Null? deletedAt;
+  String? deletedAt;
   String? createdAt;
   String? updatedAt;
   int? status;
@@ -201,9 +201,9 @@ class Store {
   String? accountStatus;
   int? isActive;
   String? commission;
-  Null? latitude;
-  Null? longitude;
-  Null? zipCode;
+  String? latitude;
+  String? longitude;
+  String? zipCode;
   String? distanceKm;
 
   Store(

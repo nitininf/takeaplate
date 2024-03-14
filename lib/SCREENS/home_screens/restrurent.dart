@@ -372,34 +372,53 @@ class _RestaurantsScreenState extends State<RestaurantsScreen> {
 
 
   Widget buildVerticalCards() {
-    return Expanded(
-      child: RefreshIndicator(
-        key: _refreshIndicatorKey,
-        color: Colors.white,
-        backgroundColor: editbgColor,
-        strokeWidth: 4.0,
-        onRefresh: _refreshData,
-        child: ListView.builder(
-          controller: _scrollController,
-          itemCount: restaurantData.length + (hasMoreData ? 1 : 0),
-          itemBuilder: (context, index) {
-            if (index < restaurantData.length) {
-              // Display restaurant card
-              return GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(
-                    navigatorKey.currentContext!,
-                    '/RestaurantsProfileScreen',
-                    arguments: restaurantData[index],
-                  );
-                },
-                child: getFavCards(index, restaurantData[index]),
-              );
-            }
-          },
+
+    if (restaurantData.isEmpty) {
+      return Center(
+        child: const Padding(
+          padding: EdgeInsets.all(20.0),
+          child: CustomText(
+            text: 'No Item Found',
+            maxLin: 1,
+            color: btntxtColor,
+            fontfamilly: montBold,
+            sizeOfFont: 15,
+          ),
         ),
-      ),
-    );
+      );
+    }else{
+      return Expanded(
+        child: RefreshIndicator(
+          key: _refreshIndicatorKey,
+          color: Colors.white,
+          backgroundColor: editbgColor,
+          strokeWidth: 4.0,
+          onRefresh: _refreshData,
+          child: ListView.builder(
+            controller: _scrollController,
+            itemCount: restaurantData.length + (hasMoreData ? 1 : 0),
+            itemBuilder: (context, index) {
+              if (index < restaurantData.length) {
+                // Display restaurant card
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(
+                      navigatorKey.currentContext!,
+                      '/RestaurantsProfileScreen',
+                      arguments: restaurantData[index],
+                    );
+                  },
+                  child: getFavCards(index, restaurantData[index]),
+                );
+              }
+            },
+          ),
+        ),
+      );
+
+    }
+
+
   }
 
   Future<void> _refreshData() async {
